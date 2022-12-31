@@ -1,0 +1,33 @@
+/* HEADER STYLING */
+
+.header {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.473);
+  height: 75px;
+  position: sticky;
+  top: 0px;
+}
+
+li,
+.logo {
+  list-style: none;
+  color: black;
+  text-decoration: none;
+}
+.logo img {
+  height: 60px;
+  border-radius: 100px;
+  margin-left: 20px;
+}
+
+.header ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.css-i4bv87-MuiSvgIcon-root {
+  width: 50px;
+  height: 50px;
+}

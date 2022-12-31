@@ -1,0 +1,117 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 5vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 0.5vmin);
+  color: white;
+}
+
+css-1cfh48w-MuiGrid-root {
+  position: relative;
+}
+
+.tileContainer {
+  position: relative;
+  height: 321px;
+  min-width: 225px;
+  text-align: center;
+}
+.overlaidIcon {
+  width: 50px;
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+.overlaidFill {
+  width: 100%;
+  position: absolute;
+  display: none;
+}
+.tile {
+  position: relative;
+  top: 0px;
+  transition: transform 600ms ease-out;
+  border-radius: 20px;
+}
+.tile:hover {
+  transform: scale(1.25);
+  z-index: 1;
+  border: 2px solid black;
+}
+.tile:hover .overlaidIcon,
+.tile:hover .overlaidFill,
+.tile:hover #title {
+  display: block;
+}
+.tile:hover ~ .tile {
+  background-color: red;
+}
+#gradientFill {
+  background: rgba(255, 255, 255, 0.486);
+  border-radius: 20px;
+  height: 100%;
+  z-index: 0;
+}
+#title {
+  top: 5%;
+  text-align: center;
+  position: absolute;
+  display: none;
+  z-index: 1;
+  width: 100%;
+  font-size: 1.5em;
+}
+#heartIcon {
+  bottom: 5%;
+  left: 15%;
+}
+#frownIcon {
+  bottom: 5%;
+  right: 15%;
+}
+.visibleOnHover {
+  position: absolute;
+}
+
+.gap {
+  margin-top: 50px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.rowCenter {
+  display: flex;
+  justify-content: center;
+}
+
+#loading {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(105, 105, 105, 0.5);
+  border-radius: 50%;
+  border-top-color: rgb(0, 0, 0);
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}

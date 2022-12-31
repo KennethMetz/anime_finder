@@ -1,0 +1,13 @@
+form {
+  display: flex;
+  justify-content: center;
+}
+
+list,
+.profile {
+  text-align: center;
+}
+
+li {
+  width: 300 px;
+}
