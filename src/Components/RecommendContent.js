@@ -10,7 +10,6 @@ export default function RecommendContent(input) {
   let [loadingRecs, setLoadingRecs] = useState(true);
 
   console.log(input.movies.id);
-  console.log(localUser);
 
   async function getContent(input) {
     try {
@@ -18,6 +17,14 @@ export default function RecommendContent(input) {
         history: [{ animeId: input.movies.id, status: "COMPLETED" }],
         amount: 8,
       };
+      if (localUser["likes"].length > 0) {
+        for (let i = 0; i < localUser["likes"].length; i++) {
+          data["history"].push({
+            animeId: localUser["likes"][i].id,
+            status: "COMPLETED",
+          });
+        }
+      }
       if (localUser["dislikes"].length > 0) {
         for (let i = 0; i < localUser["dislikes"].length; i++) {
           data["history"].push({
@@ -49,7 +56,7 @@ export default function RecommendContent(input) {
   }
   useEffect(() => {
     getContent(input);
-  }, []);
+  }, [input]);
 
   useEffect(() => {
     console.log(recommendation);

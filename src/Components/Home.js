@@ -1,8 +1,8 @@
 import "../Styles/App.css";
 
-import { Autocomplete, TextField, Grid } from "@mui/material";
+import { Autocomplete, TextField, Grid, Box } from "@mui/material";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 
 import { useEffect, useState, useContext } from "react";
@@ -17,6 +17,7 @@ import { FirebaseError } from "firebase/app";
 import { flushSync } from "react-dom";
 import { RecommendedList } from "./RecommendedList";
 import TitleAutocomplete from "./TitleAutocomplete";
+import { PopulateFromFirestore } from "./Firestore";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -25,7 +26,7 @@ export default function Home() {
   let [animeMPTW, setAnimeMPTW] = useState([]); //most planned to watch
   let [animeMH, setAnimeMH] = useState([]); //lowest rated
 
-  let [loading, setLoading] = useState(true);
+  let [loadingGeneric, setLoadingGeneric] = useState(true);
   let [loadingRecs, setLoadingRecs] = useState(true);
   let [search, setSearch] = useState("");
   let [searchResults, setSearchResults] = useState(false);
@@ -38,14 +39,15 @@ export default function Home() {
   let [recommendation, setRecommendation] = useState([]);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
 
   async function getAnimeListing(url, setState) {
     try {
       let response = await fetch(url, { mode: "cors" });
       let responseJson = await response.json();
       setState(responseJson.items);
-      setLoading(false);
+      setLoadingGeneric(false);
     } catch (error) {
       console.log(error);
     }
@@ -74,6 +76,8 @@ export default function Home() {
         }
       }
       console.log(data);
+      console.log(localUser);
+
       let response = await fetch(
         `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
         {
@@ -95,24 +99,11 @@ export default function Home() {
     }
   }
 
-  //   function addAcChoice(value) {
-  //     console.log(OptionsInfo);
-  //     console.log(value);
-  //     console.log(localUser);
-  //     for (let i = 0; i < OptionsInfo.length; i++) {
-  //       if (value[value.length - 1] === OptionsInfo[i].name) {
-  //         setLocalUser({
-  //           likes: [...localUser["likes"], OptionsInfo[i]],
-  //         });
-  //         console.log("at least it went through i guess");
-  //         console.log(i);
-  //       }
-  //     }
-  //   }
-
   useEffect(() => {
     recommendContent();
+  }, [user, localUser]);
 
+  useEffect(() => {
     //Get generic recommendations
     getAnimeListing(
       "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=5",
@@ -136,43 +127,28 @@ export default function Home() {
     );
   }, []);
 
+  useEffect(() => {
+    if (loading) {
+      // trigger a loading screen?
+      return;
+    }
+    if (user) {
+      PopulateFromFirestore(user, localUser, setLocalUser);
+      navigate("/home");
+    }
+  }, [user, loading]);
+
   return (
     <div className="App">
       <h1 className="appTitle">EdwardML</h1>
       <div className="gap" />
-      <div className="rowCenter">
-        {TitleAutocomplete()}
-        {/* <Autocomplete
-          multiple
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-            // console.log(value);
-            // addAcChoice(value);
-            // console.log(localUser);
-          }}
-          inputValue={inputValue}
-          onInputChange={(event, newInputValue) => {
-            setInputValue(newInputValue);
-          }}
-          forcePopupIcon={false}
-          filterSelectedOptions
-          disablePortal
-          options={options}
-          noOptionsText="Type a show/movie name for suggestions!"
-          loadingText="Loading..."
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Your Favorite Anime" />
-          )}
-        /> */}
-      </div>
+      <div className="rowCenter">{TitleAutocomplete()}</div>
       <h4>RECOMMENDED FOR YOU</h4>
       {loadingRecs ? <div id="loading"></div> : ""}
       <RecommendedList movies={recommendation} />
 
       <div className="gap" />
-      {loading ? <div id="loading"></div> : ""}
+      {loadingGeneric ? <div id="loading"></div> : ""}
       <h4>HIGHEST RATED</h4>
       <GenericList movies={animeHR} />
       <h4>MOST VIEWED</h4>

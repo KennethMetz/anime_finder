@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import heart from "../Styles/images/favorite_border_black_24dp.svg";
 import frown from "../Styles/images/sentiment_dissatisfied_black_24dp.svg";
@@ -9,9 +9,11 @@ import { auth, db } from "./Firebase";
 
 import { LocalUserContext } from "./LocalUserContext";
 import { SaveToFirestore } from "./Firestore";
+import { useNavigate } from "react-router-dom";
 
 export const RecommendedList = (props) => {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const navigate = useNavigate();
 
   const [user] = useAuthState(auth);
 
@@ -48,16 +50,24 @@ export const RecommendedList = (props) => {
             src={movie.image_large ? movie.image_large : movie.image_small}
             alt=""
           >
-            <div id="title">{movie.name}</div>
+            <div
+              id="title"
+              onClick={() => {
+                navigate("/detailedview", { state: movie });
+              }}
+            >
+              {movie.name}
+            </div>
             <img
               src={heart}
               alt=""
               className="overlaidIcon"
               id="heartIcon"
               onClick={(e) => {
-                let temp = localUser;
-                temp.likes.push(movie);
-                setLocalUser(temp);
+                setLocalUser({
+                  ...localUser,
+                  likes: [...localUser["likes"], movie],
+                });
                 console.log(localUser);
                 SaveToFirestore(user, localUser);
               }}
@@ -68,8 +78,6 @@ export const RecommendedList = (props) => {
               className="overlaidIcon"
               id="frownIcon"
               onClick={(e) => {
-                // let temp = localUser;
-                // temp.dislikes.push(movie);
                 setLocalUser({
                   ...localUser,
                   dislikes: [...localUser["dislikes"], movie],
@@ -78,7 +86,13 @@ export const RecommendedList = (props) => {
                 SaveToFirestore(user, localUser);
               }}
             ></img>
-            <div className="overlaidFill" id="gradientFill"></div>
+            <div
+              className="overlaidFill"
+              id="gradientFill"
+              onClick={() => {
+                navigate("/detailedview", { state: movie });
+              }}
+            ></div>
           </div>
         </Grid>
       ))}

@@ -1,5 +1,7 @@
+import "../Styles/DetailedView.css";
+
 import { useNavigate, useLocation } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Grid, ListItem, ListItemText } from "@mui/material";
 import { GenericList } from "./GenericList";
 import { RecommendedList } from "./RecommendedList";
@@ -10,11 +12,12 @@ import funimation from "../Styles/images/funimation.svg";
 import netflix from "../Styles/images/Netflix.png";
 import heart from "../Styles/images/favorite_border_black_24dp.svg";
 import frown from "../Styles/images/sentiment_dissatisfied_black_24dp.svg";
-import { SaveToFirestore } from "./Firestore";
+import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import "../Styles/App.css";
+import TitleAutocomplete from "./TitleAutocomplete";
+import { flushSync } from "react-dom";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -24,80 +27,90 @@ export default function DetailedView() {
   let [searchResults, setSearchResults] = useState(false);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
 
-  async function searchContent() {
-    try {
-      let response = await fetch(
-        `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/search?query=${search}`,
-        { mode: "cors" }
-      );
-      let responseJson = await response.json();
-      setSearchResults(responseJson.items);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return navigate("/login");
+  }, [user, loading]);
 
   return (
     <div className="jsxWrapper">
       <Container maxwidth="sm">
         <h1 className="appTitle">EdwardML</h1>
-        <Grid>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              console.log(search);
-            }}
-          ></input>
-        </Grid>
+        {TitleAutocomplete()}
+
         <br></br>
         <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <Box component="img" src={location.state.image_large} alt=""></Box>
-            <Box
-              src={heart}
-              alt=""
-              className="overlaidIcon"
-              id="heartIcon"
-              onClick={(e) => {
-                setLocalUser({
-                  ...localUser,
-                  likes: [...localUser["likes"], location.state],
-                });
-                console.log(localUser);
-                SaveToFirestore(user, localUser);
+          <Grid item xs={3} className="tileContainer">
+            <div
+              style={{
+                backgroundImage: "url(" + location.state.image_large + ")",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                height: "100%",
               }}
-            />
-            <Box
-              src={frown}
+              component="div"
+              className="tile"
+              src={location.state.image_large}
               alt=""
-              className="overlaidIcon"
-              id="frownIcon"
-              onClick={(e) => {
-                setLocalUser({
-                  ...localUser,
-                  dislikes: [...localUser["dislikes"], location.state],
-                });
-                console.log(localUser);
-                SaveToFirestore(user, localUser);
-              }}
-            />
-            <div className="overlaidFill" id="gradientFill"></div>
+            >
+              <Box
+                component="img"
+                src={heart}
+                alt=""
+                className="overlaidIcon"
+                id="heartIcon"
+                onClick={(e) => {
+                  setLocalUser({
+                    ...localUser,
+                    likes: [...localUser["likes"], location.state],
+                  });
+                  console.log(localUser);
+                  SaveToFirestore(user, localUser);
+                }}
+              />
+              <Box
+                component="img"
+                src={frown}
+                alt=""
+                className="overlaidIcon"
+                id="frownIcon"
+                onClick={(e) => {
+                  setLocalUser({
+                    ...localUser,
+                    dislikes: [...localUser["dislikes"], location.state],
+                  });
+                  console.log(localUser);
+                  SaveToFirestore(user, localUser);
+                }}
+              />
+              <div className="overlaidFill" id="gradientFill"></div>
+            </div>
           </Grid>
           <Grid item xs={9}>
             <ListItem>
-              <ListItemText primary={location.state.name} />
+              <ListItemText primary={location.state.name} secondary="Title" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="IN PROCESS - TV SERIES/MOVIE" />
+              <ListItemText
+                primary={location.state.format}
+                secondary="Format"
+              />
             </ListItem>
-            <ListItem>
-              <ListItemText primary="IN PROCESS - X EPISODES" />
-            </ListItem>
+            {location.state.episodes > 1 ? (
+              <ListItem>
+                <ListItemText
+                  primary={location.state.episodes}
+                  secondary="Length"
+                />
+              </ListItem>
+            ) : (
+              ""
+            )}
+
             <div style={{ display: "flex" }}>
+              <div>Streaming Services:</div>
               {location.state.urls.map((item, index) => (
                 <div style={{ textAlign: "left" }}>
                   {item.match(/crunchyroll/g) ? (

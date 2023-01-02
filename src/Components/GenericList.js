@@ -9,9 +9,11 @@ import { auth, db } from "./Firebase";
 
 import { LocalUserContext } from "./LocalUserContext";
 import { SaveToFirestore } from "./Firestore";
+import { useNavigate } from "react-router-dom";
 
 export const GenericList = (props) => {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const navigate = useNavigate();
 
   const [user] = useAuthState(auth);
 
@@ -50,7 +52,14 @@ export const GenericList = (props) => {
             src={movie.image_large ? movie.image_large : movie.image_small}
             alt=""
           >
-            <div id="title">{movie.name}</div>
+            <div
+              id="title"
+              onClick={() => {
+                navigate("/detailedview", { state: movie });
+              }}
+            >
+              {movie.name}
+            </div>
             <img
               src={heart}
               alt=""
@@ -79,7 +88,13 @@ export const GenericList = (props) => {
                 SaveToFirestore(user, localUser);
               }}
             ></img>
-            <div className="overlaidFill" id="gradientFill"></div>
+            <div
+              className="overlaidFill"
+              id="gradientFill"
+              onClick={() => {
+                navigate("/detailedview", { state: movie });
+              }}
+            ></div>
           </div>
         </Grid>
       ))}

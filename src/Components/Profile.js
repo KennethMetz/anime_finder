@@ -24,7 +24,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { SaveToFirestore } from "./Firestore";
+import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -32,9 +32,8 @@ export default function Profile() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
   const navigate = useNavigate();
-  let [searchResults, setSearchResults] = useState(false);
-  let [search, setSearch] = useState("");
 
+  //Firebase auth does not save user's name for email/password login. Making this function necessary.
   const fetchUserName = async () => {
     try {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid));
@@ -47,35 +46,15 @@ export default function Profile() {
     }
   };
 
-  async function searchContent() {
-    try {
-      let response = await fetch(
-        `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/search?query=${search}`,
-        { mode: "cors" }
-      );
-      let responseJson = await response.json();
-      setSearchResults(responseJson.items);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function sendToDetailedView(item) {
-    navigate("/detailedview", { state: item });
-  }
-
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
+    if (user) {
+      // PopulateFromFirestore(user, localUser, setLocalUser);
+      // navigate("/profile");
+    }
     fetchUserName();
   }, [user, loading]);
-
-  useEffect(() => {
-    searchContent();
-    console.log(localUser);
-  }, [search]);
-
-  useEffect(() => {}, []);
 
   return (
     <div className="profile">
@@ -90,14 +69,6 @@ export default function Profile() {
       <h3>YOUR LIKES:</h3>
       <list>
         {localUser["likes"].map((item, index) => (
-          // <div
-          //   key={index}
-          //   onClick={() => {
-          //     sendToDetailedView(item);
-          //   }}
-          // >
-          //   <li>{item.name}</li>
-          // </div>
           <ListItem
             key={index}
             secondaryAction={
@@ -163,26 +134,6 @@ export default function Profile() {
         ))}
       </list>
       <Divider />
-
-      {/* <div>SEARCH TO ADD YOUR FAVORITES TO YOUR PROFILE</div>
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          console.log(search);
-        }}
-      ></input>
-      <br></br>
-
-      {searchResults ? (
-        <div className="column">
-          <div>ANIME BASED ON YOUR SEARCH</div>
-          <GenericList movies={searchResults} />
-        </div>
-      ) : (
-        ""
-      )}*/}
     </div>
   );
 }

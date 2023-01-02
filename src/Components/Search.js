@@ -39,7 +39,7 @@ export default function Search() {
   useEffect(() => {
     searchContent();
     setLoading(false);
-  }, [search]);
+  }, [search, location.state]);
 
   return (
     <div className="jsxWrapper">
@@ -55,7 +55,7 @@ export default function Search() {
       ></input> */}
       <br></br>
 
-      {TitleAutocomplete(search)}
+      {TitleAutocomplete()}
 
       {/* <h4>{location.state.name}</h4> */}
       {loading ? <div id="loading"></div> : ""}
