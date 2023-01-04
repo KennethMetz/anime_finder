@@ -9,8 +9,6 @@ export default function RecommendContent(input) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   let [loadingRecs, setLoadingRecs] = useState(true);
 
-  console.log(input.movies.id);
-
   async function getContent(input) {
     try {
       let data = {
@@ -33,7 +31,7 @@ export default function RecommendContent(input) {
           });
         }
       }
-      console.log(data);
+      // console.log(data);
       let response = await fetch(
         `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
         {
@@ -59,7 +57,7 @@ export default function RecommendContent(input) {
   }, [input]);
 
   useEffect(() => {
-    console.log(recommendation);
+    // console.log(recommendation);
   }, [recommendation]);
 
   return (

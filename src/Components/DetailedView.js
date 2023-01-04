@@ -23,9 +23,6 @@ export default function DetailedView() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  let [search, setSearch] = useState();
-  let [searchResults, setSearchResults] = useState(false);
-
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user, loading, error] = useAuthState(auth);
 
@@ -112,7 +109,7 @@ export default function DetailedView() {
             <div style={{ display: "flex" }}>
               <div>Streaming Services:</div>
               {location.state.urls.map((item, index) => (
-                <div style={{ textAlign: "left" }}>
+                <div key={index} style={{ textAlign: "left" }}>
                   {item.match(/crunchyroll/g) ? (
                     <Box component="a" href={item}>
                       <Box

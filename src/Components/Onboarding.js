@@ -9,6 +9,9 @@ import { OnboardingList } from "./OnboardingList";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
+import { Container } from "@mui/material";
+
+import { SaveToFirestore } from "./Firestore";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -45,31 +48,39 @@ export default function Onboarding() {
 
   return (
     <div className="App">
-      <h1 className="appTitle">EdwardML</h1>
-      <div className="gap" />
-      <h3 className="greeting">Let's Get Started!!</h3>
-      <h4 className="intro">
-        Begin by selecting at least three programs you enjoy or are interested
-        in (don't worry, you can change these later!)
-      </h4>
-      {loading ? <div id="loading"></div> : ""}
+      <Container maxwidth="sm">
+        <h1 className="appTitle">EdwardML</h1>
+        <div className="gap" />
+        <h3 className="greeting">Let's Get Started!!</h3>
+        <h4 className="intro">
+          Begin by selecting at least three programs you enjoy or are interested
+          in (don't worry, you can change these later!)
+        </h4>
+        {loading ? <div id="loading"></div> : ""}
 
-      <OnboardingList movies={animeMR} />
-      <hr></hr>
-      <hr></hr>
-      <hr></hr>
-      <hr></hr>
-      <hr></hr>
-      <li>
-        {" "}
-        {localUser["likes"].length < 3 ? (
-          <h3>Please Select (3) Titles From Above</h3>
-        ) : (
-          <Link to="/home">
-            <button>LET'S GO!</button>
-          </Link>
-        )}
-      </li>
+        <OnboardingList movies={animeMR} />
+        <hr></hr>
+        <hr></hr>
+        <hr></hr>
+        <hr></hr>
+        <hr></hr>
+        <li>
+          {" "}
+          {localUser["likes"] && localUser["likes"].length < 3 ? (
+            <h3>Please Select (3) Titles From Above</h3>
+          ) : (
+            <Link to="/home">
+              <button
+                onClick={(e) => {
+                  SaveToFirestore(user, localUser);
+                }}
+              >
+                LET'S GO!
+              </button>
+            </Link>
+          )}
+        </li>
+      </Container>
     </div>
   );
 }

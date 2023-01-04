@@ -1,9 +1,11 @@
 import "../Styles/Search.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { GenericList } from "./GenericList";
 import {
   Avatar,
+  Box,
+  Divider,
   IconButton,
   List,
   ListItem,
@@ -14,14 +16,25 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "@mui/material";
 import TitleAutocomplete from "./TitleAutocomplete";
+import { Container } from "@mui/system";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Firebase";
+import { PopulateFromFirestore } from "./Firestore";
+import { LocalUserContext } from "./LocalUserContext";
 
 export default function Search() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  let [loading, setLoading] = useState(true);
+  const [user, loading] = useAuthState(auth);
+
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  let [loadingSR, setLoadingSR] = useState(true);
   let [search, setSearch] = useState(location.state);
   let [searchResults, setSearchResults] = useState(false);
+
+  console.log(location.state);
+  console.log(search);
 
   async function searchContent() {
     try {
@@ -37,33 +50,36 @@ export default function Search() {
   }
 
   useEffect(() => {
+    console.log(location);
+    console.log(search);
+    setSearch(location.state);
     searchContent();
-    setLoading(false);
-  }, [search, location.state]);
+    setLoadingSR(false);
+  }, [search, location]);
+
+  useEffect(() => {
+    if (loading) {
+      // trigger a loading screen?
+      return;
+    }
+    if (user) {
+      PopulateFromFirestore(user, localUser, setLocalUser);
+    }
+  }, [user, loading]);
 
   return (
     <div className="jsxWrapper">
-      <h1 className="appTitle">EdwardML</h1>
+      <Container maxwidth="sm">
+        <h1 className="appTitle">EdwardML</h1>
 
-      {/* <input
-        type="text"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          console.log(search);
-        }}
-      ></input> */}
-      <br></br>
+        {TitleAutocomplete(search)}
 
-      {TitleAutocomplete()}
+        {loadingSR ? <div id="loading"></div> : ""}
 
-      {/* <h4>{location.state.name}</h4> */}
-      {loading ? <div id="loading"></div> : ""}
+        {searchResults[0] ? (
+          <div className="column">
+            {/* <div>SEARCH RESULTS BASED ON: "{search}" </div> */}
 
-      {searchResults ? (
-        <div className="column">
-          <div>ANIME BASED ON YOUR SEARCH</div>
-          <List>
             {searchResults.map((item, index) => (
               <ListItemButton
                 onClick={() => {
@@ -77,11 +93,13 @@ export default function Search() {
                 <ListItemText primary={item.name} />
               </ListItemButton>
             ))}
-          </List>
-        </div>
-      ) : (
-        ""
-      )}
+          </div>
+        ) : (
+          <Box>
+            There were (0) matching results for the search term: "{search}"
+          </Box>
+        )}
+      </Container>
     </div>
   );
 }

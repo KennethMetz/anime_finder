@@ -16,8 +16,10 @@ import { GenericList } from "./GenericList";
 import { LocalUserContext } from "./LocalUserContext";
 import {
   Avatar,
+  Container,
   Divider,
   IconButton,
+  List,
   ListItem,
   ListItemAvatar,
   ListItemButton,
@@ -48,92 +50,99 @@ export default function Profile() {
 
   useEffect(() => {
     if (loading) return;
+    if (user) PopulateFromFirestore(user, localUser, setLocalUser);
     if (!user) return navigate("/login");
-    if (user) {
-      // PopulateFromFirestore(user, localUser, setLocalUser);
-      // navigate("/profile");
-    }
     fetchUserName();
   }, [user, loading]);
 
   return (
     <div className="profile">
-      <h1 className="appTitle">EdwardML</h1>
-      {TitleAutocomplete()}
-      <div className="profile__container">
-        <h3>THE PROFILE OF</h3>
-        <h4>{name}</h4>
-      </div>
-      <br></br>
+      <Container maxwidth="sm">
+        <h1 className="appTitle">EdwardML</h1>
+        {TitleAutocomplete()}
+        <div className="profile__container">
+          <h3>THE PROFILE OF</h3>
+          <h4>{name}</h4>
+        </div>
+        <br></br>
 
-      <h3>YOUR LIKES:</h3>
-      <list>
-        {localUser["likes"].map((item, index) => (
-          <ListItem
-            key={index}
-            secondaryAction={
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => {
-                  localUser["likes"].splice(index, 1);
-                  setLocalUser({ ...localUser });
-                  SaveToFirestore(user, localUser);
-                }}
+        <h3>YOUR LIKES:</h3>
+        {localUser && localUser["likes"] ? (
+          <List>
+            {localUser["likes"].map((item, index) => (
+              <ListItem
+                key={index}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      localUser["likes"].splice(index, 1);
+                      setLocalUser({ ...localUser });
+                      SaveToFirestore(user, localUser);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
               >
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemButton
-              onClick={() => {
-                navigate("/detailedview", { state: item });
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar alt={item.name} src={item.image_large}></Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={item.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </list>
+                <ListItemButton
+                  onClick={() => {
+                    navigate("/detailedview", { state: item });
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar alt={item.name} src={item.image_large}></Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          ""
+        )}
 
-      <Divider />
-      <list>
+        <Divider />
         <h3>YOUR DISLIKES:</h3>
-        {localUser["dislikes"].map((item, index) => (
-          // <li key={index}>{item.name}</li>
-          <ListItem
-            key={index}
-            secondaryAction={
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => {
-                  localUser["dislikes"].splice(index, 1);
-                  setLocalUser({ ...localUser });
-                  SaveToFirestore(user, localUser);
-                }}
+        {localUser && localUser["dislikes"] ? (
+          <List>
+            {localUser["dislikes"].map((item, index) => (
+              // <li key={index}>{item.name}</li>
+              <ListItem
+                key={index}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      localUser["dislikes"].splice(index, 1);
+                      setLocalUser({ ...localUser });
+                      SaveToFirestore(user, localUser);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
               >
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemButton
-              onClick={() => {
-                navigate("/detailedview", { state: item });
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar alt={item.name} src={item.image_large}></Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={item.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </list>
-      <Divider />
+                <ListItemButton
+                  onClick={() => {
+                    navigate("/detailedview", { state: item });
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar alt={item.name} src={item.image_large}></Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          ""
+        )}
+        <Divider />
+      </Container>
     </div>
   );
 }

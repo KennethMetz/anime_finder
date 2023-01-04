@@ -1,6 +1,13 @@
 import "../Styles/App.css";
 
-import { Autocomplete, TextField, Grid, Box } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Grid,
+  Box,
+  Container,
+  TableContainer,
+} from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -28,13 +35,6 @@ export default function Home() {
 
   let [loadingGeneric, setLoadingGeneric] = useState(true);
   let [loadingRecs, setLoadingRecs] = useState(true);
-  let [search, setSearch] = useState("");
-  let [searchResults, setSearchResults] = useState(false);
-  let [basis, setBasis] = useState("");
-  let [value, setValue] = useState([]);
-  let [inputValue, setInputValue] = useState("");
-  let [options, setOptions] = useState([]);
-  let [optionsInfo, setOptionsInfo] = useState([]);
 
   let [recommendation, setRecommendation] = useState([]);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -75,8 +75,8 @@ export default function Home() {
           });
         }
       }
-      console.log(data);
-      console.log(localUser);
+      // console.log(data);
+      // console.log(localUser);
 
       let response = await fetch(
         `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
@@ -134,31 +134,38 @@ export default function Home() {
     }
     if (user) {
       PopulateFromFirestore(user, localUser, setLocalUser);
+      console.log(localUser);
       navigate("/home");
     }
   }, [user, loading]);
 
   return (
     <div className="App">
-      <h1 className="appTitle">EdwardML</h1>
-      <div className="gap" />
-      <div className="rowCenter">{TitleAutocomplete()}</div>
-      <h4>RECOMMENDED FOR YOU</h4>
-      {loadingRecs ? <div id="loading"></div> : ""}
-      <RecommendedList movies={recommendation} />
+      <Container maxwidth="sm">
+        <h1 className="appTitle">EdwardML</h1>
+        <div className="gap" />
+        <div className="rowCenter">{TitleAutocomplete()}</div>
+        {localUser && localUser["likes"] ? (
+          <h4>RECOMMENDED FOR YOU</h4>
+        ) : (
+          <h4>Like a show below to receive personalized recommendations!</h4>
+        )}
+        {loadingRecs ? <div id="loading"></div> : ""}
+        <RecommendedList movies={recommendation} />
 
-      <div className="gap" />
-      {loadingGeneric ? <div id="loading"></div> : ""}
-      <h4>HIGHEST RATED</h4>
-      <GenericList movies={animeHR} />
-      <h4>MOST VIEWED</h4>
-      <GenericList movies={animeMC} />
-      <h4>MOST POPULAR</h4>
-      <GenericList movies={animeMR} />
-      <h4>HYPE BEASTS</h4>
-      <GenericList movies={animeMPTW} />
-      <h4>MOST OBSCURE</h4>
-      <GenericList movies={animeMH} />
+        <div className="gap" />
+        {loadingGeneric ? <div id="loading"></div> : ""}
+        <h4>HIGHEST RATED</h4>
+        <GenericList movies={animeHR} />
+        <h4>MOST VIEWED</h4>
+        <GenericList movies={animeMC} />
+        <h4>MOST POPULAR</h4>
+        <GenericList movies={animeMR} />
+        <h4>HYPE BEASTS</h4>
+        <GenericList movies={animeMPTW} />
+        <h4>MOST OBSCURE</h4>
+        <GenericList movies={animeMH} />
+      </Container>
     </div>
   );
 }

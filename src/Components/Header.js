@@ -13,10 +13,6 @@ function Header() {
 
   const [user] = useAuthState(auth);
 
-  useEffect(() => {
-    console.log(localUser);
-  }, [localUser]);
-
   return (
     <div className="header">
       <div className="logo">
@@ -26,12 +22,6 @@ function Header() {
         <Link to="/">
           <li>HOME</li>
         </Link>
-
-        {/* {user ? (
-          <Link to="Dashboard">
-            <li>MY DASHBOARD</li>
-          </Link>
-        ) : null} */}
 
         {user ? (
           <Link to="Profile">
