@@ -59,12 +59,13 @@ export default function DetailedView() {
                 className="overlaidIcon"
                 id="heartIcon"
                 onClick={(e) => {
-                  setLocalUser({
+                  let temp = {
                     ...localUser,
                     likes: [...localUser["likes"], location.state],
-                  });
+                  };
+                  setLocalUser(temp);
                   console.log(localUser);
-                  SaveToFirestore(user, localUser);
+                  SaveToFirestore(user, temp);
                 }}
               />
               <Box
@@ -74,12 +75,13 @@ export default function DetailedView() {
                 className="overlaidIcon"
                 id="frownIcon"
                 onClick={(e) => {
-                  setLocalUser({
+                  let temp = {
                     ...localUser,
                     dislikes: [...localUser["dislikes"], location.state],
-                  });
+                  };
+                  setLocalUser(temp);
                   console.log(localUser);
-                  SaveToFirestore(user, localUser);
+                  SaveToFirestore(user, temp);
                 }}
               />
               <div className="overlaidFill" id="gradientFill"></div>

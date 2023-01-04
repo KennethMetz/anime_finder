@@ -64,12 +64,13 @@ export const RecommendedList = (props) => {
               className="overlaidIcon"
               id="heartIcon"
               onClick={(e) => {
-                setLocalUser({
+                let temp = {
                   ...localUser,
                   likes: [...localUser["likes"], movie],
-                });
+                };
+                setLocalUser(temp);
                 console.log(localUser);
-                SaveToFirestore(user, localUser);
+                SaveToFirestore(user, temp);
               }}
             ></img>
             <img
@@ -78,12 +79,13 @@ export const RecommendedList = (props) => {
               className="overlaidIcon"
               id="frownIcon"
               onClick={(e) => {
-                setLocalUser({
+                let temp = {
                   ...localUser,
                   dislikes: [...localUser["dislikes"], movie],
-                });
+                };
+                setLocalUser(temp);
                 console.log(localUser);
-                SaveToFirestore(user, localUser);
+                SaveToFirestore(user, temp);
               }}
             ></img>
             <div

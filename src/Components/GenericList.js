@@ -10,6 +10,7 @@ import { auth, db } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { SaveToFirestore } from "./Firestore";
 import { useNavigate } from "react-router-dom";
+import { flushSync } from "react-dom";
 
 export const GenericList = (props) => {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -66,14 +67,13 @@ export const GenericList = (props) => {
               className="overlaidIcon"
               id="heartIcon"
               onClick={(e) => {
-                console.log(localUser);
-
-                setLocalUser({
+                let temp = {
                   ...localUser,
                   likes: [...localUser["likes"], movie],
-                });
+                };
+                setLocalUser(temp);
                 console.log(localUser);
-                SaveToFirestore(user, localUser);
+                SaveToFirestore(user, temp);
               }}
             ></img>
             <img
@@ -82,12 +82,13 @@ export const GenericList = (props) => {
               className="overlaidIcon"
               id="frownIcon"
               onClick={(e) => {
-                setLocalUser({
+                let temp = {
                   ...localUser,
                   dislikes: [...localUser["dislikes"], movie],
-                });
+                };
+                setLocalUser(temp);
                 console.log(localUser);
-                SaveToFirestore(user, localUser);
+                SaveToFirestore(user, temp);
               }}
             ></img>
             <div
