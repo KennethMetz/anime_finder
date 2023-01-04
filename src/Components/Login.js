@@ -12,7 +12,7 @@ import { getAuth, signInWithRedirect } from "firebase/auth";
 import { TwitterAuthProvider } from "firebase/auth";
 
 import "../Styles/Login.css";
-import { PopulateFromFirestore } from "./Firestore";
+import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 
 import { LocalUserContext } from "./LocalUserContext";
 
@@ -29,6 +29,7 @@ export default function Login() {
       return;
     }
     if (user) {
+      SaveToFirestore(user, localUser);
       PopulateFromFirestore(user, localUser, setLocalUser);
       navigate("/home");
     }

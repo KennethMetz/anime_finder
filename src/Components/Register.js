@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -8,6 +8,8 @@ import {
   signInWithTwitter,
 } from "./Firebase";
 import "../Styles/Register.css";
+import { SaveToFirestore } from "./Firestore";
+import { LocalUserContext } from "./LocalUserContext";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -15,13 +17,18 @@ export default function Register() {
   const [name, setName] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
+
   const register = () => {
     if (!name) alert("Please enter name");
     registerWithEmailAndPassword(name, email, password);
   };
   useEffect(() => {
     if (loading) return;
-    if (user) navigate("/dashboard");
+    if (user) {
+      SaveToFirestore(user, localUser);
+      navigate("/home");
+    }
   }, [user, loading]);
   return (
     <div className="register">
