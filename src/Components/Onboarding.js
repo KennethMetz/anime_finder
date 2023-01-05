@@ -43,7 +43,6 @@ export default function Onboarding() {
       setAnimeMR
     );
     console.log(localUser);
-    console.log(localUser["likes"].length);
   }, [user, loading, localUser]);
 
   return (

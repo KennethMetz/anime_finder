@@ -67,6 +67,7 @@ export const GenericList = (props) => {
               className="overlaidIcon"
               id="heartIcon"
               onClick={(e) => {
+                console.log(localUser);
                 let temp = {
                   ...localUser,
                   likes: [...localUser["likes"], movie],
