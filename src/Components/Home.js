@@ -32,6 +32,7 @@ export default function Home() {
   let [animeMC, setAnimeMC] = useState([]); //most completed
   let [animeMPTW, setAnimeMPTW] = useState([]); //most planned to watch
   let [animeMH, setAnimeMH] = useState([]); //lowest rated
+  let [animeRandom, setAnimeRandom] = useState([]); //randomized
 
   let [loadingGeneric, setLoadingGeneric] = useState(true);
   let [loadingRecs, setLoadingRecs] = useState(true);
@@ -42,6 +43,9 @@ export default function Home() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
+  let randomPage = [];
+  let randomItem = [];
+
   async function getAnimeListing(url, setState) {
     try {
       let response = await fetch(url, { mode: "cors" });
@@ -51,6 +55,29 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function getRandomAnimeListing(url, animeRandom, setAnimeRandom) {
+    let tempItem = [];
+    // let k = 0;
+    for (let k = 0; k < 5; k++) {
+      try {
+        let response = await fetch(`${url}page=${randomPage[k]}`, {
+          mode: "cors",
+        });
+        let responseJson = await response.json();
+        console.assert(
+          responseJson.items.length === 10,
+          "LIST IS LESS THAN 10"
+        );
+        tempItem = [...tempItem, responseJson.items[randomItem[k]]];
+
+        setLoadingGeneric(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setAnimeRandom(tempItem);
   }
 
   async function recommendContent() {
@@ -99,6 +126,13 @@ export default function Home() {
     }
   }
 
+  function getRandomNumbers() {
+    for (let i = 0; i < 5; i++) {
+      randomPage[i] = Math.floor(Math.random() * 250 + 1);
+      randomItem[i] = Math.floor(Math.random() * 10);
+    }
+  }
+
   useEffect(() => {
     recommendContent();
   }, [user, localUser]);
@@ -124,6 +158,14 @@ export default function Home() {
     getAnimeListing(
       "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=5&page=504",
       setAnimeMH
+    );
+
+    getRandomNumbers();
+
+    getRandomAnimeListing(
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?`,
+      animeRandom,
+      setAnimeRandom
     );
   }, []);
 
@@ -166,6 +208,8 @@ export default function Home() {
         <GenericList movies={animeMPTW} />
         <h4>MOST OBSCURE</h4>
         <GenericList movies={animeMH} />
+        <h4>RANDOM TITLES</h4>
+        <GenericList movies={animeRandom} />
       </Container>
     </div>
   );
