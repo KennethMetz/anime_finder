@@ -11,7 +11,7 @@ export default function TitleAutocomplete(search) {
   let location = useLocation();
 
   let [value, setValue] = useState();
-  let [inputValue, setInputValue] = useState(search);
+  let [inputValue, setInputValue] = useState(search ?? "");
 
   let [options, setOptions] = useState([]);
   let [loading, setLoading] = useState(false);
