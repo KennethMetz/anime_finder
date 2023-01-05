@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ce39422e.css",
-    "main.js": "/static/js/main.fb6011f4.js",
+    "main.js": "/static/js/main.fbceb590.js",
     "static/media/Netflix.png": "/static/media/Netflix.29a09085bf0619703051.png",
     "static/media/edward.jpg": "/static/media/edward.795cd3ce60286399154c.jpg",
     "static/media/crunchyroll.webp": "/static/media/crunchyroll.baca70617c3b1a8f7230.webp",
@@ -11,10 +11,10 @@
     "static/media/sentiment_dissatisfied_black_24dp.svg": "/static/media/sentiment_dissatisfied_black_24dp.9cad9f6786fb5e4600bd27c30a0db4b8.svg",
     "static/media/cancel_black_24dp.svg": "/static/media/cancel_black_24dp.f4921acda7402550d70e1e7b2408a500.svg",
     "main.ce39422e.css.map": "/static/css/main.ce39422e.css.map",
-    "main.fb6011f4.js.map": "/static/js/main.fb6011f4.js.map"
+    "main.fbceb590.js.map": "/static/js/main.fbceb590.js.map"
   },
   "entrypoints": [
     "static/css/main.ce39422e.css",
-    "static/js/main.fb6011f4.js"
+    "static/js/main.fbceb590.js"
   ]
 }
