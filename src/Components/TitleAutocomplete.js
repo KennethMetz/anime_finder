@@ -16,16 +16,15 @@ export default function TitleAutocomplete(search) {
   let [options, setOptions] = useState([]);
   let [loading, setLoading] = useState(false);
 
-  let focusElement = useRef();
+  let focusElement = useRef(null);
 
   function onSubmit(e, input) {
     if (e.keyCode === 13) {
-      if (location["pathname"] !== "/search") {
-        navigate("/search", { state: input });
-      } else {
-        navigate("/search", { state: input });
-        focusElement.current.focus();
+      if (location["pathname"] === "/search") {
+        focusElement.current.focus(); //removes focus, so the options list will close
+        focusElement.current.blur(); //removes focus, so the options list will close
       }
+      navigate("/search", { state: input });
     }
   }
 
@@ -38,7 +37,7 @@ export default function TitleAutocomplete(search) {
       } else setOptions(await APISearch(inputValue));
     })();
   }, [inputValue]);
-
+  console.log(options);
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Autocomplete
@@ -73,18 +72,17 @@ export default function TitleAutocomplete(search) {
             label="Your Favorite Anime"
           />
         )}
+      ></Autocomplete>
+      <IconButton
+        onClick={(e, params) => {
+          onSubmit(e, params["inputProps"]["value"]);
+        }}
+        aria-label="search"
+        size="large"
+        ref={focusElement}
       >
-        <IconButton
-          ref={focusElement}
-          onClick={(e, params) => {
-            onSubmit(e, params["inputProps"]["value"]);
-          }}
-          aria-label="search"
-          size="large"
-        >
-          <SearchIcon />
-        </IconButton>
-      </Autocomplete>
+        <SearchIcon />
+      </IconButton>
     </div>
   );
 }
