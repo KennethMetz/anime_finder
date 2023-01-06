@@ -10,7 +10,7 @@ export default function TitleAutocomplete(search) {
   const navigate = useNavigate();
   let location = useLocation();
 
-  let [value, setValue] = useState();
+  let [value, setValue] = useState(null);
   let [inputValue, setInputValue] = useState(search ?? "");
 
   let [options, setOptions] = useState([]);
@@ -45,7 +45,8 @@ export default function TitleAutocomplete(search) {
         value={value}
         onChange={(event, newValue) => {
           if (newValue !== null) {
-            setValue(newValue);
+            // setValue(newValue);
+            setInputValue("");
             navigate("/detailedview", { state: newValue });
           }
         }}
