@@ -53,6 +53,7 @@ export default function Profile() {
     if (user) PopulateFromFirestore(user, localUser, setLocalUser);
     if (!user) return navigate("/login");
     fetchUserName();
+    console.log(localUser);
   }, [user, loading]);
 
   return (
@@ -92,9 +93,12 @@ export default function Profile() {
                   }}
                 >
                   <ListItemAvatar>
-                    <Avatar alt={item.name} src={item.image_large}></Avatar>
+                    <Avatar
+                      alt={item.display_name}
+                      src={item.image_large}
+                    ></Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={item.name} />
+                  <ListItemText primary={item.display_name} />
                 </ListItemButton>
               </ListItem>
             ))}

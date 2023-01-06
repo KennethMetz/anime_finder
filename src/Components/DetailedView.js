@@ -89,7 +89,10 @@ export default function DetailedView() {
           </Grid>
           <Grid item xs={9}>
             <ListItem>
-              <ListItemText primary={location.state.name} secondary="Title" />
+              <ListItemText
+                primary={location.state.display_name}
+                secondary="Title"
+              />
             </ListItem>
             <ListItem>
               <ListItemText

@@ -56,7 +56,7 @@ export const RecommendedList = (props) => {
                 navigate("/detailedview", { state: movie });
               }}
             >
-              {movie.name}
+              {movie.display_name}
             </div>
             <img
               src={heart}

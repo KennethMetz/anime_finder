@@ -88,9 +88,12 @@ export default function Search() {
                 key={index}
               >
                 <ListItemAvatar>
-                  <Avatar alt={item.name} src={item.image_large}></Avatar>
+                  <Avatar
+                    alt={item.display_name}
+                    src={item.image_large}
+                  ></Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={item.name} />
+                <ListItemText primary={item.display_name} />
               </ListItemButton>
             ))}
           </div>

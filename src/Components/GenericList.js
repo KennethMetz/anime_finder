@@ -58,7 +58,7 @@ export const GenericList = (props) => {
                 navigate("/detailedview", { state: movie });
               }}
             >
-              {movie.name}
+              {movie.display_name}
             </div>
             <img
               src={heart}

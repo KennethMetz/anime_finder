@@ -45,7 +45,6 @@ export default function TitleAutocomplete(search) {
         value={value}
         onChange={(event, newValue) => {
           if (newValue !== null) {
-            // setValue(newValue);
             setInputValue("");
             navigate("/detailedview", { state: newValue });
           }
@@ -60,7 +59,7 @@ export default function TitleAutocomplete(search) {
         handleHomeEndKeys={true}
         openOnFocus={true}
         clearOnBlur={false}
-        getOptionLabel={(option) => option.name || ""}
+        getOptionLabel={(option) => option.display_name || ""}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         loading={loading}
         loadingText="Enter anime title (ie. Naruto)"
