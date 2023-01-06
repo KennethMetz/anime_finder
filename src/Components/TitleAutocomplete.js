@@ -18,8 +18,8 @@ export default function TitleAutocomplete(search) {
 
   let focusElement = useRef(null);
 
-  function onSubmit(e, input) {
-    if (e.keyCode === 13) {
+  function onSubmit(key, input) {
+    if (key === "Enter") {
       if (location["pathname"] === "/search") {
         focusElement.current.focus(); //removes focus, so the options list will close
         focusElement.current.blur(); //removes focus, so the options list will close
@@ -37,7 +37,6 @@ export default function TitleAutocomplete(search) {
       } else setOptions(await APISearch(inputValue));
     })();
   }, [inputValue]);
-  console.log(options);
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Autocomplete
@@ -67,15 +66,17 @@ export default function TitleAutocomplete(search) {
           <TextField
             {...params}
             onKeyDown={(e) => {
-              onSubmit(e, params["inputProps"]["value"]);
+              onSubmit(e.key, params["inputProps"]["value"]);
+              console.log(e);
             }}
             label="Your Favorite Anime"
           />
         )}
       ></Autocomplete>
       <IconButton
-        onClick={(e, params) => {
-          onSubmit(e, params["inputProps"]["value"]);
+        onClick={(e) => {
+          console.log(inputValue);
+          onSubmit("Enter", inputValue);
         }}
         aria-label="search"
         size="large"
