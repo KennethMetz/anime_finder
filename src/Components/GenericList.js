@@ -50,7 +50,6 @@ export const GenericList = (props) => {
             }}
             component="div"
             className="tile"
-            src={movie.image_large ? movie.image_large : movie.image_small}
             alt=""
           >
             <div
