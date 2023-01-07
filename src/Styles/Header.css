@@ -1,33 +1,43 @@
 /* HEADER STYLING */
 
+@font-face {
+  font-family: montserrat;
+  src: url(./Montserrat-Bold.ttf);
+}
+@font-face {
+  font-family: inter;
+  src: url(./Inter-VariableFont_slnt.ttf);
+}
 .header {
-  display: grid;
-  grid-template-columns: 30% 70%;
+  /* display: grid;
+  grid-template-columns: 30% 70%; */
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.473);
-  height: 75px;
+  background-color: rgb(255, 255, 255);
   position: sticky;
   top: 0px;
+  z-index: 1;
 }
-
-li,
 .logo {
-  list-style: none;
-  color: black;
+  display: flex;
+  align-items: center;
+}
+/* Removes underline from <Link> components */
+a:-webkit-any-link {
   text-decoration: none;
+  color: black;
 }
-.logo img {
-  height: 60px;
-  border-radius: 100px;
-  margin-left: 20px;
+.appName {
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-family: "montserrat";
 }
-
-.header ul {
+.blackAppName {
+  color: black;
+}
+.redAppName {
+  color: #ea2727;
+}
+.flexRow {
   display: flex;
   justify-content: space-evenly;
-}
-
-.css-i4bv87-MuiSvgIcon-root {
-  width: 50px;
-  height: 50px;
 }

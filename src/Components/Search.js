@@ -50,8 +50,6 @@ export default function Search() {
   }
 
   useEffect(() => {
-    console.log(location);
-    console.log(search);
     setSearch(location.state);
     searchContent();
     setLoadingSR(false);
@@ -70,9 +68,7 @@ export default function Search() {
   return (
     <div className="jsxWrapper">
       <Container maxwidth="sm">
-        <h1 className="appTitle">EdwardML</h1>
-
-        {TitleAutocomplete(search)}
+        <div className="gap" />
 
         {loadingSR ? <div id="loading"></div> : ""}
 

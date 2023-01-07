@@ -33,10 +33,8 @@ export default function DetailedView() {
 
   return (
     <div className="jsxWrapper">
+      <div className="gap" />
       <Container maxwidth="sm">
-        <h1 className="appTitle">EdwardML</h1>
-        {TitleAutocomplete()}
-
         <br></br>
         <Grid container spacing={3}>
           <Grid item xs={3} className="tileContainer">

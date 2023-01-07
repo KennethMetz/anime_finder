@@ -185,9 +185,8 @@ export default function Home() {
   return (
     <div className="App">
       <Container maxwidth="sm">
-        <h1 className="appTitle">EdwardML</h1>
         <div className="gap" />
-        <div className="rowCenter">{TitleAutocomplete()}</div>
+
         {localUser && localUser["likes"] ? (
           <h4>RECOMMENDED FOR YOU</h4>
         ) : (

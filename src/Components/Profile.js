@@ -59,8 +59,7 @@ export default function Profile() {
   return (
     <div className="profile">
       <Container maxwidth="sm">
-        <h1 className="appTitle">EdwardML</h1>
-        {TitleAutocomplete()}
+        <div className="gap" />
         <div className="profile__container">
           <h3>THE PROFILE OF</h3>
           <h4>{name}</h4>
