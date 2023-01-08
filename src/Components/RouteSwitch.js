@@ -12,6 +12,7 @@ import Home from "./Home";
 import DetailedView from "./DetailedView";
 import Search from "./Search";
 import Logout from "./Logout";
+import Sandbox from "./Sandbox";
 
 const RouteSwitch = () => {
   return (
@@ -30,6 +31,7 @@ const RouteSwitch = () => {
             <Route path="/search" element={<Search />} />
             <Route path="/detailedview" element={<DetailedView />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/sandbox" element={<Sandbox />} />
           </Routes>
         </LocalUserProvider>
       </BrowserRouter>
