@@ -13,8 +13,8 @@ export default function useLikeActions() {
 
   return {
     toggleLike: (anime) => {
-      let newLikes = toggle(likes, anime);
-      let newDislikes = remove(dislikes, anime);
+      const newLikes = toggle(likes, anime);
+      const newDislikes = remove(dislikes, anime);
 
       const newLocalUser = {
         ...localUser,
@@ -26,8 +26,8 @@ export default function useLikeActions() {
       SaveToFirestore(user, newLocalUser);
     },
     toggleDislike: (anime) => {
-      let newLikes = remove(likes, anime);
-      let newDislikes = toggle(dislikes, anime);
+      const newLikes = remove(likes, anime);
+      const newDislikes = toggle(dislikes, anime);
 
       const newLocalUser = {
         ...localUser,
@@ -52,9 +52,5 @@ function toggle(list, anime) {
 
 // Removes an `anime` from `list` if it is present. Always returns a new list.
 function remove(list, anime) {
-  if (list.find((x) => x.id === anime.id)) {
-    return list.filter((x) => x.id !== anime.id);
-  } else {
-    return [...list];
-  }
+  return list.filter((x) => x.id !== anime.id);
 }
