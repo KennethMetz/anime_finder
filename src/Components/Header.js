@@ -1,7 +1,14 @@
 import "../Styles/Header.css";
 
 import { Link } from "react-router-dom";
-import { Container, Grid, Icon, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  Icon,
+  ListItemSecondaryAction,
+  Typography,
+} from "@mui/material";
 import logo from "../Styles/images/logo.svg";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "./Firebase";
@@ -9,13 +16,16 @@ import { signOut } from "firebase/auth";
 import { useContext, useEffect } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import TitleAutocomplete from "./TitleAutocomplete";
-import { UserCircle, List } from "phosphor-react";
+import { UserCircle, List, Palette } from "phosphor-react";
 import DropMenu from "./DropMenu";
+import { useTheme } from "@mui/material/styles";
 
 function Header() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const [user] = useAuthState(auth);
+
+  const theme = useTheme();
 
   useEffect(() => {}, [user]);
 
@@ -35,11 +45,12 @@ function Header() {
               <div className="logo">
                 <img src={logo} alt="" />
                 <div className="appName" style={{ padding: "10px" }}>
-                  <span className="blackAppName">Edward</span>
-                  <span className="redAppName">ML</span>
+                  <span style={{ color: theme.palette.day.text }}>Edward</span>
+                  <span style={{ color: theme.palette.day.primary }}>ML</span>
                 </div>
               </div>
             </Link>
+            <div></div>
           </Grid>
           <Grid item xs={8}>
             {TitleAutocomplete()}

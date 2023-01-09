@@ -13,10 +13,12 @@ import DetailedView from "./DetailedView";
 import Search from "./Search";
 import Logout from "./Logout";
 import Sandbox from "./Sandbox";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 
 const RouteSwitch = () => {
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
         <LocalUserProvider>
           <Header />
@@ -35,7 +37,7 @@ const RouteSwitch = () => {
           </Routes>
         </LocalUserProvider>
       </BrowserRouter>
-    </div>
+    </ThemeProvider>
   );
 };
 export default RouteSwitch;

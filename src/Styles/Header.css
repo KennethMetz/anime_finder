@@ -31,12 +31,7 @@ a:-webkit-any-link {
   font-size: 1.25rem;
   font-family: "montserrat";
 }
-.blackAppName {
-  color: black;
-}
-.redAppName {
-  color: #ea2727;
-}
+
 .flexRow {
   display: flex;
   justify-content: space-evenly;
