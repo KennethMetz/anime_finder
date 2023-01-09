@@ -6,7 +6,7 @@ import useLikeState from "../Hooks/useLikeState";
 export default function DislikeButton({ anime }) {
   const { disliked, setDisliked } = useLikeState(anime);
 
-  const onClick = () => setDisliked(disliked ? false : true);
+  const onClick = () => setDisliked(!disliked);
   const disabled = !anime;
   const weight = disliked ? "fill" : "regular";
 

@@ -6,7 +6,7 @@ import useLikeState from "../Hooks/useLikeState";
 export default function LikeButton({ anime }) {
   const { liked, setLiked } = useLikeState(anime);
 
-  const onClick = () => setLiked(liked ? false : true);
+  const onClick = () => setLiked(!liked);
   const disabled = !anime;
   const weight = liked ? "fill" : "regular";
 
