@@ -36,22 +36,23 @@ export default function Profile() {
   const navigate = useNavigate();
 
   //Firebase auth does not save user's name for email/password login. Making this function necessary.
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      alert("An error occured while fetching user data");
-    }
+  const fetchUserName = async (user) => {
+    if (user) {
+      try {
+        const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+        const doc = await getDocs(q);
+        const data = doc.docs[0].data();
+        setName(data.name);
+      } catch (err) {
+        console.error(err);
+        alert("An error occured while fetching user data");
+      }
+    } else return;
   };
 
   useEffect(() => {
     if (loading) return;
     if (user) PopulateFromFirestore(user, localUser, setLocalUser);
-    if (!user) return navigate("/login");
     fetchUserName();
     console.log(localUser);
   }, [user, loading]);
@@ -62,7 +63,7 @@ export default function Profile() {
         <div className="gap" />
         <div className="profile__container">
           <h3>THE PROFILE OF</h3>
-          <h4>{name}</h4>
+          {user ? <h4>{name}</h4> : <h4>an unnamed visitor</h4>}
         </div>
         <br></br>
 
