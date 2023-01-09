@@ -9,12 +9,15 @@ import { signOut } from "firebase/auth";
 import { useContext, useEffect } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import TitleAutocomplete from "./TitleAutocomplete";
-import { UserCircle } from "phosphor-react";
+import { UserCircle, List } from "phosphor-react";
+import DropMenu from "./DropMenu";
 
 function Header() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const [user] = useAuthState(auth);
+
+  useEffect(() => {}, [user]);
 
   return (
     <div className="header">
@@ -41,11 +44,18 @@ function Header() {
           <Grid item xs={8}>
             {TitleAutocomplete()}
           </Grid>
-          <Grid item xs={2} textAlign="right">
+          <Grid
+            item
+            xs={2}
+            textAlign="right"
+            sx={{ display: "flex", justifyContent: "right" }}
+          >
             <Link to="/profile">
               <UserCircle size={32} />
             </Link>
+            {DropMenu()}
           </Grid>
+
           {/*
         <ul>
           <Link to="/">
