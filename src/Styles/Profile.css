@@ -11,3 +11,9 @@ list,
 li {
   width: 300 px;
 }
+
+.leftH3 {
+  font-family: inter, Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  text-align: left;
+}

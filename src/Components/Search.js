@@ -67,7 +67,7 @@ export default function Search() {
 
   return (
     <div className="jsxWrapper">
-      <Container maxwidth="sm">
+      <Container maxWidth="sm">
         <div className="gap" />
 
         {loadingSR ? <div id="loading"></div> : ""}

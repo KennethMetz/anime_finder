@@ -16,6 +16,7 @@ import { GenericList } from "./GenericList";
 import { LocalUserContext } from "./LocalUserContext";
 import {
   Avatar,
+  Box,
   Container,
   Divider,
   IconButton,
@@ -58,95 +59,97 @@ export default function Profile() {
   }, [user, loading]);
 
   return (
-    <div className="profile">
-      <Container maxwidth="sm">
-        <div className="gap" />
-        <div className="profile__container">
-          <h3>THE PROFILE OF</h3>
-          {user ? <h4>{name}</h4> : <h4>an unnamed visitor</h4>}
-        </div>
-        <br></br>
-
-        <h3>YOUR LIKES:</h3>
-        {localUser && localUser["likes"] ? (
-          <List>
-            {localUser["likes"].map((item, index) => (
-              <ListItem
-                key={index}
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => {
-                      localUser["likes"].splice(index, 1);
-                      setLocalUser({ ...localUser });
-                      SaveToFirestore(user, localUser);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                }
-              >
-                <ListItemButton
+    <Container maxWidth="sm">
+      <div className="gap" />
+      <h3 className="leftH3">YOUR LIKES:</h3>
+      {localUser && localUser["likes"] ? (
+        <List>
+          {localUser["likes"].map((item, index) => (
+            <ListItem
+              key={index}
+              disablePadding={true}
+              disableGutters={true}
+              secondaryAction={
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
                   onClick={() => {
-                    navigate("/detailedview", { state: item });
+                    localUser["likes"].splice(index, 1);
+                    setLocalUser({ ...localUser });
+                    SaveToFirestore(user, localUser);
                   }}
                 >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={item.display_name}
-                      src={item.image_large}
-                    ></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={item.display_name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          ""
-        )}
-
-        <Divider />
-        <h3>YOUR DISLIKES:</h3>
-        {localUser && localUser["dislikes"] ? (
-          <List>
-            {localUser["dislikes"].map((item, index) => (
-              // <li key={index}>{item.name}</li>
-              <ListItem
-                key={index}
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => {
-                      localUser["dislikes"].splice(index, 1);
-                      setLocalUser({ ...localUser });
-                      SaveToFirestore(user, localUser);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                }
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemButton
+                sx={{ padding: 0 }}
+                onClick={() => {
+                  navigate("/detailedview", { state: item });
+                }}
               >
-                <ListItemButton
+                <ListItemAvatar>
+                  <Box
+                    component="img"
+                    alt={item.display_name}
+                    src={item.image_large}
+                    sx={{ height: "56px" }}
+                  ></Box>
+                </ListItemAvatar>
+                <ListItemText primary={item.display_name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        ""
+      )}
+
+      <h3 className="leftH3">YOUR DISLIKES:</h3>
+      {localUser && localUser["dislikes"] ? (
+        <List>
+          {localUser["dislikes"].map((item, index) => (
+            <ListItem
+              key={index}
+              disablePadding={true}
+              disableGutters={true}
+              secondaryAction={
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
                   onClick={() => {
-                    navigate("/detailedview", { state: item });
+                    localUser["dislikes"].splice(index, 1);
+                    setLocalUser({ ...localUser });
+                    SaveToFirestore(user, localUser);
                   }}
                 >
-                  <ListItemAvatar>
-                    <Avatar alt={item.name} src={item.image_large}></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={item.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          ""
-        )}
-        <Divider />
-      </Container>
-    </div>
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemButton
+                sx={{ padding: 0 }}
+                onClick={() => {
+                  navigate("/detailedview", { state: item });
+                }}
+              >
+                <ListItemAvatar>
+                  <Box
+                    component="img"
+                    alt={item.display_name}
+                    src={item.image_large}
+                    sx={{ height: "56px" }}
+                  ></Box>{" "}
+                </ListItemAvatar>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        ""
+      )}
+    </Container>
   );
 }

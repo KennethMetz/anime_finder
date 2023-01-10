@@ -31,7 +31,7 @@ function Header() {
 
   return (
     <div className="header">
-      <Container maxwidth="sm">
+      <Container maxWidth="lg">
         <Grid
           container
           spacing={3}

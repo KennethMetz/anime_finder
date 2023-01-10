@@ -70,6 +70,15 @@ export default function TitleAutocomplete(search) {
               console.log(e);
             }}
             label="Your Favorite Anime"
+            sx={{
+              ".MuiOutlinedInput-root": {
+                borderRadius: "28px",
+                paddingLeft: "18px",
+              },
+              ".MuiInputLabel-root": {
+                paddingLeft: "18px",
+              },
+            }}
           />
         )}
       ></Autocomplete>

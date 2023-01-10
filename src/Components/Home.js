@@ -183,33 +183,31 @@ export default function Home() {
   }, [user, loading]);
 
   return (
-    <div className="App">
-      <Container maxwidth="sm">
-        <div className="gap" />
+    <Container maxWidth="lg">
+      <div className="gap" />
 
-        {localUser && localUser["likes"] ? (
-          <h4>RECOMMENDED FOR YOU</h4>
-        ) : (
-          <h4>Like a show below to receive personalized recommendations!</h4>
-        )}
-        {loadingRecs ? <div id="loading"></div> : ""}
-        <RecommendedList movies={recommendation} />
+      {localUser && localUser["likes"] ? (
+        <h4>RECOMMENDED FOR YOU</h4>
+      ) : (
+        <h4>Like a show below to receive personalized recommendations!</h4>
+      )}
+      {loadingRecs ? <div id="loading"></div> : ""}
+      <RecommendedList movies={recommendation} />
 
-        <div className="gap" />
-        {loadingGeneric ? <div id="loading"></div> : ""}
-        <h4>HIGHEST RATED</h4>
-        <GenericList movies={animeHR} />
-        <h4>MOST VIEWED</h4>
-        <GenericList movies={animeMC} />
-        <h4>MOST POPULAR</h4>
-        <GenericList movies={animeMR} />
-        <h4>HYPE BEASTS</h4>
-        <GenericList movies={animeMPTW} />
-        <h4>MOST OBSCURE</h4>
-        <GenericList movies={animeMH} />
-        <h4>RANDOM TITLES</h4>
-        <GenericList movies={animeRandom} />
-      </Container>
-    </div>
+      <div className="gap" />
+      {loadingGeneric ? <div id="loading"></div> : ""}
+      <h4>HIGHEST RATED</h4>
+      <GenericList movies={animeHR} />
+      <h4>MOST VIEWED</h4>
+      <GenericList movies={animeMC} />
+      <h4>MOST POPULAR</h4>
+      <GenericList movies={animeMR} />
+      <h4>HYPE BEASTS</h4>
+      <GenericList movies={animeMPTW} />
+      <h4>MOST OBSCURE</h4>
+      <GenericList movies={animeMH} />
+      <h4>RANDOM TITLES</h4>
+      <GenericList movies={animeRandom} />
+    </Container>
   );
 }

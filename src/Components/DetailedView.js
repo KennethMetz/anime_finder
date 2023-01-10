@@ -34,7 +34,7 @@ export default function DetailedView() {
   return (
     <div className="jsxWrapper">
       <div className="gap" />
-      <Container maxwidth="sm">
+      <Container maxWidth="lg">
         <br></br>
         <Grid container spacing={3}>
           <Grid item xs={3} className="tileContainer">
@@ -85,7 +85,7 @@ export default function DetailedView() {
               <div className="overlaidFill" id="gradientFill"></div>
             </div>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <ListItem>
               <ListItemText
                 primary={location.state.display_name}
@@ -154,9 +154,9 @@ export default function DetailedView() {
             </div>
           </Grid>
         </Grid>
+        <h3>SIMILAR TITLES</h3>
+        <RecommendContent movies={location.state}></RecommendContent>
       </Container>
-      <h3>SIMILAR TITLES</h3>
-      <RecommendContent movies={location.state}></RecommendContent>
     </div>
   );
 }

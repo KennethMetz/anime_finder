@@ -28,7 +28,7 @@ export const GenericList = (props) => {
   // }
 
   return (
-    <Grid container spacing={3} justifyContent="center" overflow={true}>
+    <Grid container spacing={3} justifyContent="center" overflow={false}>
       {props.movies.map((movie, index) => (
         <Grid
           item

@@ -9,8 +9,6 @@
   src: url(./Inter-VariableFont_slnt.ttf);
 }
 .header {
-  /* display: grid;
-  grid-template-columns: 30% 70%; */
   align-items: center;
   background-color: rgb(255, 255, 255);
   position: sticky;
@@ -30,9 +28,4 @@ a:-webkit-any-link {
   text-decoration: none;
   font-size: 1.25rem;
   font-family: "montserrat";
-}
-
-.flexRow {
-  display: flex;
-  justify-content: space-evenly;
 }
