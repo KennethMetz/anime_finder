@@ -40,7 +40,7 @@ function Header() {
             paddingBottom: 2,
           }}
         >
-          <Grid item xs={2}>
+          <Grid item xs={2.5}>
             <Link to="/home">
               <div className="logo">
                 <img src={logo} alt="" />
@@ -52,7 +52,7 @@ function Header() {
             </Link>
             <div></div>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={7.5}>
             {TitleAutocomplete()}
           </Grid>
           <Grid
@@ -62,7 +62,7 @@ function Header() {
             sx={{ display: "flex", justifyContent: "right" }}
           >
             <Link to="/profile">
-              <UserCircle size={32} />
+              <UserCircle size={45} />
             </Link>
             {DropMenu()}
           </Grid>

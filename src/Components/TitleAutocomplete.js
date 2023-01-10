@@ -52,6 +52,7 @@ export default function TitleAutocomplete(search) {
           setInputValue(newInputValue);
         }}
         forcePopupIcon={false}
+        fullWidth={true}
         filterSelectedOptions
         options={options}
         handleHomeEndKeys={true}
@@ -61,7 +62,7 @@ export default function TitleAutocomplete(search) {
         isOptionEqualToValue={(option, value) => option.id === value.id}
         loading={loading}
         loadingText="Enter anime title (ie. Naruto)"
-        sx={{ width: 300 }}
+        sx={{ width: "450px", height: "46px" }}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -69,11 +70,12 @@ export default function TitleAutocomplete(search) {
               onSubmit(e.key, params["inputProps"]["value"]);
               console.log(e);
             }}
-            label="Your Favorite Anime"
+            // label="Your Favorite Anime"
             sx={{
               ".MuiOutlinedInput-root": {
                 borderRadius: "28px",
                 paddingLeft: "18px",
+                height: "46px",
               },
               ".MuiInputLabel-root": {
                 paddingLeft: "18px",
@@ -90,6 +92,10 @@ export default function TitleAutocomplete(search) {
         aria-label="search"
         size="large"
         ref={focusElement}
+        sx={{
+          height: "46px",
+          ".MuiSvgIcon-root": { height: "30px", width: "30px" },
+        }}
       >
         <SearchIcon />
       </IconButton>

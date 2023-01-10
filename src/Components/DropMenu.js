@@ -73,13 +73,16 @@ export default function DropMenu() {
   return (
     <Stack>
       <List
-        size={32}
+        size={45}
         ref={anchorRef}
         id="composition-button"
         aria-controls={open ? "composition-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
+        style={{
+          paddingLeft: "10px",
+        }}
       />
       <Popper
         open={open}

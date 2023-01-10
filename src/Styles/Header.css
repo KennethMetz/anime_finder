@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: montserrat;
-  src: url(./Montserrat-Bold.ttf);
+  src: url(./Montserrat-Black.ttf);
 }
 @font-face {
   font-family: inter;
@@ -26,6 +26,6 @@ a:-webkit-any-link {
 }
 .appName {
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-family: "montserrat";
 }
