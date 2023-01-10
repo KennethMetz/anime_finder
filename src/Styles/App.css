@@ -1,7 +1,24 @@
+/* GLOBAL FONTS DO NOT DELETE */
 @font-face {
   font-family: interExtraBold;
   src: url(./Inter-ExtraBold.ttf);
 }
+
+@font-face {
+  font-family: interSemiBold;
+  src: url(./Inter-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: interMedium;
+  src: url(./Inter-Medium.ttf);
+}
+
+@font-face {
+  font-family: montserrat;
+  src: url(./Montserrat-Black.ttf);
+}
+/* GLOBAL FONTS DO NOT DELETE */
 
 .App-header {
   background-color: #282c34;
@@ -118,7 +135,7 @@ css-1cfh48w-MuiGrid-root {
 }
 
 h4 {
-  font-family: inter, Arial, Helvetica, sans-serif;
-  font-size: 1.3rem;
+  font-family: interExtraBold, Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
   text-align: left;
 }

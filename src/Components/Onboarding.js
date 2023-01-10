@@ -9,7 +9,8 @@ import { OnboardingList } from "./OnboardingList";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 import { SaveToFirestore } from "./Firestore";
 
@@ -19,6 +20,8 @@ export default function Onboarding() {
   let [loading, setLoading] = useState(true);
 
   const [user] = useAuthState(auth);
+
+  const theme = useTheme();
 
   const navigate = useNavigate();
 
@@ -39,7 +42,7 @@ export default function Onboarding() {
 
     //Get generic recommendations
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?page_size=16",
+      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?page_size=10",
       setAnimeMR
     );
     console.log(localUser);
@@ -47,38 +50,64 @@ export default function Onboarding() {
 
   return (
     <div className="App">
-      <Container maxwidth="sm">
-        <h1 className="appTitle">EdwardML</h1>
-        <div className="gap" />
-        <h3 className="greeting">Let's Get Started!!</h3>
-        <h4 className="intro">
-          Begin by selecting at least three programs you enjoy or are interested
-          in (don't worry, you can change these later!)
-        </h4>
+      <Container maxWidth="lg">
+        <h4 classname="leftH4">Let's Get Started!!</h4>
+        <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
+          EdwardML uses its giant computer brain to help you decide which anime
+          to watch next, based on your interests.
+          <br /> <br />
+          To begin, choose the shows below that you enjoy or are interested in.
+          You can also mark those you are not interested in. Don’t worry, you
+          can always change this later!
+        </span>
+        <br />
+        <br />
+        <br />
         {loading ? <div id="loading"></div> : ""}
 
         <OnboardingList movies={animeMR} />
-        <hr></hr>
-        <hr></hr>
-        <hr></hr>
-        <hr></hr>
-        <hr></hr>
-        <li>
-          {" "}
-          {localUser["likes"] && localUser["likes"].length < 3 ? (
-            <h3>Please Select (3) Titles From Above</h3>
-          ) : (
-            <Link to="/home">
-              <button
-                onClick={(e) => {
-                  SaveToFirestore(user, localUser);
-                }}
-              >
-                LET'S GO!
-              </button>
-            </Link>
-          )}
-        </li>
+        <br />
+        {localUser["likes"] && localUser["likes"].length < 1 ? (
+          <div style={{ display: "flex", justifyContent: "right" }}>
+            <Button
+              variant="contained"
+              disabled
+              size="large"
+              sx={{
+                minWidth: "211px",
+                minHeight: "48px",
+                marginTop: "20px",
+                fontSize: "1rem",
+                borderRadius: "24px",
+                color: "white",
+              }}
+            >
+              LET'S GO!
+            </Button>
+          </div>
+        ) : (
+          <Link to="/home" style={{ display: "flex", justifyContent: "right" }}>
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                minWidth: "211px",
+                minHeight: "48px",
+                marginTop: "20px",
+                fontSize: "1rem",
+                borderRadius: "24px",
+                backgroundColor: theme.palette.day.primary,
+              }}
+              onClick={(e) => {
+                SaveToFirestore(user, localUser);
+              }}
+            >
+              LET'S GO!
+            </Button>
+          </Link>
+        )}
+        <br />
+        <br />
       </Container>
     </div>
   );

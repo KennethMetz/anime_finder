@@ -68,10 +68,10 @@ export default function Search() {
   return (
     <div className="jsxWrapper">
       <Container maxWidth="sm">
-        <div className="gap" />
-
+        <h4 style={{ textAlign: "center" }}>Search Results:</h4>
+        <Divider></Divider>
         {loadingSR ? <div id="loading"></div> : ""}
-
+        <div className="gap" style={{ marginTop: "30px" }}></div>
         {searchResults[0] ? (
           <div className="column">
             {/* <div>SEARCH RESULTS BASED ON: "{search}" </div> */}
@@ -89,7 +89,11 @@ export default function Search() {
                     src={item.image_large}
                   ></Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={item.display_name} />
+
+                <ListItemText
+                  primary={item.display_name}
+                  primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                />
               </ListItemButton>
             ))}
           </div>

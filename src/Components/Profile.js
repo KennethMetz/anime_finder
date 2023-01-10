@@ -25,9 +25,12 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
+import theme from "./theme";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -35,6 +38,8 @@ export default function Profile() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
   const navigate = useNavigate();
+
+  const theme = useTheme();
 
   //Firebase auth does not save user's name for email/password login. Making this function necessary.
   const fetchUserName = async (user) => {
@@ -61,95 +66,106 @@ export default function Profile() {
   return (
     <Container maxWidth="sm">
       <div className="gap" />
-      <h3 className="leftH3">YOUR LIKES:</h3>
-      {localUser && localUser["likes"] ? (
-        <List>
-          {localUser["likes"].map((item, index) => (
-            <ListItem
-              key={index}
-              disablePadding={true}
-              disableGutters={true}
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
+      <h3 className="leftH3">Your Likes</h3>
+      <Typography>
+        {localUser && localUser["likes"] ? (
+          <List>
+            {localUser["likes"].map((item, index) => (
+              <ListItem
+                key={index}
+                disablePadding={true}
+                disableGutters={true}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      localUser["likes"].splice(index, 1);
+                      setLocalUser({ ...localUser });
+                      SaveToFirestore(user, localUser);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemButton
+                  sx={{ padding: 0 }}
                   onClick={() => {
-                    localUser["likes"].splice(index, 1);
-                    setLocalUser({ ...localUser });
-                    SaveToFirestore(user, localUser);
+                    navigate("/detailedview", { state: item });
                   }}
                 >
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemButton
-                sx={{ padding: 0 }}
-                onClick={() => {
-                  navigate("/detailedview", { state: item });
-                }}
-              >
-                <ListItemAvatar>
-                  <Box
-                    component="img"
-                    alt={item.display_name}
-                    src={item.image_large}
-                    sx={{ height: "56px" }}
-                  ></Box>
-                </ListItemAvatar>
-                <ListItemText primary={item.display_name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      ) : (
-        ""
-      )}
+                  <ListItemAvatar>
+                    <Box
+                      component="img"
+                      alt={item.display_name}
+                      src={item.image_large}
+                      sx={{ height: "56px" }}
+                    ></Box>
+                  </ListItemAvatar>
 
-      <h3 className="leftH3">YOUR DISLIKES:</h3>
-      {localUser && localUser["dislikes"] ? (
-        <List>
-          {localUser["dislikes"].map((item, index) => (
-            <ListItem
-              key={index}
-              disablePadding={true}
-              disableGutters={true}
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
+                  <ListItemText
+                    primary={item.display_name}
+                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          ""
+        )}
+      </Typography>
+
+      <h3 className="leftH3">Your Dislikes</h3>
+      <Typography>
+        {localUser && localUser["dislikes"] ? (
+          <List>
+            {localUser["dislikes"].map((item, index) => (
+              <ListItem
+                key={index}
+                disablePadding={true}
+                disableGutters={true}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      localUser["dislikes"].splice(index, 1);
+                      setLocalUser({ ...localUser });
+                      SaveToFirestore(user, localUser);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemButton
+                  sx={{ padding: 0 }}
                   onClick={() => {
-                    localUser["dislikes"].splice(index, 1);
-                    setLocalUser({ ...localUser });
-                    SaveToFirestore(user, localUser);
+                    navigate("/detailedview", { state: item });
                   }}
                 >
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemButton
-                sx={{ padding: 0 }}
-                onClick={() => {
-                  navigate("/detailedview", { state: item });
-                }}
-              >
-                <ListItemAvatar>
-                  <Box
-                    component="img"
-                    alt={item.display_name}
-                    src={item.image_large}
-                    sx={{ height: "56px" }}
-                  ></Box>{" "}
-                </ListItemAvatar>
-                <ListItemText primary={item.name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      ) : (
-        ""
-      )}
+                  <ListItemAvatar>
+                    <Box
+                      component="img"
+                      alt={item.display_name}
+                      src={item.image_large}
+                      sx={{ height: "56px" }}
+                    ></Box>{" "}
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={item.display_name}
+                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          ""
+        )}
+      </Typography>
     </Container>
   );
 }

@@ -44,10 +44,18 @@ function Header() {
             <Link to="/home">
               <div className="logo">
                 <img src={logo} alt="" />
-                <div className="appName" style={{ padding: "10px" }}>
-                  <span style={{ color: theme.palette.day.text }}>Edward</span>
-                  <span style={{ color: theme.palette.day.primary }}>ML</span>
-                </div>
+                <h2
+                  className="appName"
+                  style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+                >
+                  Edward
+                </h2>
+                <h2
+                  className="appName"
+                  style={{ color: theme.palette.day.primary }}
+                >
+                  ML
+                </h2>
               </div>
             </Link>
             <div></div>
@@ -61,7 +69,10 @@ function Header() {
             textAlign="right"
             sx={{ display: "flex", justifyContent: "right" }}
           >
-            <Link to="/profile">
+            <Link
+              to="/profile"
+              style={{ display: "flex", alignItems: "center" }}
+            >
               <UserCircle size={45} />
             </Link>
             {DropMenu()}

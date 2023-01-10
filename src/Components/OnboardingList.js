@@ -20,7 +20,7 @@ export const OnboardingList = (props) => {
       {props.movies.map((movie, index) => (
         <Grid
           item
-          xs={3}
+          xs={2}
           // sm={6}
           // md={3}
           // lg={2.4}

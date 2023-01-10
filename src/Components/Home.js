@@ -187,7 +187,7 @@ export default function Home() {
       <div className="gap" />
 
       {localUser && localUser["likes"] ? (
-        <h4>RECOMMENDED FOR YOU</h4>
+        <h4>For You</h4>
       ) : (
         <h4>Like a show below to receive personalized recommendations!</h4>
       )}
@@ -196,17 +196,17 @@ export default function Home() {
 
       <div className="gap" />
       {loadingGeneric ? <div id="loading"></div> : ""}
-      <h4>HIGHEST RATED</h4>
+      <h4>Highest Rated</h4>
       <GenericList movies={animeHR} />
-      <h4>MOST VIEWED</h4>
+      <h4>Most Viewed</h4>
       <GenericList movies={animeMC} />
-      <h4>MOST POPULAR</h4>
+      <h4>Most Popular</h4>
       <GenericList movies={animeMR} />
-      <h4>HYPE BEASTS</h4>
+      <h4>Hype Beasts</h4>
       <GenericList movies={animeMPTW} />
-      <h4>MOST OBSCURE</h4>
+      <h4>Most Obscure</h4>
       <GenericList movies={animeMH} />
-      <h4>RANDOM TITLES</h4>
+      <h4>Random</h4>
       <GenericList movies={animeRandom} />
     </Container>
   );

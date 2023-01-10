@@ -20,10 +20,8 @@ export default function TitleAutocomplete(search) {
 
   function onSubmit(key, input) {
     if (key === "Enter") {
-      if (location["pathname"] === "/search") {
-        focusElement.current.focus(); //removes focus, so the options list will close
-        focusElement.current.blur(); //removes focus, so the options list will close
-      }
+      focusElement.current.focus(); //removes focus, so the options list will close
+      focusElement.current.blur(); //removes focus, so the options list will close
       navigate("/search", { state: input });
     }
   }
@@ -70,11 +68,12 @@ export default function TitleAutocomplete(search) {
               onSubmit(e.key, params["inputProps"]["value"]);
               console.log(e);
             }}
-            // label="Your Favorite Anime"
+            // label="Search"
             sx={{
               ".MuiOutlinedInput-root": {
                 borderRadius: "28px",
                 paddingLeft: "18px",
+                paddingTop: "4px",
                 height: "46px",
               },
               ".MuiInputLabel-root": {

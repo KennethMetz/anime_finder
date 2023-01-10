@@ -1,13 +1,5 @@
 /* HEADER STYLING */
 
-@font-face {
-  font-family: montserrat;
-  src: url(./Montserrat-Black.ttf);
-}
-@font-face {
-  font-family: inter;
-  src: url(./Inter-VariableFont_slnt.ttf);
-}
 .header {
   align-items: center;
   background-color: rgb(255, 255, 255);

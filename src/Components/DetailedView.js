@@ -18,6 +18,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import TitleAutocomplete from "./TitleAutocomplete";
 import { flushSync } from "react-dom";
+import LikeButtons from "./LikeButtons";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export default function DetailedView() {
       <div className="gap" />
       <Container maxWidth="lg">
         <br></br>
-        <Grid container spacing={3}>
+        <Grid container spacing={0} rowSpacing={0}>
           <Grid item xs={3} className="tileContainer">
             <div
               style={{
@@ -85,31 +86,71 @@ export default function DetailedView() {
               <div className="overlaidFill" id="gradientFill"></div>
             </div>
           </Grid>
-          <Grid item xs={8}>
-            <ListItem>
+          <Grid item xs={9}>
+            {/* <ListItem
+              sx={{
+                paddingTop: 0,
+                paddingBottom: 0,
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
+            > */}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  fontFamily: "interExtraBold",
+                  fontSize: "1.5rem",
+                  margin: "0px 16px",
+                }}
+              >
+                {location.state.display_name}
+              </div>
+              <LikeButtons anime={location.state} />
+            </Box>
+            {/* </ListItem> */}
+            <ListItem sx={{ paddingTop: 0, paddingBottom: 0 }}>
               <ListItemText
-                primary={location.state.display_name}
-                secondary="Title"
+                primaryTypographyProps={{
+                  fontFamily: "interMedium",
+                  fontSize: "1rem",
+                }}
+                primary={location.state.localized_titles.map((item, index) => {
+                  if (item["language"] === "ja")
+                    return location.state.localized_titles[index]["title"];
+                })}
               />
             </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={location.state.format}
-                secondary="Format"
-              />
-            </ListItem>
-            {location.state.episodes > 1 ? (
-              <ListItem>
+            <ListItem sx={{ paddingTop: 0 }}>
+              {/* TERNARY BELOW SCREENS FOR WHETHER 'EPISODE' SHOULD PRINT AS PLURAL OR NOT */}
+              {location.state.episodes > 1 ? (
                 <ListItemText
-                  primary={location.state.episodes}
-                  secondary="Length"
+                  primary={`${location.state.format} • ${location.state.episodes} episodes`}
+                  primaryTypographyProps={{
+                    fontFamily: "interMedium",
+                    fontSize: "1.0rem",
+                  }}
                 />
-              </ListItem>
-            ) : (
-              ""
-            )}
-
-            <div style={{ display: "flex" }}>
+              ) : (
+                <ListItemText
+                  primary={`${location.state.format} • ${location.state.episodes} episode`}
+                  primaryTypographyProps={{
+                    fontFamily: "interMedium",
+                    fontSize: "1.0rem",
+                  }}
+                />
+              )}
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary={location.state.description}
+                primaryTypographyProps={{
+                  fontFamily: "interMedium",
+                  fontSize: "1.0rem",
+                }}
+              />
+            </ListItem>
+            {/* BELOW CODE RENDERS STREAMING SERVICES */}
+            {/* <div style={{ display: "flex" }}>
               <div>Streaming Services:</div>
               {location.state.urls.map((item, index) => (
                 <div key={index} style={{ textAlign: "left" }}>
@@ -151,10 +192,10 @@ export default function DetailedView() {
                   )}
                 </div>
               ))}
-            </div>
+            </div> */}
           </Grid>
         </Grid>
-        <h3>SIMILAR TITLES</h3>
+        <h3 className="leftH3">Similar Titles</h3>
         <RecommendContent movies={location.state}></RecommendContent>
       </Container>
     </div>

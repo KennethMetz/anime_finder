@@ -13,7 +13,11 @@ li {
 }
 
 .leftH3 {
-  font-family: inter, Arial, Helvetica, sans-serif;
-  font-size: 1.1rem;
+  font-family: interExtraBold, Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
   text-align: left;
+}
+
+.css-10hbu.MuiListItemText-primary {
+  font-family: interSemiBold, Arial, Helvetica, sans-serif;
 }
