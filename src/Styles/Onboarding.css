@@ -1,0 +1,13 @@
+.welcomeBanner {
+  display: flex;
+  justify-content: center;
+}
+
+.welcomeTitle {
+  font-family: montserrat;
+  font-size: 4rem;
+}
+
+.welcomeLogo {
+  width: 81px;
+}

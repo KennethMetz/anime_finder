@@ -1,4 +1,5 @@
 import "../Styles/App.css";
+import "../Styles/Onboarding.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -11,6 +12,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { Button, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import logo from "../Styles/images/logo.svg";
 
 import { SaveToFirestore } from "./Firestore";
 
@@ -51,7 +53,24 @@ export default function Onboarding() {
   return (
     <div className="App">
       <Container maxWidth="lg">
-        <h4 classname="leftH4">Let's Get Started!!</h4>
+        {/* <Link to="/home"> */}
+        <div className="welcomeBanner">
+          <img src={logo} alt="" className="welcomeLogo" />
+          <h1
+            className="welcomeTitle"
+            style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+          >
+            Edward
+          </h1>
+          <h1
+            className="welcomeTitle"
+            style={{ color: theme.palette.day.primary }}
+          >
+            ML
+          </h1>
+        </div>
+        {/* </Link> */}
+        <h4 className="leftH4">Let's Get Started!!</h4>
         <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
           EdwardML uses its giant computer brain to help you decide which anime
           to watch next, based on your interests.
