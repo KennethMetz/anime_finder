@@ -14,9 +14,6 @@ const theme = createTheme({
 
       text: "#000000",
     },
-    // error: {
-    //   main: red.A400,
-    // },
   },
 });
 
