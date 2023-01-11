@@ -146,6 +146,7 @@ export default function DetailedView() {
                 primaryTypographyProps={{
                   fontFamily: "interMedium",
                   fontSize: "1.0rem",
+                  whiteSpace: "pre-line",
                 }}
               />
             </ListItem>
