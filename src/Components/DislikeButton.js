@@ -10,12 +10,15 @@ export default function DislikeButton({ anime }) {
   const disabled = !anime;
   const weight = disliked ? "fill" : "regular";
 
+  //Theme colors are taken from the default "palette" theme and MUST have a child color titled "main"
+  const buttonColor = disliked ? "primary" : "grey";
+
   return (
     <Tooltip title="Not for me">
       <IconButton
         onClick={onClick}
         disabled={disabled}
-        color="primary"
+        color={buttonColor}
         sx={{ border: "2px solid" }}
       >
         <ThumbsDown weight={weight} />
