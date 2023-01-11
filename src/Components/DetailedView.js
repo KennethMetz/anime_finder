@@ -30,64 +30,67 @@ export default function DetailedView() {
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
+    if (user) PopulateFromFirestore(user, localUser, setLocalUser);
   }, [user, loading]);
 
   return (
     <div className="jsxWrapper">
       <div className="gap" />
-      <Container maxWidth="lg">
-        <br></br>
-        <Grid container spacing={0} rowSpacing={0}>
-          <Grid item xs={3} className="tileContainer">
-            <div
-              style={{
-                backgroundImage: "url(" + location.state.image_large + ")",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                height: "100%",
-              }}
-              component="div"
-              className="tile"
-              src={location.state.image_large}
-              alt=""
-            >
-              <Box
-                component="img"
-                src={heart}
-                alt=""
-                className="overlaidIcon"
-                id="heartIcon"
-                onClick={(e) => {
-                  let temp = {
-                    ...localUser,
-                    likes: [...localUser["likes"], location.state],
-                  };
-                  setLocalUser(temp);
-                  console.log(localUser);
-                  SaveToFirestore(user, temp);
+      {/* Only renders a blank screen until localUser is loaded - to prevent flashing during page load */}
+      {localUser["uid"] ? (
+        <Container maxWidth="lg">
+          <br></br>
+          <Grid container spacing={0} rowSpacing={0}>
+            <Grid item xs={3} className="tileContainer">
+              <div
+                style={{
+                  backgroundImage: "url(" + location.state.image_large + ")",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  height: "100%",
                 }}
-              />
-              <Box
-                component="img"
-                src={frown}
+                component="div"
+                className="tile"
+                src={location.state.image_large}
                 alt=""
-                className="overlaidIcon"
-                id="frownIcon"
-                onClick={(e) => {
-                  let temp = {
-                    ...localUser,
-                    dislikes: [...localUser["dislikes"], location.state],
-                  };
-                  setLocalUser(temp);
-                  console.log(localUser);
-                  SaveToFirestore(user, temp);
-                }}
-              />
-              <div className="overlaidFill" id="gradientFill"></div>
-            </div>
-          </Grid>
-          <Grid item xs={9}>
-            {/* <ListItem
+              >
+                <Box
+                  component="img"
+                  src={heart}
+                  alt=""
+                  className="overlaidIcon"
+                  id="heartIcon"
+                  onClick={(e) => {
+                    let temp = {
+                      ...localUser,
+                      likes: [...localUser["likes"], location.state],
+                    };
+                    setLocalUser(temp);
+                    console.log(localUser);
+                    SaveToFirestore(user, temp);
+                  }}
+                />
+                <Box
+                  component="img"
+                  src={frown}
+                  alt=""
+                  className="overlaidIcon"
+                  id="frownIcon"
+                  onClick={(e) => {
+                    let temp = {
+                      ...localUser,
+                      dislikes: [...localUser["dislikes"], location.state],
+                    };
+                    setLocalUser(temp);
+                    console.log(localUser);
+                    SaveToFirestore(user, temp);
+                  }}
+                />
+                <div className="overlaidFill" id="gradientFill"></div>
+              </div>
+            </Grid>
+            <Grid item xs={9}>
+              {/* <ListItem
               sx={{
                 paddingTop: 0,
                 paddingBottom: 0,
@@ -95,63 +98,65 @@ export default function DetailedView() {
                 justifyContent: "flex-start",
               }}
             > */}
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <div
-                style={{
-                  fontFamily: "interExtraBold",
-                  fontSize: "1.5rem",
-                  margin: "0px 16px",
-                }}
-              >
-                {location.state.display_name}
-              </div>
-              <LikeButtons anime={location.state} />
-            </Box>
-            {/* </ListItem> */}
-            <ListItem sx={{ paddingTop: 0, paddingBottom: 0 }}>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontFamily: "interMedium",
-                  fontSize: "1rem",
-                }}
-                primary={location.state.localized_titles.map((item, index) => {
-                  if (item["language"] === "ja")
-                    return location.state.localized_titles[index]["title"];
-                })}
-              />
-            </ListItem>
-            <ListItem sx={{ paddingTop: 0 }}>
-              {/* TERNARY BELOW SCREENS FOR WHETHER 'EPISODE' SHOULD PRINT AS PLURAL OR NOT */}
-              {location.state.episodes > 1 ? (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    fontFamily: "interExtraBold",
+                    fontSize: "1.5rem",
+                    margin: "0px 16px",
+                  }}
+                >
+                  {location.state.display_name}
+                </div>
+                <LikeButtons anime={location.state} />
+              </Box>
+              {/* </ListItem> */}
+              <ListItem sx={{ paddingTop: 0, paddingBottom: 0 }}>
                 <ListItemText
-                  primary={`${location.state.format} • ${location.state.episodes} episodes`}
+                  primaryTypographyProps={{
+                    fontFamily: "interMedium",
+                    fontSize: "1rem",
+                  }}
+                  primary={location.state.localized_titles.map(
+                    (item, index) => {
+                      if (item["language"] === "ja")
+                        return location.state.localized_titles[index]["title"];
+                    }
+                  )}
+                />
+              </ListItem>
+              <ListItem sx={{ paddingTop: 0 }}>
+                {/* TERNARY BELOW SCREENS FOR WHETHER 'EPISODE' SHOULD PRINT AS PLURAL OR NOT */}
+                {location.state.episodes > 1 ? (
+                  <ListItemText
+                    primary={`${location.state.format} • ${location.state.episodes} episodes`}
+                    primaryTypographyProps={{
+                      fontFamily: "interMedium",
+                      fontSize: "1.0rem",
+                    }}
+                  />
+                ) : (
+                  <ListItemText
+                    primary={`${location.state.format} • ${location.state.episodes} episode`}
+                    primaryTypographyProps={{
+                      fontFamily: "interMedium",
+                      fontSize: "1.0rem",
+                    }}
+                  />
+                )}
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary={location.state.description}
                   primaryTypographyProps={{
                     fontFamily: "interMedium",
                     fontSize: "1.0rem",
+                    whiteSpace: "pre-line",
                   }}
                 />
-              ) : (
-                <ListItemText
-                  primary={`${location.state.format} • ${location.state.episodes} episode`}
-                  primaryTypographyProps={{
-                    fontFamily: "interMedium",
-                    fontSize: "1.0rem",
-                  }}
-                />
-              )}
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={location.state.description}
-                primaryTypographyProps={{
-                  fontFamily: "interMedium",
-                  fontSize: "1.0rem",
-                  whiteSpace: "pre-line",
-                }}
-              />
-            </ListItem>
-            {/* BELOW CODE RENDERS STREAMING SERVICES */}
-            {/* <div style={{ display: "flex" }}>
+              </ListItem>
+              {/* BELOW CODE RENDERS STREAMING SERVICES */}
+              {/* <div style={{ display: "flex" }}>
               <div>Streaming Services:</div>
               {location.state.urls.map((item, index) => (
                 <div key={index} style={{ textAlign: "left" }}>
@@ -194,11 +199,14 @@ export default function DetailedView() {
                 </div>
               ))}
             </div> */}
+            </Grid>
           </Grid>
-        </Grid>
-        <h3 className="leftH3">Similar Titles</h3>
-        <RecommendContent movies={location.state}></RecommendContent>
-      </Container>
+          <h3 className="leftH3">Similar Titles</h3>
+          <RecommendContent movies={location.state}></RecommendContent>
+        </Container>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
