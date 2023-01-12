@@ -15,10 +15,7 @@ export default function useAnime(animeId, cachedAnime) {
 
   useEffect(() => {
     // Don't load if we have the right data already.
-    if (cachedAnime?.id.toString() === animeId) {
-      return;
-    }
-    if (fetchedAnime?.id.toString() === animeId) {
+    if (getMatchingAnime(animeId, [cachedAnime, fetchedAnime])) {
       return;
     }
     // Otherwise, fetch anime from API.
@@ -35,14 +32,15 @@ export default function useAnime(animeId, cachedAnime) {
       .catch((err) => setError(err));
   }, [animeId, fetchedAnime, cachedAnime]);
 
-  let result = undefined;
-  if (cachedAnime?.id.toString() === animeId) {
-    result = cachedAnime;
-  } else if (fetchedAnime?.id.toString() === animeId) {
-    result = fetchedAnime;
-  }
+  const result = getMatchingAnime(animeId, [cachedAnime, fetchedAnime]);
 
   const loading = !result && !error;
 
   return [result, loading, error];
+}
+
+// Returns the anime in `animeList` that matches `animeId`, or else undefined.
+// `animeList` can contain undefined elements.
+function getMatchingAnime(animeId, animeList) {
+  return animeList.find((anime) => anime?.id.toString() === animeId);
 }
