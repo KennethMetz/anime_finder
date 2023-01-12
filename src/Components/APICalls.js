@@ -14,14 +14,17 @@ export async function APISearch(inputValue) {
 }
 
 export async function APIGetAnime(animeId) {
-  try {
-    let response = await fetch(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/${animeId}`,
-      { mode: "cors" }
-    );
-    let responseJson = await response.json();
-    return responseJson;
-  } catch (error) {
-    console.log(error);
+  let response = await fetch(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/${animeId}`,
+    { mode: "cors" }
+  );
+  await handleErrors(response);
+  return await response.json();
+}
+
+async function handleErrors(response) {
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(message);
   }
 }
