@@ -33,7 +33,7 @@ const RouteSwitch = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/search" element={<Search />} />
-              <Route path="/detailedview" element={<DetailedView />} />
+              <Route path="/anime/:animeId" element={<DetailedView />} />
               <Route path="/home" element={<Home />} />
               <Route path="/sandbox" element={<Sandbox />} />
             </Route>

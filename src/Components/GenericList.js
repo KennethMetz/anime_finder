@@ -55,7 +55,7 @@ export const GenericList = (props) => {
             <div
               id="title"
               onClick={() => {
-                navigate("/detailedview", { state: movie });
+                navigate(`/anime/${movie.id}`, { state: movie });
               }}
             >
               {movie.display_name}
@@ -95,7 +95,7 @@ export const GenericList = (props) => {
               className="overlaidFill"
               id="gradientFill"
               onClick={() => {
-                navigate("/detailedview", { state: movie });
+                navigate(`/anime/${movie.id}`, { state: movie });
               }}
             ></div>
           </div>
