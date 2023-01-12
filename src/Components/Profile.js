@@ -92,7 +92,7 @@ export default function Profile() {
                 <ListItemButton
                   sx={{ padding: 0 }}
                   onClick={() => {
-                    navigate("/detailedview", { state: item });
+                    navigate(`/anime/${item.id}`, { state: item });
                   }}
                 >
                   <ListItemAvatar>
@@ -143,7 +143,7 @@ export default function Profile() {
                 <ListItemButton
                   sx={{ padding: 0 }}
                   onClick={() => {
-                    navigate("/detailedview", { state: item });
+                    navigate(`/anime/${item.id}`, { state: item });
                   }}
                 >
                   <ListItemAvatar>

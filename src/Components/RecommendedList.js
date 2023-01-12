@@ -53,7 +53,7 @@ export const RecommendedList = (props) => {
             <div
               id="title"
               onClick={() => {
-                navigate("/detailedview", { state: movie });
+                navigate(`/anime/${movie.id}`, { state: movie });
               }}
             >
               {movie.display_name}
@@ -92,7 +92,7 @@ export const RecommendedList = (props) => {
               className="overlaidFill"
               id="gradientFill"
               onClick={() => {
-                navigate("/detailedview", { state: movie });
+                navigate(`/anime/${movie.id}`, { state: movie });
               }}
             ></div>
           </div>

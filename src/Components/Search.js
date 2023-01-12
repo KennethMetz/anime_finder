@@ -79,7 +79,7 @@ export default function Search() {
             {searchResults.map((item, index) => (
               <ListItemButton
                 onClick={() => {
-                  navigate("/detailedview", { state: item });
+                  navigate(`/anime/${item.id}`, { state: item });
                 }}
                 key={index}
               >

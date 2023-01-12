@@ -42,7 +42,7 @@ export default function TitleAutocomplete(search) {
         onChange={(event, newValue) => {
           if (newValue !== null) {
             setInputValue("");
-            navigate("/detailedview", { state: newValue });
+            navigate(`/anime/${newValue.id}`, { state: newValue });
           }
         }}
         inputValue={inputValue}
