@@ -12,3 +12,16 @@ export async function APISearch(inputValue) {
     console.log(error);
   }
 }
+
+export async function APIGetAnime(animeId) {
+  try {
+    let response = await fetch(
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/${animeId}`,
+      { mode: "cors" }
+    );
+    let responseJson = await response.json();
+    return responseJson;
+  } catch (error) {
+    console.log(error);
+  }
+}
