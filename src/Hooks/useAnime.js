@@ -25,7 +25,13 @@ export default function useAnime(animeId, cachedAnime) {
     setFetchedAnime(undefined);
     setError(undefined);
     APIGetAnime(animeId)
-      .then((data) => setFetchedAnime(data))
+      .then((data) => {
+        if (data.id.toString() === animeId) {
+          setFetchedAnime(data);
+        } else {
+          throw new Error("Bad anime data returned by API.");
+        }
+      })
       .catch((err) => setError(err));
   }, [animeId, fetchedAnime, cachedAnime]);
 
