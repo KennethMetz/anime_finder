@@ -98,9 +98,10 @@ export default function DetailedView() {
                   console.log(localUser);
                   SaveToFirestore(user, temp);
                 }}
-                component="div"
-                className="tile"
-                src={location.state.image_large}
+              />
+              <Box
+                component="img"
+                src={frown}
                 alt=""
                 className="overlaidIcon"
                 id="frownIcon"
@@ -226,7 +227,6 @@ export default function DetailedView() {
                 </div>
               ))}
             </div> */}
-            </Grid>
           </Grid>
         </Grid>
         <h3 className="leftH3">Similar Titles</h3>
