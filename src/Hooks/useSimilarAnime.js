@@ -13,9 +13,13 @@ export default function useSimilarAnime(animeId, amount) {
   const [fetched, setFetched] = useState();
   const [error, setError] = useState();
 
+  const requestKey = `${animeId}/${amount}`;
+
+  const result = fetched?.requestKey === requestKey ? fetched.data : undefined;
+
   useEffect(() => {
     // Don't load if we have the right data already.
-    if (fetched) {
+    if (result) {
       return;
     }
     // Otherwise, fetch similar anime from API.
@@ -24,17 +28,15 @@ export default function useSimilarAnime(animeId, amount) {
     APIGetSimilarAnime(animeId, amount)
       .then((data) => {
         if (data) {
-          setFetched(data);
+          setFetched({ requestKey, data });
         } else {
           throw new Error("Bad similar anime data returned by API.");
         }
       })
       .catch((err) => setError(err));
-  }, [animeId, amount, fetched]);
+  }, [animeId, amount, result]);
 
-  const result = fetched;
-
-  const loading = !fetched && !error;
+  const loading = !result && !error;
 
   return [result, loading, error];
 }
