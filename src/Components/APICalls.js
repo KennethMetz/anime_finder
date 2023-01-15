@@ -22,6 +22,17 @@ export async function APIGetAnime(animeId) {
   return await response.json();
 }
 
+export async function APIGetSimilarAnime(animeId, amount) {
+  let response = await fetch(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/${animeId}/similar` +
+      `?amount=${amount ?? 8}`,
+    { mode: "cors" }
+  );
+  await handleErrors(response);
+  const responseJson = await response.json();
+  return responseJson.items.map((item) => item.anime);
+}
+
 async function handleErrors(response) {
   if (!response.ok) {
     const message = await response.text();

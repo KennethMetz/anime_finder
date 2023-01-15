@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import { Grid, ListItem, ListItemText } from "@mui/material";
 import { GenericList } from "./GenericList";
 import { RecommendedList } from "./RecommendedList";
-import RecommendContent from "./RecommendContent";
 import { Box, Container } from "@mui/system";
 import crunchyroll from "../Styles/images/crunchyroll.webp";
 import funimation from "../Styles/images/funimation.svg";
@@ -21,6 +20,7 @@ import { flushSync } from "react-dom";
 import LikeButtons from "./LikeButtons";
 import { APIGetAnime } from "./APICalls";
 import useAnime from "../Hooks/useAnime";
+import SimilarContent from "./SimilarContent";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -230,7 +230,7 @@ export default function DetailedView() {
           </Grid>
         </Grid>
         <h3 className="leftH3">Similar Titles</h3>
-        <RecommendContent movies={anime}></RecommendContent>
+        <SimilarContent animeId={anime.id} amount={8} />
       </Container>
     </div>
   );
