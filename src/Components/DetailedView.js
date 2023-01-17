@@ -152,26 +152,15 @@ export default function DetailedView() {
                 })}
               />
             </ListItem>
-            <ListItem sx={{ paddingTop: 0 }}>
-              {/* TERNARY BELOW SCREENS FOR WHETHER 'EPISODE' SHOULD PRINT AS PLURAL OR NOT */}
-              {anime.episodes > 1 ? (
-                <ListItemText
-                  primary={`${anime.format} • ${anime.episodes} episodes`}
-                  primaryTypographyProps={{
-                    fontFamily: "interMedium",
-                    fontSize: "1.0rem",
-                    whiteSpace: "pre-line",
-                  }}
-                />
-              ) : (
-                <ListItemText
-                  primary={`${anime.format} • ${anime.episodes} episode`}
-                  primaryTypographyProps={{
-                    fontFamily: "interMedium",
-                    fontSize: "1.0rem",
-                  }}
-                />
-              )}
+            <ListItem sx={{ paddingTop: 0, pb: 0 }}>
+              <ListItemText
+                primary={getFormatAndEpisodesText(anime)}
+                primaryTypographyProps={{
+                  fontFamily: "interMedium",
+                  fontSize: "1.0rem",
+                  whiteSpace: "pre-line",
+                }}
+              />
             </ListItem>
             <ListItem>
               <ListItemText
@@ -234,4 +223,14 @@ export default function DetailedView() {
       </Container>
     </div>
   );
+}
+
+function getFormatAndEpisodesText(anime) {
+  if (anime.episodes === 1) {
+    return `${anime.format} • ${anime.episodes} episode`;
+  } else if (anime.episodes > 1) {
+    return `${anime.format} • ${anime.episodes} episodes`;
+  } else {
+    return `${anime.format}`;
+  }
 }
