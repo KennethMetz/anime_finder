@@ -105,7 +105,10 @@ export default function Onboarding() {
             </Button>
           </div>
         ) : (
-          <Link to="/home" style={{ display: "flex", justifyContent: "right" }}>
+          <Link
+            to="/register"
+            style={{ display: "flex", justifyContent: "right" }}
+          >
             <Button
               variant="contained"
               size="large"

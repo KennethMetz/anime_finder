@@ -19,10 +19,17 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
 
 export async function SaveToFirestore(user, localUser) {
   //   const [user] = useAuthState(auth);
+
   if (user) {
     try {
-      // let data = JSON.stringify(localUser);
-
+      //DELETING THE BELOW AWAIT CAUSES THE FOLLOWING UPDATEDOC TO ERROR OUT: "NO DOCUMENT TO UPDATE"
+      const userProf = await getDoc(doc(db, "users", user.uid));
+      if (userProf.exists()) {
+        console.log("THE PROFILE EXISTS!!");
+      } else {
+        console.log("No profile exists.");
+      }
+      //**************END OF AWAIT REFERENCED IN ABOVE COMMENT**********************
       await updateDoc(doc(db, "users", user.uid), {
         likes: localUser.likes,
         dislikes: localUser.dislikes,

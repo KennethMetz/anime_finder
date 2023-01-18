@@ -6,6 +6,7 @@ import {
   signInWithGoogle,
   signInWithTwitter,
   logInWithPhoneNumber,
+  logInAnon,
 } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth, signInWithRedirect } from "firebase/auth";
@@ -72,6 +73,9 @@ export default function Login() {
           onClick={signInWithTwitter}
         >
           Login with Twitter
+        </button>
+        <button className="login__btn login__guest" onClick={logInAnon}>
+          Continue as Guest
         </button>
         <div>
           <Link to="/reset">Forgot Password</Link>

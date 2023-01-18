@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import {
   auth,
+  logInAnon,
   registerWithEmailAndPassword,
   signInWithGoogle,
   signInWithTwitter,
@@ -68,6 +69,9 @@ export default function Register() {
           onClick={signInWithTwitter}
         >
           Register with Twitter
+        </button>
+        <button className="login__btn login__guest" onClick={logInAnon}>
+          Continue as Guest
         </button>
         <div>
           Already have an account? <Link to="/login">Login</Link> now.

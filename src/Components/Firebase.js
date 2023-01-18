@@ -15,6 +15,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   browserLocalPersistence,
+  signInAnonymously,
 } from "firebase/auth";
 
 import {
@@ -98,6 +99,34 @@ export const signInWithTwitter = async () => {
           name: user.displayName,
           authProvider: "twitter",
           email: user.email,
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Anonymous login
+export const logInAnon = async () => {
+  try {
+    const res = await signInAnonymously(auth);
+    const user = res.user;
+    console.log(user);
+    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    const docs = await getDocs(q);
+    if (docs.docs.length === 0) {
+      if (user.uid) {
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          name: "guest",
+          authProvider: "anonymous",
+        });
+      } else {
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          name: "guest",
+          authProvider: "anonymous",
         });
       }
     }
