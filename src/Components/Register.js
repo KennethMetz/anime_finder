@@ -27,8 +27,9 @@ export default function Register() {
   useEffect(() => {
     if (loading) return;
     if (user) {
-      SaveToFirestore(user, localUser);
-      navigate("/home");
+      SaveToFirestore(user, localUser).then(() => {
+        navigate("/home");
+      });
     }
   }, [user, loading]);
   return (

@@ -27,6 +27,7 @@ import {
   addDoc,
   setDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 // Firebase authentication initialization
@@ -117,17 +118,25 @@ export const logInAnon = async () => {
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
       if (user.uid) {
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          name: "guest",
-          authProvider: "anonymous",
-        });
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            uid: user.uid,
+            name: "guest",
+            authProvider: "anonymous",
+          },
+          { merge: true }
+        );
       } else {
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          name: "guest",
-          authProvider: "anonymous",
-        });
+        await updateDoc(
+          doc(db, "users", user.uid),
+          {
+            uid: user.uid,
+            name: "guest",
+            authProvider: "anonymous",
+          },
+          { merge: true }
+        );
       }
     }
   } catch (error) {
