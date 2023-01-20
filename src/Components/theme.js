@@ -15,6 +15,17 @@ const theme = createTheme({
       text: "#000000",
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      fourHundred: 400,
+      fiveHundred: 500,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
 });
 
 export default theme;

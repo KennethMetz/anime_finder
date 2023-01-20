@@ -57,21 +57,23 @@ export default function Onboarding() {
         {/* <Link to="/home"> */}
         <div className="welcomeBanner">
           <img src={logo} alt="" className="welcomeLogo" />
-          <h1
-            className="welcomeTitle"
-            style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
-          >
-            Edward
-          </h1>
-          <h1
-            className="welcomeTitle"
-            style={{ color: theme.palette.day.primary }}
-          >
-            ML
-          </h1>
+          <div className="welcomeTextBlock">
+            <h1
+              className="welcomeTitle"
+              style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+            >
+              Edward
+            </h1>
+            <h1
+              className="welcomeTitle"
+              style={{ color: theme.palette.day.primary }}
+            >
+              ML
+            </h1>
+          </div>
         </div>
         {/* </Link> */}
-        <Container maxWith="lg">
+        <Container maxWidth="lg">
           <h4 className="leftH4">Let's Get Started!!</h4>
           <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
             EdwardML uses its giant computer brain to help you decide which
