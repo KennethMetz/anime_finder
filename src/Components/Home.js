@@ -58,8 +58,7 @@ export default function Home() {
 
   async function getRandomAnimeListing(url, animeRandom, setAnimeRandom) {
     let tempItem = [];
-    // let k = 0;
-    for (let k = 0; k < 5; k++) {
+    for (let k = 0; k < 6; k++) {
       try {
         let response = await fetch(`${url}page=${randomPage[k]}`, {
           mode: "cors",
@@ -126,7 +125,7 @@ export default function Home() {
   }
 
   function getRandomNumbers() {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       randomPage[i] = Math.floor(Math.random() * 250 + 1);
       randomItem[i] = Math.floor(Math.random() * 10);
     }
