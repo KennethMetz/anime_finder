@@ -40,7 +40,7 @@ function Header() {
             paddingBottom: 2,
           }}
         >
-          <Grid item xs={2.5}>
+          <Grid item lg={2.5} md={2.5} sm={4.25} xs={9}>
             <Link to="/home">
               <div className="logo">
                 <img src={logo} alt="" />
@@ -60,12 +60,22 @@ function Header() {
             </Link>
             <div></div>
           </Grid>
-          <Grid item xs={7.5}>
+          <Grid
+            item
+            lg={8.5}
+            md={8.5}
+            sm={5.5}
+            xs={12}
+            order={{ xs: 3, sm: 2 }}
+          >
             {TitleAutocomplete()}
           </Grid>
           <Grid
             item
-            xs={2}
+            sm={2}
+            md={1}
+            xs={3}
+            order={{ xs: 2, sm: 3 }}
             textAlign="right"
             sx={{ display: "flex", justifyContent: "right" }}
           >
@@ -77,37 +87,6 @@ function Header() {
             </Link>
             {DropMenu()}
           </Grid>
-
-          {/*
-        <ul>
-          <Link to="/">
-            <li>HOME</li>
-          </Link>
-
-           {user ? (
-            <Link to="Profile">
-              <li>MY PROFILE</li>
-            </Link>
-          ) : null}
-
-          {!user || !user.displayName ? null : <li>{user.displayName}</li>}
-          {!user ? (
-            <Link to="Login">
-              <li>LOGIN</li>
-            </Link>
-          ) : (
-            <Link to="/logout">
-              <button
-                onClick={(e) => {
-                  logout();
-                  setLocalUser([{ likes: [], dislikes: [] }]);
-                }}
-              >
-                LOGOUT
-              </button>
-            </Link> 
-          )}
-        </ul>*/}
         </Grid>
       </Container>
     </div>
