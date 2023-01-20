@@ -57,22 +57,27 @@ export default function Register() {
     <div className="register">
       <Container maxWidth="lg">
         <div className="welcomeBanner">
-          <img src={logo} alt="" className="welcomeLogo" />
-          <div className="welcomeTextBlock">
-            <h1
-              className="welcomeTitle"
-              style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
-            >
-              Edward
-            </h1>
-            <h1
-              className="welcomeTitle"
-              style={{ color: theme.palette.day.primary }}
-            >
-              ML
-            </h1>
-          </div>
+          <Link to="/home">
+            <img src={logo} alt="" className="welcomeLogo" />
+          </Link>
+          <Link to="/home">
+            <div className="welcomeTextBlock">
+              <h1
+                className="welcomeTitle"
+                style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+              >
+                Edward
+              </h1>
+              <h1
+                className="welcomeTitle"
+                style={{ color: theme.palette.day.primary }}
+              >
+                ML
+              </h1>
+            </div>
+          </Link>
         </div>
+
         <h4 className="H4" style={{ textAlign: "center" }}>
           Let's Get Registered!
         </h4>

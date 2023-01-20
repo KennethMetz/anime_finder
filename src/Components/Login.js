@@ -19,6 +19,7 @@ import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { Box, Button, Container, Divider, TextField } from "@mui/material";
 
+import logo from "../Styles/images/logo.svg";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import google from "../Styles/images/google.svg";
 import { User } from "phosphor-react";
@@ -56,6 +57,33 @@ export default function Login() {
   }, [user, loading]);
   return (
     <div className="login">
+      <Container maxWidth="lg">
+        <div className="welcomeBanner">
+          <Link to="/home">
+            <img src={logo} alt="" className="welcomeLogo" />
+          </Link>
+          <Link to="/home">
+            <div className="welcomeTextBlock">
+              <h1
+                className="welcomeTitle"
+                style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+              >
+                Edward
+              </h1>
+              <h1
+                className="welcomeTitle"
+                style={{ color: theme.palette.day.primary }}
+              >
+                ML
+              </h1>
+            </div>
+          </Link>
+        </div>
+
+        <h4 className="H4" style={{ textAlign: "center" }}>
+          Let's Get Logged In!
+        </h4>
+      </Container>
       <Container
         maxWidth="sm"
         sx={{
@@ -64,9 +92,6 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <h4 className="H4" style={{ textAlign: "center", marginTop: "100px" }}>
-          Let's Get Logged In!
-        </h4>
         <div className="register__container" style={{ marginBottom: "50px" }}>
           {/* *******************Google Button************************** */}
           <Button
@@ -213,6 +238,7 @@ export default function Login() {
               style: {
                 fontSize: "1.0rem",
                 fontFamily: "interMedium",
+                marginBottom: "88.5px",
               },
             }}
             sx={{

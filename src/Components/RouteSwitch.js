@@ -26,8 +26,6 @@ const RouteSwitch = () => {
           <Routes>
             <Route element={<HeaderLayout />}>
               {/* <Route path="/" element={<Onboarding />} /> */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/logout" element={<Logout />} />
               <Route path="/reset" element={<Reset />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
@@ -37,6 +35,8 @@ const RouteSwitch = () => {
               <Route path="/sandbox" element={<Sandbox />} />
             </Route>
             <Route element={<NoHeaderLayout />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
               <Route path="/" element={<Onboarding />} />
               <Route path="/register" element={<Register />} />
             </Route>
