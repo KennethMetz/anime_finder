@@ -102,6 +102,7 @@ export default function Search() {
             There were (0) matching results for the search term: "{search}"
           </Box>
         )}
+        <div className="gap" />
       </Container>
     </div>
   );

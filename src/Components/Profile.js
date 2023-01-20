@@ -166,6 +166,7 @@ export default function Profile() {
           ""
         )}
       </Typography>
+      <div className="gap" />
     </Container>
   );
 }

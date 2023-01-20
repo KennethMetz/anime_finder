@@ -207,6 +207,7 @@ export default function Home() {
       <AnimeGrid items={animeMH} />
       <h4>Random</h4>
       <AnimeGrid items={animeRandom} />
+      <div className="gap" />
     </Container>
   );
 }

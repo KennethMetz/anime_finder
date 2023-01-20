@@ -128,8 +128,7 @@ export default function Onboarding() {
             </Button>
           </Link>
         )}
-        <br />
-        <br />
+        <div style={{ marginTop: "30px" }} />
       </Container>
     </div>
   );
