@@ -1,5 +1,5 @@
 import useSimilarAnime from "../Hooks/useSimilarAnime";
-import { RecommendedList } from "./RecommendedList";
+import AnimeGrid from "./AnimeGrid";
 
 export default function SimilarContent({ animeId, amount }) {
   const [similar, loading, error] = useSimilarAnime(animeId, amount);
@@ -7,7 +7,7 @@ export default function SimilarContent({ animeId, amount }) {
   return (
     <div>
       {loading ? <div id="loading"></div> : ""}
-      <RecommendedList movies={similar ?? []} />
+      <AnimeGrid items={similar ?? []} />
     </div>
   );
 }
