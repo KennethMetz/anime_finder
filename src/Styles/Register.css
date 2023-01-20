@@ -1,33 +1,60 @@
-.register {
-  height: 100vh;
-  width: 100vw;
+/* EdwardML title styling */
+
+.welcomeBanner {
   display: flex;
-  align-items: center;
   justify-content: center;
 }
+
+.welcomeTitle {
+  font-family: montserrat;
+  font-size: 4rem;
+}
+
+.welcomeLogo {
+  width: 81px;
+}
+
+/* Registration form styling */
+
 .register__container {
   display: flex;
   flex-direction: column;
   text-align: center;
-  background-color: #dcdcdc;
-  padding: 30px;
+  align-items: center;
+  border: 1px #d9d9d9 solid;
+  border-radius: 11px;
+  padding: 40px 50px 30px 50px;
 }
-.register__textBox {
-  padding: 10px;
-  font-size: 18px;
-  margin-bottom: 10px;
+
+.MuiButton-root {
+  font-family: interExtraBold;
+  font-size: 1rem;
 }
+
 .register__btn {
+  height: 48px;
+  width: 350px;
+}
+
+input {
+  font-family: interMedium;
+  font-size: 1rem;
+  border-radius: 9px;
+  border: 1px #d9d9d9 solid;
   padding: 10px;
-  font-size: 18px;
-  margin-bottom: 10px;
-  border: none;
-  color: white;
-  background-color: black;
+  margin-bottom: 24px;
+  width: 350px;
+  height: 32343px;
 }
-.register__google {
-  background-color: #4285f4;
+
+.MuiOutlinedInput-root {
+  font-family: interMedium;
 }
-.register div {
-  margin-top: 7px;
+
+.MuiInputBase-input {
+  height: 60px;
+}
+
+.MuiOutlinedInput-input {
+  height: 60px;
 }
