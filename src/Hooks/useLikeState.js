@@ -8,11 +8,11 @@ export default function useLikeState(anime) {
   const [user] = useAuthState(auth);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
-  const liked = Boolean(localUser.likes.find((x) => x.id === anime.id));
-  const disliked = Boolean(localUser.dislikes.find((x) => x.id === anime.id));
+  const likes = localUser.likes ?? [];
+  const dislikes = localUser.dislikes ?? [];
 
-  const likes = localUser.likes;
-  const dislikes = localUser.dislikes;
+  const liked = Boolean(likes.find((x) => x.id === anime.id));
+  const disliked = Boolean(dislikes.find((x) => x.id === anime.id));
 
   const setLiked = (value) => {
     const newLocalUser = {
