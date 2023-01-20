@@ -14,7 +14,6 @@ import * as React from "react";
 
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
-import { GenericList } from "./GenericList";
 import Emoji from "./Emoji";
 import { User } from "firebase/auth";
 
@@ -22,9 +21,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { FirebaseError } from "firebase/app";
 import { flushSync } from "react-dom";
-import { RecommendedList } from "./RecommendedList";
 import TitleAutocomplete from "./TitleAutocomplete";
 import { PopulateFromFirestore } from "./Firestore";
+import AnimeGrid from "./AnimeGrid";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -84,7 +83,7 @@ export default function Home() {
     try {
       let data = {
         history: [],
-        amount: 8,
+        amount: 10,
       };
       if (localUser["likes"].length > 0) {
         for (let i = 0; i < localUser["likes"].length; i++) {
@@ -140,23 +139,23 @@ export default function Home() {
   useEffect(() => {
     //Get generic recommendations
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=5",
+      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=6",
       setAnimeHR
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=5",
+      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=6",
       setAnimeMC
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=5",
+      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=6",
       setAnimeMR
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=5",
+      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6",
       setAnimeMPTW
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=5&page=504",
+      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6&page=410",
       setAnimeMH
     );
 
@@ -192,22 +191,22 @@ export default function Home() {
         <h4>Like a show below to receive personalized recommendations!</h4>
       )}
       {loadingRecs ? <div id="loading"></div> : ""}
-      <RecommendedList movies={recommendation} />
+      <AnimeGrid items={recommendation} large />
 
       <div className="gap" />
       {loadingGeneric ? <div id="loading"></div> : ""}
       <h4>Highest Rated</h4>
-      <GenericList movies={animeHR} />
+      <AnimeGrid items={animeHR} />
       <h4>Most Viewed</h4>
-      <GenericList movies={animeMC} />
+      <AnimeGrid items={animeMC} />
       <h4>Most Popular</h4>
-      <GenericList movies={animeMR} />
+      <AnimeGrid items={animeMR} />
       <h4>Hype Beasts</h4>
-      <GenericList movies={animeMPTW} />
+      <AnimeGrid items={animeMPTW} />
       <h4>Most Obscure</h4>
-      <GenericList movies={animeMH} />
+      <AnimeGrid items={animeMH} />
       <h4>Random</h4>
-      <GenericList movies={animeRandom} />
+      <AnimeGrid items={animeRandom} />
     </Container>
   );
 }
