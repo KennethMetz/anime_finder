@@ -15,6 +15,7 @@ import { useTheme } from "@mui/material/styles";
 import logo from "../Styles/images/logo.svg";
 
 import { SaveToFirestore } from "./Firestore";
+import OnboardingButton from "./OnboardingButton";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -70,63 +71,27 @@ export default function Onboarding() {
           </h1>
         </div>
         {/* </Link> */}
-        <h4 className="leftH4">Let's Get Started!!</h4>
-        <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
-          EdwardML uses its giant computer brain to help you decide which anime
-          to watch next, based on your interests.
-          <br /> <br />
-          To begin, choose the shows below that you enjoy or are interested in.
-          You can also mark those you are not interested in. Don’t worry, you
-          can always change this later!
-        </span>
-        <br />
-        <br />
-        <br />
-        {loading ? <div id="loading"></div> : ""}
-
+        <Container maxWith="lg">
+          <h4 className="leftH4">Let's Get Started!!</h4>
+          <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
+            EdwardML uses its giant computer brain to help you decide which
+            anime to watch next, based on your interests.
+            <br /> <br />
+            To begin, choose the shows below that you enjoy or are interested
+            in. You can also mark those you are not interested in. Don’t worry,
+            you can always change this later!
+          </span>
+          <br />
+          <br />
+          <br />
+          {loading ? <div id="loading"></div> : ""}
+        </Container>
         <OnboardingList movies={animeMR} />
         <br />
         {localUser["likes"] && localUser["likes"].length < 1 ? (
-          <div style={{ display: "flex", justifyContent: "right" }}>
-            <Button
-              variant="contained"
-              disabled
-              size="large"
-              sx={{
-                minWidth: "211px",
-                minHeight: "48px",
-                marginTop: "20px",
-                fontSize: "1rem",
-                borderRadius: "24px",
-                color: "white",
-              }}
-            >
-              LET'S GO!
-            </Button>
-          </div>
+          <OnboardingButton disabled={true} />
         ) : (
-          <Link
-            to="/register"
-            style={{ display: "flex", justifyContent: "right" }}
-          >
-            <Button
-              variant="contained"
-              size="large"
-              sx={{
-                minWidth: "211px",
-                minHeight: "48px",
-                marginTop: "20px",
-                fontSize: "1rem",
-                borderRadius: "24px",
-                backgroundColor: theme.palette.day.primary,
-              }}
-              onClick={(e) => {
-                SaveToFirestore(user, localUser);
-              }}
-            >
-              LET'S GO!
-            </Button>
-          </Link>
+          <OnboardingButton />
         )}
         <div style={{ marginTop: "30px" }} />
       </Container>
