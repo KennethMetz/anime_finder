@@ -5,15 +5,6 @@
   justify-content: center;
 }
 
-.welcomeTitle {
-  font-family: montserrat;
-  font-size: 4rem;
-}
-
-.welcomeLogo {
-  width: 81px;
-}
-
 /* Registration form styling */
 
 .register__container {
@@ -24,16 +15,31 @@
   border: 1px #d9d9d9 solid;
   border-radius: 11px;
   padding: 40px 50px 30px 50px;
+  max-width: 400px;
+}
+
+@media (max-width: 600px) {
+  .register__container {
+    max-width: 295px;
+  }
+}
+
+@media (max-width: 400px) {
+  .register__container {
+    border: none;
+    max-width: 280px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
 
 .MuiButton-root {
   font-family: interExtraBold;
-  font-size: 1rem;
 }
 
 .register__btn {
   height: 48px;
-  width: 350px;
+  max-width: 350px;
 }
 
 input {
@@ -43,8 +49,7 @@ input {
   border: 1px #d9d9d9 solid;
   padding: 10px;
   margin-bottom: 24px;
-  width: 350px;
-  height: 32343px;
+  max-width: 350px;
 }
 
 .MuiOutlinedInput-root {

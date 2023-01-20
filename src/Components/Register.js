@@ -86,16 +86,22 @@ export default function Register() {
           alignItems: "center",
         }}
       >
-        <div
-          className="register__container"
-          style={{ width: "400px", marginBottom: "50px" }}
-        >
+        <div className="register__container" style={{ marginBottom: "50px" }}>
           {/* *******************Google Button************************** */}
           <Button
             variant="outlined"
             className="register__btn"
             sx={{
               ...regButtonStyling,
+              fontSize: {
+                xs: "0.9rem",
+                fourHundred: "1rem",
+              },
+              width: {
+                sm: "350px",
+                fourHundred: "280px",
+                xs: "250px",
+              },
               "&:hover": {
                 border: "3px #EF2727 solid",
               },
@@ -108,7 +114,10 @@ export default function Register() {
                 sx={{
                   width: "42px",
                   height: "42px",
-                  marginRight: "20px",
+                  paddingRight: {
+                    xs: "10px",
+                    fourHundred: "20px",
+                  },
                 }}
                 alt=""
               />
@@ -122,6 +131,15 @@ export default function Register() {
             className="register__btn"
             sx={{
               ...regButtonStyling,
+              fontSize: {
+                xs: "0.9rem",
+                fourHundred: "1rem",
+              },
+              width: {
+                sm: "350px",
+                fourHundred: "280px",
+                xs: "250px",
+              },
               "&:hover": {
                 border: "3px #EF2727 solid",
               },
@@ -132,7 +150,10 @@ export default function Register() {
                 sx={{
                   width: "42px",
                   height: "42px",
-                  paddingRight: "20px",
+                  paddingRight: {
+                    xs: "10px",
+                    fourHundred: "20px",
+                  },
                   color: "#1D9BF0",
                 }}
               />
@@ -147,6 +168,15 @@ export default function Register() {
             sx={{
               ...regButtonStyling,
               marginBottom: "0px",
+              fontSize: {
+                xs: "0.9rem",
+                fourHundred: "1rem",
+              },
+              width: {
+                sm: "350px",
+                fourHundred: "280px",
+                xs: "250px",
+              },
               "&:hover": {
                 border: "3px #EF2727 solid",
               },
@@ -157,7 +187,14 @@ export default function Register() {
                 size={42}
                 color="black"
                 weight="light"
-                style={{ paddingRight: "20px" }}
+                style={{
+                  paddingRight: "20px",
+                  width: {
+                    fourHundred: "42px",
+                    xs: "31px",
+                  },
+                  height: { fourHundred: "42px", xs: "31px" },
+                }}
               />
             }
           >
@@ -198,7 +235,11 @@ export default function Register() {
               },
             }}
             sx={{
-              width: "350px",
+              width: {
+                xs: "250px",
+                fourHundred: "280px",
+                sm: "350px",
+              },
               borderRadius: "9px",
               marginBottom: "20px",
               fontFamily: "interMedium",
@@ -228,7 +269,11 @@ export default function Register() {
               },
             }}
             sx={{
-              width: "350px",
+              width: {
+                xs: "250px",
+                fourHundred: "280px",
+                sm: "350px",
+              },
               borderRadius: "9px",
               marginBottom: "20px",
             }}
@@ -256,7 +301,11 @@ export default function Register() {
               },
             }}
             sx={{
-              width: "350px",
+              width: {
+                xs: "250px",
+                fourHundred: "280px",
+                sm: "350px",
+              },
               borderRadius: "9px",
               marginBottom: "20px",
               fontFamily: "interMedium",
