@@ -14,7 +14,7 @@ export default function DislikeButton({ anime }) {
   const weight = disliked ? "fill" : "regular";
 
   //Theme colors are taken from the default "palette" theme and MUST have a child color titled "main"
-  const buttonColor = disliked ? "primary" : "grey";
+  const buttonColor = disliked ? "primary" : "inherit";
 
   return (
     <Tooltip title="Not for me">

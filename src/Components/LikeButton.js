@@ -14,7 +14,7 @@ export default function LikeButton({ anime }) {
   const weight = liked ? "fill" : "regular";
 
   //Theme colors are taken from the default "palette" theme and MUST have a child color titled "main"
-  const buttonColor = liked ? "primary" : "grey";
+  const buttonColor = liked ? "primary" : "inherit";
 
   return (
     <Tooltip title="I liked it">
