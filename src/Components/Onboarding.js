@@ -6,7 +6,6 @@ import * as React from "react";
 
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
-import { OnboardingList } from "./OnboardingList";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
@@ -16,6 +15,7 @@ import logo from "../Styles/images/logo.svg";
 
 import { SaveToFirestore } from "./Firestore";
 import OnboardingButton from "./OnboardingButton";
+import OnboardingAnimeGrid from "./OnboardingAnimeGrid";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -73,22 +73,20 @@ export default function Onboarding() {
           </div>
         </div>
         {/* </Link> */}
-        <Container maxWidth="lg">
-          <h4 className="leftH4">Let's Get Started!!</h4>
-          <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
-            EdwardML uses its giant computer brain to help you decide which
-            anime to watch next, based on your interests.
-            <br /> <br />
-            To begin, choose the shows below that you enjoy or are interested
-            in. You can also mark those you are not interested in. Don’t worry,
-            you can always change this later!
-          </span>
-          <br />
-          <br />
-          <br />
-          {loading ? <div id="loading"></div> : ""}
-        </Container>
-        <OnboardingList movies={animeMR} />
+        <h4 className="leftH4">Let's Get Started!!</h4>
+        <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
+          EdwardML uses its giant computer brain to help you decide which anime
+          to watch next, based on your interests.
+          <br /> <br />
+          To begin, choose the shows below that you enjoy or are interested in.
+          You can also mark those you are not interested in. Don’t worry, you
+          can always change this later!
+        </span>
+        <br />
+        <br />
+        <br />
+        {loading ? <div id="loading"></div> : ""}
+        <OnboardingAnimeGrid items={animeMR ?? []} large onboarding />
         <br />
         {localUser["likes"] && localUser["likes"].length < 1 ? (
           <OnboardingButton disabled={true} />
