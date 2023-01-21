@@ -44,8 +44,9 @@ export default function AnimeCard({ anime, large, onChangeSelected }) {
         <Box
           sx={{
             height: "100%",
-            display: selected ? "flex" : "none",
-            flexDirection: selected ? "column" : "unset",
+            display: "flex",
+            flexDirection: "column",
+            visibility: selected ? "visible" : "hidden",
             color: "#fff",
             cursor: "pointer",
             justifyContent: "flex-end",
