@@ -16,6 +16,7 @@ import {
   browserSessionPersistence,
   browserLocalPersistence,
   signInAnonymously,
+  updateProfile,
 } from "firebase/auth";
 
 import {
@@ -186,6 +187,10 @@ export const logInWithEmailAndPassword = async (email, password) => {
 export const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
+    //Writes name to firebase's auth profile....as this isn't done automatically for some odd reason.
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    });
     const user = res.user;
     await setDoc(doc(db, "users", user.uid), {
       uid: user.uid,
