@@ -2,7 +2,7 @@ import "../Styles/DetailedView.css";
 
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { Grid, ListItem, ListItemText } from "@mui/material";
+import { Grid, ListItem, ListItemText, Paper, useTheme } from "@mui/material";
 import { GenericList } from "./GenericList";
 import { RecommendedList } from "./RecommendedList";
 import { Box, Container } from "@mui/system";
@@ -25,6 +25,7 @@ import SimilarContent from "./SimilarContent";
 export default function DetailedView() {
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user, loading, error] = useAuthState(auth);
@@ -70,53 +71,20 @@ export default function DetailedView() {
       <Container maxWidth="lg">
         <br></br>
         <Grid container spacing={0} rowSpacing={0}>
-          <Grid item xs={3} className="tileContainer">
-            <div
-              style={{
-                backgroundImage: "url(" + anime.image_large + ")",
+          <Grid item xs={3}>
+            <Paper
+              elevation={3}
+              sx={{
+                width: "100%",
+                aspectRatio: "0.7",
+                bgcolor: theme.palette.action.disabledBackground,
+                backgroundImage: `url(${anime.image_large})`,
                 backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                height: "100%",
+                backgroundSize: "cover",
+                borderRadius: "8px",
+                overflow: "clip",
               }}
-              component="div"
-              className="tile"
-              src={anime.image_large}
-              alt=""
-            >
-              <Box
-                component="img"
-                src={heart}
-                alt=""
-                className="overlaidIcon"
-                id="heartIcon"
-                onClick={(e) => {
-                  let temp = {
-                    ...localUser,
-                    likes: [...localUser["likes"], anime],
-                  };
-                  setLocalUser(temp);
-                  console.log(localUser);
-                  SaveToFirestore(user, temp);
-                }}
-              />
-              <Box
-                component="img"
-                src={frown}
-                alt=""
-                className="overlaidIcon"
-                id="frownIcon"
-                onClick={(e) => {
-                  let temp = {
-                    ...localUser,
-                    dislikes: [...localUser["dislikes"], anime],
-                  };
-                  setLocalUser(temp);
-                  console.log(localUser);
-                  SaveToFirestore(user, temp);
-                }}
-              />
-              <div className="overlaidFill" id="gradientFill"></div>
-            </div>
+            />
           </Grid>
           <Grid item xs={9}>
             {/* <ListItem
