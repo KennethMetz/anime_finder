@@ -92,7 +92,7 @@ export default function DropMenu() {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        sx={{ bgcolor: theme.palette.primary.main }}
+        sx={{ bgcolor: theme.palette.primary.main, cursor: "pointer" }}
       />
       <Popper
         open={open}
