@@ -7,16 +7,26 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
-import { List, UserCircle } from "phosphor-react";
+import { List, SignOut, User, UserCircle } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { auth, logout } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 export default function DropMenu() {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
-  console.log(user);
+  const theme = useTheme();
+
   const [localUser, setLocalUser] = React.useContext(LocalUserContext);
 
   const [open, setOpen] = React.useState(false);
@@ -72,17 +82,17 @@ export default function DropMenu() {
 
   return (
     <Stack>
-      <UserCircle
-        size={45}
+      <Avatar
+        // size={45}
         ref={anchorRef}
         id="composition-button"
+        alt={user?.displayName}
+        src="purposefully bad link"
         aria-controls={open ? "composition-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        style={{
-          paddingLeft: "10px",
-        }}
+        sx={{ bgcolor: theme.palette.primary.main }}
       />
       <Popper
         open={open}
@@ -100,22 +110,47 @@ export default function DropMenu() {
                 placement === "bottom-start" ? "left top" : "left bottom",
             }}
           >
-            <Paper>
+            <Paper elevation={6}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
-                  autoFocusItem={open}
+                  // autoFocusItem={open}
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
+                  <ListItemButton
+                    disabled
+                    divider
+                    sx={{
+                      color: theme.palette.primary.main,
+                      "&.Mui-disabled": { opacity: 1.0 },
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={user?.displayName}
+                        src="purposefully bad link"
+                        sx={{ bgcolor: theme.palette.primary.main }}
+                      />
+                    </ListItemAvatar>
+
+                    <ListItemText
+                      primary={
+                        user?.displayName ? `${user?.displayName}` : "Guest"
+                      }
+                      primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                    />
+                  </ListItemButton>
                   <MenuItem
+                    sx={{ marginTop: "10px" }}
                     onClick={(e) => {
                       sendToProfile(e);
                     }}
                   >
-                    {user.displayName
-                      ? `${user.displayName}'s Profile`
-                      : "Guest's Profile"}
+                    <ListItemIcon>
+                      <User size={24} />
+                    </ListItemIcon>
+                    Your Profile
                   </MenuItem>
 
                   {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
@@ -126,6 +161,9 @@ export default function DropMenu() {
                         sendToLogout(e);
                       }}
                     >
+                      <ListItemIcon>
+                        <SignOut size={24} />
+                      </ListItemIcon>
                       Logout
                     </MenuItem>
                   ) : (
@@ -134,6 +172,10 @@ export default function DropMenu() {
                         sendToLogin(e);
                       }}
                     >
+                      {" "}
+                      <ListItemIcon>
+                        <SignOut size={24} />
+                      </ListItemIcon>
                       Login
                     </MenuItem>
                   )}
