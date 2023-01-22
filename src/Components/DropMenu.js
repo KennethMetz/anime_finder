@@ -7,7 +7,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
-import { List } from "phosphor-react";
+import { List, UserCircle } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { auth, logout } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
@@ -72,7 +72,7 @@ export default function DropMenu() {
 
   return (
     <Stack>
-      <List
+      <UserCircle
         size={45}
         ref={anchorRef}
         id="composition-button"

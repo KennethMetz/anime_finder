@@ -79,12 +79,11 @@ function Header() {
             textAlign="right"
             sx={{ display: "flex", justifyContent: "right" }}
           >
-            <Link
+            {/* <Link
               to="/profile"
               style={{ display: "flex", alignItems: "center" }}
             >
-              <UserCircle size={45} />
-            </Link>
+            </Link> */}
             {DropMenu()}
           </Grid>
         </Grid>
