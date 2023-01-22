@@ -16,7 +16,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export default function DropMenu() {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
-
+  console.log(user);
   const [localUser, setLocalUser] = React.useContext(LocalUserContext);
 
   const [open, setOpen] = React.useState(false);
@@ -113,7 +113,9 @@ export default function DropMenu() {
                       sendToProfile(e);
                     }}
                   >
-                    Profile
+                    {user.displayName
+                      ? `${user.displayName}'s Profile`
+                      : "Guest's Profile"}
                   </MenuItem>
 
                   {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
