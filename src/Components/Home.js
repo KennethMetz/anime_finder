@@ -7,6 +7,7 @@ import {
   Box,
   Container,
   TableContainer,
+  Chip,
 } from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -24,6 +25,8 @@ import { flushSync } from "react-dom";
 import TitleAutocomplete from "./TitleAutocomplete";
 import { PopulateFromFirestore } from "./Firestore";
 import AnimeGrid from "./AnimeGrid";
+import GenreChips from "./GenreChips";
+import ShelfTitle from "./ShelfTitle";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -41,6 +44,11 @@ export default function Home() {
 
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+
+  let [selectedGenreHR, setSelectedGenreHR] = useState([]);
+  let [selectedGenreMR, setSelectedGenreMR] = useState([]);
+  let [selectedGenreMC, setSelectedGenreMC] = useState([]);
+  let [selectedGenreMPTW, setSelectedGenreMPTW] = useState([]);
 
   let randomPage = [];
   let randomItem = [];
@@ -138,23 +146,23 @@ export default function Home() {
   useEffect(() => {
     //Get generic recommendations
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=6",
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=6${selectedGenreHR}`,
       setAnimeHR
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=6",
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=6${selectedGenreMC}`,
       setAnimeMC
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=6",
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=6${selectedGenreMR}`,
       setAnimeMR
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6",
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6${selectedGenreMPTW}`,
       setAnimeMPTW
     );
     getAnimeListing(
-      "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6&page=410",
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6&page=410`,
       setAnimeMH
     );
 
@@ -165,7 +173,7 @@ export default function Home() {
       animeRandom,
       setAnimeRandom
     );
-  }, []);
+  }, [selectedGenreHR, selectedGenreMC, selectedGenreMPTW, selectedGenreMR]);
 
   useEffect(() => {
     if (loading) {
@@ -185,7 +193,14 @@ export default function Home() {
       <div className="gap" />
 
       {localUser && localUser["likes"] ? (
-        <h4>For You</h4>
+        <Grid container style={{ alignItems: "center" }}>
+          <Grid item xs={2}>
+            <h4>For You</h4>
+          </Grid>
+          <Grid item xs={10}>
+            {/* <GenreChips /> */}
+          </Grid>
+        </Grid>
       ) : (
         <h4>Like a show below to receive personalized recommendations!</h4>
       )}
@@ -194,13 +209,14 @@ export default function Home() {
 
       <div className="gap" />
       {loadingGeneric ? <div id="loading"></div> : ""}
-      <h4>Highest Rated</h4>
+
+      {ShelfTitle(selectedGenreHR, setSelectedGenreHR, "Highest Rated")}
       <AnimeGrid items={animeHR} />
-      <h4>Most Viewed</h4>
+      {ShelfTitle(selectedGenreMC, setSelectedGenreMC, "Most Popular")}
       <AnimeGrid items={animeMC} />
-      <h4>Most Popular</h4>
+      {ShelfTitle(selectedGenreMR, setSelectedGenreMR, "Most Viewed")}
       <AnimeGrid items={animeMR} />
-      <h4>Hype Beasts</h4>
+      {ShelfTitle(selectedGenreMPTW, setSelectedGenreMPTW, "Hype Beasts")}
       <AnimeGrid items={animeMPTW} />
       <h4>Most Obscure</h4>
       <AnimeGrid items={animeMH} />
