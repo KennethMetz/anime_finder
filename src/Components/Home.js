@@ -8,7 +8,10 @@ import {
   Container,
   TableContainer,
   Chip,
+  ListItemButton,
+  Button,
 } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -27,6 +30,7 @@ import { PopulateFromFirestore } from "./Firestore";
 import AnimeGrid from "./AnimeGrid";
 import GenreChips from "./GenreChips";
 import ShelfTitle from "./ShelfTitle";
+import { Stack } from "@mui/system";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -50,6 +54,8 @@ export default function Home() {
   let [selectedGenreMC, setSelectedGenreMC] = useState([]);
   let [selectedGenreMPTW, setSelectedGenreMPTW] = useState([]);
 
+  let [refresh, setRefresh] = useState(false);
+
   let randomPage = [];
   let randomItem = [];
 
@@ -64,7 +70,12 @@ export default function Home() {
     }
   }
 
-  async function getRandomAnimeListing(url, animeRandom, setAnimeRandom) {
+  async function getRandomAnimeListing(
+    url,
+    animeRandom,
+    setAnimeRandom,
+    refresh
+  ) {
     let tempItem = [];
     for (let k = 0; k < 6; k++) {
       try {
@@ -171,9 +182,16 @@ export default function Home() {
     getRandomAnimeListing(
       `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?`,
       animeRandom,
-      setAnimeRandom
+      setAnimeRandom,
+      refresh
     );
-  }, [selectedGenreHR, selectedGenreMC, selectedGenreMPTW, selectedGenreMR]);
+  }, [
+    selectedGenreHR,
+    selectedGenreMC,
+    selectedGenreMPTW,
+    selectedGenreMR,
+    refresh,
+  ]);
 
   useEffect(() => {
     if (loading) {
@@ -191,7 +209,6 @@ export default function Home() {
   return (
     <Container maxWidth="lg">
       <div className="gap" />
-
       {localUser && localUser["likes"] ? (
         <Grid container style={{ alignItems: "center" }}>
           <Grid item xs={2}>
@@ -206,10 +223,8 @@ export default function Home() {
       )}
       {loadingRecs ? <div id="loading"></div> : ""}
       <AnimeGrid items={recommendation} large />
-
       <div className="gap" />
       {loadingGeneric ? <div id="loading"></div> : ""}
-
       {ShelfTitle(selectedGenreHR, setSelectedGenreHR, "Highest Rated")}
       <AnimeGrid items={animeHR} />
       {ShelfTitle(selectedGenreMC, setSelectedGenreMC, "Most Popular")}
@@ -220,7 +235,17 @@ export default function Home() {
       <AnimeGrid items={animeMPTW} />
       <h4>Most Obscure</h4>
       <AnimeGrid items={animeMH} />
-      <h4>Random</h4>
+      <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
+        <h4>Random</h4>{" "}
+        <Chip
+          // Triggers a re-render of the random anime shelf
+          label="Surprise Me!"
+          onClick={() => {
+            refresh ? setRefresh(false) : setRefresh(true);
+          }}
+          icon={<RefreshIcon />}
+        />
+      </Stack>
       <AnimeGrid items={animeRandom} />
       <div className="gap" />
     </Container>
