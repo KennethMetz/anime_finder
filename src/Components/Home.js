@@ -225,13 +225,29 @@ export default function Home() {
       <AnimeGrid items={recommendation} large />
       <div className="gap" />
       {loadingGeneric ? <div id="loading"></div> : ""}
-      {ShelfTitle(selectedGenreHR, setSelectedGenreHR, "Highest Rated")}
+      <ShelfTitle
+        selectedGenre={selectedGenreHR}
+        setSelectedGenre={setSelectedGenreHR}
+        title={"Highest Rated"}
+      />
       <AnimeGrid items={animeHR} />
-      {ShelfTitle(selectedGenreMC, setSelectedGenreMC, "Most Popular")}
+      <ShelfTitle
+        selectedGenre={selectedGenreMC}
+        setSelectedGenre={setSelectedGenreMC}
+        title={"Most Popular"}
+      />
       <AnimeGrid items={animeMC} />
-      {ShelfTitle(selectedGenreMR, setSelectedGenreMR, "Most Viewed")}
+      <ShelfTitle
+        selectedGenre={selectedGenreMR}
+        setSelectedGenre={setSelectedGenreMR}
+        title={"Most Viewed"}
+      />
       <AnimeGrid items={animeMR} />
-      {ShelfTitle(selectedGenreMPTW, setSelectedGenreMPTW, "Hype Beasts")}
+      <ShelfTitle
+        selectedGenre={selectedGenreMPTW}
+        setSelectedGenre={setSelectedGenreMPTW}
+        title={"Hype Beasts"}
+      />
       <AnimeGrid items={animeMPTW} />
       <h4>Most Obscure</h4>
       <AnimeGrid items={animeMH} />
