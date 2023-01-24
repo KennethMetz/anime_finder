@@ -16,6 +16,7 @@ import logo from "../Styles/images/logo.svg";
 import { SaveToFirestore } from "./Firestore";
 import OnboardingButton from "./OnboardingButton";
 import OnboardingAnimeGrid from "./OnboardingAnimeGrid";
+import SkipOnboardDialog from "./SkipOnboardDialog";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -53,6 +54,7 @@ export default function Onboarding() {
 
   return (
     <div className="App">
+      <SkipOnboardDialog></SkipOnboardDialog>
       <Container maxWidth="lg">
         {/* <Link to="/home"> */}
         <div className="welcomeBanner">
