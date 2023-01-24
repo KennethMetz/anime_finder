@@ -84,7 +84,10 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       temp[index] = { ...temp[index], color: undefined, selected: false };
     }
     for (let i = 0; i < genreState.length; i++) {
-      if (index !== i) temp[i].color = undefined;
+      if (index !== i) {
+        temp[i].color = undefined;
+        temp[i].selected = false;
+      }
     }
 
     setGenreState(temp);
