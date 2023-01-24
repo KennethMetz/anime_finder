@@ -2,7 +2,7 @@ import { Chip, Grid, Stack } from "@mui/material";
 import { setPersistence } from "firebase/auth";
 import { useEffect, useState } from "react";
 
-export default function GenreChips(selectedGenre, setSelectedGenre) {
+export default function GenreChips({ selectedGenre, setSelectedGenre }) {
   let genres = [
     "Action",
     "Award Winning",
