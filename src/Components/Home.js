@@ -154,29 +154,43 @@ export default function Home() {
     recommendContent();
   }, [user, localUser]);
 
+  //Get generic recommendations
   useEffect(() => {
-    //Get generic recommendations
     getAnimeListing(
       `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=6${selectedGenreHR}`,
       setAnimeHR
     );
+  }, [selectedGenreHR]);
+
+  useEffect(() => {
     getAnimeListing(
       `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=6${selectedGenreMC}`,
       setAnimeMC
     );
+  }, [selectedGenreMC]);
+
+  useEffect(() => {
     getAnimeListing(
       `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=6${selectedGenreMR}`,
       setAnimeMR
     );
+  }, [selectedGenreMR]);
+
+  useEffect(() => {
     getAnimeListing(
       `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6${selectedGenreMPTW}`,
       setAnimeMPTW
     );
+  }, [selectedGenreMPTW]);
+
+  useEffect(() => {
     getAnimeListing(
       `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6&page=410`,
       setAnimeMH
     );
+  }, []);
 
+  useEffect(() => {
     getRandomNumbers();
 
     getRandomAnimeListing(
@@ -185,13 +199,7 @@ export default function Home() {
       setAnimeRandom,
       refresh
     );
-  }, [
-    selectedGenreHR,
-    selectedGenreMC,
-    selectedGenreMPTW,
-    selectedGenreMR,
-    refresh,
-  ]);
+  }, [refresh]);
 
   useEffect(() => {
     if (loading) {
