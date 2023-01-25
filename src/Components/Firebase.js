@@ -188,11 +188,25 @@ export const logInWithPhoneNumber = async () => {
 };
 
 //Email and password authentication
-export const logInWithEmailAndPassword = async (email, password) => {
+export const logInWithEmailAndPassword = async (
+  email,
+  password,
+  setLoginError
+) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    setLoginError(undefined);
   } catch (error) {
     console.log(error);
+    if (error["code"].search(/\buser-not-found\b/) > -1) {
+      setLoginError("*Email not found");
+    } else if (error["code"].search(/\bwrong-password\b/) > -1) {
+      setLoginError("*Incorrect password");
+    } else if (error["code"].search(/\btoo-many-requests\b/) > -1) {
+      setLoginError(
+        "*Your account has been locked due to too many login attempts. Please reset your password to unlock your account."
+      );
+    }
   }
 };
 
@@ -223,7 +237,8 @@ export const registerWithEmailAndPassword = async (
   } catch (error) {
     console.log(error);
     //Used to alert user their email address is already in Firebase and can't be used
-    if (error["code"].search(/\bemail-already-in-use\b/)) setEmailError(true);
+    if (error["code"].search(/\bemail-already-in-use\b/) > -1)
+      setEmailError(true);
   }
 };
 

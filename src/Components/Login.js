@@ -17,7 +17,14 @@ import { useTheme } from "@mui/material/styles";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 
 import { LocalUserContext } from "./LocalUserContext";
-import { Box, Button, Container, Divider, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import logo from "../Styles/images/logo.svg";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -32,6 +39,12 @@ export default function Login() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const theme = useTheme();
+
+  let [loginError, setLoginError] = useState(undefined);
+
+  useEffect(() => {
+    console.log(loginError);
+  }, [loginError]);
 
   let regButtonStyling = {
     color: "black",
@@ -285,6 +298,15 @@ export default function Login() {
               fontSize: "1rem",
             }}
           />
+          <Typography
+            sx={{
+              color: "error.main",
+              fontFamily: "interExtraBold",
+              marginTop: "10px",
+            }}
+          >
+            {loginError ? loginError : ""}
+          </Typography>
           {/* *******************EdwardML - 'Login' Button************************** */}
           <Button
             variant="contained"
@@ -300,11 +322,12 @@ export default function Login() {
               backgroundColor: theme.palette.day.primary,
             }}
             onClick={() => {
-              logInWithEmailAndPassword(email, password);
+              logInWithEmailAndPassword(email, password, setLoginError);
             }}
           >
             Login
           </Button>
+
           <Divider
             sx={{
               width: "100%",
