@@ -20,8 +20,8 @@ export async function SaveToFirestore(user, localUser) {
       await setDoc(
         doc(db, "users", user.uid),
         {
-          likes: localUser.likes,
-          dislikes: localUser.dislikes,
+          likes: [...localUser.likes],
+          dislikes: [...localUser.dislikes],
         },
         { merge: true }
       );

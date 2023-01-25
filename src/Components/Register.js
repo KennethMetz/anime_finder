@@ -2,7 +2,7 @@ import "../Styles/Register.css";
 
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   auth,
   logInAnon,
@@ -14,11 +14,20 @@ import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import logo from "../Styles/images/logo.svg";
 import { useTheme } from "@mui/material/styles";
-import { Button, Container, Divider, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { User } from "phosphor-react";
 import { Box } from "@mui/system";
 import google from "../Styles/images/google.svg";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -26,8 +35,10 @@ export default function Register() {
   const [name, setName] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+  const location = useLocation();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const theme = useTheme();
+  const [emailError, setEmailError] = useState();
 
   let regButtonStyling = {
     color: "black",
@@ -40,10 +51,34 @@ export default function Register() {
     marginBottom: "17px",
   };
 
-  const register = () => {
-    if (!name) alert("Please enter name");
-    registerWithEmailAndPassword(name, email, password);
-  };
+  // Define Yup schema
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("*Username is required"),
+    email: Yup.string()
+      .required("*Email is required")
+      .email("*Invalid email, must match pattern: spike@bebop.com")
+      .matches(
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+        "*Invalid email, must match pattern: spike@bebop.com"
+      ),
+    password: Yup.string()
+      .required("*Password is required")
+      .min(6, "*Password must be at least 6 characters long"),
+    // .matches(/[a-z]+/, "Must include one lowercase character")
+    // .matches(/[A-Z]+/, "Must include one uppercase character"),
+  });
+
+  //Use ReactHookForm hooks to validate Yup schema
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+    criteriaMode: "all",
+    resolver: yupResolver(validationSchema),
+  });
+
   useEffect(() => {
     if (loading) return;
     if (user) {
@@ -220,11 +255,14 @@ export default function Register() {
           {/* *******************EdwardML - Username Field************************** */}
           <TextField
             type="text"
+            {...register("username")}
             className="register__textBox"
             value={name}
             onChange={(e) => setName(e.target.value)}
             label="Username"
             required
+            error={errors.username ? true : false}
+            helperText={errors.username?.message}
             inputProps={{
               style: {
                 fontSize: "1.0rem",
@@ -254,11 +292,14 @@ export default function Register() {
           {/* *******************EdwardML - Email Field************************** */}
           <TextField
             type="text"
+            {...register("email")}
             className="register__textBox"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             label="Email"
             required
+            error={errors.email ? true : false}
+            helperText={errors.email?.message}
             inputProps={{
               style: {
                 fontSize: "1.0rem",
@@ -286,11 +327,14 @@ export default function Register() {
           {/* *******************EdwardML - Password Field************************** */}
           <TextField
             type="password"
+            {...register("password")}
             className="register__textBox"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             label="Password"
             required
+            error={errors.password ? true : false}
+            helperText={errors.password?.message}
             inputProps={{
               style: {
                 fontSize: "1.0rem",
@@ -331,10 +375,33 @@ export default function Register() {
               borderRadius: "24px",
               backgroundColor: theme.palette.day.primary,
             }}
-            onClick={register}
+            onClick={handleSubmit(() => {
+              registerWithEmailAndPassword(
+                name,
+                email,
+                password,
+                setEmailError
+              );
+            })}
           >
             Let's Go!
           </Button>
+          <Typography
+            sx={{
+              color: "error.main",
+              marginTop: "10px",
+              fontFamily: "interExtraBold",
+            }}
+          >
+            {errors.username || errors.email || errors.password
+              ? "*Please resolve errors shown above."
+              : ""}
+          </Typography>
+          <Typography
+            sx={{ color: "error.main", fontFamily: "interExtraBold" }}
+          >
+            {emailError ? "*Email address has already been taken." : ""}
+          </Typography>
           <Divider
             sx={{
               width: "100%",

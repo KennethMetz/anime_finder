@@ -196,7 +196,12 @@ export const logInWithEmailAndPassword = async (email, password) => {
   }
 };
 
-export const registerWithEmailAndPassword = async (name, email, password) => {
+export const registerWithEmailAndPassword = async (
+  name,
+  email,
+  password,
+  setEmailError
+) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     //Writes name to firebase's auth profile....as this isn't done automatically for some odd reason.
@@ -214,8 +219,11 @@ export const registerWithEmailAndPassword = async (name, email, password) => {
       },
       { merge: true }
     );
+    setEmailError(false);
   } catch (error) {
     console.log(error);
+    //Used to alert user their email address is already in Firebase and can't be used
+    if (error["code"].search(/\bemail-already-in-use\b/)) setEmailError(true);
   }
 };
 
