@@ -62,12 +62,16 @@ export const signInWithGoogle = async () => {
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: "google",
-        email: user.email,
-      });
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          uid: user.uid,
+          name: user.displayName,
+          authProvider: "google",
+          email: user.email,
+        },
+        { merge: true }
+      );
     }
   } catch (error) {
     console.log(error);
@@ -89,19 +93,27 @@ export const signInWithTwitter = async () => {
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
       if (user.email) {
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          name: user.displayName,
-          authProvider: "twitter",
-          email: user.email,
-        });
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            uid: user.uid,
+            name: user.displayName,
+            authProvider: "twitter",
+            email: user.email,
+          },
+          { merge: true }
+        );
       } else {
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          name: user.displayName,
-          authProvider: "twitter",
-          email: user.email,
-        });
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            uid: user.uid,
+            name: user.displayName,
+            authProvider: "twitter",
+            email: user.email,
+          },
+          { merge: true }
+        );
       }
     }
   } catch (error) {
@@ -192,12 +204,16 @@ export const registerWithEmailAndPassword = async (name, email, password) => {
       displayName: name,
     });
     const user = res.user;
-    await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      name,
-      authProvider: "email/password via firebase",
-      email,
-    });
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name,
+        authProvider: "email/password via firebase",
+        email,
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log(error);
   }
