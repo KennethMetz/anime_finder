@@ -26,6 +26,15 @@ const theme = createTheme({
       xl: 1536,
     },
   },
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: "8px",
+        },
+      },
+    },
+  },
 });
 
 export default theme;
