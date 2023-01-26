@@ -245,7 +245,6 @@ export const registerWithEmailAndPassword = async (
 export const sendPasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent!");
   } catch (error) {
     console.log(error);
   }

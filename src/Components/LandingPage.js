@@ -16,7 +16,7 @@ export const LandingPage = () => {
     "/sandbox",
     "/anime/:animeId",
   ];
-  const noHeaderRoutes = ["/login", "/logout", "/", "/register"];
+  const noHeaderRoutes = ["/login", "/logout", "/", "/register", "reset"];
 
   let headerMatch = false;
   let noHeaderMatch = false;

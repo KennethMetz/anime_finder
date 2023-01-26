@@ -42,10 +42,6 @@ export default function Login() {
 
   let [loginError, setLoginError] = useState(undefined);
 
-  useEffect(() => {
-    console.log(loginError);
-  }, [loginError]);
-
   let regButtonStyling = {
     color: "black",
     borderColor: "black",
@@ -271,6 +267,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             label="Password"
+            helperText="Forgot Password?"
             required
             inputProps={{
               style: {
@@ -285,6 +282,15 @@ export default function Login() {
                 fontSize: "1.0rem",
                 fontFamily: "interMedium",
               },
+            }}
+            FormHelperTextProps={{
+              style: {
+                color: "black",
+                textAlign: "right",
+                fontWeight: "600",
+                cursor: "pointer",
+              },
+              onClick: () => navigate("/reset"),
             }}
             sx={{
               width: {
