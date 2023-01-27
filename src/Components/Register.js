@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   auth,
+  linkWithEmailAndPassword,
   linkWithGoogle,
   linkWithTwitter,
   logInAnon,
@@ -403,13 +404,22 @@ export default function Register() {
               backgroundColor: theme.palette.day.primary,
             }}
             onClick={handleSubmit(() => {
-              registerWithEmailAndPassword(
-                name,
-                email,
-                password,
-                setEmailError
-              );
-              setForwardToken(true);
+              if (!user) {
+                registerWithEmailAndPassword(
+                  name,
+                  email,
+                  password,
+                  setEmailError
+                );
+                setForwardToken(true);
+              } else {
+                linkWithEmailAndPassword(
+                  setForwardToken,
+                  email,
+                  password,
+                  name
+                );
+              }
             })}
           >
             Let's Go!

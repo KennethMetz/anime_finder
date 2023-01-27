@@ -1,4 +1,4 @@
-import firebase, { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 
 import {
   getAuth,
@@ -9,15 +9,11 @@ import {
   sendPasswordResetEmail,
   signOut,
   TwitterAuthProvider,
-  getRedirectResult,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-  setPersistence,
-  browserSessionPersistence,
-  browserLocalPersistence,
   signInAnonymously,
   updateProfile,
   linkWithPopup,
+  EmailAuthProvider,
+  linkWithCredential,
 } from "firebase/auth";
 
 import {
@@ -26,7 +22,6 @@ import {
   getDocs,
   collection,
   where,
-  addDoc,
   setDoc,
   doc,
   updateDoc,
@@ -53,7 +48,7 @@ export const db = getFirestore(firebaseApp);
 //   });
 // }
 
-//Google authentication
+//************************Google Authentication*************************//
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
@@ -118,7 +113,7 @@ export const linkWithGoogle = async (setForwardToken) => {
   }
 };
 
-//Twitter authentication
+//************************Twitter Authentication*************************//
 const providerTwitter = new TwitterAuthProvider();
 
 export const signInWithTwitter = async () => {
@@ -202,7 +197,7 @@ export const linkWithTwitter = async (setForwardToken) => {
   }
 };
 
-//Anonymous login
+//************************Anonymous Authentication*************************//
 export const logInAnon = async () => {
   try {
     const res = await signInAnonymously(auth);
@@ -238,7 +233,7 @@ export const logInAnon = async () => {
   }
 };
 
-//Email and password authentication
+//************************Email/Password Authentication*************************//
 export const logInWithEmailAndPassword = async (
   email,
   password,
@@ -291,6 +286,46 @@ export const registerWithEmailAndPassword = async (
     if (error["code"].search(/\bemail-already-in-use\b/) > -1)
       setEmailError(true);
   }
+};
+
+//Merge existing account to use Email/Password credentials
+export const linkWithEmailAndPassword = async (
+  setForwardToken,
+  email,
+  password,
+  name
+) => {
+  console.log(email);
+  const credential = EmailAuthProvider.credential(email, password);
+
+  linkWithCredential(auth.currentUser, credential)
+    .then((usercred) => {
+      const user = usercred.user;
+      console.log("Accounts linked successfully!", user);
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      })
+        .then(() => {
+          // Firebase auth displayName successfully updated
+          setDoc(
+            doc(db, "users", user.uid),
+            {
+              uid: user.uid,
+              name: user.displayName,
+              authProvider: "email/password via firebase",
+              email: user.email,
+            },
+            { merge: true }
+          );
+          setForwardToken(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log("Error linking accounts!", error);
+    });
 };
 
 export const sendPasswordReset = async (email) => {
