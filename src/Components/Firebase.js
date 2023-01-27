@@ -17,6 +17,7 @@ import {
   browserLocalPersistence,
   signInAnonymously,
   updateProfile,
+  linkWithPopup,
 } from "firebase/auth";
 
 import {
@@ -78,6 +79,45 @@ export const signInWithGoogle = async () => {
   }
 };
 
+//Merge existing account to use Google credentials
+export const linkWithGoogle = async (setForwardToken) => {
+  try {
+    linkWithPopup(auth.currentUser, provider)
+      .then((result) => {
+        // Accounts successfully linked
+        const credential = GoogleAuthProvider.credentialFromResult(result).then(
+          // forwardToken keeps user on login page until login w/ Google is verified
+          setForwardToken(true)
+        );
+        const user = result.user;
+        updateProfile(auth.currentUser, {
+          displayName: result.user.providerData[0].displayName,
+        })
+          .then(() => {
+            // Firebase auth displayName successfully updated
+            setDoc(
+              doc(db, "users", user.uid),
+              {
+                uid: user.uid,
+                name: user.displayName,
+                authProvider: "google",
+                email: user.email,
+              },
+              { merge: true }
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //Twitter authentication
 const providerTwitter = new TwitterAuthProvider();
 
@@ -121,6 +161,47 @@ export const signInWithTwitter = async () => {
   }
 };
 
+//Merge existing account to use Twitter credentials
+export const linkWithTwitter = async (setForwardToken) => {
+  try {
+    linkWithPopup(auth.currentUser, providerTwitter)
+      .then((result) => {
+        // Accounts successfully linked
+        const credential = TwitterAuthProvider.credentialFromResult(
+          result
+        ).then(
+          // forwardToken keeps user on login page until login w/ Google is verified
+          setForwardToken(true)
+        );
+        const user = result.user;
+        updateProfile(auth.currentUser, {
+          displayName: result.user.providerData[0].displayName,
+        })
+          .then(() => {
+            // Firebase auth displayName successfully updated
+            setDoc(
+              doc(db, "users", user.uid),
+              {
+                uid: user.uid,
+                name: user.displayName,
+                authProvider: "twitter",
+                email: user.email,
+              },
+              { merge: true }
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //Anonymous login
 export const logInAnon = async () => {
   try {
@@ -155,36 +236,6 @@ export const logInAnon = async () => {
   } catch (error) {
     console.log(error);
   }
-};
-
-//Phone Number authentication
-// window.recaptchaVerifier = new RecaptchaVerifier(
-//   "recaptcha-container",
-//   {},
-//   auth
-// );
-
-// const phoneNumber = getPhoneNumberFromUserInput();
-// const appVerifier = window.recaptchaVerifier;
-
-export const logInWithPhoneNumber = async () => {
-  // try {
-  //   const res = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-  //   const user = res.user;
-  //   const q = query(collection(db, "users"), where("uid", "==", user.uid));
-  //   const docs = await getDocs(q);
-  //   if (docs.docs.length === 0) {
-  //     await addDoc(collection(db, "users"), {
-  //       uid: user.uid,
-  //       name: user.displayName,
-  //       authProvider: "google",
-  //       email: user.email,
-  //     });
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  //   appVerifier.reset(window.recaptchaWidgetId);
-  // }
 };
 
 //Email and password authentication

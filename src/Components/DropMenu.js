@@ -7,7 +7,13 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
-import { List, SignOut, User, UserCircle } from "phosphor-react";
+import {
+  List,
+  SignOut,
+  User,
+  UserCircle,
+  UserCirclePlus,
+} from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { auth, logout } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
@@ -71,6 +77,11 @@ export default function DropMenu() {
   function sendToLogin(e) {
     handleClose(e);
     navigate("/login");
+  }
+
+  function sendToRegister(e) {
+    handleClose(e);
+    navigate("/register");
   }
 
   function sendToLogout(e) {
@@ -154,6 +165,21 @@ export default function DropMenu() {
                   </MenuItem>
 
                   {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+
+                  {localUser?.name === "guest" ? (
+                    <MenuItem
+                      onClick={(e) => {
+                        sendToRegister(e);
+                      }}
+                    >
+                      <ListItemIcon>
+                        <UserCirclePlus size={24} />
+                      </ListItemIcon>
+                      Save Account
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
 
                   {user ? (
                     <MenuItem

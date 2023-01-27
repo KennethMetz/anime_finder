@@ -5,6 +5,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   auth,
+  linkWithGoogle,
+  linkWithTwitter,
   logInAnon,
   registerWithEmailAndPassword,
   signInWithGoogle,
@@ -39,6 +41,8 @@ export default function Register() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const theme = useTheme();
   const [emailError, setEmailError] = useState();
+  //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
+  let [forwardToken, setForwardToken] = useState(false);
 
   let regButtonStyling = {
     color: "black",
@@ -78,17 +82,21 @@ export default function Register() {
     criteriaMode: "all",
     resolver: yupResolver(validationSchema),
   });
+  useEffect(() => {
+    console.log(user);
+    console.log(forwardToken);
+  }, [user, forwardToken]);
 
   useEffect(() => {
     if (loading) return;
     //Registering users without any likes causes /home rendering to error out --> this prevents that.
     if (localUser["likes"]?.length === 0) navigate("/");
-    if (user) {
+    if (user && forwardToken) {
       SaveToFirestore(user, localUser).then(() => {
         navigate("/home");
       });
     }
-  }, [user, loading]);
+  }, [user, loading, forwardToken]);
 
   return (
     <div className="register">
@@ -148,7 +156,14 @@ export default function Register() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={signInWithGoogle}
+            onClick={() => {
+              if (!user) {
+                signInWithGoogle();
+                setForwardToken(true);
+              } else {
+                linkWithGoogle(setForwardToken);
+              }
+            }}
             startIcon={
               <Box
                 component="img"
@@ -186,7 +201,14 @@ export default function Register() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={signInWithTwitter}
+            onClick={() => {
+              if (!user) {
+                signInWithTwitter();
+                setForwardToken(true);
+              } else {
+                linkWithTwitter(setForwardToken);
+              }
+            }}
             startIcon={
               <TwitterIcon
                 sx={{
@@ -223,7 +245,10 @@ export default function Register() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={logInAnon}
+            onClick={() => {
+              logInAnon();
+              setForwardToken(true);
+            }}
             startIcon={
               <User
                 size={42}
@@ -384,6 +409,7 @@ export default function Register() {
                 password,
                 setEmailError
               );
+              setForwardToken(true);
             })}
           >
             Let's Go!
