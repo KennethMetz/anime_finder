@@ -1,10 +1,16 @@
 import { async } from "@firebase/util";
-import { Autocomplete, Box, IconButton, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { APISearch } from "./APICalls";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
+import { MagnifyingGlass } from "phosphor-react";
 
 export default function TitleAutocomplete(search) {
   const navigate = useNavigate();
@@ -66,9 +72,25 @@ export default function TitleAutocomplete(search) {
             {...params}
             onKeyDown={(e) => {
               onSubmit(e.key, params["inputProps"]["value"]);
-              console.log(e);
             }}
-            // label="Search"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Search">
+                    <IconButton
+                      onClick={(e) => {
+                        onSubmit("Enter", inputValue);
+                      }}
+                      aria-label="search"
+                      ref={focusElement}
+                    >
+                      <MagnifyingGlass size={28} />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
             sx={{
               ".MuiOutlinedInput-root": {
                 borderRadius: "28px",
@@ -83,21 +105,6 @@ export default function TitleAutocomplete(search) {
           />
         )}
       ></Autocomplete>
-      <IconButton
-        onClick={(e) => {
-          console.log(inputValue);
-          onSubmit("Enter", inputValue);
-        }}
-        aria-label="search"
-        size="large"
-        ref={focusElement}
-        sx={{
-          height: "46px",
-          ".MuiSvgIcon-root": { height: "30px", width: "30px" },
-        }}
-      >
-        <SearchIcon />
-      </IconButton>
     </div>
   );
 }
