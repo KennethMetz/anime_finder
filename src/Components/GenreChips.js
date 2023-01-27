@@ -29,49 +29,38 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
   let [genreState, setGenreState] = useState([
     {
       genre: "Action",
-      color: undefined,
       selected: false,
     },
     {
       genre: "Award Winning",
-      color: undefined,
       selected: false,
     },
     {
       genre: "Comedy",
-      color: undefined,
-
       selected: false,
     },
     {
       genre: "Ecchi",
-      color: undefined,
       selected: false,
     },
-
     {
       genre: "Gourmet",
-      color: undefined,
       selected: false,
     },
     {
       genre: "Horror",
-      color: undefined,
       selected: false,
     },
     {
       genre: "Romance",
-      color: undefined,
       selected: false,
     },
     {
       genre: "Sci-Fi",
-      color: undefined,
       selected: false,
     },
     {
       genre: "Sports",
-      color: undefined,
       selected: false,
     },
   ]);
@@ -79,13 +68,12 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
   function handleClick(item, index) {
     const temp = [...genreState];
     if (!temp[index].selected) {
-      temp[index] = { ...temp[index], color: "primary", selected: true };
+      temp[index] = { ...temp[index], selected: true };
     } else {
-      temp[index] = { ...temp[index], color: undefined, selected: false };
+      temp[index] = { ...temp[index], selected: false };
     }
     for (let i = 0; i < genreState.length; i++) {
       if (index !== i) {
-        temp[i].color = undefined;
         temp[i].selected = false;
       }
     }
@@ -95,7 +83,6 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     else {
       setSelectedGenre("");
     }
-    console.log(selectedGenre);
   }
 
   return (
@@ -103,11 +90,10 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       {genreState?.map((item, index) => (
         <Chip
           sx={{ fontFamily: "interMedium" }}
-          variant="filled"
+          variant={item.selected ? "filled" : "outlined"}
           clickable={true}
           key={index}
           label={item.genre}
-          color={item.color}
           onClick={() => {
             handleClick(item, index);
           }}

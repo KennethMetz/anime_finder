@@ -30,7 +30,22 @@ const theme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
+          borderColor: "#474747",
+          borderStyle: "solid",
           borderRadius: "8px",
+          borderWidth: "2px",
+          boxSizing: "border-box",
+        },
+        filledDefault: {
+          color: "#fff",
+          backgroundColor: "#474747",
+          "&:hover, &:focus": {
+            color: "#fff",
+            backgroundColor: "#626262",
+          },
+        },
+        label: {
+          fontFamily: "interSemiBold, sans-serif",
         },
       },
     },

@@ -263,6 +263,7 @@ export default function Home() {
         <h4>Random</h4>{" "}
         <Chip
           // Triggers a re-render of the random anime shelf
+          variant="outlined"
           label="Surprise Me!"
           onClick={() => {
             refresh ? setRefresh(false) : setRefresh(true);
