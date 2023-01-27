@@ -3,16 +3,12 @@ import GenreChips from "./GenreChips";
 
 export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
   return (
-    <Grid container style={{ alignItems: "center" }}>
-      <Grid item xs={2}>
-        <h4>{title}</h4>
-      </Grid>
-      <Grid item xs={10}>
-        <GenreChips
-          selectedGenre={selectedGenre}
-          setSelectedGenre={setSelectedGenre}
-        />
-      </Grid>
-    </Grid>
+    <div>
+      <h4 style={{ marginBottom: "15px", marginTop: "41px" }}>{title}</h4>
+      <GenreChips
+        selectedGenre={selectedGenre}
+        setSelectedGenre={setSelectedGenre}
+      />
+    </div>
   );
 }

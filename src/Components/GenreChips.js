@@ -86,10 +86,16 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
   }
 
   return (
-    <Stack direction="row" spacing={1}>
+    <Stack
+      direction="row"
+      spacing={1}
+      sx={{ alignItems: "center", marginTop: "0px", marginBottom: "21px" }}
+    >
       {genreState?.map((item, index) => (
         <Chip
-          sx={{ fontFamily: "interMedium" }}
+          sx={{
+            fontFamily: "interMedium",
+          }}
           variant={item.selected ? "filled" : "outlined"}
           clickable={true}
           key={index}
