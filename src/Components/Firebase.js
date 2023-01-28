@@ -77,37 +77,30 @@ export const signInWithGoogle = async () => {
 //Merge existing account to use Google credentials
 export const linkWithGoogle = async (setForwardToken) => {
   try {
-    linkWithPopup(auth.currentUser, provider)
-      .then((result) => {
-        // Accounts successfully linked
-        const credential = GoogleAuthProvider.credentialFromResult(result).then(
-          // forwardToken keeps user on login page until login w/ Google is verified
-          setForwardToken(true)
-        );
-        const user = result.user;
-        updateProfile(auth.currentUser, {
-          displayName: result.user.providerData[0].displayName,
-        })
-          .then(() => {
-            // Firebase auth displayName successfully updated
-            setDoc(
-              doc(db, "users", user.uid),
-              {
-                uid: user.uid,
-                name: user.displayName,
-                authProvider: "google",
-                email: user.email,
-              },
-              { merge: true }
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const result = await linkWithPopup(auth.currentUser, provider);
+
+    // Accounts successfully linked.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+
+    // forwardToken keeps user on login page until login w/ Google is verified.
+    setForwardToken(true);
+
+    const user = result.user;
+    await updateProfile(auth.currentUser, {
+      displayName: result.user.providerData[0].displayName,
+    });
+
+    // Firebase auth displayName successfully updated.
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "google",
+        email: user.email,
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log(error);
   }
@@ -156,42 +149,33 @@ export const signInWithTwitter = async () => {
   }
 };
 
-//Merge existing account to use Twitter credentials
+// Merge existing account to use Twitter credentials.
 export const linkWithTwitter = async (setForwardToken) => {
   try {
-    linkWithPopup(auth.currentUser, providerTwitter)
-      .then((result) => {
-        // Accounts successfully linked
-        const credential = TwitterAuthProvider.credentialFromResult(
-          result
-        ).then(
-          // forwardToken keeps user on login page until login w/ Google is verified
-          setForwardToken(true)
-        );
-        const user = result.user;
-        updateProfile(auth.currentUser, {
-          displayName: result.user.providerData[0].displayName,
-        })
-          .then(() => {
-            // Firebase auth displayName successfully updated
-            setDoc(
-              doc(db, "users", user.uid),
-              {
-                uid: user.uid,
-                name: user.displayName,
-                authProvider: "twitter",
-                email: user.email,
-              },
-              { merge: true }
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const result = await linkWithPopup(auth.currentUser, providerTwitter);
+
+    // Accounts successfully linked.
+    const credential = TwitterAuthProvider.credentialFromResult(result);
+
+    // forwardToken keeps user on login page until login w/ Google is verified.
+    setForwardToken(true);
+
+    const user = result.user;
+    await updateProfile(auth.currentUser, {
+      displayName: result.user.providerData[0].displayName,
+    });
+
+    // Firebase auth displayName successfully updated.
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "twitter",
+        email: user.email,
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log(error);
   }
@@ -295,37 +279,33 @@ export const linkWithEmailAndPassword = async (
   password,
   name
 ) => {
-  console.log(email);
-  const credential = EmailAuthProvider.credential(email, password);
+  try {
+    const credential = EmailAuthProvider.credential(email, password);
 
-  linkWithCredential(auth.currentUser, credential)
-    .then((usercred) => {
-      const user = usercred.user;
-      console.log("Accounts linked successfully!", user);
-      updateProfile(auth.currentUser, {
-        displayName: name,
-      })
-        .then(() => {
-          // Firebase auth displayName successfully updated
-          setDoc(
-            doc(db, "users", user.uid),
-            {
-              uid: user.uid,
-              name: user.displayName,
-              authProvider: "email/password via firebase",
-              email: user.email,
-            },
-            { merge: true }
-          );
-          setForwardToken(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-    .catch((error) => {
-      console.log("Error linking accounts!", error);
+    const usercred = await linkWithCredential(auth.currentUser, credential);
+
+    const user = usercred.user;
+    console.log("Accounts linked successfully!", user);
+    await updateProfile(auth.currentUser, {
+      displayName: name,
     });
+
+    // Firebase auth displayName successfully updated.
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "email/password via firebase",
+        email: user.email,
+      },
+      { merge: true }
+    );
+
+    setForwardToken(true);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const sendPasswordReset = async (email) => {
