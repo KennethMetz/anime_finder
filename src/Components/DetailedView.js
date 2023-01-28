@@ -187,7 +187,7 @@ export default function DetailedView() {
           </Grid>
         </Grid>
         <h3 className="leftH3">Similar Titles</h3>
-        <SimilarContent animeId={anime.id} amount={6} />
+        <SimilarContent animeId={anime.id} amount={24} />
         <div className="gap" />
       </Container>
     </div>

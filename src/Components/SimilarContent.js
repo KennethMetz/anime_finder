@@ -1,5 +1,5 @@
 import useSimilarAnime from "../Hooks/useSimilarAnime";
-import AnimeGrid from "./AnimeGrid";
+import AnimeShelf from "./AnimeShelf";
 
 export default function SimilarContent({ animeId, amount }) {
   const [similar, loading, error] = useSimilarAnime(animeId, amount);
@@ -7,7 +7,7 @@ export default function SimilarContent({ animeId, amount }) {
   return (
     <div>
       {loading ? <div id="loading"></div> : ""}
-      <AnimeGrid items={similar ?? []} />
+      <AnimeShelf items={similar ?? []} />
     </div>
   );
 }

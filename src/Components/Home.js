@@ -31,6 +31,7 @@ import AnimeGrid from "./AnimeGrid";
 import GenreChips from "./GenreChips";
 import ShelfTitle from "./ShelfTitle";
 import { Stack } from "@mui/system";
+import AnimeShelf from "./AnimeShelf";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -157,35 +158,35 @@ export default function Home() {
   //Get generic recommendations
   useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=6${selectedGenreHR}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenreHR}`,
       setAnimeHR
     );
   }, [selectedGenreHR]);
 
   useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=6${selectedGenreMC}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenreMC}`,
       setAnimeMC
     );
   }, [selectedGenreMC]);
 
   useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=6${selectedGenreMR}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenreMR}`,
       setAnimeMR
     );
   }, [selectedGenreMR]);
 
   useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6${selectedGenreMPTW}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenreMPTW}`,
       setAnimeMPTW
     );
   }, [selectedGenreMPTW]);
 
   useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=6&page=410`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
       setAnimeMH
     );
   }, []);
@@ -238,27 +239,27 @@ export default function Home() {
         setSelectedGenre={setSelectedGenreHR}
         title={"Highest Rated"}
       />
-      <AnimeGrid items={animeHR} />
+      <AnimeShelf items={animeHR} />
       <ShelfTitle
         selectedGenre={selectedGenreMC}
         setSelectedGenre={setSelectedGenreMC}
         title={"Most Popular"}
       />
-      <AnimeGrid items={animeMC} />
+      <AnimeShelf items={animeMC} />
       <ShelfTitle
         selectedGenre={selectedGenreMR}
         setSelectedGenre={setSelectedGenreMR}
         title={"Most Viewed"}
       />
-      <AnimeGrid items={animeMR} />
+      <AnimeShelf items={animeMR} />
       <ShelfTitle
         selectedGenre={selectedGenreMPTW}
         setSelectedGenre={setSelectedGenreMPTW}
         title={"Hype Beasts"}
       />
-      <AnimeGrid items={animeMPTW} />
+      <AnimeShelf items={animeMPTW} />
       <h4>Most Obscure</h4>
-      <AnimeGrid items={animeMH} />
+      <AnimeShelf items={animeMH} />
       <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
         <h4>Random</h4>{" "}
         <Chip
