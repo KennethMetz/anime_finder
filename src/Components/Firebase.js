@@ -1,4 +1,4 @@
-import firebase, { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 
 import {
   getAuth,
@@ -9,14 +9,11 @@ import {
   sendPasswordResetEmail,
   signOut,
   TwitterAuthProvider,
-  getRedirectResult,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-  setPersistence,
-  browserSessionPersistence,
-  browserLocalPersistence,
   signInAnonymously,
   updateProfile,
+  linkWithPopup,
+  EmailAuthProvider,
+  linkWithCredential,
 } from "firebase/auth";
 
 import {
@@ -25,7 +22,6 @@ import {
   getDocs,
   collection,
   where,
-  addDoc,
   setDoc,
   doc,
   updateDoc,
@@ -52,7 +48,7 @@ export const db = getFirestore(firebaseApp);
 //   });
 // }
 
-//Google authentication
+//************************Google Authentication*************************//
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
@@ -78,7 +74,39 @@ export const signInWithGoogle = async () => {
   }
 };
 
-//Twitter authentication
+//Merge existing account to use Google credentials
+export const linkWithGoogle = async (setForwardToken) => {
+  try {
+    const result = await linkWithPopup(auth.currentUser, provider);
+
+    // Accounts successfully linked.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+
+    const user = result.user;
+    await updateProfile(auth.currentUser, {
+      displayName: result.user.providerData[0].displayName,
+    });
+
+    // Firebase auth displayName successfully updated.
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "google",
+        email: user.email,
+      },
+      { merge: true }
+    );
+
+    // forwardToken keeps user on login page until login w/ Google is verified.
+    setForwardToken(true);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//************************Twitter Authentication*************************//
 const providerTwitter = new TwitterAuthProvider();
 
 export const signInWithTwitter = async () => {
@@ -121,7 +149,39 @@ export const signInWithTwitter = async () => {
   }
 };
 
-//Anonymous login
+// Merge existing account to use Twitter credentials.
+export const linkWithTwitter = async (setForwardToken) => {
+  try {
+    const result = await linkWithPopup(auth.currentUser, providerTwitter);
+
+    // Accounts successfully linked.
+    const credential = TwitterAuthProvider.credentialFromResult(result);
+
+    const user = result.user;
+    await updateProfile(auth.currentUser, {
+      displayName: result.user.providerData[0].displayName,
+    });
+
+    // Firebase auth displayName successfully updated.
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "twitter",
+        email: user.email,
+      },
+      { merge: true }
+    );
+
+    // forwardToken keeps user on login page until login w/ Google is verified.
+    setForwardToken(true);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//************************Anonymous Authentication*************************//
 export const logInAnon = async () => {
   try {
     const res = await signInAnonymously(auth);
@@ -157,37 +217,7 @@ export const logInAnon = async () => {
   }
 };
 
-//Phone Number authentication
-// window.recaptchaVerifier = new RecaptchaVerifier(
-//   "recaptcha-container",
-//   {},
-//   auth
-// );
-
-// const phoneNumber = getPhoneNumberFromUserInput();
-// const appVerifier = window.recaptchaVerifier;
-
-export const logInWithPhoneNumber = async () => {
-  // try {
-  //   const res = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-  //   const user = res.user;
-  //   const q = query(collection(db, "users"), where("uid", "==", user.uid));
-  //   const docs = await getDocs(q);
-  //   if (docs.docs.length === 0) {
-  //     await addDoc(collection(db, "users"), {
-  //       uid: user.uid,
-  //       name: user.displayName,
-  //       authProvider: "google",
-  //       email: user.email,
-  //     });
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  //   appVerifier.reset(window.recaptchaWidgetId);
-  // }
-};
-
-//Email and password authentication
+//************************Email/Password Authentication*************************//
 export const logInWithEmailAndPassword = async (
   email,
   password,
@@ -239,6 +269,43 @@ export const registerWithEmailAndPassword = async (
     //Used to alert user their email address is already in Firebase and can't be used
     if (error["code"].search(/\bemail-already-in-use\b/) > -1)
       setEmailError(true);
+  }
+};
+
+//Merge existing account to use Email/Password credentials
+export const linkWithEmailAndPassword = async (
+  setForwardToken,
+  email,
+  password,
+  name
+) => {
+  try {
+    const credential = EmailAuthProvider.credential(email, password);
+
+    const usercred = await linkWithCredential(auth.currentUser, credential);
+
+    const user = usercred.user;
+    console.log("Accounts linked successfully!", user);
+    await updateProfile(auth.currentUser, {
+      displayName: name,
+    });
+
+    // Firebase auth displayName successfully updated.
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "email/password via firebase",
+        email: user.email,
+      },
+      { merge: true }
+    );
+
+    // forwardToken keeps user on login page until login w/ email is verified.
+    setForwardToken(true);
+  } catch (error) {
+    console.log(error);
   }
 };
 
