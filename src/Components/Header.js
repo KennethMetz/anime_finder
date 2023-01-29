@@ -34,10 +34,10 @@ function Header() {
       <Container maxWidth="lg">
         <Grid
           container
-          spacing={3}
+          spacing={0}
           sx={{
             alignItems: "center",
-            paddingBottom: 2,
+            paddingBottom: 0,
           }}
         >
           <Grid item lg={2.5} md={2.5} sm={4.25} xs={9}>
@@ -67,6 +67,7 @@ function Header() {
             sm={5.5}
             xs={12}
             order={{ xs: 3, sm: 2 }}
+            sx={{ marginY: 0.75 }}
           >
             {TitleAutocomplete()}
           </Grid>
