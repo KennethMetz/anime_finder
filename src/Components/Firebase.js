@@ -82,9 +82,6 @@ export const linkWithGoogle = async (setForwardToken) => {
     // Accounts successfully linked.
     const credential = GoogleAuthProvider.credentialFromResult(result);
 
-    // forwardToken keeps user on login page until login w/ Google is verified.
-    setForwardToken(true);
-
     const user = result.user;
     await updateProfile(auth.currentUser, {
       displayName: result.user.providerData[0].displayName,
@@ -101,6 +98,9 @@ export const linkWithGoogle = async (setForwardToken) => {
       },
       { merge: true }
     );
+
+    // forwardToken keeps user on login page until login w/ Google is verified.
+    setForwardToken(true);
   } catch (error) {
     console.log(error);
   }
@@ -157,9 +157,6 @@ export const linkWithTwitter = async (setForwardToken) => {
     // Accounts successfully linked.
     const credential = TwitterAuthProvider.credentialFromResult(result);
 
-    // forwardToken keeps user on login page until login w/ Google is verified.
-    setForwardToken(true);
-
     const user = result.user;
     await updateProfile(auth.currentUser, {
       displayName: result.user.providerData[0].displayName,
@@ -176,6 +173,9 @@ export const linkWithTwitter = async (setForwardToken) => {
       },
       { merge: true }
     );
+
+    // forwardToken keeps user on login page until login w/ Google is verified.
+    setForwardToken(true);
   } catch (error) {
     console.log(error);
   }
@@ -302,6 +302,7 @@ export const linkWithEmailAndPassword = async (
       { merge: true }
     );
 
+    // forwardToken keeps user on login page until login w/ email is verified.
     setForwardToken(true);
   } catch (error) {
     console.log(error);
