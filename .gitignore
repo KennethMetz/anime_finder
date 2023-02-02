@@ -4,3 +4,6 @@ build
 
 # Firebase stuff.
 .firebase/*
+
+# Apple Desktop Services Store files.
+.DS_Store
