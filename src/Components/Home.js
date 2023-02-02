@@ -220,11 +220,18 @@ export default function Home() {
       <div className="gap" />
       {localUser && localUser["likes"] ? (
         <Grid container style={{ alignItems: "center" }}>
-          <Grid item xs={2}>
-            <h4>For You</h4>
-          </Grid>
-          <Grid item xs={10}>
-            {/* <GenreChips /> */}
+          <Grid item xs={12}>
+            <h2
+              style={{
+                fontSize: "2.5rem",
+                fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+                textAlign: "left",
+                marginBlockStart: 0,
+                marginBlockEnd: "0.5rem",
+              }}
+            >
+              For You
+            </h2>
           </Grid>
         </Grid>
       ) : (
