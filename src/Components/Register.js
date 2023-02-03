@@ -31,6 +31,9 @@ import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import LoadingFourdots from "./LoadingFourDots.json";
+import Lottie from "lottie-react";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -44,6 +47,8 @@ export default function Register() {
   const [emailError, setEmailError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
+  const [regLoadingEmail, setRegLoadingEmail] = useState(false);
+  const [regLoadingGuest, setRegLoadingGuest] = useState(false);
 
   let regButtonStyling = {
     color: "black",
@@ -247,6 +252,7 @@ export default function Register() {
               },
             }}
             onClick={() => {
+              setRegLoadingGuest(true);
               logInAnon();
               setForwardToken(true);
             }}
@@ -266,7 +272,11 @@ export default function Register() {
               />
             }
           >
-            Visit as a Guest
+            {regLoadingGuest ? (
+              <BreathingLogo large={true} />
+            ) : (
+              "Visit as a Guest"
+            )}
           </Button>
           <Divider
             sx={{
@@ -404,12 +414,14 @@ export default function Register() {
               backgroundColor: theme.palette.day.primary,
             }}
             onClick={handleSubmit(() => {
+              setRegLoadingEmail(true);
               if (!user) {
                 registerWithEmailAndPassword(
                   name,
                   email,
                   password,
-                  setEmailError
+                  setEmailError,
+                  setRegLoadingEmail
                 );
                 setForwardToken(true);
               } else {
@@ -417,12 +429,26 @@ export default function Register() {
                   setForwardToken,
                   email,
                   password,
-                  name
+                  name,
+                  setRegLoadingEmail
                 );
               }
             })}
           >
-            Let's Go!
+            {regLoadingEmail ? (
+              <BreathingLogo />
+            ) : (
+              //******ALTERNATE LOTTIE ANIMATION - DANCING DOTS*****//
+              // <Lottie
+              //   animationData={LoadingFourdots}
+              //   loop={true}
+              //   style={{
+              //     margin: "-95px 20px -100px 20px",
+              //     scale: "1.1",
+              //   }}
+              // />
+              "Let's Go!"
+            )}
           </Button>
           <Typography
             sx={{

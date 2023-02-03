@@ -245,7 +245,8 @@ export const registerWithEmailAndPassword = async (
   name,
   email,
   password,
-  setEmailError
+  setEmailError,
+  setRegLoadingEmail
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -274,6 +275,7 @@ export const registerWithEmailAndPassword = async (
       setEmailError(
         "Ooops - there was an error contacting our servers. Please try again!"
       );
+    setRegLoadingEmail(false);
   }
 };
 
@@ -282,7 +284,8 @@ export const linkWithEmailAndPassword = async (
   setForwardToken,
   email,
   password,
-  name
+  name,
+  setRegLoadingEmail
 ) => {
   try {
     const credential = EmailAuthProvider.credential(email, password);
@@ -311,6 +314,7 @@ export const linkWithEmailAndPassword = async (
     setForwardToken(true);
   } catch (error) {
     console.log(error);
+    setRegLoadingEmail(false);
   }
 };
 
