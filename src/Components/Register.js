@@ -47,7 +47,7 @@ export default function Register() {
   const [emailError, setEmailError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
-  const [regLoading, setRegLoading] = useState(true);
+  const [regLoading, setRegLoading] = useState(false);
 
   let regButtonStyling = {
     color: "black",
