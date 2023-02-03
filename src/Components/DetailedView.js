@@ -26,6 +26,7 @@ import { APIGetAnime } from "./APICalls";
 import useAnime from "../Hooks/useAnime";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
+import DetailedViewDescription from "./DetailedViewDescription";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ export default function DetailedView() {
               }}
             >
               <ListItemText
-                primary={anime.description}
+                primary={<DetailedViewDescription text={anime.description} />}
                 primaryTypographyProps={{
                   fontFamily: "interMedium",
                   fontSize: "1.0rem",
