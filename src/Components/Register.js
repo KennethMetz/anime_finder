@@ -31,6 +31,9 @@ import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import LoadingFourdots from "./LoadingFourDots.json";
+import Lottie from "lottie-react";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -44,6 +47,7 @@ export default function Register() {
   const [emailError, setEmailError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
+  const [regLoading, setRegLoading] = useState(true);
 
   let regButtonStyling = {
     color: "black",
@@ -98,6 +102,10 @@ export default function Register() {
       });
     }
   }, [user, loading, forwardToken]);
+
+  useEffect(() => {
+    console.log(regLoading);
+  }, [regLoading]);
 
   return (
     <div className="register">
@@ -404,12 +412,14 @@ export default function Register() {
               backgroundColor: theme.palette.day.primary,
             }}
             onClick={handleSubmit(() => {
+              setRegLoading(true);
               if (!user) {
                 registerWithEmailAndPassword(
                   name,
                   email,
                   password,
-                  setEmailError
+                  setEmailError,
+                  setRegLoading
                 );
                 setForwardToken(true);
               } else {
@@ -417,12 +427,26 @@ export default function Register() {
                   setForwardToken,
                   email,
                   password,
-                  name
+                  name,
+                  setRegLoading
                 );
               }
             })}
           >
-            Let's Go!
+            {regLoading ? (
+              <BreathingLogo />
+            ) : (
+              //******ALTERNATE LOTTIE ANIMATION - DANCING DOTS*****//
+              // <Lottie
+              //   animationData={LoadingFourdots}
+              //   loop={true}
+              //   style={{
+              //     margin: "-95px 20px -100px 20px",
+              //     scale: "1.1",
+              //   }}
+              // />
+              "Let's Go!"
+            )}
           </Button>
           <Typography
             sx={{
