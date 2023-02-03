@@ -47,7 +47,8 @@ export default function Register() {
   const [emailError, setEmailError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
-  const [regLoading, setRegLoading] = useState(false);
+  const [regLoadingEmail, setRegLoadingEmail] = useState(false);
+  const [regLoadingGuest, setRegLoadingGuest] = useState(false);
 
   let regButtonStyling = {
     color: "black",
@@ -102,10 +103,6 @@ export default function Register() {
       });
     }
   }, [user, loading, forwardToken]);
-
-  useEffect(() => {
-    console.log(regLoading);
-  }, [regLoading]);
 
   return (
     <div className="register">
@@ -255,6 +252,7 @@ export default function Register() {
               },
             }}
             onClick={() => {
+              setRegLoadingGuest(true);
               logInAnon();
               setForwardToken(true);
             }}
@@ -274,7 +272,11 @@ export default function Register() {
               />
             }
           >
-            Visit as a Guest
+            {regLoadingGuest ? (
+              <BreathingLogo large={true} />
+            ) : (
+              "Visit as a Guest"
+            )}
           </Button>
           <Divider
             sx={{
@@ -412,14 +414,14 @@ export default function Register() {
               backgroundColor: theme.palette.day.primary,
             }}
             onClick={handleSubmit(() => {
-              setRegLoading(true);
+              setRegLoadingEmail(true);
               if (!user) {
                 registerWithEmailAndPassword(
                   name,
                   email,
                   password,
                   setEmailError,
-                  setRegLoading
+                  setRegLoadingEmail
                 );
                 setForwardToken(true);
               } else {
@@ -428,12 +430,12 @@ export default function Register() {
                   email,
                   password,
                   name,
-                  setRegLoading
+                  setRegLoadingEmail
                 );
               }
             })}
           >
-            {regLoading ? (
+            {regLoadingEmail ? (
               <BreathingLogo />
             ) : (
               //******ALTERNATE LOTTIE ANIMATION - DANCING DOTS*****//

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { ReactComponent as SVG } from "../Styles/images/EdwardLogoAnimation.svg";
 
-export default function BreathingLogo() {
+export default function BreathingLogo({ large }) {
   useEffect(() => {
     !(function (t, n) {
       "object" == typeof exports && "undefined" != typeof module
@@ -1883,5 +1883,7 @@ export default function BreathingLogo() {
       document
     );
   }, []);
-  return <SVG style={{ scale: "0.28", margin: "-70px 0px" }} />;
+
+  if (large) return <SVG style={{ scale: "0.20", margin: "-70px 0px" }} />;
+  if (!large) return <SVG style={{ scale: "0.28", margin: "-70px 0px" }} />;
 }
