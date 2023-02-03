@@ -182,7 +182,13 @@ function getFormatAndEpisodesText(anime) {
   const items = [];
 
   if (anime.start_date) {
-    items.push(anime.start_date.split("-")[0]);
+    const startYear = anime.start_date.split("-")[0];
+    const endYear = anime.end_date?.split("-")[0];
+    if (endYear && endYear !== startYear) {
+      items.push(`${startYear}-${endYear}`);
+    } else {
+      items.push(startYear);
+    }
   }
 
   if (anime.format) {
