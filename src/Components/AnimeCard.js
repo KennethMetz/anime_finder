@@ -67,7 +67,7 @@ export default function AnimeCard({ anime, large, onChangeSelected }) {
             <Typography
               sx={{
                 color: "#fff",
-                textAlign: "start",
+                textAlign: "center",
                 fontWeight: 600,
                 fontSize: large ? "1.2rem" : "unset",
               }}
