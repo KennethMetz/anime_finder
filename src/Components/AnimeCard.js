@@ -70,6 +70,7 @@ export default function AnimeCard({ anime, large, onChangeSelected }) {
                 textAlign: "center",
                 fontWeight: 600,
                 fontSize: large ? "1.2rem" : "unset",
+                mb: 1,
               }}
             >
               {anime.display_name}
