@@ -236,7 +236,8 @@ export const logInWithEmailAndPassword = async (
       setLoginError(
         "*Your account has been locked due to too many login attempts. Please reset your password to unlock your account."
       );
-    }
+    } else
+      setLoginError("Ooops - there was an error logging in. Please try again!");
   }
 };
 
@@ -263,12 +264,16 @@ export const registerWithEmailAndPassword = async (
       },
       { merge: true }
     );
-    setEmailError(false);
+    setEmailError(null);
   } catch (error) {
     console.log(error);
     //Used to alert user their email address is already in Firebase and can't be used
     if (error["code"].search(/\bemail-already-in-use\b/) > -1)
-      setEmailError(true);
+      setEmailError("*Email address has already been taken.");
+    else
+      setEmailError(
+        "Ooops - there was an error contacting our servers. Please try again!"
+      );
   }
 };
 

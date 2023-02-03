@@ -41,7 +41,7 @@ export default function Register() {
   const location = useLocation();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const theme = useTheme();
-  const [emailError, setEmailError] = useState();
+  const [emailError, setEmailError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
 
@@ -438,7 +438,7 @@ export default function Register() {
           <Typography
             sx={{ color: "error.main", fontFamily: "interExtraBold" }}
           >
-            {emailError ? "*Email address has already been taken." : ""}
+            {emailError ? emailError : ""}
           </Typography>
           <Divider
             sx={{
