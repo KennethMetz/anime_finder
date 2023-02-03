@@ -3,6 +3,7 @@ import { matchPath, Outlet, useLocation, useMatch } from "react-router-dom";
 import Header from "./Header";
 import { auth } from "./Firebase";
 import Login from "./Login";
+import BreathingLogo from "./BreathingLogo";
 
 export const LandingPage = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -29,7 +30,10 @@ export const LandingPage = () => {
     if (matchPath({ path: item }, location.pathname)) noHeaderMatch = true;
   });
 
-  if (user && headerMatch) {
+  if (loading && !user) {
+    console.log("asd;lfkjasd;lkfa");
+    return <BreathingLogo type={"fullPage"} />;
+  } else if (user && headerMatch) {
     return (
       <>
         <Header />

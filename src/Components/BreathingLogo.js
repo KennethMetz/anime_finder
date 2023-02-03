@@ -1,9 +1,11 @@
 /* eslint-disable */
 
+import { Container, Grid } from "@mui/material";
+import { Box, flexbox } from "@mui/system";
 import { useEffect } from "react";
 import { ReactComponent as SVG } from "../Styles/images/EdwardLogoAnimation.svg";
 
-export default function BreathingLogo({ large }) {
+export default function BreathingLogo({ type }) {
   useEffect(() => {
     !(function (t, n) {
       "object" == typeof exports && "undefined" != typeof module
@@ -1884,6 +1886,24 @@ export default function BreathingLogo({ large }) {
     );
   }, []);
 
-  if (large) return <SVG style={{ scale: "0.20", margin: "-70px 0px" }} />;
-  if (!large) return <SVG style={{ scale: "0.28", margin: "-70px 0px" }} />;
+  if (type == "largeButton")
+    //Used for 'Visit as Guest' button
+    return <SVG style={{ scale: "0.14" }} />;
+  else if (type == "shelf") {
+    return (
+      <Box component="div" sx={{ display: "flex", justifyContent: "center" }}>
+        <SVG style={{ scale: "0.50", margin: "-70px 0px", width: "400px" }} />
+      </Box>
+    );
+  } else if (type == "smallButton") {
+    //Used for Register with email/password button
+    return <SVG style={{ scale: "0.28", margin: "-70px 0px" }} />;
+  } else if (type == "fullPage") {
+    //Used on LayoutPage
+    return (
+      <Box component="div" sx={{ display: "flex", justifyContent: "center" }}>
+        <SVG style={{ scale: "1", margin: "300px 0px", maxWidth: "400px" }} />;
+      </Box>
+    );
+  }
 }
