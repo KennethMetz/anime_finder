@@ -59,7 +59,6 @@ export default function Login() {
       return;
     }
     if (user) {
-      SaveToFirestore(user, localUser);
       PopulateFromFirestore(user, localUser, setLocalUser);
       navigate("/home");
     }
