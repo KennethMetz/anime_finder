@@ -209,9 +209,6 @@ export default function Home() {
     }
     if (user) {
       PopulateFromFirestore(user, localUser, setLocalUser);
-
-      console.log(localUser);
-      navigate("/home");
     }
   }, [user, loading]);
 
