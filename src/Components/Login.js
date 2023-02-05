@@ -176,45 +176,6 @@ export default function Login() {
           >
             Login with Twitter
           </Button>
-          {/* *******************Guest Button************************** */}
-          <Button
-            variant="outlined"
-            className="register__btn"
-            sx={{
-              ...regButtonStyling,
-              marginBottom: "0px",
-              fontSize: {
-                xs: "0.9rem",
-                fourHundred: "1rem",
-              },
-              width: {
-                sm: "350px",
-                fourHundred: "280px",
-                xs: "250px",
-              },
-              "&:hover": {
-                border: "3px #EF2727 solid",
-              },
-            }}
-            onClick={logInAnon}
-            startIcon={
-              <User
-                size={42}
-                color="black"
-                weight="light"
-                style={{
-                  paddingRight: "20px",
-                  width: {
-                    fourHundred: "42px",
-                    xs: "31px",
-                  },
-                  height: { fourHundred: "42px", xs: "31px" },
-                }}
-              />
-            }
-          >
-            Visit as a Guest
-          </Button>
           <Divider
             sx={{
               width: "87.5%",
