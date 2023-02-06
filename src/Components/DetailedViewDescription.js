@@ -1,11 +1,11 @@
 import { Box, Button } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function DetailedViewDescription({ text }) {
   const [expanded, setExpanded] = useState(false);
 
-  const shortText = text.split("\n")[0];
-  const canShorten = shortText.length < text.length && text.length > 400;
+  const shortText = useMemo(() => getShortText(text), [text]);
+  const canShorten = shortText.length < text.length;
 
   if (!canShorten) {
     return <Box component="span">{text}</Box>;
@@ -13,9 +13,16 @@ export default function DetailedViewDescription({ text }) {
 
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Box component="span">{expanded ? text : shortText}</Box>
-        <Box sx={{ mt: 0, ml: -1 }}>
+      <Box sx={{}}>
+        <Box component="span">{expanded ? text : shortText + "..."}</Box>
+        <Box
+          component="span"
+          sx={{
+            mt: 0,
+            display: expanded ? "block" : "unset",
+            ml: expanded ? -1 : 0,
+          }}
+        >
           <Button
             color="inherit"
             onClick={() => setExpanded(!expanded)}
@@ -31,4 +38,12 @@ export default function DetailedViewDescription({ text }) {
       </Box>
     </>
   );
+}
+
+function getShortText(text) {
+  let i = 650;
+  while (i < text.length && i > 0 && text[i] !== " " && text[i] !== ".") {
+    i--;
+  }
+  return text.slice(0, i);
 }
