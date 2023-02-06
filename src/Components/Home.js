@@ -50,10 +50,7 @@ export default function Home() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
-  let [selectedGenreHR, setSelectedGenreHR] = useState([]);
-  let [selectedGenreMR, setSelectedGenreMR] = useState([]);
-  let [selectedGenreMC, setSelectedGenreMC] = useState([]);
-  let [selectedGenreMPTW, setSelectedGenreMPTW] = useState([]);
+  let [selectedGenre, setSelectedGenre] = useState([]);
 
   let [refresh, setRefresh] = useState(false);
 
@@ -158,31 +155,22 @@ export default function Home() {
   //Get generic recommendations
   useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenreHR}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
       setAnimeHR
     );
-  }, [selectedGenreHR]);
-
-  useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenreMC}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
       setAnimeMC
     );
-  }, [selectedGenreMC]);
-
-  useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenreMR}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
       setAnimeMR
     );
-  }, [selectedGenreMR]);
-
-  useEffect(() => {
     getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenreMPTW}`,
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenre}`,
       setAnimeMPTW
     );
-  }, [selectedGenreMPTW]);
+  }, [selectedGenre]);
 
   useEffect(() => {
     getAnimeListing(
@@ -216,71 +204,84 @@ export default function Home() {
   }, [user, loading]);
 
   return (
-    <Container maxWidth="lg">
-      <div className="gap" />
-      {localUser && localUser["likes"] ? (
-        <Grid container style={{ alignItems: "center" }}>
-          <Grid item xs={12}>
-            <h2
-              style={{
-                fontSize: "2.5rem",
-                fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
-                textAlign: "left",
-                marginBlockStart: 0,
-                marginBlockEnd: "0.5rem",
-              }}
-            >
-              For You
-            </h2>
+    <div>
+      <Container maxWidth="lg">
+        <div className="gap" />
+        {localUser && localUser["likes"] ? (
+          <Grid container style={{ alignItems: "center" }}>
+            <Grid item xs={12}>
+              <h2
+                style={{
+                  fontSize: "2.5rem",
+                  fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+                  textAlign: "left",
+                  marginBlockStart: 0,
+                  marginBlockEnd: "0.5rem",
+                }}
+              >
+                For You
+              </h2>
+            </Grid>
           </Grid>
-        </Grid>
-      ) : (
-        <h4>Like a show below to receive personalized recommendations!</h4>
-      )}
-      {loadingRecs ? <div id="loading"></div> : ""}
-      <AnimeGrid items={recommendation} large />
-      <div className="gap" />
-      {loadingGeneric ? <div id="loading"></div> : ""}
-      <ShelfTitle
-        selectedGenre={selectedGenreHR}
-        setSelectedGenre={setSelectedGenreHR}
-        title={"Highest Rated"}
-      />
-      <AnimeShelf items={animeHR} />
-      <ShelfTitle
-        selectedGenre={selectedGenreMC}
-        setSelectedGenre={setSelectedGenreMC}
-        title={"Most Popular"}
-      />
-      <AnimeShelf items={animeMC} />
-      <ShelfTitle
-        selectedGenre={selectedGenreMR}
-        setSelectedGenre={setSelectedGenreMR}
-        title={"Most Viewed"}
-      />
-      <AnimeShelf items={animeMR} />
-      <ShelfTitle
-        selectedGenre={selectedGenreMPTW}
-        setSelectedGenre={setSelectedGenreMPTW}
-        title={"Hype Beasts"}
-      />
-      <AnimeShelf items={animeMPTW} />
-      <h4>Most Obscure</h4>
-      <AnimeShelf items={animeMH} />
-      <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
-        <h4>Random</h4>{" "}
-        <Chip
-          // Triggers a re-render of the random anime shelf
-          variant="outlined"
-          label="Surprise Me!"
-          onClick={() => {
-            refresh ? setRefresh(false) : setRefresh(true);
-          }}
-          icon={<RefreshIcon />}
+        ) : (
+          <h4>Like a show below to receive personalized recommendations!</h4>
+        )}
+        {loadingRecs ? <div id="loading"></div> : ""}
+        <AnimeGrid items={recommendation} large />
+        <div className="gap" />
+        {loadingGeneric ? <div id="loading"></div> : ""}
+      </Container>
+      <div
+        style={{
+          backgroundColor: "white",
+          width: "100vw",
+          height: "100px",
+          zIndex: "2",
+          position: "sticky",
+          top: "68px",
+          marginTop: "-50px",
+        }}
+      ></div>
+      <Container maxWidth="lg">
+        <ShelfTitle
+          selectedGenre={selectedGenre}
+          setSelectedGenre={setSelectedGenre}
+          title={"Explore More"}
         />
-      </Stack>
-      <AnimeGrid items={animeRandom} />
-      <div className="gap" />
-    </Container>
+
+        <h4 className="shelfTitle"> Highest Rated {selectedGenre.slice(7)} </h4>
+        <AnimeShelf items={animeHR} />
+
+        <h4 className="shelfTitle">Most Popular {selectedGenre.slice(7)}</h4>
+        <AnimeShelf items={animeMC} />
+        {/* 
+      <h4>All time Best</h4>
+      <AnimeShelf items={animeMR} /> */}
+
+        <h4 className="shelfTitle">
+          Most Buzzed About {selectedGenre.slice(7)}
+        </h4>
+        <AnimeShelf items={animeMPTW} />
+
+        <h4 className="shelfTitle">Most Obscure</h4>
+        <AnimeShelf items={animeMH} />
+
+        <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
+          <h4 className="shelfTitle">Random</h4>
+          <Chip
+            // Triggers a re-render of the random anime shelf
+            variant="outlined"
+            label="Surprise Me!"
+            onClick={() => {
+              refresh ? setRefresh(false) : setRefresh(true);
+            }}
+            icon={<RefreshIcon />}
+          />
+        </Stack>
+        <AnimeGrid items={animeRandom} />
+
+        <div className="gap" />
+      </Container>
+    </div>
   );
 }
