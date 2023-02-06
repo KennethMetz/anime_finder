@@ -31,7 +31,6 @@ export const LandingPage = () => {
   });
 
   if (loading && !user) {
-    console.log("asd;lfkjasd;lkfa");
     return <BreathingLogo type={"fullPage"} />;
   } else if (user && headerMatch) {
     return (

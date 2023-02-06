@@ -1,5 +1,7 @@
-import { Chip, Grid, Stack } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { Chip, Grid, IconButton, Stack, useMediaQuery } from "@mui/material";
 import { setPersistence } from "firebase/auth";
+import { CaretLeft, CaretRight } from "phosphor-react";
 import { useEffect, useState } from "react";
 
 export default function GenreChips({ selectedGenre, setSelectedGenre }) {
@@ -7,17 +9,17 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     "Action",
     "Award Winning",
     "Comedy",
-    "Drama",
     "Ecchi",
-    "Fantasy",
     "Gourmet",
     "Horror",
-    "Mystery",
     "Romance",
     "Sci-Fi",
     "Sports",
 
     // "Adventure",
+    // "Drama",
+    // "Fantasy",
+    // "Mystery",
     // "Supernatural",
     // "Slice of Life",
     // "Suspense",
@@ -65,12 +67,67 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     },
   ]);
 
+  const [selected, setSelected] = useState();
+  const [startIndex, setStartIndex] = useState(0);
+
+  const theme = useTheme();
+
+  const fourHundred = useMediaQuery(theme.breakpoints.up("fourHundred"));
+
+  const fiveHundred = useMediaQuery(theme.breakpoints.up("fiveHundred"));
+
+  const sm = useMediaQuery(theme.breakpoints.up("sm"));
+  const sevenHundredFifty = useMediaQuery(
+    theme.breakpoints.up("sevenHundredFifty")
+  );
+  const md = useMediaQuery(theme.breakpoints.up("md"));
+  const lg = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const itemsPerPage = lg
+    ? 9
+    : md
+    ? 9
+    : sevenHundredFifty
+    ? 7
+    : sm
+    ? 5
+    : fiveHundred
+    ? 4
+    : fourHundred
+    ? 3
+    : 2;
+
+  const breakpoints = { xs: 12 / itemsPerPage };
+
+  const currentItems = genreState.slice(startIndex, startIndex + itemsPerPage);
+
+  const hasPrevious = startIndex > 0;
+  const hasNext = startIndex < genreState.length - itemsPerPage;
+
+  const onClickNext = (e) => {
+    setStartIndex(
+      Math.min(startIndex + itemsPerPage, genreState.length - itemsPerPage)
+    );
+    e.preventDefault();
+  };
+
+  const onClickPrevious = (e) => {
+    setStartIndex(Math.max(startIndex - itemsPerPage, 0));
+    e.preventDefault();
+  };
+
   function handleClick(item, index) {
     const temp = [...genreState];
-    if (!temp[index].selected) {
-      temp[index] = { ...temp[index], selected: true };
+    if (!temp[index + startIndex].selected) {
+      temp[index + startIndex] = {
+        ...temp[index + startIndex],
+        selected: true,
+      };
     } else {
-      temp[index] = { ...temp[index], selected: false };
+      temp[index + startIndex] = {
+        ...temp[index + startIndex],
+        selected: false,
+      };
     }
     for (let i = 0; i < genreState.length; i++) {
       if (index !== i) {
@@ -79,7 +136,8 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     }
 
     setGenreState(temp);
-    if (temp[index].selected) setSelectedGenre(`&genre=${item.genre}`);
+    if (temp[index + startIndex].selected)
+      setSelectedGenre(`&genre=${item.genre}`);
     else {
       setSelectedGenre("");
     }
@@ -91,7 +149,24 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       spacing={1}
       sx={{ alignItems: "center", marginTop: "0px", marginBottom: "21px" }}
     >
-      {genreState?.map((item, index) => (
+      <IconButton
+        onClick={onClickPrevious}
+        color="inherit"
+        sx={{
+          visibility: hasPrevious ? "visible" : "hidden",
+          marginLeft: hasPrevious ? "0px" : "-48px",
+          top: "calc(68% - 24px)",
+          zIndex: 1,
+          backgroundColor: theme.palette.grey[100],
+          boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.18 )",
+          "&:hover, &:focus": {
+            backgroundColor: theme.palette.grey[300],
+          },
+        }}
+      >
+        <CaretLeft size={24} />
+      </IconButton>
+      {currentItems?.map((item, index) => (
         <Chip
           sx={{
             fontFamily: "interMedium",
@@ -105,6 +180,22 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
           }}
         />
       ))}
+      <IconButton
+        onClick={onClickNext}
+        color="inherit"
+        sx={{
+          visibility: hasNext ? "visible" : "hidden",
+          top: "calc(68% - 24px)",
+          zIndex: 1,
+          backgroundColor: theme.palette.grey[100],
+          boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.18 )",
+          "&:hover, &:focus": {
+            backgroundColor: theme.palette.grey[300],
+          },
+        }}
+      >
+        <CaretRight size={24} />
+      </IconButton>
     </Stack>
   );
 }
