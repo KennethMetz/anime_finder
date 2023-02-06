@@ -132,6 +132,7 @@ export default function DetailedView() {
             <ListItem sx={{ paddingTop: 0, pb: 0, minHeight: "32px" }}>
               {anime.genres.map((genre) => (
                 <Chip
+                  key={genre}
                   variant="outlined"
                   label={genre}
                   sx={{ mr: 1 }}
