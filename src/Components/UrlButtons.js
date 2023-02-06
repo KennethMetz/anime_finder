@@ -1,4 +1,5 @@
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Fragment } from "react";
 import crunchyroll from "../Styles/images/icons8-crunchyroll.png";
 import funimation from "../Styles/images/icons8-funimation.png";
 import netflix from "../Styles/images/icons8-netflix.png";
@@ -27,7 +28,7 @@ export default function UrlButtons({ anime }) {
         </Typography>
       )}
       {urls.map((url) => (
-        <>
+        <Fragment key={url}>
           {url.includes("crunchyroll") && (
             <UrlButton title="Crunchyroll" link={url} image={crunchyroll} />
           )}
@@ -37,7 +38,7 @@ export default function UrlButtons({ anime }) {
           {url.includes("netflix") && (
             <UrlButton title="Netflix" link={url} image={netflix} />
           )}
-        </>
+        </Fragment>
       ))}
     </Box>
   );
