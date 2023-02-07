@@ -327,9 +327,5 @@ export const sendPasswordReset = async (email) => {
 };
 
 export const logout = async () => {
-  try {
-    await signOut(auth);
-  } catch (error) {
-    console.log(error);
-  }
+  await signOut(auth);
 };
