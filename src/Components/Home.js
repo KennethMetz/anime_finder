@@ -228,24 +228,14 @@ export default function Home() {
         <div className="gap" />
         {loadingGeneric ? <div id="loading"></div> : ""}
       </Container>
-      <div
-        style={{
-          backgroundColor: "white",
-          width: "100vw",
-          height: "100px",
-          zIndex: "2",
-          position: "sticky",
-          top: "68px",
-          marginTop: "-50px",
-        }}
-      ></div>
-      <Container maxWidth="lg">
-        <ShelfTitle
-          selectedGenre={selectedGenre}
-          setSelectedGenre={setSelectedGenre}
-          title={"Explore More"}
-        />
 
+      <ShelfTitle
+        selectedGenre={selectedGenre}
+        setSelectedGenre={setSelectedGenre}
+        title={"Explore More"}
+      />
+
+      <Container maxWidth="lg">
         <h4 className="shelfTitle"> Highest Rated {selectedGenre.slice(7)} </h4>
         <AnimeShelf items={animeHR} />
 

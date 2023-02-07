@@ -1,25 +1,34 @@
-import { Grid } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { Container, Grid, useMediaQuery } from "@mui/material";
 import GenreChips from "./GenreChips";
 
 export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
+  const theme = useTheme();
+
+  const sm = useMediaQuery(theme.breakpoints.up("sm"));
+
+  let singleRowHeader = sm ? true : false;
+
   return (
     <div
       style={{
         position: "sticky",
-        top: "68px",
+        top: singleRowHeader ? "68px" : "127px",
         backgroundColor: "white",
         zIndex: "3",
-        boxShadow: "none",
         width: "100vw",
-        marginTop: "-100px",
       }}
     >
-      <h4 style={{ marginBottom: "15px", marginTop: "41px" }}>{title}</h4>
-      <GenreChips
-        selectedGenre={selectedGenre}
-        setSelectedGenre={setSelectedGenre}
-      />
-      <div style={{ marginTop: "-5px", height: "1px" }}></div>
+      <Container maxWidth="lg">
+        <h4 style={{ marginBottom: "15px", paddingTop: "10px" }}>{title}</h4>
+
+        <GenreChips
+          selectedGenre={selectedGenre}
+          setSelectedGenre={setSelectedGenre}
+        />
+      </Container>
+
+      <div style={{ marginTop: "-15px", height: "1px" }}></div>
     </div>
   );
 }
