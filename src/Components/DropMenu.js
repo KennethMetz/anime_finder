@@ -111,7 +111,7 @@ export default function DropMenu() {
         role={undefined}
         placement="bottom-start"
         transition
-        disablePortal
+        style={{ zIndex: "4" }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
