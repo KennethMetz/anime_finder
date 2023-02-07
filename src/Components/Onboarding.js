@@ -49,7 +49,6 @@ export default function Onboarding() {
       "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?page_size=10",
       setAnimeMR
     );
-    console.log(localUser);
   }, [user, loading, localUser]);
 
   return (

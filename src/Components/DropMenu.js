@@ -84,9 +84,9 @@ export default function DropMenu() {
     navigate("/register");
   }
 
-  function sendToLogout(e) {
-    logout();
-    setLocalUser([{ likes: [], dislikes: [] }]);
+  async function sendToLogout(e) {
+    await logout();
+    setLocalUser({ likes: [], dislikes: [] });
     handleClose(e);
     navigate("/logout");
   }
