@@ -1,3 +1,5 @@
+import { useMediaQuery } from "@mui/material";
+
 export async function APISearch(inputValue) {
   try {
     let response = await fetch(
@@ -38,4 +40,50 @@ async function handleErrors(response) {
     const message = await response.text();
     throw new Error(message);
   }
+}
+
+//***************TanStack Query Functions***************
+export function GetAnimeHR(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
+    selectedGenre,
+    setState
+  );
+}
+
+export function GetAnimeMC(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
+    selectedGenre,
+    setState
+  );
+}
+
+export function GetAnimeMPTW(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
+    selectedGenre,
+    setState
+  );
+}
+
+export function GetAnimeMH(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
+    null,
+    setState
+  );
+}
+
+export function useGetTitles(url, selectedGenre, setState) {
+  return useMediaQuery([url, selectedGenre], async () => {
+    let response = await fetch(url, { mode: "cors" });
+    let responseJson = await response.json();
+    console.log(responseJson.items);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    setState(responseJson.items);
+    return responseJson.items;
+  });
 }

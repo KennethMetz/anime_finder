@@ -32,6 +32,7 @@ import GenreChips from "./GenreChips";
 import ShelfTitle from "./ShelfTitle";
 import { Stack } from "@mui/system";
 import AnimeShelf from "./AnimeShelf";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -47,7 +48,7 @@ export default function Home() {
   let [recommendation, setRecommendation] = useState([]);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   let [selectedGenre, setSelectedGenre] = useState([]);
@@ -153,31 +154,43 @@ export default function Home() {
   }, [user, localUser]);
 
   //Get generic recommendations
-  useEffect(() => {
-    getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
-      setAnimeHR
-    );
-    getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
-      setAnimeMC
-    );
-    getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
-      setAnimeMR
-    );
-    getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenre}`,
-      setAnimeMPTW
-    );
-  }, [selectedGenre]);
+  // useEffect(() => {
+  //   getAnimeListing(
+  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
+  //     setAnimeHR
+  //   );
+  //   getAnimeListing(
+  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
+  //     setAnimeMC
+  //   );
+  //   getAnimeListing(
+  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
+  //     setAnimeMR
+  //   );
+  //   getAnimeListing(
+  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenre}`,
+  //     setAnimeMPTW
+  //   );
+  // }, [selectedGenre]);
 
-  useEffect(() => {
-    getAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
-      setAnimeMH
-    );
-  }, []);
+  // let { status, data, error, isFetching } = useGetTitles(
+  //   `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
+  //   null,
+  //   setAnimeMH
+  // );
+
+  // useEffect(() => {
+  //   getAnimeListing(
+  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
+  //     setAnimeMH
+  //   );
+  // }, []);
+
+  GetAnimeHR(selectedGenre, setAnimeHR);
+  GetAnimeMC(selectedGenre, setAnimeMC);
+  GetAnimeMPTW(selectedGenre, setAnimeMPTW);
+
+  GetAnimeMH(selectedGenre, setAnimeMH);
 
   useEffect(() => {
     getRandomNumbers();
@@ -271,4 +284,49 @@ export default function Home() {
       </Container>
     </div>
   );
+}
+
+function GetAnimeHR(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
+    selectedGenre,
+    setState
+  );
+}
+
+function GetAnimeMC(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
+    selectedGenre,
+    setState
+  );
+}
+
+function GetAnimeMPTW(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
+    selectedGenre,
+    setState
+  );
+}
+
+function GetAnimeMH(selectedGenre, setState) {
+  let { status, data, error, isFetching } = useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
+    null,
+    setState
+  );
+}
+
+function useGetTitles(url, selectedGenre, setState) {
+  return useQuery([url, selectedGenre], async () => {
+    let response = await fetch(url, { mode: "cors" });
+    let responseJson = await response.json();
+    console.log(responseJson.items);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    setState(responseJson.items);
+    return responseJson.items;
+  });
 }
