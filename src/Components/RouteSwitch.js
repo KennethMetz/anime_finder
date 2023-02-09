@@ -15,6 +15,7 @@ import theme from "./theme";
 import { LandingPage } from "./LandingPage";
 import { NotFound404 } from "./NotFound404";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const RouteSwitch = () => {
                 <Route path="*" element={<NotFound404 />} />
               </Route>
             </Routes>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </LocalUserProvider>
       </BrowserRouter>

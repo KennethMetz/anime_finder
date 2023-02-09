@@ -33,6 +33,14 @@ import ShelfTitle from "./ShelfTitle";
 import { Stack } from "@mui/system";
 import AnimeShelf from "./AnimeShelf";
 import { QueryClient, useQuery } from "@tanstack/react-query";
+import {
+  GetAnimeHR,
+  GetAnimeMC,
+  GetAnimeMH,
+  GetAnimeMPTW,
+  GetRecommendations,
+  useGetRecommendations,
+} from "./APICalls";
 
 export default function Home() {
   let [animeHR, setAnimeHR] = useState([]); //highest rated
@@ -96,7 +104,7 @@ export default function Home() {
     setAnimeRandom(tempItem);
   }
 
-  async function recommendContent() {
+  async function RecommendContent() {
     try {
       let data = {
         history: [],
@@ -118,25 +126,24 @@ export default function Home() {
           });
         }
       }
-      // console.log(data);
-      // console.log(localUser);
 
-      let response = await fetch(
-        `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      let responseJson = await response.json();
-      let temp = [];
-      responseJson.items.map((item, index) => temp.push(item.anime));
-      setRecommendation(temp);
-      setLoadingRecs(false);
+      GetRecommendations(setRecommendation, setLoadingRecs, data);
+      // let response = await fetch(
+      //   `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
+      //   {
+      //     method: "POST",
+      //     mode: "cors",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(data),
+      //   }
+      // );
+      // let responseJson = await response.json();
+      // let temp = [];
+      // responseJson.items.map((item, index) => temp.push(item.anime));
+      // setRecommendation(temp);
+      // setLoadingRecs(false);
     } catch (error) {
       console.log(error);
     }
@@ -149,9 +156,11 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    recommendContent();
-  }, [user, localUser]);
+  RecommendContent();
+
+  // useEffect(() => {
+  //   recommendContent();
+  // }, [user, localUser]);
 
   //Get generic recommendations
   // useEffect(() => {
@@ -186,10 +195,10 @@ export default function Home() {
   //   );
   // }, []);
 
+  //API calls for generic shelf content
   GetAnimeHR(selectedGenre, setAnimeHR);
   GetAnimeMC(selectedGenre, setAnimeMC);
   GetAnimeMPTW(selectedGenre, setAnimeMPTW);
-
   GetAnimeMH(selectedGenre, setAnimeMH);
 
   useEffect(() => {
@@ -284,49 +293,4 @@ export default function Home() {
       </Container>
     </div>
   );
-}
-
-function GetAnimeHR(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
-    selectedGenre,
-    setState
-  );
-}
-
-function GetAnimeMC(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
-    selectedGenre,
-    setState
-  );
-}
-
-function GetAnimeMPTW(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
-    selectedGenre,
-    setState
-  );
-}
-
-function GetAnimeMH(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
-    null,
-    setState
-  );
-}
-
-function useGetTitles(url, selectedGenre, setState) {
-  return useQuery([url, selectedGenre], async () => {
-    let response = await fetch(url, { mode: "cors" });
-    let responseJson = await response.json();
-    console.log(responseJson.items);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    setState(responseJson.items);
-    return responseJson.items;
-  });
 }

@@ -1,4 +1,4 @@
-import { useMediaQuery } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 export async function APISearch(inputValue) {
   try {
@@ -76,14 +76,51 @@ export function GetAnimeMH(selectedGenre, setState) {
 }
 
 export function useGetTitles(url, selectedGenre, setState) {
-  return useMediaQuery([url, selectedGenre], async () => {
+  return useQuery([url, selectedGenre], async () => {
     let response = await fetch(url, { mode: "cors" });
     let responseJson = await response.json();
-    console.log(responseJson.items);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     setState(responseJson.items);
+    return responseJson.items;
+  });
+}
+
+export function GetRecommendations(setState, setLoading, viewHistory) {
+  let { status, data, error, isFetching } = useGetRecommendations(
+    setState,
+    setLoading,
+    viewHistory
+  );
+}
+
+export function useGetRecommendations(
+  setRecommendation,
+  setLoadingRecs,
+  viewHistory
+) {
+  return useQuery(["Recommendations", viewHistory], async () => {
+    let response = await fetch(
+      `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(viewHistory),
+      }
+    );
+    let responseJson = await response.json();
+    let temp = [];
+    responseJson.items.map((item, index) => temp.push(item.anime));
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    } else {
+      setRecommendation(temp);
+      setLoadingRecs(false);
+    }
     return responseJson.items;
   });
 }
