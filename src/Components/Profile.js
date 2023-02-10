@@ -41,25 +41,9 @@ export default function Profile() {
 
   const theme = useTheme();
 
-  //Firebase auth does not save user's name for email/password login. Making this function necessary.
-  const fetchUserName = async (user) => {
-    if (user) {
-      try {
-        const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-        const doc = await getDocs(q);
-        const data = doc.docs[0].data();
-        setName(data.name);
-      } catch (err) {
-        console.error(err);
-        alert("An error occured while fetching user data");
-      }
-    } else return;
-  };
-
   useEffect(() => {
     if (loading) return;
     if (user) PopulateFromFirestore(user, localUser, setLocalUser);
-    fetchUserName();
     console.log(localUser);
   }, [user, loading]);
 
