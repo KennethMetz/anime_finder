@@ -1,38 +1,16 @@
 import "../Styles/App.css";
 
-import {
-  Autocomplete,
-  TextField,
-  Grid,
-  Box,
-  Container,
-  TableContainer,
-  Chip,
-  ListItemButton,
-  Button,
-} from "@mui/material";
+import { Grid, Container, Chip } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-
-import { Link, useNavigate } from "react-router-dom";
-import * as React from "react";
-
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
-import Emoji from "./Emoji";
-import { User } from "firebase/auth";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { FirebaseError } from "firebase/app";
-import { flushSync } from "react-dom";
-import TitleAutocomplete from "./TitleAutocomplete";
 import { PopulateFromFirestore } from "./Firestore";
 import AnimeGrid from "./AnimeGrid";
-import GenreChips from "./GenreChips";
 import ShelfTitle from "./ShelfTitle";
 import { Stack } from "@mui/system";
 import AnimeShelf from "./AnimeShelf";
-import { QueryClient, useQuery } from "@tanstack/react-query";
 import {
   useAnimeHR,
   useAnimeMC,
@@ -49,7 +27,6 @@ export default function Home() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const [user, loading] = useAuthState(auth);
-  const navigate = useNavigate();
 
   let [selectedGenre, setSelectedGenre] = useState([]);
 
@@ -57,17 +34,6 @@ export default function Home() {
 
   let randomPage = [];
   let randomItem = [];
-
-  async function getAnimeListing(url, setState) {
-    try {
-      let response = await fetch(url, { mode: "cors" });
-      let responseJson = await response.json();
-      setState(responseJson.items);
-      setLoadingGeneric(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   async function getRandomAnimeListing(
     url,
@@ -127,46 +93,10 @@ export default function Home() {
     }
   }
 
+  // API call for personalized recommendations.
   const viewHistory = getViewHistory();
   const { data: recommendation, isLoading: loadingRecs } =
     useRecommendations(viewHistory);
-
-  // useEffect(() => {
-  //   recommendContent();
-  // }, [user, localUser]);
-
-  //Get generic recommendations
-  // useEffect(() => {
-  //   getAnimeListing(
-  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
-  //     setAnimeHR
-  //   );
-  //   getAnimeListing(
-  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
-  //     setAnimeMC
-  //   );
-  //   getAnimeListing(
-  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
-  //     setAnimeMR
-  //   );
-  //   getAnimeListing(
-  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenre}`,
-  //     setAnimeMPTW
-  //   );
-  // }, [selectedGenre]);
-
-  // let { status, data, error, isFetching } = useGetTitles(
-  //   `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
-  //   null,
-  //   setAnimeMH
-  // );
-
-  // useEffect(() => {
-  //   getAnimeListing(
-  //     `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
-  //     setAnimeMH
-  //   );
-  // }, []);
 
   //API calls for generic shelf content
   const { data: animeHR } = useAnimeHR(selectedGenre);
