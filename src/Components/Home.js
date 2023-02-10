@@ -129,7 +129,7 @@ export default function Home() {
     <div>
       <Container maxWidth="lg">
         <div className="gap" />
-        {localUser && localUser["likes"] ? (
+        {localUser && localUser["likes"]?.length > 0 ? (
           <Grid container style={{ alignItems: "center" }}>
             <Grid item xs={12}>
               <h2
@@ -146,10 +146,22 @@ export default function Home() {
             </Grid>
           </Grid>
         ) : (
-          <h4>Like a show below to receive personalized recommendations!</h4>
+          <h2
+            style={{
+              fontSize: "2.25rem",
+              fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+              textAlign: "left",
+              marginBlockStart: 0,
+              marginBlockEnd: "0.5rem",
+            }}
+          >
+            Like a show below to receive personalized recommendations!
+          </h2>
         )}
+        {loadingRecs ? <div id="loading"></div> : ""}
         <AnimeGrid items={recommendation} large />
         <div className="gap" />
+        {loadingGeneric ? <div id="loading"></div> : ""}
       </Container>
 
       <ShelfTitle

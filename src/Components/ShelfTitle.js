@@ -16,7 +16,7 @@ export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
         top: singleRowHeader ? "68px" : "127px",
         backgroundColor: "white",
         zIndex: "3",
-        width: "100vw",
+        width: "100%",
       }}
     >
       <Container maxWidth="lg">
