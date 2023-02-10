@@ -74,10 +74,8 @@ export function useGetTitles(url) {
     [url],
     async () => {
       let response = await fetch(url, { mode: "cors" });
+      await handleErrors(response);
       let responseJson = await response.json();
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
       return responseJson.items;
     },
     { staleTime: fiveMinutesMs }
@@ -99,12 +97,10 @@ export function useRecommendations(viewHistory) {
           body: JSON.stringify(viewHistory),
         }
       );
+      await handleErrors(response);
       let responseJson = await response.json();
       let temp = [];
       responseJson.items.map((item, index) => temp.push(item.anime));
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
       return temp;
     },
     { staleTime: fiveMinutesMs }
