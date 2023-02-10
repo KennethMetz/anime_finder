@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
+const fiveMinutesMs = 1000 * 60 * 5;
+
 export async function APISearch(inputValue) {
   try {
     let response = await fetch(
@@ -43,48 +45,43 @@ async function handleErrors(response) {
 }
 
 //***************TanStack Query Functions***************
-export function GetAnimeHR(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`,
-    selectedGenre,
-    setState
+export function useAnimeHR(selectedGenre) {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`
   );
 }
 
-export function GetAnimeMC(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`,
-    selectedGenre,
-    setState
+export function useAnimeMC(selectedGenre) {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`
   );
 }
 
-export function GetAnimeMPTW(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`,
-    selectedGenre,
-    setState
+export function useAnimeMPTW(selectedGenre) {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`
   );
 }
 
-export function GetAnimeMH(selectedGenre, setState) {
-  let { status, data, error, isFetching } = useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`,
-    null,
-    setState
+export function useAnimeMH() {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`
   );
 }
 
-export function useGetTitles(url, selectedGenre, setState) {
-  return useQuery([url, selectedGenre], async () => {
-    let response = await fetch(url, { mode: "cors" });
-    let responseJson = await response.json();
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    setState(responseJson.items);
-    return responseJson.items;
-  });
+export function useGetTitles(url) {
+  return useQuery(
+    [url],
+    async () => {
+      let response = await fetch(url, { mode: "cors" });
+      let responseJson = await response.json();
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return responseJson.items;
+    },
+    { staleTime: fiveMinutesMs }
+  );
 }
 
 export function GetRecommendations(setState, setLoading, viewHistory) {

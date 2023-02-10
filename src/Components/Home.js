@@ -34,20 +34,15 @@ import { Stack } from "@mui/system";
 import AnimeShelf from "./AnimeShelf";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import {
-  GetAnimeHR,
-  GetAnimeMC,
-  GetAnimeMH,
-  GetAnimeMPTW,
   GetRecommendations,
+  useAnimeHR,
+  useAnimeMC,
+  useAnimeMH,
+  useAnimeMPTW,
   useGetRecommendations,
 } from "./APICalls";
 
 export default function Home() {
-  let [animeHR, setAnimeHR] = useState([]); //highest rated
-  let [animeMR, setAnimeMR] = useState([]); //most rated
-  let [animeMC, setAnimeMC] = useState([]); //most completed
-  let [animeMPTW, setAnimeMPTW] = useState([]); //most planned to watch
-  let [animeMH, setAnimeMH] = useState([]); //lowest rated
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
 
   let [loadingGeneric, setLoadingGeneric] = useState(true);
@@ -196,10 +191,10 @@ export default function Home() {
   // }, []);
 
   //API calls for generic shelf content
-  GetAnimeHR(selectedGenre, setAnimeHR);
-  GetAnimeMC(selectedGenre, setAnimeMC);
-  GetAnimeMPTW(selectedGenre, setAnimeMPTW);
-  GetAnimeMH(selectedGenre, setAnimeMH);
+  const { data: animeHR } = useAnimeHR(selectedGenre);
+  const { data: animeMC } = useAnimeMC(selectedGenre);
+  const { data: animeMPTW } = useAnimeMPTW(selectedGenre);
+  const { data: animeMH } = useAnimeMH(selectedGenre);
 
   useEffect(() => {
     getRandomNumbers();

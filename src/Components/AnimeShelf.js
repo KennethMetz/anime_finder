@@ -4,6 +4,8 @@ import { useState } from "react";
 import AnimeCard from "./AnimeCard";
 
 export default function AnimeShelf({ items }) {
+  items = items ?? [];
+
   const [selected, setSelected] = useState();
   const [startIndex, setStartIndex] = useState(0);
   const theme = useTheme();
