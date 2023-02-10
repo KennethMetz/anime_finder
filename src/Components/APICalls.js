@@ -1,3 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
+const fiveMinutesMs = 1000 * 60 * 5;
+
 export async function APISearch(inputValue) {
   try {
     let response = await fetch(
@@ -38,4 +42,67 @@ async function handleErrors(response) {
     const message = await response.text();
     throw new Error(message);
   }
+}
+
+//***************TanStack Query Functions***************
+export function useAnimeHR(selectedGenre) {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=highest_rated&page_size=24${selectedGenre}`
+  );
+}
+
+export function useAnimeMC(selectedGenre) {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_completed&page_size=24${selectedGenre}`
+  );
+}
+
+export function useAnimeMPTW(selectedGenre) {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`
+  );
+}
+
+export function useAnimeMH() {
+  return useGetTitles(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24&page=101`
+  );
+}
+
+export function useGetTitles(url) {
+  return useQuery(
+    [url],
+    async () => {
+      let response = await fetch(url, { mode: "cors" });
+      await handleErrors(response);
+      let responseJson = await response.json();
+      return responseJson.items;
+    },
+    { staleTime: fiveMinutesMs }
+  );
+}
+
+export function useRecommendations(viewHistory) {
+  return useQuery(
+    ["Recommendations", viewHistory],
+    async () => {
+      let response = await fetch(
+        `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(viewHistory),
+        }
+      );
+      await handleErrors(response);
+      let responseJson = await response.json();
+      let temp = [];
+      responseJson.items.map((item, index) => temp.push(item.anime));
+      return temp;
+    },
+    { staleTime: fiveMinutesMs }
+  );
 }

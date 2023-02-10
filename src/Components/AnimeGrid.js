@@ -3,6 +3,8 @@ import { useState } from "react";
 import AnimeCard from "./AnimeCard";
 
 export default function AnimeGrid({ items, large }) {
+  items = items ?? [];
+
   const [selected, setSelected] = useState();
 
   let columns = 12;
