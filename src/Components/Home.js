@@ -148,10 +148,8 @@ export default function Home() {
         ) : (
           <h4>Like a show below to receive personalized recommendations!</h4>
         )}
-        {loadingRecs ? <div id="loading"></div> : ""}
         <AnimeGrid items={recommendation} large />
         <div className="gap" />
-        {loadingGeneric ? <div id="loading"></div> : ""}
       </Container>
 
       <ShelfTitle

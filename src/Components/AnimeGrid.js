@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Skeleton } from "@mui/material";
 import { useState } from "react";
 import AnimeCard from "./AnimeCard";
 
@@ -6,6 +6,9 @@ export default function AnimeGrid({ items, large }) {
   items = items ?? [];
 
   const [selected, setSelected] = useState();
+
+  const ghosts = new Array(10).fill(0);
+  const showGhosts = !items.length;
 
   let columns = 12;
   let breakpoints = { xs: 6, sm: 3, md: 2 };
@@ -33,20 +36,30 @@ export default function AnimeGrid({ items, large }) {
       }}
     >
       <Grid container spacing={2} columns={columns}>
-        {items.map((anime, index) => (
-          <Grid
-            item
-            key={index}
-            {...breakpoints}
-            sx={{ aspectRatio: "0.7", zIndex: selected === index ? 1 : 0 }}
-          >
-            <AnimeCard
-              anime={anime}
-              large={large}
-              onChangeSelected={(v) => onChangeSelected(index, v)}
-            />
-          </Grid>
-        ))}
+        {showGhosts &&
+          ghosts.map((_, index) => (
+            <Grid item key={index} {...breakpoints} sx={{ aspectRatio: "0.7" }}>
+              <Skeleton
+                variant="rounded"
+                sx={{ height: "100%", borderRadius: "8px" }}
+              />
+            </Grid>
+          ))}
+        {!showGhosts &&
+          items.map((anime, index) => (
+            <Grid
+              item
+              key={index}
+              {...breakpoints}
+              sx={{ aspectRatio: "0.7", zIndex: selected === index ? 1 : 0 }}
+            >
+              <AnimeCard
+                anime={anime}
+                large={large}
+                onChangeSelected={(v) => onChangeSelected(index, v)}
+              />
+            </Grid>
+          ))}
       </Grid>
     </Box>
   );

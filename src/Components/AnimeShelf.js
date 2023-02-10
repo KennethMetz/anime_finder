@@ -1,4 +1,11 @@
-import { Box, Grid, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Skeleton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { useState } from "react";
 import AnimeCard from "./AnimeCard";
@@ -26,6 +33,9 @@ export default function AnimeShelf({ items }) {
 
   const hasPrevious = startIndex > 0;
   const hasNext = startIndex < items.length - itemsPerPage;
+
+  const ghosts = new Array(itemsPerPage).fill(0);
+  const showGhosts = !items.length;
 
   const onChangeSelected = (index, value) => {
     if (value) {
@@ -58,19 +68,29 @@ export default function AnimeShelf({ items }) {
       }}
     >
       <Grid container spacing={2} columns={columns}>
-        {currentItems.map((anime, index) => (
-          <Grid
-            item
-            key={index}
-            {...breakpoints}
-            sx={{ aspectRatio: "0.7", zIndex: selected === index ? 1 : 0 }}
-          >
-            <AnimeCard
-              anime={anime}
-              onChangeSelected={(v) => onChangeSelected(index, v)}
-            />
-          </Grid>
-        ))}
+        {showGhosts &&
+          ghosts.map((_, index) => (
+            <Grid item key={index} {...breakpoints} sx={{ aspectRatio: "0.7" }}>
+              <Skeleton
+                variant="rounded"
+                sx={{ height: "100%", borderRadius: "8px" }}
+              />
+            </Grid>
+          ))}
+        {!showGhosts &&
+          currentItems.map((anime, index) => (
+            <Grid
+              item
+              key={index}
+              {...breakpoints}
+              sx={{ aspectRatio: "0.7", zIndex: selected === index ? 1 : 0 }}
+            >
+              <AnimeCard
+                anime={anime}
+                onChangeSelected={(v) => onChangeSelected(index, v)}
+              />
+            </Grid>
+          ))}
       </Grid>
       <IconButton
         onClick={onClickPrevious}

@@ -6,7 +6,6 @@ export default function SimilarContent({ animeId, amount }) {
 
   return (
     <div>
-      {loading ? <div id="loading"></div> : ""}
       <AnimeShelf items={similar ?? []} />
     </div>
   );
