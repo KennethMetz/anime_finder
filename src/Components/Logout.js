@@ -94,7 +94,7 @@ export default function Logout() {
         >
           <Typography
             sx={{
-              fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+              fontFamily: "montserrat, Arial, Helvetica, sans-serif",
               fontSize: {
                 xs: "2.5rem",
                 sevenHundredFifty: "3rem",
