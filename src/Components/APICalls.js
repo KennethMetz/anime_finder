@@ -84,40 +84,29 @@ export function useGetTitles(url) {
   );
 }
 
-export function GetRecommendations(setState, setLoading, viewHistory) {
-  let { status, data, error, isFetching } = useGetRecommendations(
-    setState,
-    setLoading,
-    viewHistory
-  );
-}
-
-export function useGetRecommendations(
-  setRecommendation,
-  setLoadingRecs,
-  viewHistory
-) {
-  return useQuery(["Recommendations", viewHistory], async () => {
-    let response = await fetch(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
-      {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(viewHistory),
+export function useRecommendations(viewHistory) {
+  return useQuery(
+    ["Recommendations", viewHistory],
+    async () => {
+      let response = await fetch(
+        `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(viewHistory),
+        }
+      );
+      let responseJson = await response.json();
+      let temp = [];
+      responseJson.items.map((item, index) => temp.push(item.anime));
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    );
-    let responseJson = await response.json();
-    let temp = [];
-    responseJson.items.map((item, index) => temp.push(item.anime));
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    } else {
-      setRecommendation(temp);
-      setLoadingRecs(false);
-    }
-    return responseJson.items;
-  });
+      return temp;
+    },
+    { staleTime: fiveMinutesMs }
+  );
 }

@@ -34,21 +34,18 @@ import { Stack } from "@mui/system";
 import AnimeShelf from "./AnimeShelf";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import {
-  GetRecommendations,
   useAnimeHR,
   useAnimeMC,
   useAnimeMH,
   useAnimeMPTW,
-  useGetRecommendations,
+  useRecommendations,
 } from "./APICalls";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
 
   let [loadingGeneric, setLoadingGeneric] = useState(true);
-  let [loadingRecs, setLoadingRecs] = useState(true);
 
-  let [recommendation, setRecommendation] = useState([]);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const [user, loading] = useAuthState(auth);
@@ -99,49 +96,28 @@ export default function Home() {
     setAnimeRandom(tempItem);
   }
 
-  async function RecommendContent() {
-    try {
-      let data = {
-        history: [],
-        amount: 10,
-      };
-      if (localUser["likes"].length > 0) {
-        for (let i = 0; i < localUser["likes"].length; i++) {
-          data["history"][i] = {
-            animeId: localUser["likes"][i].id,
-            status: "COMPLETED",
-          };
-        }
+  function getViewHistory() {
+    let data = {
+      history: [],
+      amount: 10,
+    };
+    if (localUser["likes"].length > 0) {
+      for (let i = 0; i < localUser["likes"].length; i++) {
+        data["history"][i] = {
+          animeId: localUser["likes"][i].id,
+          status: "COMPLETED",
+        };
       }
-      if (localUser["dislikes"].length > 0) {
-        for (let i = 0; i < localUser["dislikes"].length; i++) {
-          data["history"].push({
-            animeId: localUser["dislikes"][i].id,
-            status: "DROPPED",
-          });
-        }
-      }
-
-      GetRecommendations(setRecommendation, setLoadingRecs, data);
-      // let response = await fetch(
-      //   `https://api-jet-lfoguxrv7q-uw.a.run.app/recommend`,
-      //   {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(data),
-      //   }
-      // );
-      // let responseJson = await response.json();
-      // let temp = [];
-      // responseJson.items.map((item, index) => temp.push(item.anime));
-      // setRecommendation(temp);
-      // setLoadingRecs(false);
-    } catch (error) {
-      console.log(error);
     }
+    if (localUser["dislikes"].length > 0) {
+      for (let i = 0; i < localUser["dislikes"].length; i++) {
+        data["history"].push({
+          animeId: localUser["dislikes"][i].id,
+          status: "DROPPED",
+        });
+      }
+    }
+    return data;
   }
 
   function getRandomNumbers() {
@@ -151,7 +127,9 @@ export default function Home() {
     }
   }
 
-  RecommendContent();
+  const viewHistory = getViewHistory();
+  const { data: recommendation, isLoading: loadingRecs } =
+    useRecommendations(viewHistory);
 
   // useEffect(() => {
   //   recommendContent();
