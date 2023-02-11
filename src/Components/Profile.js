@@ -44,13 +44,20 @@ export default function Profile() {
   useEffect(() => {
     if (loading) return;
     if (user) PopulateFromFirestore(user, localUser, setLocalUser);
+    // fetchUserName();
     console.log(localUser);
   }, [user, loading]);
 
   return (
-    <Container maxWidth="sm">
-      <div className="gap" />
-      <h3 className="leftH3">Your Likes</h3>
+    <Container maxWidth="xs">
+      <h3
+        className="leftH3"
+        style={{ textAlign: "center", marginBottom: "5px" }}
+      >
+        Your Likes
+      </h3>
+      <Divider></Divider>
+
       <Typography>
         {localUser && localUser["likes"] ? (
           <List>
@@ -100,8 +107,14 @@ export default function Profile() {
           ""
         )}
       </Typography>
+      <h3
+        className="leftH3"
+        style={{ textAlign: "center", marginBottom: "5px" }}
+      >
+        Your Dislikes
+      </h3>
+      <Divider></Divider>
 
-      <h3 className="leftH3">Your Dislikes</h3>
       <Typography>
         {localUser && localUser["dislikes"] ? (
           <List>
