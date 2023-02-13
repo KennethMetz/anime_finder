@@ -18,6 +18,16 @@
   font-family: montserrat;
   src: url(./Montserrat-Black.ttf);
 }
+
+@font-face {
+  font-family: montserratExtraBold;
+  src: url(./Montserrat-ExtraBold.ttf);
+}
+
+@font-face {
+  font-family: montserratBold;
+  src: url(./Montserrat-Bold.ttf);
+}
 /* GLOBAL FONTS DO NOT DELETE */
 
 .App-header {
