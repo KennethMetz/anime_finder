@@ -103,6 +103,6 @@ export function useRecommendations(viewHistory) {
       responseJson.items.map((item, index) => temp.push(item.anime));
       return temp;
     },
-    { staleTime: fiveMinutesMs }
+    { staleTime: fiveMinutesMs, keepPreviousData: true }
   );
 }
