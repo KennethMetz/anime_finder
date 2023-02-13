@@ -9,7 +9,6 @@ import {
   ListItemSecondaryAction,
   Typography,
 } from "@mui/material";
-import logo from "../Styles/images/logo.svg";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "./Firebase";
 import { signOut } from "firebase/auth";
@@ -19,6 +18,7 @@ import TitleAutocomplete from "./TitleAutocomplete";
 import { UserCircle, List, Palette } from "phosphor-react";
 import DropMenu from "./DropMenu";
 import { useTheme } from "@mui/material/styles";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 function Header() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -42,21 +42,7 @@ function Header() {
         >
           <Grid item lg={2.5} md={2.5} sm={4.25} xs={9}>
             <Link to="/home">
-              <div className="logo">
-                <img src={logo} alt="" />
-                <h2
-                  className="appName"
-                  style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
-                >
-                  Edward
-                </h2>
-                <h2
-                  className="appName"
-                  style={{ color: theme.palette.day.primary }}
-                >
-                  ML
-                </h2>
-              </div>
+              <EdwardMLLogo />
             </Link>
             <div></div>
           </Grid>

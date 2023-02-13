@@ -5,6 +5,7 @@ import logo from "../Styles/images/logo.svg";
 import spike from "../Styles/images/spike-tile.jpg";
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function Logout() {
   const theme = useTheme();
@@ -29,19 +30,7 @@ export default function Logout() {
         <Grid item md={9.5} sm={9} xs={9}>
           <div className="logo">
             <Link to="/home" style={{ display: "flex" }}>
-              <img src={logo} alt="" />
-              <h2
-                className="appName"
-                style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
-              >
-                Edward
-              </h2>
-              <h2
-                className="appName"
-                style={{ color: theme.palette.day.primary }}
-              >
-                ML
-              </h2>
+              <EdwardMLLogo />
             </Link>
           </div>
 
