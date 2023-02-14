@@ -38,8 +38,8 @@ export default function LandingPage() {
         >
           <Grid item md={9} sm={9} xs={9}>
             <div className="logo" style={{ height: "68px" }}>
-              <Link to="/home" style={{ display: "flex" }}>
-                <img src={logo} alt="" />
+              <Link to="/" style={{ display: "flex" }}>
+                <img src={logo} alt="" style={{ width: "35px" }} />
                 <Box
                   component="div"
                   sx={{ display: { xs: "none", fiveHundred: "flex" } }}
@@ -49,6 +49,8 @@ export default function LandingPage() {
                     style={{
                       color: theme.palette.day.text,
                       paddingLeft: "10px",
+                      fontFamily: "montserratBold",
+                      fontSize: "1.25rem",
                       display: {
                         xs: "none",
                         fiveHundred: "block",
@@ -59,7 +61,11 @@ export default function LandingPage() {
                   </h2>
                   <h2
                     className="appName"
-                    style={{ color: theme.palette.day.primary }}
+                    style={{
+                      color: theme.palette.day.primary,
+                      fontFamily: "montserratBold",
+                      fontSize: "1.25rem",
+                    }}
                   >
                     ML
                   </h2>
@@ -75,7 +81,7 @@ export default function LandingPage() {
             textAlign="right"
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Link to="/login">
+            <Link to="/onboarding">
               <Button
                 variant="contained"
                 size="large"
@@ -83,7 +89,7 @@ export default function LandingPage() {
                   textTransform: "none",
                   minWidth: "93px",
                   minHeight: "48px",
-                  fontFamily: "interExtraBold",
+                  fontFamily: "interSemiBold",
                   fontSize: ".875rem",
                   borderRadius: "24px",
                   color: "white",
@@ -101,10 +107,11 @@ export default function LandingPage() {
                   textTransform: "none",
                   minWidth: "93px",
                   minHeight: "48px",
-                  fontFamily: "interExtraBold",
+                  fontFamily: "interSemiBold",
                   fontSize: ".875rem",
                   borderRadius: "24px",
                   borderColor: "#474747",
+                  border: 2,
                   color: "black",
                   backgroundColor: "white",
 
@@ -129,7 +136,7 @@ export default function LandingPage() {
         sx={{
           position: "absolute",
           top: "68px",
-          width: "100vw",
+          width: "100%",
           height: "747px",
           objectFit: "cover",
           zIndex: "0",
@@ -141,7 +148,7 @@ export default function LandingPage() {
         src={AnimeMosaic}
         sx={{
           opacity: 0.19,
-          width: "100vw",
+          width: "100%",
           height: "747px",
           position: "absolute",
           top: "68px",
@@ -155,7 +162,7 @@ export default function LandingPage() {
         src={BlackSunburst}
         sx={{
           position: "absolute",
-          width: "100vw",
+          width: "100%",
           height: "747px",
           top: "68px",
           zIndex: "0",
@@ -206,26 +213,27 @@ export default function LandingPage() {
           </span>{" "}
           to help you decide which anime to watch next, based on your interests.
         </Typography>
-        <Button
-          variant="contained"
-          size="large"
-          sx={{
-            textTransform: "none",
-            width: {
-              xs: "230px",
-              fourHundred: "297px",
-            },
-            minHeight: "48px",
-            marginTop: "48px",
-            fontFamily: "interSemiBold",
-            fontSize: "1rem",
-            borderRadius: "24px",
-            backgroundColor: theme.palette.day.primary,
-          }}
-          onClick={() => {}}
-        >
-          Let's Get Started!
-        </Button>
+        <Link to="/onboarding">
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              textTransform: "none",
+              width: {
+                xs: "230px",
+                fourHundred: "297px",
+              },
+              minHeight: "48px",
+              marginTop: "48px",
+              fontFamily: "interSemiBold",
+              fontSize: "1rem",
+              borderRadius: "24px",
+              backgroundColor: theme.palette.day.primary,
+            }}
+          >
+            Let's Get Started!
+          </Button>
+        </Link>
         <Typography
           sx={{
             marginTop: "17px",
@@ -289,22 +297,25 @@ export default function LandingPage() {
           >
             <Paper
               sx={{
-                width: "350px",
-                height: "500px",
+                maxWidth: "350px",
+                minHeight: "500px",
                 background: "#F2F2F2",
                 borderRadius: "24px",
+                marginRight: "10px",
+                marginLeft: "10px",
               }}
             >
-              <Box
-                component="img"
-                alt=""
-                src={EdwardGIF}
-                sx={{
-                  width: "350px",
+              <div
+                style={{
+                  maxWidth: "350px",
+                  height: "245px",
+                  backgroundImage: `url(${EdwardGIF})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                   borderTopLeftRadius: "24px",
                   borderTopRightRadius: "24px",
                 }}
-              ></Box>
+              ></div>
               <div
                 style={{
                   display: "flex",
@@ -355,17 +366,19 @@ export default function LandingPage() {
           >
             <Paper
               sx={{
-                width: "350px",
-                height: "500px",
+                maxWidth: "350px",
+                minHeight: "500px",
                 background: "#F2F2F2",
                 borderRadius: "24px",
+                marginLeft: "10px",
+                marginRight: "10px",
               }}
             >
               <Box
                 component="div"
                 sx={{
-                  width: "350px",
-                  height: "243px",
+                  maxWidth: "350px",
+                  height: "245px",
                   backgroundImage: `url(${BebopCrew})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -404,7 +417,7 @@ export default function LandingPage() {
                 sx={{
                   fontFamily: "interMedium",
                   fontSize: "1rem",
-                  margin: "0px 34px 20px 27px",
+                  margin: "0px 34px 0px 27px",
                 }}
               >
                 Edward understands anime relationships and can help you discover
@@ -421,15 +434,18 @@ export default function LandingPage() {
             sx={{
               display: "flex",
               flexDirection: "column",
+              alignItems: "center",
               justifyContent: "center",
             }}
           >
             <Paper
               sx={{
-                width: "350px",
-                height: "500px",
+                maxWidth: "350px",
+                minHeight: "500px",
                 background: "#F2F2F2",
                 borderRadius: "24px",
+                marginLeft: "10px",
+                marginRight: "10px",
               }}
             >
               <Box
@@ -438,8 +454,8 @@ export default function LandingPage() {
                   backgroundImage: `url(${SpikeAndJet})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  width: "350px",
-                  height: "243px",
+                  maxWidth: "350px",
+                  height: "245px",
                   borderTopLeftRadius: "24px",
                   borderTopRightRadius: "24px",
                 }}
@@ -482,12 +498,14 @@ export default function LandingPage() {
                 suggestions that are just for you.
               </Typography>{" "}
             </Paper>
-            <div
-              style={{
-                height: "60px",
-              }}
-            ></div>
           </Grid>
+          <div
+            style={{
+              width: "100px",
+              height: "50px",
+              position: "relative",
+            }}
+          ></div>
         </Grid>
       </Container>
     </div>

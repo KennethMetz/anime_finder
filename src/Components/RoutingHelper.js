@@ -13,11 +13,17 @@ export const RoutingHelper = () => {
     "/home",
     "/search",
     "/profile",
-    "/reset",
     "/sandbox",
     "/anime/:animeId",
   ];
-  const noHeaderRoutes = ["/login", "/logout", "/", "/register", "reset"];
+  const noHeaderRoutes = [
+    "/login",
+    "/logout",
+    "/",
+    "/register",
+    "/reset",
+    "/onboarding",
+  ];
 
   let headerMatch = false;
   let noHeaderMatch = false;
