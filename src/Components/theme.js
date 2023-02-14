@@ -23,6 +23,7 @@ const theme = createTheme({
       sm: 600,
       sevenHundredFifty: 750,
       md: 900,
+      elevenHundred: 1100,
       lg: 1200,
       xl: 1536,
     },

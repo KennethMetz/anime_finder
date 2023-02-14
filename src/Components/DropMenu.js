@@ -94,7 +94,6 @@ export default function DropMenu() {
   return (
     <Stack>
       <Avatar
-        // size={45}
         ref={anchorRef}
         id="composition-button"
         alt={user?.displayName}
@@ -103,7 +102,12 @@ export default function DropMenu() {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        sx={{ bgcolor: theme.palette.primary.main, cursor: "pointer" }}
+        sx={{
+          bgcolor: theme.palette.primary.main,
+          cursor: "pointer",
+          width: "35px",
+          height: "35px",
+        }}
       />
       <Popper
         open={open}

@@ -12,10 +12,11 @@ import Logout from "./Logout";
 import Sandbox from "./Sandbox";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import { LandingPage } from "./LandingPage";
+import { RoutingHelper } from "./RoutingHelper";
 import { NotFound404 } from "./NotFound404";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import LandingPage from "./LandingPage";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,7 @@ const RouteSwitch = () => {
         <LocalUserProvider>
           <QueryClientProvider client={queryClient}>
             <Routes>
-              <Route element={<LandingPage />}>
+              <Route element={<RoutingHelper />}>
                 <Route path="/reset" element={<Reset />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/search" element={<Search />} />
@@ -35,9 +36,10 @@ const RouteSwitch = () => {
                 <Route path="/sandbox" element={<Sandbox />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/logout" element={<Logout />} />
-                <Route path="/" element={<Onboarding />} />
+                <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={<NotFound404 />} />
+                <Route path="/" element={<LandingPage />} />
               </Route>
             </Routes>
             <ReactQueryDevtools initialIsOpen={false} />

@@ -1,21 +1,36 @@
 import logo from "../Styles/images/logo.svg";
 import { useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 export default function EdwardMLLogo() {
   const theme = useTheme();
 
   return (
-    <div className="logo">
-      <img src={logo} alt="" />
-      <h2
-        className="appName"
-        style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
-      >
-        Edward
-      </h2>
-      <h2 className="appName" style={{ color: theme.palette.day.primary }}>
-        ML
-      </h2>
+    <div className="logo" style={{ height: "68px" }}>
+      <img src={logo} alt="" style={{ width: "35px" }} />
+      <Box component="div" sx={{ display: { xs: "none", sm: "flex" } }}>
+        <h2
+          className="appName"
+          style={{
+            color: theme.palette.day.text,
+            paddingLeft: "10px",
+            fontFamily: "montserratBold",
+            fontSize: "1.25rem",
+          }}
+        >
+          Edward
+        </h2>
+        <h2
+          className="appName"
+          style={{
+            color: theme.palette.day.primary,
+            fontFamily: "montserratBold",
+            fontSize: "1.25rem",
+          }}
+        >
+          ML
+        </h2>
+      </Box>
     </div>
   );
 }

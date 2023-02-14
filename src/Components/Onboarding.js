@@ -9,14 +9,14 @@ import { LocalUserContext } from "./LocalUserContext";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { Button, Container } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import logo from "../Styles/images/logo.svg";
 
 import { SaveToFirestore } from "./Firestore";
 import OnboardingButton from "./OnboardingButton";
 import OnboardingAnimeGrid from "./OnboardingAnimeGrid";
-import SkipOnboardDialog from "./SkipOnboardDialog";
+import OnboardingHeader from "./OnboardingHeader";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -53,40 +53,31 @@ export default function Onboarding() {
 
   return (
     <div className="App">
-      <SkipOnboardDialog></SkipOnboardDialog>
+      <OnboardingHeader />
       <Container maxWidth="lg">
-        {/* <Link to="/home"> */}
-        <div className="welcomeBanner">
-          <img src={logo} alt="" className="welcomeLogo" />
-          <div className="welcomeTextBlock">
-            <h1
-              className="welcomeTitle"
-              style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
-            >
-              Edward
-            </h1>
-            <h1
-              className="welcomeTitle"
-              style={{ color: theme.palette.day.primary }}
-            >
-              ML
-            </h1>
-          </div>
-        </div>
-        {/* </Link> */}
-        <h4 className="leftH4">Let's Get Started!!</h4>
-        <span style={{ fontFamily: "interMedium", fontSize: "1.0rem" }}>
-          EdwardML uses its giant computer brain to help you decide which anime
-          to watch next, based on your interests.
-          <br /> <br />
-          To begin, choose the shows below that you enjoy or are interested in.
-          You can also mark those you are not interested in. Don’t worry, you
-          can always change this later!
+        <Typography
+          className="leftH4"
+          sx={{
+            fontFamily: "montserratExtraBold",
+            fontSize: "2rem",
+            marginTop: "30px",
+            marginBottom: "23px",
+          }}
+        >
+          Let's Get Started
+        </Typography>
+        <span
+          style={{
+            fontFamily: "interSemiBold",
+            fontSize: "1.5rem",
+          }}
+        >
+          Pick at least one item you like
         </span>
         <br />
+
         <br />
-        <br />
-        {loading ? <div id="loading"></div> : ""}
+        {loading ? <BreathingLogo /> : ""}
         <OnboardingAnimeGrid items={animeMR ?? []} large onboarding />
         <br />
         {localUser["likes"] && localUser["likes"].length < 1 ? (
@@ -94,7 +85,7 @@ export default function Onboarding() {
         ) : (
           <OnboardingButton />
         )}
-        <div style={{ marginTop: "30px" }} />
+        <div style={{ marginTop: "20px" }} />
       </Container>
     </div>
   );

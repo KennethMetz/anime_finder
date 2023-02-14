@@ -40,37 +40,23 @@ function Header() {
             paddingBottom: 0,
           }}
         >
-          <Grid item lg={2.5} md={2.5} sm={4.25} xs={9}>
+          <Grid item lg={2.5} md={2.5} sm={4.75} xs={2.5}>
             <Link to="/home">
               <EdwardMLLogo />
             </Link>
             <div></div>
           </Grid>
-          <Grid
-            item
-            lg={8.5}
-            md={8.5}
-            sm={5.5}
-            xs={12}
-            order={{ xs: 3, sm: 2 }}
-            sx={{ marginY: 0.75 }}
-          >
+          <Grid item lg={8.5} md={8.5} sm={6} xs={7.5} sx={{ marginY: 0.75 }}>
             {TitleAutocomplete()}
           </Grid>
           <Grid
             item
-            sm={2}
+            xs={2}
+            sm={1.25}
             md={1}
-            xs={3}
-            order={{ xs: 2, sm: 3 }}
             textAlign="right"
             sx={{ display: "flex", justifyContent: "right" }}
           >
-            {/* <Link
-              to="/profile"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-            </Link> */}
             {DropMenu()}
           </Grid>
         </Grid>

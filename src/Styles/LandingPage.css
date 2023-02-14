@@ -1,0 +1,30 @@
+.rainbow_text_animated {
+  background: linear-gradient(
+    to right,
+    #fffb00,
+    #ff9633,
+    #ff3333,
+    #9292ff,
+    #59bcff,
+    #00ffdd,
+    #00ff00,
+    #fffb00,
+    #ff9633,
+    #ff3333
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow_animation 3s linear reverse infinite;
+  background-size: 400% 100%;
+}
+
+@keyframes rainbow_animation {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 100% 0;
+  }
+}
