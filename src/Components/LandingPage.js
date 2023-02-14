@@ -4,7 +4,6 @@ import { useTheme } from "@emotion/react";
 import { Box, Button, Grid, Icon, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
-import EdwardMLLogo from "./EdwardMLLogo";
 import AnimeMosaic from "../Styles/images/animeMosaic2.svg";
 import BlackBackground from "../Styles/images/BlackBackground.svg";
 import BlackSunburst from "../Styles/images/BlackSunburst.svg";
@@ -12,122 +11,14 @@ import EdwardGIF from "../Styles/images/edwardGIF.gif";
 import BebopCrew from "../Styles/images/BebopCrew.jpg";
 import SpikeAndJet from "../Styles/images/spikeAndJet.png";
 import { MagnifyingGlass, ShareNetwork, User } from "phosphor-react";
-import logo from "../Styles/images/logo.svg";
+import LandingPageHeader from "./LandingPageHeader";
 
 export default function LandingPage() {
   const theme = useTheme();
 
   return (
     <div>
-      {/*****************************HEADER**************************/}
-      <Container
-        maxWidth="lg"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Grid
-          container
-          spacing={1}
-          sx={{
-            alignItems: "center",
-            paddingBottom: 0,
-          }}
-        >
-          <Grid item md={9} sm={9} xs={9}>
-            <div className="logo" style={{ height: "68px" }}>
-              <Link to="/" style={{ display: "flex" }}>
-                <img src={logo} alt="" style={{ width: "35px" }} />
-                <Box
-                  component="div"
-                  sx={{ display: { xs: "none", fiveHundred: "flex" } }}
-                >
-                  <h2
-                    className="appName"
-                    style={{
-                      color: theme.palette.day.text,
-                      paddingLeft: "10px",
-                      fontFamily: "montserratBold",
-                      fontSize: "1.25rem",
-                      display: {
-                        xs: "none",
-                        fiveHundred: "block",
-                      },
-                    }}
-                  >
-                    Edward
-                  </h2>
-                  <h2
-                    className="appName"
-                    style={{
-                      color: theme.palette.day.primary,
-                      fontFamily: "montserratBold",
-                      fontSize: "1.25rem",
-                    }}
-                  >
-                    ML
-                  </h2>
-                </Box>
-              </Link>
-            </div>
-
-            <div></div>
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            textAlign="right"
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Link to="/onboarding">
-              <Button
-                variant="contained"
-                size="large"
-                sx={{
-                  textTransform: "none",
-                  minWidth: "93px",
-                  minHeight: "48px",
-                  fontFamily: "interSemiBold",
-                  fontSize: ".875rem",
-                  borderRadius: "24px",
-                  color: "white",
-                  marginRight: "18px",
-                }}
-              >
-                Try it
-              </Button>
-            </Link>
-            <Link to="/login">
-              <Button
-                variant="outlined"
-                size="large"
-                sx={{
-                  textTransform: "none",
-                  minWidth: "93px",
-                  minHeight: "48px",
-                  fontFamily: "interSemiBold",
-                  fontSize: ".875rem",
-                  borderRadius: "24px",
-                  borderColor: "#474747",
-                  border: 2,
-                  color: "black",
-                  backgroundColor: "white",
-
-                  "&:hover, &:focus": {
-                    color: "#fff",
-                    backgroundColor: "#474747",
-                    borderColor: "#474747",
-                  },
-                }}
-              >
-                Login
-              </Button>
-            </Link>
-          </Grid>
-        </Grid>
-      </Container>
+      <LandingPageHeader />
       {/********************Start of Section #1 (Black Background)*******************/}
       <Box
         component="img"
@@ -499,13 +390,7 @@ export default function LandingPage() {
               </Typography>{" "}
             </Paper>
           </Grid>
-          <div
-            style={{
-              width: "100px",
-              height: "50px",
-              position: "relative",
-            }}
-          ></div>
+          <Grid item xs={12}></Grid>
         </Grid>
       </Container>
     </div>
