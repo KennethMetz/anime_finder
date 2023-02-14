@@ -29,11 +29,11 @@ export const RoutingHelper = () => {
   let noHeaderMatch = false;
 
   headerMatch = headerRoutes.find((item) => {
-    matchPath({ path: item }, location.pathname);
+    return matchPath({ path: item }, location.pathname);
   });
 
   noHeaderMatch = noHeaderRoutes.find((item) => {
-    matchPath({ path: item }, location.pathname);
+    return matchPath({ path: item }, location.pathname);
   });
 
   if (loading && !user) {
