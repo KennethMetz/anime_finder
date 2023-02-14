@@ -41,7 +41,7 @@ function Header() {
           }}
         >
           <Grid item lg={2.5} md={2.5} sm={4.75} xs={2.5}>
-            <Link to="/home" style={{ height: "68px" }}>
+            <Link to="/home">
               <EdwardMLLogo />
             </Link>
             <div></div>
