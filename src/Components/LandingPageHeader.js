@@ -73,6 +73,7 @@ export default function LandingPageHeader() {
             <Button
               variant="contained"
               size="large"
+              disableElevation
               sx={{
                 textTransform: "none",
                 minWidth: "93px",

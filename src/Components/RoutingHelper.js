@@ -28,12 +28,12 @@ export const RoutingHelper = () => {
   let headerMatch = false;
   let noHeaderMatch = false;
 
-  headerRoutes.map((item, index) => {
-    if (matchPath({ path: item }, location.pathname)) headerMatch = true;
+  headerMatch = headerRoutes.find((item) => {
+    matchPath({ path: item }, location.pathname);
   });
 
-  noHeaderRoutes.map((item, index) => {
-    if (matchPath({ path: item }, location.pathname)) noHeaderMatch = true;
+  noHeaderMatch = noHeaderRoutes.find((item) => {
+    matchPath({ path: item }, location.pathname);
   });
 
   if (loading && !user) {

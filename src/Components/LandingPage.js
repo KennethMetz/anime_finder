@@ -99,10 +99,8 @@ export default function LandingPage() {
           }}
         >
           EdwardML uses its{" "}
-          <span className="ranbow rainbow_text_animated">
-            giant computer brain
-          </span>{" "}
-          to help you decide which anime to watch next, based on your interests.
+          <span className="rainbow_text_animated">giant computer brain</span> to
+          help you decide which anime to watch next, based on your interests.
         </Typography>
         <Link to="/onboarding">
           <Button
