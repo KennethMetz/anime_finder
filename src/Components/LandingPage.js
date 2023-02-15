@@ -4,12 +4,12 @@ import { useTheme } from "@emotion/react";
 import { Box, Button, Grid, Icon, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
-import AnimeMosaic from "../Styles/images/animeMosaic2.svg";
+import AnimeMosaic from "../Styles/images/animeMosaic2.opt.jpg";
 import BlackBackground from "../Styles/images/BlackBackground.svg";
 import BlackSunburst from "../Styles/images/BlackSunburst.svg";
 import EdwardGIF from "../Styles/images/edwardGIF.gif";
-import BebopCrew from "../Styles/images/BebopCrew.jpg";
-import SpikeAndJet from "../Styles/images/spikeAndJet.png";
+import BebopCrew from "../Styles/images/BebopCrew.opt.jpg";
+import SpikeAndJet from "../Styles/images/spikeAndJet.opt.jpg";
 import { MagnifyingGlass, ShareNetwork, User } from "phosphor-react";
 import LandingPageHeader from "./LandingPageHeader";
 
