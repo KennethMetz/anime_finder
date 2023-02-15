@@ -78,7 +78,7 @@ export default function Onboarding() {
 
         <br />
         {loading ? <BreathingLogo /> : ""}
-        <OnboardingAnimeGrid items={animeMR ?? []} large onboarding />
+        <OnboardingAnimeGrid items={animeMR} large onboarding />
         <br />
         {localUser["likes"] && localUser["likes"].length < 1 ? (
           <OnboardingButton disabled={true} />
