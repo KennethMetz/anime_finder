@@ -1888,7 +1888,7 @@ export default function BreathingLogo({ type }) {
 
   if (type == "largeButton")
     //Used for 'Visit as Guest' button
-    return <SVG style={{ scale: "0.14" }} />;
+    return <SVG style={{ scale: "0.16" }} />;
   else if (type == "shelf") {
     return (
       <Box component="div" sx={{ display: "flex", justifyContent: "center" }}>
