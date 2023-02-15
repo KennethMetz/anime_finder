@@ -88,10 +88,10 @@ export default function Register() {
     criteriaMode: "all",
     resolver: yupResolver(validationSchema),
   });
+
   useEffect(() => {
-    console.log(user);
-    console.log(forwardToken);
-  }, [user, forwardToken]);
+    console.log(regLoadingGuest);
+  }, [regLoadingGuest]);
 
   useEffect(() => {
     if (loading) return;
@@ -257,23 +257,27 @@ export default function Register() {
               setForwardToken(true);
             }}
             startIcon={
-              <User
-                size={42}
-                color="black"
-                weight="light"
-                style={{
-                  paddingRight: "20px",
-                  width: {
-                    fourHundred: "42px",
-                    xs: "31px",
-                  },
-                  height: { fourHundred: "42px", xs: "31px" },
-                }}
-              />
+              regLoadingGuest ? (
+                ""
+              ) : (
+                <User
+                  size={42}
+                  color="black"
+                  weight="light"
+                  style={{
+                    paddingRight: "20px",
+                    width: {
+                      fourHundred: "42px",
+                      xs: "31px",
+                    },
+                    height: { fourHundred: "42px", xs: "31px" },
+                  }}
+                />
+              )
             }
           >
             {regLoadingGuest ? (
-              <BreathingLogo large={true} />
+              <BreathingLogo type={"largeButton"} />
             ) : (
               "Visit as a Guest"
             )}
@@ -436,17 +440,8 @@ export default function Register() {
             })}
           >
             {regLoadingEmail ? (
-              <BreathingLogo />
+              <BreathingLogo type={"smallButton"} />
             ) : (
-              //******ALTERNATE LOTTIE ANIMATION - DANCING DOTS*****//
-              // <Lottie
-              //   animationData={LoadingFourdots}
-              //   loop={true}
-              //   style={{
-              //     margin: "-95px 20px -100px 20px",
-              //     scale: "1.1",
-              //   }}
-              // />
               "Let's Go!"
             )}
           </Button>
