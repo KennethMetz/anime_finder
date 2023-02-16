@@ -26,6 +26,10 @@ export default function OnboardingAnimeCard({ anime }) {
         overflow: "clip",
       }}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") onClick();
+      }}
+      tabIndex="0"
     >
       <Box
         sx={{
