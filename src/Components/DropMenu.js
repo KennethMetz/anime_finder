@@ -102,6 +102,10 @@ export default function DropMenu() {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleToggle();
+        }}
+        tabIndex="0"
         sx={{
           bgcolor: theme.palette.primary.main,
           cursor: "pointer",
@@ -128,7 +132,7 @@ export default function DropMenu() {
             <Paper elevation={6}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
-                  // autoFocusItem={open}
+                  autoFocusItem={open}
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
