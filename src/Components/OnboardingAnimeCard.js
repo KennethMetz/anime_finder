@@ -27,7 +27,7 @@ export default function OnboardingAnimeCard({ anime }) {
       }}
       onClick={onClick}
       onKeyDown={(e) => {
-        if (e.key === "Enter") onClick();
+        if (e.key === "Enter") onClick(e);
       }}
       tabIndex="0"
     >
