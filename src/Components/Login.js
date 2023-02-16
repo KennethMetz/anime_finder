@@ -278,14 +278,8 @@ export default function Login() {
             variant="contained"
             size="large"
             sx={{
-              textTransform: "none",
               width: "211px",
-              minHeight: "48px",
               marginTop: "20px",
-              fontFamily: "interExtraBold",
-              fontSize: "1rem",
-              borderRadius: "24px",
-              backgroundColor: theme.palette.day.primary,
             }}
             onClick={() => {
               logInWithEmailAndPassword(email, password, setLoginError);

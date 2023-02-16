@@ -1,5 +1,4 @@
-import { useTheme } from "@emotion/react";
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Container, Grid, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import logo from "../Styles/images/logo.svg";
@@ -75,13 +74,8 @@ export default function LandingPageHeader() {
               size="large"
               disableElevation
               sx={{
-                textTransform: "none",
+                fontSize: "0.875rem",
                 minWidth: "93px",
-                minHeight: "48px",
-                fontFamily: "interSemiBold",
-                fontSize: ".875rem",
-                borderRadius: "24px",
-                color: "white",
                 marginRight: "18px",
               }}
             >
@@ -90,20 +84,12 @@ export default function LandingPageHeader() {
           </Link>
           <Link to="/login">
             <Button
+              color="inherit"
               variant="outlined"
               size="large"
               sx={{
-                textTransform: "none",
+                fontSize: "0.875rem",
                 minWidth: "93px",
-                minHeight: "48px",
-                fontFamily: "interSemiBold",
-                fontSize: ".875rem",
-                borderRadius: "24px",
-                borderColor: "#474747",
-                border: 2,
-                color: "black",
-                backgroundColor: "white",
-
                 "&:hover, &:focus": {
                   color: "#fff",
                   backgroundColor: "#474747",

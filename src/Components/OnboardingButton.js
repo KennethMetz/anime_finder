@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import { SaveToFirestore } from "./Firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -7,7 +7,6 @@ import { useTheme } from "@mui/material/styles";
 import { useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import { Link } from "react-router-dom";
-import { Container } from "@mui/system";
 
 export default function OnboardingButton({ disabled }) {
   const [user] = useAuthState(auth);
@@ -33,19 +32,12 @@ export default function OnboardingButton({ disabled }) {
       >
         <Link to={linkLocation}>
           <Button
+            color="primary"
             variant="contained"
             disabled={disabled}
             size="large"
             sx={{
-              textTransform: "none",
               minWidth: "211px",
-              minHeight: "48px",
-              marginTop: "20px",
-              fontFamily: "interExtraBold",
-              fontSize: "1rem",
-              borderRadius: "24px",
-              backgroundColor: theme.palette.day.primary,
-              color: "white",
             }}
             onClick={(e) => {
               SaveToFirestore(user, localUser);

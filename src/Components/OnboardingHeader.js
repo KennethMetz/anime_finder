@@ -1,5 +1,4 @@
-import { useTheme } from "@emotion/react";
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, useTheme } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
 import logo from "../Styles/images/logo.svg";
@@ -64,18 +63,10 @@ export default function OnboardingHeader() {
             <Button
               variant="outlined"
               size="large"
+              color="inherit"
               sx={{
-                textTransform: "none",
                 minWidth: "93px",
-                minHeight: "48px",
-                fontFamily: "interSemiBold",
                 fontSize: ".875rem",
-                borderRadius: "24px",
-                borderColor: "#474747",
-                border: 2,
-                color: "black",
-                backgroundColor: "white",
-
                 "&:hover, &:focus": {
                   color: "#fff",
                   backgroundColor: "#474747",
