@@ -68,7 +68,7 @@ export default function LandingPageHeader() {
           textAlign="right"
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <Link to="/onboarding">
+          <Link to="/onboarding" tabindex="-1">
             <Button
               variant="contained"
               size="large"
@@ -82,7 +82,7 @@ export default function LandingPageHeader() {
               Try it
             </Button>
           </Link>
-          <Link to="/login">
+          <Link to="/login" tabindex="-1">
             <Button
               color="inherit"
               variant="outlined"
