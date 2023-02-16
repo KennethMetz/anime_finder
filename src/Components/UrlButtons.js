@@ -51,6 +51,7 @@ function UrlButton({ title, link, image }) {
         component="a"
         href={link}
         sx={{ ml: 1, border: "2px solid #000" }}
+        rel="noopener"
       >
         <Box component="img" src={image} alt={title} sx={{ height: 24 }} />
       </IconButton>
