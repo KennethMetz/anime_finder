@@ -65,7 +65,7 @@ export default function Home() {
   function getViewHistory() {
     let data = {
       history: [],
-      amount: 10,
+      amount: 40,
     };
     if (localUser["likes"].length > 0) {
       for (let i = 0; i < localUser["likes"].length; i++) {
@@ -146,7 +146,7 @@ export default function Home() {
             >
               For You
             </h2>
-            <AnimeGrid items={recommendation} large />
+            <AnimeShelf items={recommendation} rows={2} large />
           </>
         ) : (
           <h2

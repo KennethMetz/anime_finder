@@ -10,8 +10,9 @@ import { CaretLeft, CaretRight } from "phosphor-react";
 import { useState } from "react";
 import AnimeCard from "./AnimeCard";
 
-export default function AnimeShelf({ items }) {
+export default function AnimeShelf({ items, rows, large }) {
   items = items ?? [];
+  rows = rows ?? 1;
 
   const [selected, setSelected] = useState();
   const [startIndex, setStartIndex] = useState(0);
@@ -24,10 +25,16 @@ export default function AnimeShelf({ items }) {
   const md = useMediaQuery(theme.breakpoints.up("md"));
   const lg = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const itemsPerPage = lg ? 6 : md ? 5 : sevenHundredFifty ? 4 : sm ? 3 : 2;
+  let itemsPerRow = lg ? 6 : md ? 5 : sevenHundredFifty ? 4 : sm ? 3 : 2;
+  if (large) {
+    // In large mode, max out at 5 items per row.
+    itemsPerRow = Math.min(itemsPerRow, 5);
+  }
 
   const columns = 12;
-  const breakpoints = { xs: 12 / itemsPerPage };
+  const breakpoints = { xs: 12 / itemsPerRow };
+
+  const itemsPerPage = itemsPerRow * rows;
 
   const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
 
