@@ -149,6 +149,9 @@ export default function Home() {
             <AnimeGrid items={recommendation} large />
           </>
         ) : (
+          ""
+        )}
+        {localUser.uid && localUser?.likes.length === 0 ? (
           <h2
             style={{
               fontSize: "2.0rem",
@@ -162,6 +165,8 @@ export default function Home() {
             <span className="rainbow_text_animated">personalized</span>{" "}
             recommendations!
           </h2>
+        ) : (
+          ""
         )}
         <div className="gap" />
       </Container>
