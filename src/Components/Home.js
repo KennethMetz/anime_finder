@@ -65,7 +65,7 @@ export default function Home() {
   function getViewHistory() {
     let data = {
       history: [],
-      amount: 10,
+      amount: 30,
     };
     if (localUser["likes"].length > 0) {
       for (let i = 0; i < localUser["likes"].length; i++) {
