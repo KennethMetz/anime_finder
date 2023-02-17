@@ -1,20 +1,15 @@
-import { useTheme } from "@emotion/react";
-import { Container, Grid, useMediaQuery } from "@mui/material";
+import { Container, useTheme } from "@mui/material";
 import GenreChips from "./GenreChips";
 
 export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
   const theme = useTheme();
 
-  const sm = useMediaQuery(theme.breakpoints.up("sm"));
-
-  let singleRowHeader = sm ? true : false;
-
   return (
     <div
       style={{
         position: "sticky",
-        top: singleRowHeader ? "68px" : "127px",
-        backgroundColor: "white",
+        top: "68px",
+        backgroundColor: theme.palette.background.default,
         zIndex: "3",
         width: "100vw",
       }}
