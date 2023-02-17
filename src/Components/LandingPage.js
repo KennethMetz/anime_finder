@@ -102,7 +102,7 @@ export default function LandingPage() {
           <span className="rainbow_text_animated">giant computer brain</span> to
           help you decide which anime to watch next, based on your interests.
         </Typography>
-        <Link to="/onboarding">
+        <Link to="/onboarding" tabindex="-1">
           <Button
             variant="contained"
             size="large"
@@ -132,7 +132,7 @@ export default function LandingPage() {
         >
           Been here before?
         </Typography>
-        <Link to="/login" style={{}}>
+        <Link to="/login" tabindex="-1">
           <Button
             variant="text"
             size="large"

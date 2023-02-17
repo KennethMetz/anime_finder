@@ -22,7 +22,11 @@ export default function AnimeCard({ anime, large, onChangeSelected }) {
   };
 
   return (
-    <Link to={`/anime/${anime.id}`} state={anime}>
+    <Link
+      to={`/anime/${anime.id}`}
+      state={anime}
+      aria-label={anime.display_name}
+    >
       <Paper
         elevation={selected ? 12 : 3}
         sx={{
