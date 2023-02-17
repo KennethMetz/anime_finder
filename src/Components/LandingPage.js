@@ -134,7 +134,7 @@ export default function LandingPage() {
         </Typography>
         <Link to="/login" tabindex="-1">
           <Button
-            variant="text"
+            variant="contained"
             size="large"
             color="inherit"
             sx={{
@@ -143,11 +143,6 @@ export default function LandingPage() {
                 fourHundred: "297px",
               },
               backgroundColor: theme.palette.common.white,
-              "&:hover, &:focus": {
-                color: "#fff",
-                backgroundColor: "#474747",
-                borderColor: "#474747",
-              },
             }}
           >
             Login

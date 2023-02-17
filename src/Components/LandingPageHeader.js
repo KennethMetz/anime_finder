@@ -90,11 +90,6 @@ export default function LandingPageHeader() {
               sx={{
                 fontSize: "0.875rem",
                 minWidth: "93px",
-                "&:hover, &:focus": {
-                  color: "#fff",
-                  backgroundColor: "#474747",
-                  borderColor: "#474747",
-                },
               }}
             >
               Login
