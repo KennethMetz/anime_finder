@@ -67,11 +67,6 @@ export default function OnboardingHeader() {
               sx={{
                 minWidth: "93px",
                 fontSize: ".875rem",
-                "&:hover, &:focus": {
-                  color: "#fff",
-                  backgroundColor: "#474747",
-                  borderColor: "#474747",
-                },
               }}
             >
               Login
