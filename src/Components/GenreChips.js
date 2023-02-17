@@ -130,7 +130,7 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       };
     }
     for (let i = 0; i < genreState.length; i++) {
-      if (index !== i) {
+      if (index + startIndex !== i) {
         temp[i].selected = false;
       }
     }
