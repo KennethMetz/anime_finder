@@ -1,6 +1,6 @@
 import "../Styles/LandingPage.css";
 
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material";
 import { Box, Button, Grid, Icon, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
@@ -107,17 +107,12 @@ export default function LandingPage() {
             variant="contained"
             size="large"
             sx={{
-              textTransform: "none",
               width: {
                 xs: "230px",
                 fourHundred: "297px",
               },
               minHeight: "48px",
               marginTop: "48px",
-              fontFamily: "interSemiBold",
-              fontSize: "1rem",
-              borderRadius: "24px",
-              backgroundColor: theme.palette.day.primary,
             }}
           >
             Let's Get Started!
@@ -139,22 +134,15 @@ export default function LandingPage() {
         </Typography>
         <Link to="/login" style={{}}>
           <Button
-            variant="outlined"
+            variant="text"
             size="large"
+            color="inherit"
             sx={{
-              textTransform: "none",
               width: {
                 xs: "230px",
                 fourHundred: "297px",
               },
-              minHeight: "48px",
-              fontFamily: "interSemiBold",
-              fontSize: "1rem",
-              borderRadius: "24px",
-              borderColor: "#474747",
-              color: "black",
-              backgroundColor: "white",
-
+              backgroundColor: theme.palette.common.white,
               "&:hover, &:focus": {
                 color: "#fff",
                 backgroundColor: "#474747",

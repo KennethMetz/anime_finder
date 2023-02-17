@@ -29,6 +29,39 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "unset",
+          fontFamily: "interSemiBold",
+        },
+        sizeSmall: {
+          fontSize: "0.8125rem",
+          minHeight: "32px",
+          borderRadius: "16px",
+        },
+        sizeMedium: {
+          fontSize: "0.875rem",
+          minHeight: "40px",
+          borderRadius: "20px",
+        },
+        sizeLarge: {
+          fontSize: "1rem",
+          minHeight: "48px",
+          borderRadius: "24px",
+        },
+        outlined: {
+          borderWidth: "2px",
+          boxSizing: "border-box",
+          "&:hover, &:disabled": {
+            borderWidth: "2px",
+          },
+        },
+      },
+      defaultProps: {
+        disableElevation: true,
+      },
+    },
     MuiChip: {
       styleOverrides: {
         root: {

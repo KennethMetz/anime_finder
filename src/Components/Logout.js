@@ -48,15 +48,7 @@ export default function Logout() {
             <Button
               variant="contained"
               size="large"
-              sx={{
-                textTransform: "none",
-                width: "100%",
-                minHeight: "48px",
-                fontFamily: "interExtraBold",
-                fontSize: "1rem",
-                borderRadius: "24px",
-                color: "white",
-              }}
+              sx={{ fontSize: "0.875rem" }}
             >
               Login
             </Button>
