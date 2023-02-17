@@ -1,6 +1,6 @@
 import "../Styles/App.css";
 
-import { Grid, Container, Chip } from "@mui/material";
+import { Container, Chip } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
@@ -125,30 +125,44 @@ export default function Home() {
     }
   }, [user, loading]);
 
+  useEffect(() => {
+    console.log(localUser.likes);
+  }, [localUser]);
+
   return (
     <div>
       <Container maxWidth="lg">
         <div className="gap" />
-        {localUser && localUser["likes"] ? (
-          <Grid container style={{ alignItems: "center" }}>
-            <Grid item xs={12}>
-              <h2
-                style={{
-                  fontSize: "2.5rem",
-                  fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
-                  textAlign: "left",
-                  marginBlockStart: 0,
-                  marginBlockEnd: "0.5rem",
-                }}
-              >
-                For You
-              </h2>
-            </Grid>
-          </Grid>
+        {localUser && localUser?.likes.length > 0 ? (
+          <>
+            <h2
+              style={{
+                fontSize: "2.5rem",
+                fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+                textAlign: "left",
+                marginBlockStart: 0,
+                marginBlockEnd: "0.5rem",
+              }}
+            >
+              For You
+            </h2>
+            <AnimeGrid items={recommendation} large />
+          </>
         ) : (
-          <h4>Like a show below to receive personalized recommendations!</h4>
+          <h2
+            style={{
+              fontSize: "2.0rem",
+              fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+              textAlign: "left",
+              marginBlockStart: 0,
+              marginBlockEnd: "0.5rem",
+            }}
+          >
+            Like a show to receive{" "}
+            <span className="rainbow_text_animated">personalized</span>{" "}
+            recommendations!
+          </h2>
         )}
-        <AnimeGrid items={recommendation} large />
         <div className="gap" />
       </Container>
 
