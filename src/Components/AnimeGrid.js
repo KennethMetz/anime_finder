@@ -1,4 +1,5 @@
-import { Box, Grid, Skeleton } from "@mui/material";
+import { Box, Button, Grid, Skeleton } from "@mui/material";
+import { CaretDown } from "phosphor-react";
 import { useState } from "react";
 import AnimeCard from "./AnimeCard";
 
@@ -6,9 +7,13 @@ export default function AnimeGrid({ items, large }) {
   items = items ?? [];
 
   const [selected, setSelected] = useState();
+  const [seeMore, setSeeMore] = useState(false);
 
   const ghosts = new Array(10).fill(0);
   const showGhosts = !items.length;
+
+  const shownItems = seeMore ? items : items.slice(0, 10);
+  const showSeeMoreButton = !seeMore && shownItems.length !== items.length;
 
   let columns = 12;
   let breakpoints = { xs: 6, sm: 3, md: 2 };
@@ -46,7 +51,7 @@ export default function AnimeGrid({ items, large }) {
             </Grid>
           ))}
         {!showGhosts &&
-          items.map((anime, index) => (
+          shownItems.map((anime, index) => (
             <Grid
               item
               key={index}
@@ -60,6 +65,22 @@ export default function AnimeGrid({ items, large }) {
               />
             </Grid>
           ))}
+        {showSeeMoreButton && (
+          <Grid
+            item
+            xs={columns}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={() => setSeeMore(true)}
+              endIcon={<CaretDown />}
+            >
+              See more
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
