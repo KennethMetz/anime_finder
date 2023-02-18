@@ -50,6 +50,7 @@ function UrlButton({ title, link, image }) {
       <IconButton
         component="a"
         href={link}
+        target="_blank"
         sx={{ ml: 1, border: "2px solid #000" }}
         rel="noopener"
       >
