@@ -1,17 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 
-export const AppSettingsContext = createContext();
+const AppSettingsContext = createContext();
 
-export const AppSettingsProvider = (props) => {
-  const [appSettings, setAppSettings] = useState({
-    darkMode: false,
-  });
-
-  // TODO read and write settings from disk.
-
-  return (
-    <AppSettingsContext.Provider value={[appSettings, setAppSettings]}>
-      {props.children}
-    </AppSettingsContext.Provider>
-  );
-};
+export default AppSettingsContext;

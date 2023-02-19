@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useContext, useMemo } from "react";
-import { AppSettingsContext } from "./AppSettingsContext";
+import AppSettingsContext from "./AppSettingsContext";
 import { createAppTheme } from "./theme";
 
 export default function AppThemeProvider(props) {

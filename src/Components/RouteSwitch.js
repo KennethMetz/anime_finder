@@ -15,7 +15,7 @@ import { NotFound404 } from "./NotFound404";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import LandingPage from "./LandingPage";
-import { AppSettingsProvider } from "./AppSettingsContext";
+import AppSettingsProvider from "./AppSettingsProvider";
 import AppThemeProvider from "./AppThemeProvider";
 
 const queryClient = new QueryClient();

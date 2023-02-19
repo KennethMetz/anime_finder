@@ -1,6 +1,6 @@
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { Fragment, useContext } from "react";
-import { AppSettingsContext } from "./AppSettingsContext";
+import AppSettingsContext from "./AppSettingsContext";
 // TODO convert logo images to svg so they can be dynamically colored.
 import crunchyroll from "../Styles/images/icons8-crunchyroll.png";
 import funimation from "../Styles/images/icons8-funimation.png";

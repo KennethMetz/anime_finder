@@ -29,7 +29,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { AppSettingsContext } from "./AppSettingsContext";
+import AppSettingsContext from "./AppSettingsContext";
 
 export default function DropMenu() {
   const navigate = useNavigate();
