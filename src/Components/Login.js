@@ -13,7 +13,6 @@ import { getAuth, signInWithRedirect } from "firebase/auth";
 import { TwitterAuthProvider } from "firebase/auth";
 
 import "../Styles/Login.css";
-import { useTheme } from "@mui/material/styles";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 
 import { LocalUserContext } from "./LocalUserContext";
@@ -24,6 +23,7 @@ import {
   Divider,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 
 import logo from "../Styles/images/logo.svg";
@@ -43,8 +43,8 @@ export default function Login() {
   let [loginError, setLoginError] = useState(undefined);
 
   let regButtonStyling = {
-    color: "black",
-    borderColor: "black",
+    color: theme.palette.text.primary,
+    borderColor: theme.palette.text.primary,
     textTransform: "none",
     borderRadius: "24px",
     width: "350px",
@@ -74,13 +74,16 @@ export default function Login() {
             <div className="welcomeTextBlock">
               <h1
                 className="welcomeTitle"
-                style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+                style={{
+                  color: theme.palette.text.primary,
+                  paddingLeft: "10px",
+                }}
               >
                 Edward
               </h1>
               <h1
                 className="welcomeTitle"
-                style={{ color: theme.palette.day.primary }}
+                style={{ color: theme.palette.primary.main }}
               >
                 ML
               </h1>
@@ -100,7 +103,10 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <div className="register__container" style={{ marginBottom: "50px" }}>
+        <div
+          className="register__container"
+          style={{ marginBottom: "50px", borderColor: theme.palette.divider }}
+        >
           {/* *******************Google Button************************** */}
           <Button
             variant="outlined"
@@ -179,7 +185,7 @@ export default function Login() {
             sx={{
               width: "87.5%",
               "&::before, &::after": {
-                borderColor: "black",
+                borderColor: theme.palette.text.primary,
               },
               fontFamily: "interMedium",
               margin: "37.5px 0px",
@@ -245,7 +251,7 @@ export default function Login() {
             }}
             FormHelperTextProps={{
               style: {
-                color: "black",
+                color: theme.palette.text.primary,
                 textAlign: "right",
                 fontWeight: "600",
                 cursor: "pointer",
@@ -291,7 +297,7 @@ export default function Login() {
           <Divider
             sx={{
               width: "100%",
-              borderColor: "black",
+              borderColor: theme.palette.text.primary,
               marginTop: "32px",
               marginBottom: "27px",
             }}

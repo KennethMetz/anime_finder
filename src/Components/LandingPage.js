@@ -142,6 +142,7 @@ export default function LandingPage() {
                 xs: "230px",
                 fourHundred: "297px",
               },
+              color: theme.palette.common.black,
               backgroundColor: theme.palette.common.white,
             }}
           >
@@ -168,10 +169,11 @@ export default function LandingPage() {
             sx={{ display: "flex", justifyContent: "center" }}
           >
             <Paper
+              elevation={0}
               sx={{
                 maxWidth: "350px",
                 minHeight: "500px",
-                background: "#F2F2F2",
+                background: theme.palette.custom.subtleCardBg,
                 borderRadius: "24px",
                 marginRight: "10px",
                 marginLeft: "10px",
@@ -237,10 +239,11 @@ export default function LandingPage() {
             sx={{ display: "flex", justifyContent: "center" }}
           >
             <Paper
+              elevation={0}
               sx={{
                 maxWidth: "350px",
                 minHeight: "500px",
-                background: "#F2F2F2",
+                background: theme.palette.custom.subtleCardBg,
                 borderRadius: "24px",
                 marginLeft: "10px",
                 marginRight: "10px",
@@ -311,10 +314,11 @@ export default function LandingPage() {
             }}
           >
             <Paper
+              elevation={0}
               sx={{
                 maxWidth: "350px",
                 minHeight: "500px",
-                background: "#F2F2F2",
+                background: theme.palette.custom.subtleCardBg,
                 borderRadius: "24px",
                 marginLeft: "10px",
                 marginRight: "10px",

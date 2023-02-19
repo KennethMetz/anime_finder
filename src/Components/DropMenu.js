@@ -9,7 +9,9 @@ import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
 import {
   List,
+  Moon,
   SignOut,
+  Sun,
   User,
   UserCircle,
   UserCirclePlus,
@@ -27,6 +29,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import AppSettingsContext from "./AppSettingsContext";
 
 export default function DropMenu() {
   const navigate = useNavigate();
@@ -34,6 +37,9 @@ export default function DropMenu() {
   const theme = useTheme();
 
   const [localUser, setLocalUser] = React.useContext(LocalUserContext);
+
+  const [appSettings, setAppSettings] = React.useContext(AppSettingsContext);
+  const darkMode = appSettings.darkMode;
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -89,6 +95,10 @@ export default function DropMenu() {
     setLocalUser({ likes: [], dislikes: [] });
     handleClose(e);
     navigate("/logout");
+  }
+
+  function toggleDarkMode() {
+    setAppSettings({ ...appSettings, darkMode: !darkMode });
   }
 
   return (
@@ -160,6 +170,18 @@ export default function DropMenu() {
                       primaryTypographyProps={{ fontFamily: "interSemiBold" }}
                     />
                   </ListItemButton>
+                  <MenuItem
+                    divider
+                    sx={{ paddingTop: "10px", paddingBottom: "10px" }}
+                    onClick={(e) => {
+                      toggleDarkMode(e);
+                    }}
+                  >
+                    <ListItemIcon>
+                      {darkMode ? <Moon size={24} /> : <Sun size={24} />}
+                    </ListItemIcon>
+                    {darkMode ? "Dark Mode" : "Light Mode"}
+                  </MenuItem>
                   <MenuItem
                     sx={{ marginTop: "10px" }}
                     onClick={(e) => {

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Grid, Typography } from "@mui/material";
 import logo from "../Styles/images/logo.svg";
-import spike from "../Styles/images/spike-tile.jpg";
+import spike from "../Styles/images/spike-tile.png";
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import EdwardMLLogo from "./EdwardMLLogo";

@@ -12,7 +12,7 @@ export default function EdwardMLLogo() {
         <h2
           className="appName"
           style={{
-            color: theme.palette.day.text,
+            color: theme.palette.text.primary,
             paddingLeft: "10px",
             fontFamily: "montserratBold",
             fontSize: "1.25rem",
@@ -23,7 +23,7 @@ export default function EdwardMLLogo() {
         <h2
           className="appName"
           style={{
-            color: theme.palette.day.primary,
+            color: theme.palette.primary.main,
             fontFamily: "montserratBold",
             fontSize: "1.25rem",
           }}

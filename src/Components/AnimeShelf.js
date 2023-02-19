@@ -2,6 +2,7 @@ import {
   Box,
   Grid,
   IconButton,
+  Paper,
   Skeleton,
   useMediaQuery,
   useTheme,
@@ -92,42 +93,36 @@ export default function AnimeShelf({ items }) {
             </Grid>
           ))}
       </Grid>
-      <IconButton
-        onClick={onClickPrevious}
-        color="inherit"
+      <Paper
+        elevation={4}
         sx={{
           position: "absolute",
           visibility: hasPrevious ? "visible" : "hidden",
           left: "-24px",
           top: "calc(50% - 24px)",
           zIndex: 1,
-          backgroundColor: theme.palette.grey[100],
-          boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.18 )",
-          "&:hover, &:focus": {
-            backgroundColor: theme.palette.grey[300],
-          },
+          borderRadius: "24px",
         }}
       >
-        <CaretLeft size={24} />
-      </IconButton>
-      <IconButton
-        onClick={onClickNext}
-        color="inherit"
+        <IconButton onClick={onClickPrevious} color="inherit">
+          <CaretLeft size={24} />
+        </IconButton>
+      </Paper>
+      <Paper
+        elevation={4}
         sx={{
           position: "absolute",
           visibility: hasNext ? "visible" : "hidden",
           right: "-24px",
           top: "calc(50% - 24px)",
           zIndex: 1,
-          backgroundColor: theme.palette.grey[100],
-          boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.18 )",
-          "&:hover, &:focus": {
-            backgroundColor: theme.palette.grey[300],
-          },
+          borderRadius: "24px",
         }}
       >
-        <CaretRight size={24} />
-      </IconButton>
+        <IconButton onClick={onClickNext} color="inherit">
+          <CaretRight size={24} />
+        </IconButton>
+      </Paper>
     </Box>
   );
 }

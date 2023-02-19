@@ -30,7 +30,6 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
-import theme from "./theme";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);

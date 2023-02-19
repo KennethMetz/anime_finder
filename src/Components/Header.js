@@ -30,7 +30,12 @@ function Header() {
   useEffect(() => {}, [user]);
 
   return (
-    <div className="header">
+    <div
+      className="header"
+      style={{
+        backgroundColor: theme.palette.background.default,
+      }}
+    >
       <Container maxWidth="lg">
         <Grid
           container
