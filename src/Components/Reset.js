@@ -15,9 +15,9 @@ import {
   Divider,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import logo from "../Styles/images/logo.svg";
-import { useTheme } from "@mui/material/styles";
 
 export default function Reset() {
   const [email, setEmail] = useState("");
@@ -32,17 +32,6 @@ export default function Reset() {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  let regButtonStyling = {
-    color: "black",
-    borderColor: "black",
-    textTransform: "none",
-    borderRadius: "24px",
-    width: "350px",
-    fontFamily: "interExtraBold",
-    fontSize: "1rem",
-    marginBottom: "17px",
   };
 
   useEffect(() => {
@@ -85,20 +74,11 @@ export default function Reset() {
           </DialogContent>
           <DialogActions sx={{ justifyContent: "center" }}>
             <Button
-              variant="outlined"
+              variant="contained"
+              size="large"
               sx={{
-                textTransform: "none",
                 width: "211px",
-                minHeight: "48px",
                 marginTop: "10px",
-                fontFamily: "interExtraBold",
-                fontSize: "1rem",
-                borderRadius: "24px",
-                backgroundColor: theme.palette.day.primary,
-                color: "white",
-                "&:hover": {
-                  color: theme.palette.day.primary,
-                },
               }}
               onClick={() => {
                 navigate("/login");
@@ -116,13 +96,16 @@ export default function Reset() {
             <div className="welcomeTextBlock">
               <h1
                 className="welcomeTitle"
-                style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+                style={{
+                  color: theme.palette.text.primary,
+                  paddingLeft: "10px",
+                }}
               >
                 Edward
               </h1>
               <h1
                 className="welcomeTitle"
-                style={{ color: theme.palette.day.primary }}
+                style={{ color: theme.palette.primary.main }}
               >
                 ML
               </h1>
@@ -142,7 +125,10 @@ export default function Reset() {
           alignItems: "center",
         }}
       >
-        <div className="register__container" style={{ marginBottom: "50px" }}>
+        <div
+          className="register__container"
+          style={{ marginBottom: "50px", borderColor: theme.palette.divider }}
+        >
           {/* *******************EdwardML - Email Field************************** */}
           <TextField
             type="email"
@@ -182,14 +168,8 @@ export default function Reset() {
             variant="contained"
             size="large"
             sx={{
-              textTransform: "none",
               width: "211px",
-              minHeight: "48px",
               marginTop: "10px",
-              fontFamily: "interExtraBold",
-              fontSize: "1rem",
-              borderRadius: "24px",
-              backgroundColor: theme.palette.day.primary,
             }}
             onClick={() => {
               sendPasswordReset(email);

@@ -1,5 +1,12 @@
-import { useTheme } from "@emotion/react";
-import { Chip, Grid, IconButton, Stack, useMediaQuery } from "@mui/material";
+import {
+  Chip,
+  Grid,
+  IconButton,
+  Paper,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { setPersistence } from "firebase/auth";
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { useEffect, useState } from "react";
@@ -149,23 +156,20 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       spacing={1}
       sx={{ alignItems: "center", marginTop: "0px", marginBottom: "21px" }}
     >
-      <IconButton
-        onClick={onClickPrevious}
-        color="inherit"
+      <Paper
+        elevation={4}
         sx={{
           visibility: hasPrevious ? "visible" : "hidden",
           marginLeft: hasPrevious ? "0px" : "-48px",
           top: "calc(68% - 24px)",
+          borderRadius: "24px",
           zIndex: 1,
-          backgroundColor: theme.palette.grey[100],
-          boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.18 )",
-          "&:hover, &:focus": {
-            backgroundColor: theme.palette.grey[300],
-          },
         }}
       >
-        <CaretLeft size={24} />
-      </IconButton>
+        <IconButton onClick={onClickPrevious} color="inherit">
+          <CaretLeft size={24} />
+        </IconButton>
+      </Paper>
       {currentItems?.map((item, index) => (
         <Chip
           sx={{
@@ -180,22 +184,19 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
           }}
         />
       ))}
-      <IconButton
-        onClick={onClickNext}
-        color="inherit"
+      <Paper
+        elevation={4}
         sx={{
           visibility: hasNext ? "visible" : "hidden",
           top: "calc(68% - 24px)",
+          borderRadius: "24px",
           zIndex: 1,
-          backgroundColor: theme.palette.grey[100],
-          boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.18 )",
-          "&:hover, &:focus": {
-            backgroundColor: theme.palette.grey[300],
-          },
         }}
       >
-        <CaretRight size={24} />
-      </IconButton>
+        <IconButton onClick={onClickNext} color="inherit">
+          <CaretRight size={24} />
+        </IconButton>
+      </Paper>
     </Stack>
   );
 }

@@ -16,13 +16,13 @@ import {
 import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import logo from "../Styles/images/logo.svg";
-import { useTheme } from "@mui/material/styles";
 import {
   Button,
   Container,
   Divider,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { User } from "phosphor-react";
@@ -51,8 +51,8 @@ export default function Register() {
   const [regLoadingGuest, setRegLoadingGuest] = useState(false);
 
   let regButtonStyling = {
-    color: "black",
-    borderColor: "black",
+    color: theme.palette.text.primary,
+    borderColor: theme.palette.text.primary,
     textTransform: "none",
     borderRadius: "24px",
     width: "350px",
@@ -115,13 +115,16 @@ export default function Register() {
             <div className="welcomeTextBlock">
               <h1
                 className="welcomeTitle"
-                style={{ color: theme.palette.day.text, paddingLeft: "10px" }}
+                style={{
+                  color: theme.palette.text.primary,
+                  paddingLeft: "10px",
+                }}
               >
                 Edward
               </h1>
               <h1
                 className="welcomeTitle"
-                style={{ color: theme.palette.day.primary }}
+                style={{ color: theme.palette.primary.main }}
               >
                 ML
               </h1>
@@ -142,7 +145,13 @@ export default function Register() {
           alignItems: "center",
         }}
       >
-        <div className="register__container" style={{ marginBottom: "50px" }}>
+        <div
+          className="register__container"
+          style={{
+            marginBottom: "50px",
+            borderColor: theme.palette.divider,
+          }}
+        >
           {/* *******************Google Button************************** */}
           <Button
             variant="outlined"
@@ -262,7 +271,6 @@ export default function Register() {
               ) : (
                 <User
                   size={42}
-                  color="black"
                   weight="light"
                   style={{
                     paddingRight: "20px",
@@ -286,7 +294,7 @@ export default function Register() {
             sx={{
               width: "87.5%",
               "&::before, &::after": {
-                borderColor: "black",
+                borderColor: theme.palette.text.primary,
               },
               fontFamily: "interMedium",
               margin: "37.5px 0px",
@@ -458,7 +466,7 @@ export default function Register() {
           <Divider
             sx={{
               width: "100%",
-              borderColor: "black",
+              borderColor: theme.palette.text.primary,
               marginTop: "32px",
               marginBottom: "27px",
             }}

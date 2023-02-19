@@ -2,7 +2,6 @@
 
 .header {
   align-items: center;
-  background-color: rgb(255, 255, 255);
   position: sticky;
   top: 0px;
   z-index: 2;
@@ -10,11 +9,6 @@
 .logo {
   display: flex;
   align-items: center;
-}
-/* Removes underline from <Link> components */
-a:-webkit-any-link {
-  text-decoration: none;
-  color: black;
 }
 .appName {
   text-decoration: none;
