@@ -130,7 +130,7 @@ export default function DetailedView() {
               />
             </ListItem>
             <ListItem
-              sx={{ paddingTop: 0, pb: 0, minHeight: "32px", flexWrap: "wrap" }}
+              sx={{ pt: 0, pb: 0, minHeight: "32px", flexWrap: "wrap" }}
             >
               {anime.genres.map((genre) => (
                 <Chip
