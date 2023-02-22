@@ -19,7 +19,9 @@ export default function OnboardingAnimeCard({ anime }) {
         width: "100%",
         height: "100%",
         bgcolor: theme.palette.action.disabledBackground,
-        backgroundImage: `url(${anime.image_large})`,
+        backgroundImage: anime.image_hardcoded
+          ? `url(${anime.image_hardcoded})`
+          : `url(${anime.image_large})`,
         backgroundPosition: "center",
         backgroundSize: "cover",
         borderRadius: "8px",
