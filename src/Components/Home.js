@@ -1,6 +1,6 @@
 import "../Styles/App.css";
 
-import { Container, Chip } from "@mui/material";
+import { Container, Button } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
@@ -195,17 +195,19 @@ export default function Home() {
         <h4 className="shelfTitle">Most Obscure</h4>
         <AnimeShelf items={animeMH} />
 
-        <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
+        <Stack direction="row" spacing={3} sx={{ alignItems: "baseline" }}>
           <h4 className="shelfTitle">Random</h4>
-          <Chip
-            // Triggers a re-render of the random anime shelf
+          <Button
+            color="inherit"
             variant="outlined"
-            label="Surprise Me!"
+            size="small"
+            startIcon={<RefreshIcon />}
             onClick={() => {
               refresh ? setRefresh(false) : setRefresh(true);
             }}
-            icon={<RefreshIcon />}
-          />
+          >
+            Surprise Me!
+          </Button>
         </Stack>
         <AnimeGrid items={animeRandom} />
 
