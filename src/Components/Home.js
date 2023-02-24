@@ -195,7 +195,7 @@ export default function Home() {
         <h4 className="shelfTitle">Most Obscure</h4>
         <AnimeShelf items={animeMH} />
 
-        <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
+        <Stack direction="row" spacing={3} sx={{ alignItems: "baseline" }}>
           <h4 className="shelfTitle">Random</h4>
           <Chip
             // Triggers a re-render of the random anime shelf

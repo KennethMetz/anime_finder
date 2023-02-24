@@ -109,7 +109,7 @@ css-1cfh48w-MuiGrid-root {
 }
 
 .gap {
-  margin-top: 50px;
+  margin-top: 25px;
 }
 
 .row {
@@ -152,5 +152,7 @@ h4 {
 
 .shelfTitle {
   font-family: "interSemiBold", Georgia, "Times New Roman", Times, serif;
-  font-size: 20px;
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5em;
 }

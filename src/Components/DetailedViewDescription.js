@@ -41,7 +41,7 @@ export default function DetailedViewDescription({ text }) {
 }
 
 function getShortText(text) {
-  let i = 650;
+  let i = 550;
   while (i < text.length && i > 0 && text[i] !== " " && text[i] !== ".") {
     i--;
   }

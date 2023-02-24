@@ -15,7 +15,7 @@ export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
       }}
     >
       <Container maxWidth="lg">
-        <h4 style={{ marginBottom: "15px", paddingTop: "10px" }}>{title}</h4>
+        <h4 style={{ marginBottom: "0.3em" }}>{title}</h4>
 
         <GenreChips
           selectedGenre={selectedGenre}
