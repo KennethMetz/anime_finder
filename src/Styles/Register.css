@@ -3,6 +3,8 @@
 .welcomeBanner {
   display: flex;
   justify-content: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 /* Registration form styling */
@@ -14,20 +16,14 @@
   align-items: center;
   border: 1px solid;
   border-radius: 11px;
-  padding: 40px 50px 30px 50px;
+  padding: 30px 50px 30px 50px;
   max-width: 400px;
 }
 
-@media (max-width: 600px) {
-  .register__container {
-    max-width: 295px;
-  }
-}
-
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   .register__container {
     border: none;
-    max-width: 280px;
+    padding-top: 8px;
     padding-left: 0px;
     padding-right: 0px;
   }
