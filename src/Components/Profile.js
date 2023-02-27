@@ -162,6 +162,63 @@ export default function Profile() {
           ""
         )}
       </Typography>
+
+      <h3
+        className="leftH3"
+        style={{ textAlign: "center", marginBottom: "5px" }}
+      >
+        Your Watchlists
+      </h3>
+      <Divider></Divider>
+
+      {localUser["lists"].map((item, index) => (
+        <div key={index}>
+          <h3>{item.name}</h3>
+          <Divider sx={{ ml: 15, mr: 15 }}></Divider>
+          <List>
+            {item["anime"].map((animeItem, animeIndex) => (
+              <ListItem
+                disablePadding={true}
+                disableGutters={true}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      // localUser["lists"].splice(index, 1);
+                      // setLocalUser({ ...localUser });
+                      // SaveToFirestore(user, localUser);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemButton
+                  sx={{ padding: 0 }}
+                  onClick={() => {
+                    // navigate(`/anime/${item.anime.id}`, { state: item });
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Box
+                      component="img"
+                      alt={animeItem.display_name}
+                      src={animeItem.image_large}
+                      sx={{ height: "56px" }}
+                    ></Box>{" "}
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={animeItem.display_name}
+                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      ))}
+
       <div className="gap" />
     </Container>
   );

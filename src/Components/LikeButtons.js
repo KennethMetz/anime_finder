@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import AddToListDropMenu from "./AddToListDropMenu";
 import DisikeButton from "./DislikeButton";
 import LikeButton from "./LikeButton";
 
@@ -10,6 +11,9 @@ export default function LikeButtons({ anime }) {
       </Box>
       <Box component="span">
         <DisikeButton anime={anime} />
+      </Box>
+      <Box sx={{ ml: 1 }} component="span">
+        <AddToListDropMenu anime={anime} />
       </Box>
     </Box>
   );
