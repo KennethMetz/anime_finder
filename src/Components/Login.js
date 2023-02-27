@@ -26,10 +26,10 @@ import {
   useTheme,
 } from "@mui/material";
 
-import logo from "../Styles/images/logo.svg";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import google from "../Styles/images/google.svg";
 import { User } from "phosphor-react";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function Login() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -67,33 +67,8 @@ export default function Login() {
     <div className="login">
       <Container maxWidth="lg">
         <div className="welcomeBanner">
-          <Link to="/home">
-            <img src={logo} alt="" className="welcomeLogo" />
-          </Link>
-          <Link to="/home">
-            <div className="welcomeTextBlock">
-              <h1
-                className="welcomeTitle"
-                style={{
-                  color: theme.palette.text.primary,
-                  paddingLeft: "10px",
-                }}
-              >
-                Edward
-              </h1>
-              <h1
-                className="welcomeTitle"
-                style={{ color: theme.palette.primary.main }}
-              >
-                ML
-              </h1>
-            </div>
-          </Link>
+          <EdwardMLLogo />
         </div>
-
-        <h4 className="H4" style={{ textAlign: "center" }}>
-          Let's Get Logged In!
-        </h4>
       </Container>
       <Container
         maxWidth="sm"
@@ -103,9 +78,15 @@ export default function Login() {
           alignItems: "center",
         }}
       >
+        <h4
+          className="H4"
+          style={{ textAlign: "center", margin: 0, marginBottom: "18px" }}
+        >
+          Let's Get Logged In!
+        </h4>
         <div
           className="register__container"
-          style={{ marginBottom: "50px", borderColor: theme.palette.divider }}
+          style={{ borderColor: theme.palette.divider }}
         >
           {/* *******************Google Button************************** */}
           <Button
@@ -151,6 +132,7 @@ export default function Login() {
             className="register__btn"
             sx={{
               ...regButtonStyling,
+              marginBottom: "0px",
               fontSize: {
                 xs: "0.9rem",
                 fourHundred: "1rem",
@@ -188,7 +170,7 @@ export default function Login() {
                 borderColor: theme.palette.text.primary,
               },
               fontFamily: "interMedium",
-              margin: "37.5px 0px",
+              margin: "16px 0px",
             }}
           >
             or
@@ -270,22 +252,23 @@ export default function Login() {
               fontSize: "1rem",
             }}
           />
-          <Typography
-            sx={{
-              color: "error.main",
-              fontFamily: "interExtraBold",
-              marginTop: "10px",
-            }}
-          >
-            {loginError ? loginError : ""}
-          </Typography>
+          {loginError && (
+            <Typography
+              sx={{
+                color: "error.main",
+                fontFamily: "interExtraBold",
+                marginY: "10px",
+              }}
+            >
+              {loginError}
+            </Typography>
+          )}
           {/* *******************EdwardML - 'Login' Button************************** */}
           <Button
             variant="contained"
             size="large"
             sx={{
               width: "211px",
-              marginTop: "20px",
             }}
             onClick={() => {
               logInWithEmailAndPassword(email, password, setLoginError);
@@ -298,8 +281,8 @@ export default function Login() {
             sx={{
               width: "100%",
               borderColor: theme.palette.text.primary,
-              marginTop: "32px",
-              marginBottom: "27px",
+              marginTop: "30px",
+              marginBottom: "30px",
             }}
           />
           {/* *******************Already Registered Section************************** */}

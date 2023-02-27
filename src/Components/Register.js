@@ -15,7 +15,6 @@ import {
 } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
-import logo from "../Styles/images/logo.svg";
 import {
   Button,
   Container,
@@ -34,6 +33,7 @@ import { useForm } from "react-hook-form";
 import LoadingFourdots from "./LoadingFourDots.json";
 import Lottie from "lottie-react";
 import BreathingLogo from "./BreathingLogo";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -108,33 +108,8 @@ export default function Register() {
     <div className="register">
       <Container maxWidth="lg">
         <div className="welcomeBanner">
-          <Link to="/home">
-            <img src={logo} alt="" className="welcomeLogo" />
-          </Link>
-          <Link to="/home">
-            <div className="welcomeTextBlock">
-              <h1
-                className="welcomeTitle"
-                style={{
-                  color: theme.palette.text.primary,
-                  paddingLeft: "10px",
-                }}
-              >
-                Edward
-              </h1>
-              <h1
-                className="welcomeTitle"
-                style={{ color: theme.palette.primary.main }}
-              >
-                ML
-              </h1>
-            </div>
-          </Link>
+          <EdwardMLLogo />
         </div>
-
-        <h4 className="H4" style={{ textAlign: "center" }}>
-          Let's Get Registered!
-        </h4>
       </Container>
       {/* *******************Start of Registration Block************************** */}
       <Container
@@ -145,6 +120,12 @@ export default function Register() {
           alignItems: "center",
         }}
       >
+        <h4
+          className="H4"
+          style={{ textAlign: "center", margin: 0, marginBottom: "18px" }}
+        >
+          Let's Get Registered!
+        </h4>
         <div
           className="register__container"
           style={{
@@ -270,8 +251,7 @@ export default function Register() {
                 ""
               ) : (
                 <User
-                  size={42}
-                  weight="light"
+                  size={44}
                   style={{
                     paddingRight: "20px",
                     width: {
@@ -297,7 +277,7 @@ export default function Register() {
                 borderColor: theme.palette.text.primary,
               },
               fontFamily: "interMedium",
-              margin: "37.5px 0px",
+              margin: "18px 0px",
             }}
           >
             or
@@ -417,7 +397,6 @@ export default function Register() {
             size="large"
             sx={{
               width: "211px",
-              marginTop: "20px",
             }}
             onClick={handleSubmit(() => {
               setRegLoadingEmail(true);
@@ -447,28 +426,30 @@ export default function Register() {
               "Let's Go!"
             )}
           </Button>
-          <Typography
-            sx={{
-              color: "error.main",
-              marginTop: "10px",
-              fontFamily: "interExtraBold",
-            }}
-          >
-            {errors.username || errors.email || errors.password
-              ? "*Please resolve errors shown above."
-              : ""}
-          </Typography>
-          <Typography
-            sx={{ color: "error.main", fontFamily: "interExtraBold" }}
-          >
-            {emailError ? emailError : ""}
-          </Typography>
+          {(errors.username || errors.email || errors.password) && (
+            <Typography
+              sx={{
+                color: "error.main",
+                marginTop: "10px",
+                fontFamily: "interExtraBold",
+              }}
+            >
+              *Please resolve errors shown above.
+            </Typography>
+          )}
+          {emailError && (
+            <Typography
+              sx={{ color: "error.main", fontFamily: "interExtraBold" }}
+            >
+              {emailError}
+            </Typography>
+          )}
           <Divider
             sx={{
               width: "100%",
               borderColor: theme.palette.text.primary,
-              marginTop: "32px",
-              marginBottom: "27px",
+              marginTop: "30px",
+              marginBottom: "30px",
             }}
           />
           {/* *******************Already Registered Section************************** */}
