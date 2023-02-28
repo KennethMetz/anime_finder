@@ -6,29 +6,27 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import Stack from "@mui/material/Stack";
 import { Plus } from "phosphor-react";
-import { Link, useNavigate } from "react-router-dom";
-import { auth, logout } from "./Firebase";
+import { useNavigate } from "react-router-dom";
+import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
-  Avatar,
   Divider,
   IconButton,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   TextField,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import AppSettingsContext from "./AppSettingsContext";
 import { SaveToFirestore } from "./Firestore";
 import AddButton from "./AddButton";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function AddToListDropMenu({ anime }) {
   const navigate = useNavigate();
@@ -43,6 +41,33 @@ export default function AddToListDropMenu({ anime }) {
   const [newList, setNewList] = React.useState(false);
   let [name, setName] = React.useState("");
 
+  let listNames = localUser.lists.map((x) => x.name);
+
+  // Define Yup schema
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .required("*A name is required")
+      .min(1, "*Watchlist name must be at least 1 character long")
+      .test(
+        "duplicate-name",
+        "Name already in use - try new name",
+        (value) => !listNames.includes(value)
+      ),
+  });
+
+  //Use ReactHookForm hooks to validate Yup schema
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+    criteriaMode: "all",
+    reValidateMode: "onChange",
+    resolver: yupResolver(validationSchema),
+  });
+
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -53,6 +78,8 @@ export default function AddToListDropMenu({ anime }) {
     }
     setOpen(false);
     setNewList(false);
+    setName("");
+    clearErrors();
   }
 
   function handleListKeyDown(event) {
@@ -82,8 +109,18 @@ export default function AddToListDropMenu({ anime }) {
     prevOpen.current = open;
   }, [open]);
 
+  const submitListName = () => {
+    clearErrors("test");
+    handleSubmit();
+    if (!errors.name) {
+      setNewList(false);
+      createNewList();
+    }
+  };
+
   return (
     <>
+      {/**********************DROP MENU ICON**********************/}
       <Tooltip title="Add to Watchlist">
         <IconButton
           ref={anchorRef}
@@ -108,6 +145,7 @@ export default function AddToListDropMenu({ anime }) {
         </IconButton>
       </Tooltip>
 
+      {/**********************DROP MENU POP-UP**********************/}
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -124,7 +162,7 @@ export default function AddToListDropMenu({ anime }) {
                 placement === "bottom-start" ? "left top" : "left bottom",
             }}
           >
-            <Paper elevation={6}>
+            <Paper elevation={6} onClick={(e) => e.preventDefault()}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
                   autoFocusItem={open}
@@ -150,12 +188,14 @@ export default function AddToListDropMenu({ anime }) {
                       }}
                     />
                   </ListItemButton>
+
+                  {/*******************Print Watchlists*******************/}
                   {localUser?.lists?.length > 0
                     ? localUser.lists.map((item, index) => {
                         return (
                           <ListItem
                             key={index}
-                            tabIndex="-1"
+                            tabIndex={-1}
                             sx={{
                               margin: "10px 0px 10px",
                               fontFamily: "interMedium",
@@ -170,13 +210,14 @@ export default function AddToListDropMenu({ anime }) {
                       })
                     : ""}
                   <Divider />
+
+                  {/****************Create New List Button****************/}
                   {!newList ? (
                     <MenuItem
                       sx={{ marginTop: "10px", fontFamily: "interSemiBold" }}
-                      tabIndex="0"
+                      tabIndex={0}
                       onClick={(e) => {
                         setNewList(true);
-                        e.preventDefault();
                       }}
                     >
                       <ListItemIcon>
@@ -193,16 +234,21 @@ export default function AddToListDropMenu({ anime }) {
                         label="Name"
                         name="name"
                         id="name"
+                        {...register("name")}
+                        error={errors.name ? true : false}
+                        helperText={errors.name?.message}
                         variant="filled"
+                        autoComplete="off"
                         required
+                        color="text"
                         autoFocus
                         value={name}
                         sx={{
                           minWidth: "200px",
                           margin: "15px 25px 15px 25px",
                         }}
+                        onClick={(e) => e.preventDefault()}
                         onChange={(e) => {
-                          e.preventDefault();
                           setName(e.target.value);
                         }}
                       />{" "}
@@ -218,17 +264,14 @@ export default function AddToListDropMenu({ anime }) {
                           onClick={(e) => {
                             setNewList(false);
                             setName("");
-                            e.preventDefault();
+                            clearErrors();
                           }}
                         >
                           Cancel
                         </Button>
                         <Button
                           variant="contained"
-                          onClick={(e) => {
-                            createNewList();
-                            setNewList(false);
-                          }}
+                          onClick={submitListName}
                           sx={{ ml: 1 }}
                         >
                           Create
@@ -236,12 +279,15 @@ export default function AddToListDropMenu({ anime }) {
                       </div>{" "}
                     </div>
                   )}
-                  <Link
-                    to="/profile"
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
+
+                  {/*******************View my Lists Button*******************/}
+                  <div style={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       color="inherit"
+                      variant="text"
+                      onClick={(e) => {
+                        navigate("/profile");
+                      }}
                       sx={{
                         fontFamily: "interMedium",
                         fontSize: "0.8rem",
@@ -250,7 +296,7 @@ export default function AddToListDropMenu({ anime }) {
                     >
                       View my Lists
                     </Button>
-                  </Link>
+                  </div>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
