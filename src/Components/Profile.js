@@ -4,15 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "./Firebase";
-import {
-  query,
-  collection,
-  getDocs,
-  where,
-  document,
-} from "firebase/firestore";
-import TitleAutocomplete from "./TitleAutocomplete";
-import { GenericList } from "./GenericList";
+
 import { LocalUserContext } from "./LocalUserContext";
 import {
   Avatar,
@@ -30,6 +22,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
+import { X } from "phosphor-react";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -173,7 +166,24 @@ export default function Profile() {
 
       {localUser["lists"].map((item, index) => (
         <div key={index}>
-          <h3>{item.name}</h3>
+          <ListItem sx={{ display: "flex", justifyContent: "center" }}>
+            <Typography
+              sx={{ mb: 0, fontFamily: "interSemiBold", fontSize: "1.25rem" }}
+            >
+              {item.name}
+            </Typography>
+            <IconButton
+              sx={{ ml: 6 }}
+              onClick={() => {
+                localUser["lists"].splice(index, 1);
+                setLocalUser({ ...localUser });
+                SaveToFirestore(user, localUser);
+              }}
+            >
+              <X size={16} sx={{ marginBottom: "0px" }} />
+            </IconButton>
+          </ListItem>
+
           <Divider sx={{ ml: 15, mr: 15 }}></Divider>
           <List>
             {item["anime"].map((animeItem, animeIndex) => (
@@ -185,19 +195,19 @@ export default function Profile() {
                     edge="end"
                     aria-label="delete"
                     onClick={() => {
-                      // localUser["lists"].splice(index, 1);
-                      // setLocalUser({ ...localUser });
-                      // SaveToFirestore(user, localUser);
+                      localUser["lists"][index]["anime"].splice(animeIndex, 1);
+                      setLocalUser({ ...localUser });
+                      SaveToFirestore(user, localUser);
                     }}
                   >
-                    <DeleteIcon />
+                    <X size={16} />
                   </IconButton>
                 }
               >
                 <ListItemButton
                   sx={{ padding: 0 }}
                   onClick={() => {
-                    // navigate(`/anime/${item.anime.id}`, { state: item });
+                    navigate(`/anime/${animeItem.id}`, { state: animeItem });
                   }}
                 >
                   <ListItemAvatar>

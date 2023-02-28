@@ -8,12 +8,13 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
 import { Plus } from "phosphor-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, logout } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   Avatar,
+  Divider,
   IconButton,
   ListItem,
   ListItemAvatar,
@@ -22,6 +23,7 @@ import {
   ListItemText,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import AppSettingsContext from "./AppSettingsContext";
@@ -136,23 +138,42 @@ export default function AddToListDropMenu({ anime }) {
                     sx={{
                       color: theme.palette.primary.main,
                       "&.Mui-disabled": { opacity: 1.0 },
+                      minWidth: "281px",
+                      textAlign: "center",
                     }}
                   >
-                    <ListItemText primary="Add to Watchlist" />
+                    <ListItemText
+                      primary="Add to Watchlists"
+                      primaryTypographyProps={{
+                        fontSize: "1rem",
+                        fontFamily: "interExtraBold",
+                      }}
+                    />
                   </ListItemButton>
                   {localUser?.lists?.length > 0
                     ? localUser.lists.map((item, index) => {
                         return (
-                          <ListItem key={index} sx={{ marginTop: "10px" }}>
+                          <ListItem
+                            key={index}
+                            tabIndex="-1"
+                            sx={{
+                              margin: "10px 0px 10px",
+                              fontFamily: "interMedium",
+                            }}
+                            secondaryAction={
+                              <AddButton anime={anime} list={item.name} />
+                            }
+                          >
                             {item.name}
-                            <AddButton anime={anime} list={item.name} />
                           </ListItem>
                         );
                       })
                     : ""}
+                  <Divider />
                   {!newList ? (
                     <MenuItem
-                      sx={{ marginTop: "10px" }}
+                      sx={{ marginTop: "10px", fontFamily: "interSemiBold" }}
+                      tabIndex="0"
                       onClick={(e) => {
                         setNewList(true);
                         e.preventDefault();
@@ -164,22 +185,32 @@ export default function AddToListDropMenu({ anime }) {
                       Create New List
                     </MenuItem>
                   ) : (
-                    <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div
+                      onKeyDown={(e) => e.stopPropagation()}
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
                       <TextField
                         label="Name"
                         name="name"
                         id="name"
-                        variant="standard"
+                        variant="filled"
                         required
                         autoFocus
                         value={name}
-                        sx={{ width: "250px", marginBottom: "15px" }}
+                        sx={{
+                          minWidth: "200px",
+                          margin: "15px 25px 15px 25px",
+                        }}
                         onChange={(e) => {
+                          e.preventDefault();
                           setName(e.target.value);
                         }}
                       />{" "}
                       <div
-                        style={{ display: "flex", justifyContent: "center" }}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
                       >
                         <Button
                           color="inherit"
@@ -196,14 +227,30 @@ export default function AddToListDropMenu({ anime }) {
                           variant="contained"
                           onClick={(e) => {
                             createNewList();
+                            setNewList(false);
                           }}
                           sx={{ ml: 1 }}
                         >
                           Create
                         </Button>
-                      </div>
+                      </div>{" "}
                     </div>
                   )}
+                  <Link
+                    to="/profile"
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <Button
+                      color="inherit"
+                      sx={{
+                        fontFamily: "interMedium",
+                        fontSize: "0.8rem",
+                        mt: 1,
+                      }}
+                    >
+                      View my Lists
+                    </Button>
+                  </Link>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

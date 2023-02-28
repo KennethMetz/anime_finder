@@ -10,19 +10,20 @@ export default function AddButton({ anime, list }) {
     e.preventDefault();
   };
   const disabled = !anime;
-  const weight = included ? "fill" : "regular";
-
+  const variant = included ? "outlined" : "contained";
   const buttonText = included ? "Remove" : "Add";
 
   //Theme colors are taken from the default "palette" theme and MUST have a child color titled "main"
-  const buttonColor = included ? "primary" : "inherit";
+  const buttonColor = included ? "inherit" : "primary";
 
   return (
     <Button
+      variant={variant}
+      size="small"
       onClick={onClick}
       disabled={disabled}
       color={buttonColor}
-      sx={{ border: "0px solid" }}
+      sx={{}}
     >
       {buttonText}
     </Button>
