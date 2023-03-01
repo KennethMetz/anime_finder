@@ -20,9 +20,9 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
 import { X } from "phosphor-react";
+import NoResultsImage from "./NoResultsImage";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -41,11 +41,40 @@ export default function Profile() {
   }, [user, loading]);
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="sm">
+      {/*****************User Banner******************/}
+      <List>
+        <ListItem disablePadding>
+          <ListItemAvatar>
+            <Avatar
+              sx={{ width: "80px", height: "80px", fontSize: "2.5rem" }}
+              alt={user?.displayName}
+              src="purposefully bad link"
+            ></Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            sx={{ ml: 3 }}
+            primary={user?.displayName}
+            primaryTypographyProps={{
+              fontFamily: "interBlack",
+              fontSize: "1.66rem",
+            }}
+            secondary={user?.email}
+            secondaryTypographyProps={{
+              fontFamily: "interMedium",
+              fontSize: "1rem",
+              color: "text",
+            }}
+          />
+        </ListItem>
+      </List>
+
+      {/**********************LIKES***********************/}
       <Typography
         sx={{
           textAlign: "left",
-          marginBottom: "5px",
+          marginBottom: "15px",
+          marginTop: "33px",
           fontFamily: "interBlack",
           fontSize: "1.66rem",
         }}
@@ -54,7 +83,7 @@ export default function Profile() {
       </Typography>
 
       <Typography>
-        {localUser && localUser["likes"] ? (
+        {localUser && localUser["likes"]?.length > 0 ? (
           <List>
             {localUser["likes"].map((item, index) => (
               <ListItem
@@ -71,7 +100,7 @@ export default function Profile() {
                       SaveToFirestore(user, localUser);
                     }}
                   >
-                    <DeleteIcon />
+                    <X size={20} />{" "}
                   </IconButton>
                 }
               >
@@ -99,13 +128,16 @@ export default function Profile() {
             ))}
           </List>
         ) : (
-          ""
+          <NoResultsImage />
         )}
       </Typography>
+
+      {/**********************DISLIKES***********************/}
       <Typography
         sx={{
           textAlign: "left",
-          marginBottom: "5px",
+          marginBottom: "15px",
+          marginTop: "33px",
           fontFamily: "interBlack",
           fontSize: "1.66rem",
         }}
@@ -114,7 +146,7 @@ export default function Profile() {
       </Typography>
 
       <Typography>
-        {localUser && localUser["dislikes"] ? (
+        {localUser && localUser["dislikes"]?.length > 0 ? (
           <List>
             {localUser["dislikes"].map((item, index) => (
               <ListItem
@@ -131,7 +163,7 @@ export default function Profile() {
                       SaveToFirestore(user, localUser);
                     }}
                   >
-                    <DeleteIcon />
+                    <X size={20} />{" "}
                   </IconButton>
                 }
               >
@@ -158,14 +190,16 @@ export default function Profile() {
             ))}
           </List>
         ) : (
-          ""
+          <NoResultsImage />
         )}
       </Typography>
 
+      {/**********************WATCHLISTS***********************/}
       <Typography
         sx={{
           textAlign: "left",
-          marginBottom: "5px",
+          marginBottom: "15px",
+          marginTop: "33px",
           fontFamily: "interBlack",
           fontSize: "1.66rem",
         }}
@@ -173,77 +207,88 @@ export default function Profile() {
         Your Watchlists
       </Typography>
 
-      {localUser["lists"].map((item, index) => (
-        <div key={index}>
-          <ListItem
-            disablePadding
-            sx={{ display: "flex", justifyContent: "left" }}
-          >
-            <Typography
-              sx={{
-                mb: 0,
-                fontFamily: "interBlack",
-                fontSize: "1.25rem",
-              }}
-            >
-              {item.name}
-            </Typography>
-            <IconButton
-              sx={{ ml: 6 }}
-              onClick={() => {
-                localUser["lists"].splice(index, 1);
-                setLocalUser({ ...localUser });
-                SaveToFirestore(user, localUser);
-              }}
-            >
-              <X size={16} sx={{ marginBottom: "0px" }} />
-            </IconButton>
-          </ListItem>
-
-          <List>
-            {item["anime"].map((animeItem, animeIndex) => (
+      {localUser && localUser["lists"]?.length > 0 ? (
+        <>
+          {localUser["lists"]?.map((item, index) => (
+            <div key={index}>
               <ListItem
-                disablePadding={true}
-                disableGutters={true}
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => {
-                      localUser["lists"][index]["anime"].splice(animeIndex, 1);
-                      setLocalUser({ ...localUser });
-                      SaveToFirestore(user, localUser);
-                    }}
-                  >
-                    <X size={16} />
-                  </IconButton>
-                }
+                disablePadding
+                sx={{ display: "flex", justifyContent: "left" }}
               >
-                <ListItemButton
-                  sx={{ padding: 0 }}
-                  onClick={() => {
-                    navigate(`/anime/${animeItem.id}`, { state: animeItem });
+                <Typography
+                  sx={{
+                    mb: 0,
+                    fontFamily: "interBlack",
+                    fontSize: "1.25rem",
                   }}
                 >
-                  <ListItemAvatar>
-                    <Box
-                      component="img"
-                      alt={animeItem.display_name}
-                      src={animeItem.image_large}
-                      sx={{ height: "56px" }}
-                    ></Box>{" "}
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={animeItem.display_name}
-                    primaryTypographyProps={{ fontFamily: "interMedium" }}
-                  />
-                </ListItemButton>
+                  {item.name}
+                </Typography>
+                <IconButton
+                  sx={{ ml: 6 }}
+                  onClick={() => {
+                    localUser["lists"].splice(index, 1);
+                    setLocalUser({ ...localUser });
+                    SaveToFirestore(user, localUser);
+                  }}
+                >
+                  <X size={20} sx={{ marginBottom: "0px" }} />
+                </IconButton>
               </ListItem>
-            ))}
-          </List>
-        </div>
-      ))}
 
+              <List>
+                {item["anime"]?.map((animeItem, animeIndex) => (
+                  <ListItem
+                    key={animeIndex}
+                    disablePadding={true}
+                    disableGutters={true}
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => {
+                          localUser["lists"][index]["anime"].splice(
+                            animeIndex,
+                            1
+                          );
+                          setLocalUser({ ...localUser });
+                          SaveToFirestore(user, localUser);
+                        }}
+                      >
+                        <X size={20} />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemButton
+                      sx={{ padding: 0 }}
+                      onClick={() => {
+                        navigate(`/anime/${animeItem.id}`, {
+                          state: animeItem,
+                        });
+                      }}
+                    >
+                      <ListItemAvatar>
+                        <Box
+                          component="img"
+                          alt={animeItem.display_name}
+                          src={animeItem.image_large}
+                          sx={{ height: "56px" }}
+                        ></Box>{" "}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={animeItem.display_name}
+                        primaryTypographyProps={{ fontFamily: "interMedium" }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          ))}
+        </>
+      ) : (
+        <NoResultsImage />
+      )}
       <div className="gap" />
     </Container>
   );
