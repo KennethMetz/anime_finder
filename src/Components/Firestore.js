@@ -25,8 +25,12 @@ function compareTitles(a, b) {
 
 function sortTitles(data) {
   let temp = { ...data };
-  temp["likes"] = temp["likes"].sort(compareTitles);
-  temp["dislikes"] = temp["dislikes"].sort(compareTitles);
+  if (data.likes.length > 1) {
+    temp["likes"] = temp["likes"].sort(compareTitles);
+  }
+  if (data.dislikes.length > 1) {
+    temp["dislikes"] = temp["dislikes"].sort(compareTitles);
+  }
   return temp;
 }
 
