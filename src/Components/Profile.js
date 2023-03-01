@@ -42,13 +42,16 @@ export default function Profile() {
 
   return (
     <Container maxWidth="xs">
-      <h3
-        className="leftH3"
-        style={{ textAlign: "center", marginBottom: "5px" }}
+      <Typography
+        sx={{
+          textAlign: "left",
+          marginBottom: "5px",
+          fontFamily: "interBlack",
+          fontSize: "1.66rem",
+        }}
       >
         Your Likes
-      </h3>
-      <Divider></Divider>
+      </Typography>
 
       <Typography>
         {localUser && localUser["likes"] ? (
@@ -89,7 +92,7 @@ export default function Profile() {
 
                   <ListItemText
                     primary={item.display_name}
-                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                    primaryTypographyProps={{ fontFamily: "interMedium" }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -99,13 +102,16 @@ export default function Profile() {
           ""
         )}
       </Typography>
-      <h3
-        className="leftH3"
-        style={{ textAlign: "center", marginBottom: "5px" }}
+      <Typography
+        sx={{
+          textAlign: "left",
+          marginBottom: "5px",
+          fontFamily: "interBlack",
+          fontSize: "1.66rem",
+        }}
       >
         Your Dislikes
-      </h3>
-      <Divider></Divider>
+      </Typography>
 
       <Typography>
         {localUser && localUser["dislikes"] ? (
@@ -145,7 +151,7 @@ export default function Profile() {
                   </ListItemAvatar>
                   <ListItemText
                     primary={item.display_name}
-                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                    primaryTypographyProps={{ fontFamily: "interMedium" }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -156,19 +162,29 @@ export default function Profile() {
         )}
       </Typography>
 
-      <h3
-        className="leftH3"
-        style={{ textAlign: "center", marginBottom: "5px" }}
+      <Typography
+        sx={{
+          textAlign: "left",
+          marginBottom: "5px",
+          fontFamily: "interBlack",
+          fontSize: "1.66rem",
+        }}
       >
         Your Watchlists
-      </h3>
-      <Divider></Divider>
+      </Typography>
 
       {localUser["lists"].map((item, index) => (
         <div key={index}>
-          <ListItem sx={{ display: "flex", justifyContent: "center" }}>
+          <ListItem
+            disablePadding
+            sx={{ display: "flex", justifyContent: "left" }}
+          >
             <Typography
-              sx={{ mb: 0, fontFamily: "interSemiBold", fontSize: "1.25rem" }}
+              sx={{
+                mb: 0,
+                fontFamily: "interBlack",
+                fontSize: "1.25rem",
+              }}
             >
               {item.name}
             </Typography>
@@ -184,7 +200,6 @@ export default function Profile() {
             </IconButton>
           </ListItem>
 
-          <Divider sx={{ ml: 15, mr: 15 }}></Divider>
           <List>
             {item["anime"].map((animeItem, animeIndex) => (
               <ListItem
@@ -220,7 +235,7 @@ export default function Profile() {
                   </ListItemAvatar>
                   <ListItemText
                     primary={animeItem.display_name}
-                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                    primaryTypographyProps={{ fontFamily: "interMedium" }}
                   />
                 </ListItemButton>
               </ListItem>
