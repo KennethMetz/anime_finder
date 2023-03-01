@@ -4,15 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "./Firebase";
-import {
-  query,
-  collection,
-  getDocs,
-  where,
-  document,
-} from "firebase/firestore";
-import TitleAutocomplete from "./TitleAutocomplete";
-import { GenericList } from "./GenericList";
+
 import { LocalUserContext } from "./LocalUserContext";
 import {
   Avatar,
@@ -30,6 +22,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
+import { X } from "phosphor-react";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -49,13 +42,16 @@ export default function Profile() {
 
   return (
     <Container maxWidth="xs">
-      <h3
-        className="leftH3"
-        style={{ textAlign: "center", marginBottom: "5px" }}
+      <Typography
+        sx={{
+          textAlign: "left",
+          marginBottom: "5px",
+          fontFamily: "interBlack",
+          fontSize: "1.66rem",
+        }}
       >
         Your Likes
-      </h3>
-      <Divider></Divider>
+      </Typography>
 
       <Typography>
         {localUser && localUser["likes"] ? (
@@ -96,7 +92,7 @@ export default function Profile() {
 
                   <ListItemText
                     primary={item.display_name}
-                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                    primaryTypographyProps={{ fontFamily: "interMedium" }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -106,13 +102,16 @@ export default function Profile() {
           ""
         )}
       </Typography>
-      <h3
-        className="leftH3"
-        style={{ textAlign: "center", marginBottom: "5px" }}
+      <Typography
+        sx={{
+          textAlign: "left",
+          marginBottom: "5px",
+          fontFamily: "interBlack",
+          fontSize: "1.66rem",
+        }}
       >
         Your Dislikes
-      </h3>
-      <Divider></Divider>
+      </Typography>
 
       <Typography>
         {localUser && localUser["dislikes"] ? (
@@ -152,7 +151,7 @@ export default function Profile() {
                   </ListItemAvatar>
                   <ListItemText
                     primary={item.display_name}
-                    primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                    primaryTypographyProps={{ fontFamily: "interMedium" }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -162,6 +161,89 @@ export default function Profile() {
           ""
         )}
       </Typography>
+
+      <Typography
+        sx={{
+          textAlign: "left",
+          marginBottom: "5px",
+          fontFamily: "interBlack",
+          fontSize: "1.66rem",
+        }}
+      >
+        Your Watchlists
+      </Typography>
+
+      {localUser["lists"].map((item, index) => (
+        <div key={index}>
+          <ListItem
+            disablePadding
+            sx={{ display: "flex", justifyContent: "left" }}
+          >
+            <Typography
+              sx={{
+                mb: 0,
+                fontFamily: "interBlack",
+                fontSize: "1.25rem",
+              }}
+            >
+              {item.name}
+            </Typography>
+            <IconButton
+              sx={{ ml: 6 }}
+              onClick={() => {
+                localUser["lists"].splice(index, 1);
+                setLocalUser({ ...localUser });
+                SaveToFirestore(user, localUser);
+              }}
+            >
+              <X size={16} sx={{ marginBottom: "0px" }} />
+            </IconButton>
+          </ListItem>
+
+          <List>
+            {item["anime"].map((animeItem, animeIndex) => (
+              <ListItem
+                disablePadding={true}
+                disableGutters={true}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      localUser["lists"][index]["anime"].splice(animeIndex, 1);
+                      setLocalUser({ ...localUser });
+                      SaveToFirestore(user, localUser);
+                    }}
+                  >
+                    <X size={16} />
+                  </IconButton>
+                }
+              >
+                <ListItemButton
+                  sx={{ padding: 0 }}
+                  onClick={() => {
+                    navigate(`/anime/${animeItem.id}`, { state: animeItem });
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Box
+                      component="img"
+                      alt={animeItem.display_name}
+                      src={animeItem.image_large}
+                      sx={{ height: "56px" }}
+                    ></Box>{" "}
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={animeItem.display_name}
+                    primaryTypographyProps={{ fontFamily: "interMedium" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      ))}
+
       <div className="gap" />
     </Container>
   );

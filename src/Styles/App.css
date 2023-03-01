@@ -15,6 +15,11 @@
 }
 
 @font-face {
+  font-family: interBlack;
+  src: url(./Inter-Black.ttf);
+}
+
+@font-face {
   font-family: montserrat;
   src: url(./Montserrat-Black.ttf);
 }

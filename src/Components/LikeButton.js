@@ -22,7 +22,7 @@ export default function LikeButton({ anime }) {
         onClick={onClick}
         disabled={disabled}
         color={buttonColor}
-        sx={{ border: "2px solid" }}
+        sx={{ border: "0px solid" }}
       >
         <ThumbsUp weight={weight} />
       </IconButton>
