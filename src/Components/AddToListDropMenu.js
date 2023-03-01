@@ -41,7 +41,7 @@ export default function AddToListDropMenu({ anime }) {
   const [newList, setNewList] = React.useState(false);
   let [name, setName] = React.useState("");
 
-  let listNames = localUser.lists.map((x) => x.name);
+  let listNames = localUser?.lists?.map((x) => x.name);
 
   // Define Yup schema
   const validationSchema = Yup.object().shape({
