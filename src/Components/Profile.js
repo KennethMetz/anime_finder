@@ -54,7 +54,7 @@ export default function Profile() {
           </ListItemAvatar>
           <ListItemText
             sx={{ ml: 3 }}
-            primary={user?.displayName}
+            primary={user?.displayName ? user.displayName : "Guest"}
             primaryTypographyProps={{
               fontFamily: "interBlack",
               fontSize: "1.66rem",
