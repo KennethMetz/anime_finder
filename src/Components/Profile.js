@@ -71,6 +71,7 @@ export default function Profile() {
 
       {/**********************LIKES***********************/}
       <Typography
+        component="div"
         sx={{
           textAlign: "left",
           marginBottom: "15px",
@@ -82,7 +83,7 @@ export default function Profile() {
         Your Likes
       </Typography>
 
-      <Typography>
+      <div>
         {localUser && localUser["likes"]?.length > 0 ? (
           <List>
             {localUser["likes"].map((item, index) => (
@@ -114,7 +115,7 @@ export default function Profile() {
                     <Box
                       component="img"
                       alt={item.display_name}
-                      src={item.image_large}
+                      src={item.image_large ?? item.image_small}
                       sx={{ height: "56px" }}
                     ></Box>
                   </ListItemAvatar>
@@ -130,10 +131,11 @@ export default function Profile() {
         ) : (
           <NoResultsImage />
         )}
-      </Typography>
+      </div>
 
       {/**********************DISLIKES***********************/}
       <Typography
+        component="div"
         sx={{
           textAlign: "left",
           marginBottom: "15px",
@@ -145,7 +147,7 @@ export default function Profile() {
         Your Dislikes
       </Typography>
 
-      <Typography>
+      <div>
         {localUser && localUser["dislikes"]?.length > 0 ? (
           <List>
             {localUser["dislikes"].map((item, index) => (
@@ -177,7 +179,7 @@ export default function Profile() {
                     <Box
                       component="img"
                       alt={item.display_name}
-                      src={item.image_large}
+                      src={item.image_large ?? item.image_small}
                       sx={{ height: "56px" }}
                     ></Box>{" "}
                   </ListItemAvatar>
@@ -192,10 +194,11 @@ export default function Profile() {
         ) : (
           <NoResultsImage />
         )}
-      </Typography>
+      </div>
 
       {/**********************WATCHLISTS***********************/}
       <Typography
+        component="div"
         sx={{
           textAlign: "left",
           marginBottom: "15px",
@@ -216,6 +219,7 @@ export default function Profile() {
                 sx={{ display: "flex", justifyContent: "left" }}
               >
                 <Typography
+                  component="div"
                   sx={{
                     mb: 0,
                     fontFamily: "interBlack",
@@ -271,7 +275,7 @@ export default function Profile() {
                         <Box
                           component="img"
                           alt={animeItem.display_name}
-                          src={animeItem.image_large}
+                          src={animeItem.image_large ?? animeItem.image_small}
                           sx={{ height: "56px" }}
                         ></Box>{" "}
                       </ListItemAvatar>
