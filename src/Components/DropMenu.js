@@ -92,7 +92,7 @@ export default function DropMenu() {
 
   async function sendToLogout(e) {
     await logout();
-    setLocalUser({ likes: [], dislikes: [] });
+    setLocalUser({ likes: [], dislikes: [], lists: [] });
     handleClose(e);
     navigate("/logout");
   }
