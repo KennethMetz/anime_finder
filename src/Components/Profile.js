@@ -9,6 +9,7 @@ import { LocalUserContext } from "./LocalUserContext";
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Divider,
   IconButton,
@@ -21,7 +22,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
-import { X } from "phosphor-react";
+import { ArrowRight, X } from "phosphor-react";
 import NoResultsImage from "./NoResultsImage";
 
 export default function Profile() {
@@ -68,6 +69,28 @@ export default function Profile() {
           />
         </ListItem>
       </List>
+
+      {/**********************Upsell Button***********************/}
+      {localUser?.name === "guest" ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              width: "280px",
+              mt: 3,
+              fontSize: "0.875rem",
+            }}
+            onClick={(e) => {
+              navigate("/register");
+            }}
+          >
+            Register to save your profile! <ArrowRight size={22} />
+          </Button>
+        </div>
+      ) : (
+        ""
+      )}
 
       {/**********************LIKES***********************/}
       <Typography
