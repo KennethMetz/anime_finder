@@ -84,9 +84,9 @@ export default function UserBio() {
               setBio(e.target.value);
             }}
             sx={{ width: "100%", mb: 2 }}
-            inputProps={{
+            InputProps={{
               style: {
-                padding: 0,
+                padding: "10px 10px 10px 20px",
               },
             }}
           ></TextField>

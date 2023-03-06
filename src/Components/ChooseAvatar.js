@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { LocalUserContext } from "./LocalUserContext";
 import { auth } from "./Firebase";
-import { Avatar, IconButton, Typography } from "@mui/material";
+import { Avatar, IconButton, Typography, useTheme } from "@mui/material";
 import david from "../Styles/images/userAvatars/david_martinez.jpg";
 import naruto from "../Styles/images/userAvatars/naruto.jpg";
 import kakashi from "../Styles/images/userAvatars/Kakashi.jpg";
@@ -15,6 +15,7 @@ import { SaveToFirestore } from "./Firestore";
 export default function ChooseAvatar() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user, loading, error] = useAuthState(auth);
+  const theme = useTheme();
 
   function selectAvatar(item) {
     let newLocalUser = { ...localUser };
@@ -35,9 +36,19 @@ export default function ChooseAvatar() {
             onClick={(e) => {
               selectAvatar(item);
             }}
+            sx={{
+              border: localUser.avatar === item ? "4px solid" : "",
+              borderColor: theme.palette.text.primary,
+              borderRadius: "120px",
+              padding: localUser.avatar === item ? "2px" : "8px",
+            }}
           >
             <Avatar
-              sx={{ width: "80px", height: "80px", fontSize: "2.5rem" }}
+              sx={{
+                width: "80px",
+                height: "80px",
+                fontSize: "2.5rem",
+              }}
               src={item}
             ></Avatar>
           </IconButton>
