@@ -92,7 +92,13 @@ export default function DropMenu() {
 
   async function sendToLogout(e) {
     await logout();
-    setLocalUser({ likes: [], dislikes: [], lists: [] });
+    setLocalUser({
+      likes: [],
+      dislikes: [],
+      lists: [],
+      avatar: null,
+      bio: null,
+    });
     handleClose(e);
     navigate("/logout");
   }
@@ -107,7 +113,7 @@ export default function DropMenu() {
         ref={anchorRef}
         id="composition-button"
         alt={user?.displayName}
-        src="purposefully bad link"
+        src={localUser?.avatar}
         aria-controls={open ? "composition-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"

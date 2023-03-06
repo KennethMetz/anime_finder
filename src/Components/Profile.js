@@ -22,8 +22,9 @@ import {
   useTheme,
 } from "@mui/material";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
-import { ArrowRight, X } from "phosphor-react";
+import { ArrowRight, Check, X } from "phosphor-react";
 import NoResultsImage from "./NoResultsImage";
+import ChooseAvatar from "./ChooseAvatar";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -31,6 +32,7 @@ export default function Profile() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const [editAvatar, setEditAvatar] = useState(false);
 
   const theme = useTheme();
 
@@ -41,18 +43,22 @@ export default function Profile() {
     console.log(localUser);
   }, [user, loading]);
 
+  function handleAvatarToggle() {
+    setEditAvatar((editAvatar) => !editAvatar);
+  }
+
   return (
     <Container maxWidth="sm">
       {/*****************User Banner******************/}
       <List>
         <ListItem disablePadding>
-          <ListItemAvatar>
+          <IconButton sx={{ cursor: "pointer" }} onClick={handleAvatarToggle}>
             <Avatar
               sx={{ width: "80px", height: "80px", fontSize: "2.5rem" }}
               alt={user?.displayName}
-              src="purposefully bad link"
+              src={localUser?.avatar}
             ></Avatar>
-          </ListItemAvatar>
+          </IconButton>
           <ListItemText
             sx={{ ml: 3 }}
             primary={user?.displayName ? user.displayName : "Guest"}
@@ -69,6 +75,30 @@ export default function Profile() {
           />
         </ListItem>
       </List>
+
+      {editAvatar ? (
+        <Box
+          sx={{
+            backgroundColor: "custom.subtleCardBg",
+            pt: 2,
+            borderRadius: "24px",
+          }}
+        >
+          <ChooseAvatar />{" "}
+          <div className="row">
+            <Button
+              variant="outlined"
+              color="inherit"
+              sx={{ mt: 2, mb: 2 }}
+              onClick={handleAvatarToggle}
+            >
+              Close
+            </Button>
+          </div>
+        </Box>
+      ) : (
+        ""
+      )}
 
       {/**********************Upsell Button***********************/}
       {localUser?.name === "guest" ? (
