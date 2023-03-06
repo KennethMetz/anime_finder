@@ -7,8 +7,8 @@ export const LocalUserProvider = (props) => {
     likes: [],
     dislikes: [],
     lists: [],
-    avatar: null,
-    bio: null,
+    avatar: "",
+    bio: "",
   });
   return (
     <LocalUserContext.Provider value={[localUser, setLocalUser]}>

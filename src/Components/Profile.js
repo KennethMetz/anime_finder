@@ -18,13 +18,15 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
-import { ArrowRight, Check, X } from "phosphor-react";
+import { ArrowRight, Camera, Check, Pencil, X } from "phosphor-react";
 import NoResultsImage from "./NoResultsImage";
 import ChooseAvatar from "./ChooseAvatar";
+import UserBio from "./UserBio";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -50,31 +52,53 @@ export default function Profile() {
   return (
     <Container maxWidth="sm">
       {/*****************User Banner******************/}
-      <List>
-        <ListItem disablePadding>
-          <IconButton sx={{ cursor: "pointer" }} onClick={handleAvatarToggle}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Tooltip title="Change your avatar">
+          <ListItemButton
+            onClick={handleAvatarToggle}
+            sx={{ maxWidth: "110px" }}
+          >
             <Avatar
-              sx={{ width: "80px", height: "80px", fontSize: "2.5rem" }}
+              sx={{ width: "80px", height: "80px" }}
               alt={user?.displayName}
               src={localUser?.avatar}
-            ></Avatar>
-          </IconButton>
-          <ListItemText
-            sx={{ ml: 3 }}
-            primary={user?.displayName ? user.displayName : "Guest"}
-            primaryTypographyProps={{
-              fontFamily: "interBlack",
-              fontSize: "1.66rem",
-            }}
-            secondary={user?.email}
-            secondaryTypographyProps={{
-              fontFamily: "interMedium",
-              fontSize: "1rem",
-              color: "text",
-            }}
-          />
-        </ListItem>
-      </List>
+            ></Avatar>{" "}
+            <Box
+              sx={{
+                position: "absolute",
+                left: "70px",
+                top: "66px",
+                width: "30px",
+                height: "30px",
+                borderRadius: "20px",
+                backgroundColor: "custom.subtleCardBg",
+                boxSizing: "border-box",
+                padding: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Camera sx={{ color: "text" }} size={24} />
+            </Box>
+          </ListItemButton>
+        </Tooltip>
+
+        <ListItemText
+          sx={{ ml: 3 }}
+          primary={user?.displayName ? user.displayName : "Guest"}
+          primaryTypographyProps={{
+            fontFamily: "interBlack",
+            fontSize: "1.66rem",
+          }}
+          secondary={user?.email}
+          secondaryTypographyProps={{
+            fontFamily: "interMedium",
+            fontSize: "1rem",
+            color: "text",
+          }}
+        />
+      </div>
 
       {editAvatar ? (
         <Box
@@ -89,6 +113,7 @@ export default function Profile() {
             <Button
               variant="outlined"
               color="inherit"
+              size="small"
               sx={{ mt: 2, mb: 2 }}
               onClick={handleAvatarToggle}
             >
@@ -121,6 +146,9 @@ export default function Profile() {
       ) : (
         ""
       )}
+
+      {/**********************Your Bio***********************/}
+      <UserBio />
 
       {/**********************LIKES***********************/}
       <Typography
