@@ -57,7 +57,7 @@ export default function UserBio() {
             handleBioToggle();
           }}
         >
-          {localUser?.bio.length > 0
+          {localUser?.bio?.length > 0
             ? localUser.bio
             : "Tell us a bit about yourself..."}
         </Box>
