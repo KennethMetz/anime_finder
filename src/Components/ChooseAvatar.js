@@ -3,11 +3,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { LocalUserContext } from "./LocalUserContext";
 import { auth } from "./Firebase";
 import { Avatar, IconButton, Typography, useTheme } from "@mui/material";
-import david from "../Styles/images/userAvatars/david_martinez.jpg";
-import naruto from "../Styles/images/userAvatars/naruto.jpg";
-import kakashi from "../Styles/images/userAvatars/Kakashi.jpg";
-import sailormoon from "../Styles/images/userAvatars/sailormoon.jpg";
-import rebecca from "../Styles/images/userAvatars/rebecca.jpg";
+import david from "../Styles/images/userAvatars/david_martinez.160.jpg";
+import naruto from "../Styles/images/userAvatars/naruto.160.jpg";
+import kakashi from "../Styles/images/userAvatars/kakashi.160.jpg";
+import sailormoon from "../Styles/images/userAvatars/sailormoon.160.jpg";
+import ryuko from "../Styles/images/userAvatars/ryuko.160.jpg";
 import luffy from "../Styles/images/userAvatars/luffy.jpg";
 
 import { SaveToFirestore } from "./Firestore";
@@ -58,4 +58,4 @@ export default function ChooseAvatar() {
   );
 }
 
-const avatars = [david, rebecca, naruto, kakashi, luffy, sailormoon];
+const avatars = [david, ryuko, naruto, kakashi, luffy, sailormoon];
