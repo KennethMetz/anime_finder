@@ -38,7 +38,9 @@ export default function UserBio() {
 
   return (
     <div>
-      <Typography sx={{ fontFamily: "interBlack", fontSize: "1.375rem" }}>
+      <Typography
+        sx={{ fontFamily: "interBlack", fontSize: "1.375rem", mt: 1 }}
+      >
         Bio
       </Typography>
       {!editBio ? (
@@ -76,6 +78,7 @@ export default function UserBio() {
             variant="filled"
             autoComplete="off"
             color="text"
+            placeholder="Tell us a bit about yourself..."
             autoFocus
             multiline
             value={bio}
@@ -94,13 +97,13 @@ export default function UserBio() {
             size="small"
             variant="outlined"
             color="inherit"
-            sx={{ width: "100px" }}
+            sx={{ width: "84px" }}
             onClick={(e) => {
               saveBio();
               handleBioToggle();
             }}
           >
-            Save
+            Save Bio
           </Button>
         </div>
       )}

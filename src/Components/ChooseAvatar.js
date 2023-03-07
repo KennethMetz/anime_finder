@@ -37,10 +37,16 @@ export default function ChooseAvatar() {
               selectAvatar(item);
             }}
             sx={{
-              border: localUser.avatar === item ? "4px solid" : "",
-              borderColor: theme.palette.text.primary,
-              borderRadius: "120px",
-              padding: localUser.avatar === item ? "2px" : "8px",
+              backgroundColor:
+                localUser.avatar === item
+                  ? theme.palette.text.primary
+                  : "inherit",
+              "&:hover": {
+                backgroundColor:
+                  localUser.avatar === item
+                    ? theme.palette.text.primary
+                    : "inherit",
+              },
             }}
           >
             <Avatar
