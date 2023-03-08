@@ -241,13 +241,11 @@ export default function AddToListDropMenu({ anime }) {
                         autoComplete="off"
                         required
                         color="text"
-                        autoFocus
                         value={name}
                         sx={{
                           minWidth: "200px",
                           margin: "15px 25px 15px 25px",
                         }}
-                        onClick={(e) => e.preventDefault()}
                         onChange={(e) => {
                           setName(e.target.value);
                         }}
@@ -270,6 +268,7 @@ export default function AddToListDropMenu({ anime }) {
                           Cancel
                         </Button>
                         <Button
+                          disabled={name.length === 0 ? true : false}
                           variant="contained"
                           onClick={submitListName}
                           sx={{ ml: 1 }}
