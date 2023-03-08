@@ -1,86 +1,89 @@
-import { useContext } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { LocalUserContext } from "./LocalUserContext";
-import { auth } from "./Firebase";
-import { Avatar, IconButton, Typography, useTheme } from "@mui/material";
+import { Typography } from "@mui/material";
 import david from "../Styles/images/userAvatars/david_martinez.160.jpg";
-import naruto from "../Styles/images/userAvatars/naruto.160.jpg";
-import kakashi from "../Styles/images/userAvatars/kakashi.160.jpg";
 import sailormoon from "../Styles/images/userAvatars/sailormoon.160.jpg";
 import ryuko from "../Styles/images/userAvatars/ryuko.160.jpg";
-import luffy from "../Styles/images/userAvatars/luffy.jpg";
+
+import naruto from "../Styles/images/userAvatars/naruto.160.jpg";
+import kakashi from "../Styles/images/userAvatars/kakashi.160.jpg";
 import mightguy from "../Styles/images/userAvatars/mightguy.jpg";
 import sasuke from "../Styles/images/userAvatars/sasuke.jpg";
 import itachi from "../Styles/images/userAvatars/itachi.jpg";
 import sakura from "../Styles/images/userAvatars/sakura.jpg";
+
+import luffy from "../Styles/images/userAvatars/luffy.jpg";
 import franky from "../Styles/images/userAvatars/franky.jpg";
 import sanji from "../Styles/images/userAvatars/sanji.jpg";
+import usopp from "../Styles/images/userAvatars/usopp.jpg";
+import tonytony from "../Styles/images/userAvatars/tonytony.jpg";
+import charlotte from "../Styles/images/userAvatars/charlotte.jpg";
 
-import { SaveToFirestore } from "./Firestore";
+import spike from "../Styles/images/userAvatars/spike.jpg";
+import faye from "../Styles/images/userAvatars/faye.jpg";
+import jet from "../Styles/images/userAvatars/jetblack.jpg";
+import julia from "../Styles/images/userAvatars/julia.jpg";
+import ein from "../Styles/images/userAvatars/ein.jpg";
+import vicious from "../Styles/images/userAvatars/vicious.jpg";
+
+import AvatarShelf from "./AvatarShelf";
 
 export default function ChooseAvatar() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const [user, loading, error] = useAuthState(auth);
-  const theme = useTheme();
-
-  function selectAvatar(item) {
-    let newLocalUser = { ...localUser };
-    newLocalUser.avatar = item;
-    setLocalUser(newLocalUser);
-    SaveToFirestore(user, newLocalUser);
-  }
-
   return (
     <div>
-      <Typography sx={{ fontFamily: "interSemiBold", pl: 1, mb: 1 }}>
+      <Typography sx={{ fontFamily: "interExtraBold", pl: 1, mb: 1 }}>
         Select an Avatar:
       </Typography>
-      {avatars.map((item, index) => {
-        return (
-          <IconButton
-            key={index}
-            onClick={(e) => {
-              selectAvatar(item);
-            }}
-            sx={{
-              backgroundColor:
-                localUser.avatar === item
-                  ? theme.palette.text.primary
-                  : "inherit",
-              "&:hover": {
-                backgroundColor:
-                  localUser.avatar === item
-                    ? theme.palette.text.primary
-                    : "inherit",
-              },
-            }}
-          >
-            <Avatar
-              sx={{
-                width: "80px",
-                height: "80px",
-                fontSize: "2.5rem",
-              }}
-              src={item}
-            ></Avatar>
-          </IconButton>
-        );
-      })}
+
+      <Typography
+        sx={{
+          fontFamily: "interMedium",
+          pl: 1,
+          fontSize: "0.75rem",
+        }}
+      >
+        Cowboy Bebop:
+      </Typography>
+      <AvatarShelf items={cowboyBebop} />
+      <Typography
+        sx={{
+          fontFamily: "interMedium",
+          pl: 1,
+          fontSize: "0.75rem",
+          marginTop: "-20px",
+        }}
+      >
+        Naruto:
+      </Typography>
+      <AvatarShelf items={narutoOriginal} />
+      <Typography
+        sx={{
+          fontFamily: "interMedium",
+          pl: 1,
+          fontSize: "0.75rem",
+          marginTop: "-20px",
+        }}
+      >
+        One Piece:
+      </Typography>
+      <AvatarShelf items={onePiece} />
+      <Typography
+        sx={{
+          fontFamily: "interMedium",
+          pl: 1,
+          fontSize: "0.75rem",
+          marginTop: "-20px",
+        }}
+      >
+        Misc:
+      </Typography>
+      <AvatarShelf items={avatars} />
     </div>
   );
 }
 
-const avatars = [
-  david,
-  ryuko,
-  naruto,
-  sakura,
-  sasuke,
-  itachi,
-  kakashi,
-  mightguy,
-  luffy,
-  franky,
-  sanji,
-  sailormoon,
-];
+const avatars = [david, ryuko, sailormoon];
+
+const narutoOriginal = [naruto, sakura, sasuke, itachi, kakashi, mightguy];
+
+const onePiece = [luffy, franky, sanji, usopp, tonytony, charlotte];
+
+const cowboyBebop = [spike, faye, jet, julia, ein, vicious];
