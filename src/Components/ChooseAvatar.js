@@ -9,6 +9,12 @@ import kakashi from "../Styles/images/userAvatars/kakashi.160.jpg";
 import sailormoon from "../Styles/images/userAvatars/sailormoon.160.jpg";
 import ryuko from "../Styles/images/userAvatars/ryuko.160.jpg";
 import luffy from "../Styles/images/userAvatars/luffy.jpg";
+import mightguy from "../Styles/images/userAvatars/mightguy.jpg";
+import sasuke from "../Styles/images/userAvatars/sasuke.jpg";
+import itachi from "../Styles/images/userAvatars/itachi.jpg";
+import sakura from "../Styles/images/userAvatars/sakura.jpg";
+import franky from "../Styles/images/userAvatars/franky.jpg";
+import sanji from "../Styles/images/userAvatars/sanji.jpg";
 
 import { SaveToFirestore } from "./Firestore";
 
@@ -64,4 +70,17 @@ export default function ChooseAvatar() {
   );
 }
 
-const avatars = [david, ryuko, naruto, kakashi, luffy, sailormoon];
+const avatars = [
+  david,
+  ryuko,
+  naruto,
+  sakura,
+  sasuke,
+  itachi,
+  kakashi,
+  mightguy,
+  luffy,
+  franky,
+  sanji,
+  sailormoon,
+];
