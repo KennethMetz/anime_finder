@@ -12,6 +12,10 @@ import mightguy from "../Styles/images/userAvatars/mightguy.jpg";
 import sasuke from "../Styles/images/userAvatars/sasuke.jpg";
 import itachi from "../Styles/images/userAvatars/itachi.jpg";
 import sakura from "../Styles/images/userAvatars/sakura.jpg";
+import choji from "../Styles/images/userAvatars/choji.jpg";
+import rocklee from "../Styles/images/userAvatars/rocklee.jpg";
+import jiriaya from "../Styles/images/userAvatars/jiriaya.jpg";
+import ino from "../Styles/images/userAvatars/ino.jpg";
 
 import luffy from "../Styles/images/userAvatars/luffy.jpg";
 import franky from "../Styles/images/userAvatars/franky.jpg";
@@ -128,7 +132,19 @@ export default function ChooseAvatar() {
 
 const avatars = [david, ryuko, sailormoon];
 
-const narutoOriginal = [naruto, sakura, sasuke, itachi, kakashi, mightguy];
+const narutoOriginal = [
+  naruto,
+  sakura,
+  sasuke,
+  itachi,
+  kakashi,
+  jiriaya,
+  mightguy,
+
+  rocklee,
+  choji,
+  ino,
+];
 
 const onePiece = [luffy, franky, sanji, usopp, tonytony, charlotte];
 
