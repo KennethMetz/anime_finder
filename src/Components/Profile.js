@@ -23,7 +23,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
-import { ArrowRight, Camera, Check, Pencil, X } from "phosphor-react";
+import { ArrowRight, Camera, Check, Pencil, X, XCircle } from "phosphor-react";
 import NoResultsImage from "./NoResultsImage";
 import ChooseAvatar from "./ChooseAvatar";
 import UserBio from "./UserBio";
@@ -108,18 +108,21 @@ export default function Profile() {
             borderRadius: "24px",
           }}
         >
-          <ChooseAvatar />{" "}
-          <div className="row">
-            <Button
-              variant="outlined"
+          <div
+            className="row"
+            style={{ position: "relative", justifyContent: "end" }}
+          >
+            <IconButton
+              // variant="text"
               color="inherit"
               size="small"
-              sx={{ mt: 2, mb: 2 }}
+              sx={{ mr: 1, position: "absolute", top: "-5px" }}
               onClick={handleAvatarToggle}
             >
-              Close
-            </Button>
+              <X size={40} color="grey" />
+            </IconButton>
           </div>
+          <ChooseAvatar />{" "}
         </Box>
       ) : (
         ""
