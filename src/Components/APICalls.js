@@ -37,6 +37,23 @@ export async function APIGetSimilarAnime(animeId, amount) {
   return responseJson.items.map((item) => item.anime);
 }
 
+export async function APIGetAnimeAnalysis(animeId, history) {
+  let response = await fetch(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/${animeId}/analyze`,
+    {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ history }),
+    }
+  );
+  await handleErrors(response);
+  const responseJson = await response.json();
+  return responseJson;
+}
+
 async function handleErrors(response) {
   if (!response.ok) {
     const message = await response.text();
