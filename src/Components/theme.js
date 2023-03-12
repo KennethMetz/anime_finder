@@ -17,6 +17,9 @@ export function createAppTheme(darkMode) {
       //Theses are new/custom theme keys.
       custom: {
         subtleCardBg: darkMode ? "#171717" : "#F2F2F2",
+        gradientCardBg: darkMode
+          ? "linear-gradient(180deg, #323232 0%, #262626 100%)"
+          : "linear-gradient(180deg, #F5F5F5 0%, #F5EAEA 100%)",
       },
     },
     breakpoints: {

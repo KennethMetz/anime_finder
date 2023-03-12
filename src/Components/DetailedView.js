@@ -1,34 +1,26 @@
-import "../Styles/DetailedView.css";
-
-import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
 import {
+  Box,
   Chip,
+  Container,
   Grid,
-  ListItem,
-  ListItemText,
-  Paper,
+  Typography,
   useTheme,
 } from "@mui/material";
-import { GenericList } from "./GenericList";
-import { RecommendedList } from "./RecommendedList";
-import { Box, Container } from "@mui/system";
-import heart from "../Styles/images/favorite_border_black_24dp.svg";
-import frown from "../Styles/images/sentiment_dissatisfied_black_24dp.svg";
-import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
-import { LocalUserContext } from "./LocalUserContext";
+import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./Firebase";
-import TitleAutocomplete from "./TitleAutocomplete";
-import { flushSync } from "react-dom";
-import LikeButtons from "./LikeButtons";
-import { APIGetAnime } from "./APICalls";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
+import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
+import ExpandableText from "./ExpandableText";
+import { auth } from "./Firebase";
+import { PopulateFromFirestore } from "./Firestore";
+import LikeButtons from "./LikeButtons";
+import { LocalUserContext } from "./LocalUserContext";
+import ScoreBars from "./ScoreBars";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
-import DetailedViewDescription from "./DetailedViewDescription";
 
-export default function DetailedView() {
+export default function AnimePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -41,6 +33,8 @@ export default function DetailedView() {
 
   const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
 
+  const [analysis, analysisLoading, analysisError] = useAnimeAnalysis(animeId);
+
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
@@ -48,7 +42,7 @@ export default function DetailedView() {
   }, [user, loading]);
 
   // TODO Use a shared loading display component.
-  if (loading || animeLoading) {
+  if (loading || animeLoading || analysisLoading) {
     return (
       <div className="jsxWrapper">
         <div className="gap" />
@@ -60,7 +54,7 @@ export default function DetailedView() {
   }
 
   // TODO Use a shared error display component.
-  if (error || animeError) {
+  if (error || animeError || analysisError) {
     return (
       <div className="jsxWrapper">
         <div className="gap" />
@@ -71,116 +65,214 @@ export default function DetailedView() {
     );
   }
 
+  const headStyle = {
+    fontFamily: "interBlack",
+    fontSize: "40px",
+    lineHeight: "48px",
+    marginBottom: "24px",
+  };
+
+  const subheadStyle = {
+    fontFamily: "interBlack",
+    fontSize: "22px",
+    lineHeight: "27px",
+    marginTop: "24px",
+    marginBottom: "12px",
+  };
+
+  const bodyStyle = {
+    fontFamily: "interMedium",
+    fontSize: "16px",
+    lineHeight: "21px",
+  };
+
   return (
-    <div className="jsxWrapper" key={anime.id}>
-      <div className="gap" />
-      <Container maxWidth="lg">
-        <Grid container spacing={0} rowSpacing={0} sx={{ mt: 2 }}>
-          <Grid item xs={12} md={3}>
-            <Paper
-              elevation={3}
+    <Container maxWidth="lg" key={anime.id}>
+      <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
+        <Grid
+          item
+          xs={12}
+          md={3}
+          sx={{ textAlign: { xs: "center", md: "start" } }}
+        >
+          {/*Cover*/}
+          <Box sx={{ position: "relative" }}>
+            <Box
               sx={{
+                position: "relative",
                 width: "100%",
-                maxWidth: "375px",
+                maxWidth: "250px",
                 aspectRatio: "0.7",
                 marginX: "auto",
-                marginBottom: 2,
+                marginBottom: 3.5,
                 bgcolor: theme.palette.action.disabledBackground,
                 backgroundImage: `url(${anime.image_large})`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
-                borderRadius: "8px",
+                borderRadius: "16px",
                 overflow: "clip",
+                zIndex: 1,
               }}
             />
-          </Grid>
-          <Grid item xs={12} md={9}>
-            <ListItem sx={{ paddingTop: 0, paddingBottom: 0 }}>
-              <h2
-                style={{
-                  fontFamily: "interExtraBold",
-                  fontSize: "2.5rem",
-                  textAlign: "left",
-                  margin: 0,
-                }}
-              >
-                {anime.display_name}
-              </h2>
-            </ListItem>
-            <ListItem sx={{ paddingTop: 0, paddingBottom: 0 }}>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontFamily: "interSemiBold",
-                  fontSize: "1rem",
-                }}
-                primary={anime.localized_titles.map((item, index) => {
-                  if (item["language"] === "ja")
-                    return anime.localized_titles[index]["title"];
-                })}
-              />
-            </ListItem>
-            <ListItem sx={{ paddingTop: 0, pb: 0 }}>
-              <ListItemText
-                primary={getFormatAndEpisodesText(anime)}
-                primaryTypographyProps={{
-                  fontFamily: "interSemiBold",
-                  fontSize: "1.0rem",
-                  whiteSpace: "pre-line",
-                }}
-              />
-            </ListItem>
-            <ListItem
-              sx={{ pt: 0, pb: 0, minHeight: "32px", flexWrap: "wrap" }}
-            >
-              {anime.genres.map((genre) => (
-                <Chip
-                  key={genre}
-                  variant="outlined"
-                  label={genre}
-                  sx={{ mr: 1, my: 0.5 }}
-                  size="small"
-                />
-              ))}
-            </ListItem>
-            <ListItem>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <Box sx={{ flexShrink: 0 }}>
-                  <LikeButtons anime={anime} />
-                </Box>
-                <Box sx={{ flexShrink: 0 }}>
-                  <UrlButtons anime={anime} />
-                </Box>
-              </Box>
-            </ListItem>
-            <ListItem
+            <Box
               sx={{
-                overflow: "hidden",
-                alignItems: "start",
+                position: "absolute",
+                top: 0,
+                left: { xs: "calc((100% - 295px) / 2)", md: 0 },
+                width: { xs: "295px", md: "100%" },
+                maxWidth: "100%",
+                height: "calc(250px / 0.7)",
+                backgroundImage: `url(${anime.image_large})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                borderRadius: "16px",
+                overflow: "visible",
+                opacity: 0.25,
+                filter: "blur(11px)",
+                zIndex: 0,
+              }}
+            />
+          </Box>
+
+          {/*Basic Info*/}
+          <Typography variant="h5" sx={subheadStyle}>
+            {anime.display_name}
+          </Typography>
+          <Typography variant="body1" sx={bodyStyle}>
+            {anime.localized_titles.map((item, index) => {
+              if (item["language"] === "ja")
+                return anime.localized_titles[index]["title"];
+              return "";
+            })}
+          </Typography>
+          <Typography variant="body1" sx={bodyStyle}>
+            {getFormatAndEpisodesText(anime)}
+          </Typography>
+
+          {/*Genre Chips */}
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              marginY: 1.5,
+              justifyContent: { xs: "center", md: "start" },
+            }}
+          >
+            {anime.genres.map((genre) => (
+              <Chip
+                key={genre}
+                variant="outlined"
+                label={genre}
+                sx={{
+                  mr: 1,
+                  my: 0.5,
+                  fontSize: "16px",
+                  border: "2px solid",
+                  borderRadius: "4px",
+                }}
+                size="small"
+              />
+            ))}
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <Grid container sx={{ paddingLeft: { xs: 0, md: "46px" } }}>
+            {/*Desktop-only big title*/}
+            <Grid
+              item
+              xs={12}
+              md={9}
+              sx={{ display: { xs: "none", md: "block" } }}
+            >
+              <Typography variant="h2" sx={headStyle}>
+                {anime.display_name}
+              </Typography>
+            </Grid>
+            {/* LikeButtons */}
+            <Grid
+              item
+              xs={12}
+              md={3}
+              sx={{
+                textAlign: { xs: "center", md: "end" },
+                marginTop: { xs: 0.5, md: 0 },
+                marginBottom: { xs: 2, md: 0 },
               }}
             >
-              <ListItemText
-                primary={<DetailedViewDescription text={anime.description} />}
-                primaryTypographyProps={{
-                  fontFamily: "interMedium",
-                  fontSize: "1.0rem",
-                  whiteSpace: "pre-line",
-                }}
+              <LikeButtons anime={anime} />
+            </Grid>
+
+            {/* Data from Edward */}
+            <Grid
+              item
+              xs={12}
+              sx={{
+                padding: "32px 32px",
+                background: theme.palette.custom.gradientCardBg,
+                borderRadius: "16px",
+              }}
+            >
+              <Grid container columnSpacing={3}>
+                <Grid item xs={12} md={6} sx={bodyStyle}>
+                  <Typography
+                    variant="h5"
+                    style={{ ...subheadStyle, margin: "0 0 12px 0" }}
+                  >
+                    Data From Edward
+                  </Typography>
+                  <ScoreBars scores={analysis.scores} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontFamily: "interExtraBold",
+                      fontSize: "16px",
+                      lineHeight: "19px",
+                      marginTop: { xs: "24px", md: "7px" },
+                      marginBottom: "12px",
+                    }}
+                  >
+                    What Do People Say?
+                  </Typography>
+                  <Typography variant="body1" sx={bodyStyle}>
+                    {analysis.review_summaries[0]}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            {/* Summary */}
+            <Grid item xs={12}>
+              <Typography variant="h5" style={subheadStyle}>
+                Summary
+              </Typography>
+              <ExpandableText
+                text={anime.description}
+                sx={{ ...bodyStyle, whiteSpace: "pre-line" }}
               />
-            </ListItem>
+            </Grid>
+
+            {/* Watch Links */}
+            <Grid item xs={12}>
+              <Typography variant="h5" style={subheadStyle}>
+                Watch
+              </Typography>
+              <Box sx={{ display: "block" }}>
+                <UrlButtons anime={anime} />
+              </Box>
+            </Grid>
           </Grid>
         </Grid>
-        <h3 className="leftH3" style={{ marginBottom: "0.5em" }}>
-          Similar Titles
-        </h3>
-        <SimilarContent animeId={anime.id} amount={24} />
-        <div className="gap" />
-      </Container>
-    </div>
+        <Grid item xs={12} md={12}>
+          <Typography variant="h5" style={subheadStyle}>
+            Similar Titles
+          </Typography>
+          <SimilarContent animeId={anime.id} amount={24} />
+        </Grid>
+      </Grid>
+      <div className="gap" />
+    </Container>
   );
 }
 
