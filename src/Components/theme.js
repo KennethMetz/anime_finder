@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { alpha, createTheme } from "@mui/material/styles";
 
 export function createAppTheme(darkMode) {
   // A custom theme for this app
@@ -90,6 +90,22 @@ export function createAppTheme(darkMode) {
             fontFamily: "interSemiBold, sans-serif",
           },
         },
+      },
+      MuiIconButton: {
+        variants: [
+          {
+            props: { variant: "contained" },
+            style: {
+              backgroundColor: darkMode ? "#2D2D2D" : "#EEE",
+            },
+          },
+          {
+            props: { variant: "contained", color: "primary" },
+            style: {
+              backgroundColor: alpha("#EF2727", 0.2),
+            },
+          },
+        ],
       },
     },
   });

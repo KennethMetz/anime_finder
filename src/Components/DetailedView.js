@@ -199,7 +199,7 @@ export default function AnimePage() {
                 marginBottom: { xs: 2, md: 0 },
               }}
             >
-              <LikeButtons anime={anime} />
+              <LikeButtons anime={anime} variant="contained" />
             </Grid>
 
             {/* Data from Edward */}
