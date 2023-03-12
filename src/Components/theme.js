@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { alpha, createTheme } from "@mui/material/styles";
 
 export function createAppTheme(darkMode) {
   // A custom theme for this app
@@ -17,6 +17,9 @@ export function createAppTheme(darkMode) {
       //Theses are new/custom theme keys.
       custom: {
         subtleCardBg: darkMode ? "#171717" : "#F2F2F2",
+        gradientCardBg: darkMode
+          ? "linear-gradient(180deg, #323232 0%, #262626 100%)"
+          : "linear-gradient(180deg, #F5F5F5 0%, #F5EAEA 100%)",
       },
     },
     breakpoints: {
@@ -87,6 +90,22 @@ export function createAppTheme(darkMode) {
             fontFamily: "interSemiBold, sans-serif",
           },
         },
+      },
+      MuiIconButton: {
+        variants: [
+          {
+            props: { variant: "contained" },
+            style: {
+              backgroundColor: darkMode ? "#2D2D2D" : "#EEE",
+            },
+          },
+          {
+            props: { variant: "contained", color: "primary" },
+            style: {
+              backgroundColor: alpha("#EF2727", 0.2),
+            },
+          },
+        ],
       },
     },
   });

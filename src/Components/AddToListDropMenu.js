@@ -28,7 +28,7 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function AddToListDropMenu({ anime }) {
+export default function AddToListDropMenu({ anime, variant }) {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const theme = useTheme();
@@ -118,6 +118,8 @@ export default function AddToListDropMenu({ anime }) {
     }
   };
 
+  const size = variant === "contained" ? "large" : "medium";
+
   return (
     <>
       {/**********************DROP MENU ICON**********************/}
@@ -140,6 +142,8 @@ export default function AddToListDropMenu({ anime }) {
             color: "inherit",
             border: "0px solid",
           }}
+          size={size}
+          variant={variant}
         >
           <Plus />
         </IconButton>

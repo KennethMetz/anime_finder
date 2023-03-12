@@ -28,7 +28,7 @@ export default function AnimeCard({ anime, large, onChangeSelected }) {
       aria-label={anime.display_name}
     >
       <Paper
-        elevation={selected ? 12 : 3}
+        elevation={selected ? 12 : 0}
         sx={{
           width: "100%",
           height: "100%",

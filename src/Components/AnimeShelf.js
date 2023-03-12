@@ -68,37 +68,49 @@ export default function AnimeShelf({ items }) {
         position: "relative",
       }}
     >
-      <Grid container spacing={2} columns={columns}>
-        {showGhosts &&
-          ghosts.map((_, index) => (
-            <Grid item key={index} {...breakpoints} sx={{ aspectRatio: "0.7" }}>
-              <Skeleton
-                variant="rounded"
-                sx={{ height: "100%", borderRadius: "8px" }}
-              />
-            </Grid>
-          ))}
-        {!showGhosts &&
-          currentItems.map((anime, index) => (
-            <Grid
-              item
-              key={index}
-              {...breakpoints}
-              sx={{ aspectRatio: "0.7", zIndex: selected === index ? 1 : 0 }}
-            >
-              <AnimeCard
-                anime={anime}
-                onChangeSelected={(v) => onChangeSelected(index, v)}
-              />
-            </Grid>
-          ))}
-      </Grid>
+      <Box
+        sx={{
+          paddingLeft: { xs: hasPrevious ? "24px" : 0, lg: 0 },
+          paddingRight: { xs: hasNext ? "24px" : 0, lg: 0 },
+        }}
+      >
+        <Grid container spacing={2} columns={columns}>
+          {showGhosts &&
+            ghosts.map((_, index) => (
+              <Grid
+                item
+                key={index}
+                {...breakpoints}
+                sx={{ aspectRatio: "0.7" }}
+              >
+                <Skeleton
+                  variant="rounded"
+                  sx={{ height: "100%", borderRadius: "8px" }}
+                />
+              </Grid>
+            ))}
+          {!showGhosts &&
+            currentItems.map((anime, index) => (
+              <Grid
+                item
+                key={index}
+                {...breakpoints}
+                sx={{ aspectRatio: "0.7", zIndex: selected === index ? 1 : 0 }}
+              >
+                <AnimeCard
+                  anime={anime}
+                  onChangeSelected={(v) => onChangeSelected(index, v)}
+                />
+              </Grid>
+            ))}
+        </Grid>
+      </Box>
       <Paper
         elevation={4}
         sx={{
           position: "absolute",
           visibility: hasPrevious ? "visible" : "hidden",
-          left: "-24px",
+          left: { xs: 0, lg: "-24px" },
           top: "calc(50% - 24px)",
           zIndex: 1,
           borderRadius: "24px",
@@ -113,7 +125,7 @@ export default function AnimeShelf({ items }) {
         sx={{
           position: "absolute",
           visibility: hasNext ? "visible" : "hidden",
-          right: "-24px",
+          right: { xs: 0, lg: "-24px" },
           top: "calc(50% - 24px)",
           zIndex: 1,
           borderRadius: "24px",

@@ -3,17 +3,17 @@ import AddToListDropMenu from "./AddToListDropMenu";
 import DisikeButton from "./DislikeButton";
 import LikeButton from "./LikeButton";
 
-export default function LikeButtons({ anime }) {
+export default function LikeButtons({ anime, variant }) {
   return (
     <Box>
       <Box sx={{ mr: 1 }} component="span">
-        <LikeButton anime={anime} />
+        <LikeButton anime={anime} variant={variant} />
       </Box>
       <Box component="span">
-        <DisikeButton anime={anime} />
+        <DisikeButton anime={anime} variant={variant} />
       </Box>
       <Box sx={{ ml: 1 }} component="span">
-        <AddToListDropMenu anime={anime} />
+        <AddToListDropMenu anime={anime} variant={variant} />
       </Box>
     </Box>
   );
