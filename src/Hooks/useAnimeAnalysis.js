@@ -18,7 +18,7 @@ export default function useAnimeAnalysis(animeId) {
         status: "DROPPED",
       })),
     ],
-    []
+    [localUser]
   );
 
   const { data, isLoading, error } = useQuery(
