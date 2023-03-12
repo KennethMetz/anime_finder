@@ -138,7 +138,7 @@ export default function Home() {
             <h2
               style={{
                 fontSize: "2.5rem",
-                fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+                fontFamily: "interBlack, Arial, Helvetica, sans-serif",
                 textAlign: "left",
                 marginBlockStart: 0,
                 marginBlockEnd: "0.5rem",
@@ -155,7 +155,7 @@ export default function Home() {
           <h2
             style={{
               fontSize: "2.0rem",
-              fontFamily: "interExtraBold, Arial, Helvetica, sans-serif",
+              fontFamily: "interBlack, Arial, Helvetica, sans-serif",
               textAlign: "left",
               marginBlockStart: 0,
               marginBlockEnd: "0.5rem",
