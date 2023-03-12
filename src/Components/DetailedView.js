@@ -112,24 +112,7 @@ export default function AnimePage() {
                 borderRadius: "16px",
                 overflow: "clip",
                 zIndex: 1,
-              }}
-            />
-            <Box
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: { xs: "calc((100% - 295px) / 2)", md: 0 },
-                width: { xs: "295px", md: "100%" },
-                maxWidth: "100%",
-                height: "calc(250px / 0.7)",
-                backgroundImage: `url(${anime.image_large})`,
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                borderRadius: "16px",
-                overflow: "visible",
-                opacity: 0.25,
-                filter: "blur(11px)",
-                zIndex: 0,
+                boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
               }}
             />
           </Box>
