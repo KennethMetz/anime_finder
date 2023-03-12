@@ -2,7 +2,7 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { Fragment } from "react";
 import crunchyroll from "../Styles/images/crunchyroll.png";
 import funimation from "../Styles/images/funimation.png";
-import netflix from "../Styles/images/netflix.png";
+import netflix from "../Styles/images/Netflix.png";
 
 export default function UrlButtons({ anime }) {
   const urls = anime.urls.filter(
