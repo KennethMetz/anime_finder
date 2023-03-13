@@ -98,6 +98,7 @@ export default function DropMenu() {
       lists: [],
       avatar: null,
       bio: null,
+      top8: [],
     });
     handleClose(e);
     navigate("/logout");

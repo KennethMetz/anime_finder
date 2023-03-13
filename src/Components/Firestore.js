@@ -47,6 +47,7 @@ export async function SaveToFirestore(user, localUser) {
           lists: [...localUser.lists],
           avatar: localUser?.avatar ?? null,
           bio: localUser?.bio ?? null,
+          top8: [...localUser.top8],
         },
         { merge: true }
       );

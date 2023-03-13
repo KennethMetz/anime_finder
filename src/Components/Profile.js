@@ -27,6 +27,8 @@ import { ArrowRight, Camera, Check, Pencil, X, XCircle } from "phosphor-react";
 import NoResultsImage from "./NoResultsImage";
 import ChooseAvatar from "./ChooseAvatar";
 import UserBio from "./UserBio";
+import Top8 from "./Top8List";
+import Top8List from "./Top8List";
 
 export default function Profile() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -152,6 +154,9 @@ export default function Profile() {
 
       {/**********************Your Bio***********************/}
       <UserBio />
+
+      {/**********************Your Top 8*********************/}
+      <Top8List />
 
       {/**********************LIKES***********************/}
       <Typography
