@@ -1905,5 +1905,7 @@ export default function BreathingLogo({ type }) {
         <SVG style={{ scale: "1", margin: "300px 0px", maxWidth: "400px" }} />
       </Box>
     );
+  } else {
+    return <SVG style={{ scale: "1" }} />;
   }
 }

@@ -3,6 +3,11 @@ import { useContext, useMemo } from "react";
 import { APIGetAnimeAnalysis } from "../Components/APICalls";
 import { LocalUserContext } from "../Components/LocalUserContext";
 
+/**
+ * A hook that provides anime analysis for the given `animeId`.
+ * @param {string} animeId The anime id to get analysis for.
+ * @returns A list of `[anime, loading, error, fetching]`.
+ */
 export default function useAnimeAnalysis(animeId) {
   const [localUser] = useContext(LocalUserContext);
 
@@ -18,15 +23,16 @@ export default function useAnimeAnalysis(animeId) {
         status: "DROPPED",
       })),
     ],
-    []
+    [localUser]
   );
 
-  const { data, isLoading, error } = useQuery(
-    ["anime", animeId, "analysis"],
+  const { data, isLoading, error, isFetching } = useQuery(
+    ["anime", animeId, "analysis", history],
     () => {
       return APIGetAnimeAnalysis(animeId, history);
-    }
+    },
+    { keepPreviousData: true }
   );
 
-  return [data, isLoading, error];
+  return [data, isLoading, error, isFetching];
 }

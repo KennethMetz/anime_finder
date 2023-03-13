@@ -11,6 +11,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
+import BreathingLogo from "./BreathingLogo";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
 import { PopulateFromFirestore } from "./Firestore";
@@ -33,7 +34,8 @@ export default function AnimePage() {
 
   const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
 
-  const [analysis, analysisLoading, analysisError] = useAnimeAnalysis(animeId);
+  const [analysis, analysisLoading, analysisError, analysisFetching] =
+    useAnimeAnalysis(animeId);
 
   useEffect(() => {
     if (loading) return;
@@ -195,7 +197,31 @@ export default function AnimePage() {
                 borderRadius: "16px",
               }}
             >
-              <Grid container columnSpacing={3}>
+              <Grid container columnSpacing={3} sx={{ position: "relative" }}>
+                {analysisFetching && analysis?.anime_id !== anime.id && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: 1,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: "60px",
+                        height: "60px",
+                      }}
+                    >
+                      <BreathingLogo />
+                    </Box>
+                  </Box>
+                )}
                 <Grid item xs={12} md={6} sx={bodyStyle}>
                   <Typography
                     variant="h5"
@@ -203,7 +229,7 @@ export default function AnimePage() {
                   >
                     Data From Edward
                   </Typography>
-                  <ScoreBars scores={analysis.scores} />
+                  <ScoreBars scores={analysis?.scores ?? []} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Typography
@@ -219,7 +245,7 @@ export default function AnimePage() {
                     What Do People Say?
                   </Typography>
                   <Typography variant="body1" sx={bodyStyle}>
-                    {analysis.review_summaries[0]}
+                    {analysis?.review_summaries[0]}
                   </Typography>
                 </Grid>
               </Grid>
