@@ -1,6 +1,7 @@
 import { async } from "@firebase/util";
 import {
   Autocomplete,
+  Box,
   IconButton,
   InputAdornment,
   TextField,
@@ -63,7 +64,28 @@ export default function TitleAutocomplete(search) {
         openOnFocus={true}
         clearOnBlur={false}
         getOptionLabel={(option) => option.display_name || ""}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
+        renderOption={(props, options) => (
+          <Box
+            component="li"
+            sx={{
+              "& > img": {
+                mr: 2,
+                flexShrink: 0,
+                borderRadius: "8px",
+              },
+              fontFamily: "interMedium",
+              fontSize: "1rem",
+            }}
+            {...props}
+          >
+            <img
+              width="35"
+              src={options.image_large || options.image_small}
+              alt=""
+            />
+            {options.display_name}
+          </Box>
+        )}
         loading={loading}
         loadingText="Enter anime title (ie. Naruto)"
         sx={{ width: "450px", height: "46px" }}
@@ -97,6 +119,8 @@ export default function TitleAutocomplete(search) {
                 paddingLeft: "18px",
                 paddingTop: "4px",
                 height: "46px",
+                fontSize: "1rem",
+                fontFamily: "interMedium",
               },
               ".MuiInputLabel-root": {
                 paddingLeft: "18px",
