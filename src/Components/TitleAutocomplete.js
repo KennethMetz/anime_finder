@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { MagnifyingGlass } from "phosphor-react";
 
-export default function TitleAutocomplete(search) {
+export default function TitleAutocomplete({ search, setShowSearch }) {
   const navigate = useNavigate();
   let location = useLocation();
 
@@ -23,14 +23,20 @@ export default function TitleAutocomplete(search) {
   let [options, setOptions] = useState([]);
   let [loading, setLoading] = useState(false);
 
+  let [open, setOpen] = useState(false);
+  const closePopper = () => setOpen(false);
+  const openPopper = () => setOpen(true);
+
   let focusElement = useRef(null);
 
   function onSubmit(key, input) {
     if (key === "Enter") {
-      focusElement.current.focus(); //removes focus, so the options list will close
-      focusElement.current.blur(); //removes focus, so the options list will close
+      // focusElement.current.focus(); //removes focus, so the options list will close
+      // focusElement.current.blur(); //removes focus, so the options list will close
       navigate("/search", { state: input });
+      closePopper();
     }
+    if (key === "Escape") setShowSearch(false);
   }
 
   useEffect(() => {
@@ -55,14 +61,20 @@ export default function TitleAutocomplete(search) {
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
+          openPopper();
         }}
         forcePopupIcon={false}
         fullWidth={true}
         filterSelectedOptions
         options={options}
         handleHomeEndKeys={true}
+        open={open}
         openOnFocus={true}
         clearOnBlur={false}
+        blurOnSelect
+        onBlur={(e) => {
+          setShowSearch(false);
+        }}
         getOptionLabel={(option) => option.display_name || ""}
         renderOption={(props, options) => (
           <Box
@@ -92,6 +104,8 @@ export default function TitleAutocomplete(search) {
         renderInput={(params) => (
           <TextField
             {...params}
+            autoFocus
+            placeholder="Search"
             onKeyDown={(e) => {
               onSubmit(e.key, params["inputProps"]["value"]);
             }}
