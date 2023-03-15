@@ -31,8 +31,6 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   function onSubmit(key, input) {
     if (key === "Enter") {
-      // focusElement.current.focus(); //removes focus, so the options list will close
-      // focusElement.current.blur(); //removes focus, so the options list will close
       navigate("/search", { state: input });
       closePopper();
     }

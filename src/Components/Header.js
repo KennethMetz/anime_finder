@@ -9,6 +9,7 @@ import {
   IconButton,
   ListItemSecondaryAction,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "./Firebase";
@@ -16,7 +17,14 @@ import { signOut } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import TitleAutocomplete from "./TitleAutocomplete";
-import { UserCircle, List, Palette, MagnifyingGlass } from "phosphor-react";
+import {
+  UserCircle,
+  List,
+  Palette,
+  MagnifyingGlass,
+  House,
+  User,
+} from "phosphor-react";
 import DropMenu from "./DropMenu";
 import { useTheme } from "@mui/material/styles";
 import EdwardMLLogo from "./EdwardMLLogo";
@@ -26,17 +34,37 @@ function Header() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
+  const [user] = useAuthState(auth);
 
   const [showSearch, setShowSearch] = useState(false);
 
-  const [user] = useAuthState(auth);
-
-  const theme = useTheme();
+  let smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {}, [user]);
 
   const toggleSearch = (e) => {
     setShowSearch(true);
+  };
+
+  function onSubmit(key) {
+    if (key === "Enter") {
+      toggleSearch();
+    }
+  }
+
+  const iconHoverStyle = {
+    "&:hover": {
+      color: { smallDevice } ? "primary.main" : "inherit",
+    },
+  };
+
+  const tabTypogStyle = {
+    fontFamily: "interSemiBold",
+    fontSize: "1.125rem",
+    "&:hover": {
+      color: "primary.main",
+    },
   };
 
   return (
@@ -76,34 +104,31 @@ function Header() {
                 }}
               >
                 <Link to="/home">
-                  <Typography
-                    onClick={(e) => {
-                      navigate("/home");
-                    }}
-                    sx={{
-                      fontFamily: "interSemiBold",
-                      fontSize: "1.125rem",
-                      "&:hover": {
-                        color: "primary.main",
-                      },
-                    }}
-                  >
-                    Home
-                  </Typography>
+                  {smallDevice ? (
+                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
+                      <House size={24} />
+                    </IconButton>
+                  ) : (
+                    <Typography
+                      onClick={(e) => {
+                        navigate("/home");
+                      }}
+                      sx={tabTypogStyle}
+                    >
+                      Home
+                    </Typography>
+                  )}
                 </Link>
                 <Link to="/profile">
-                  <Typography
-                    onKeyDown
-                    sx={{
-                      fontFamily: "interSemiBold",
-                      fontSize: "1.125rem",
-                      "&:hover": {
-                        color: "primary.main",
-                      },
-                    }}
-                  >
-                    Profile
-                  </Typography>
+                  {smallDevice ? (
+                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
+                      <User size={24} />
+                    </IconButton>
+                  ) : (
+                    <Typography onKeyDown sx={tabTypogStyle}>
+                      Profile
+                    </Typography>
+                  )}
                 </Link>
                 <Box
                   sx={{
@@ -115,17 +140,29 @@ function Header() {
                     },
                   }}
                   onClick={toggleSearch}
+                  tabIndex="0"
+                  onKeyDown={(e) => {
+                    onSubmit(e.key);
+                  }}
                 >
-                  <MagnifyingGlass size={18} />
-                  <Typography
-                    sx={{
-                      fontFamily: "interSemiBold",
-                      fontSize: "1.125rem",
-                      ml: 0.75,
-                    }}
-                  >
-                    Search
-                  </Typography>{" "}
+                  {smallDevice ? (
+                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
+                      <MagnifyingGlass size={24} />
+                    </IconButton>
+                  ) : (
+                    <>
+                      <MagnifyingGlass size={18} />
+                      <Typography
+                        sx={{
+                          fontFamily: "interSemiBold",
+                          fontSize: "1.125rem",
+                          ml: 0.75,
+                        }}
+                      >
+                        Search
+                      </Typography>
+                    </>
+                  )}
                 </Box>
               </Grid>{" "}
             </>
