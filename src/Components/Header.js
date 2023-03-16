@@ -1,69 +1,24 @@
 import "../Styles/Header.css";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Container,
-  Grid,
-  Icon,
-  IconButton,
-  ListItemSecondaryAction,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "./Firebase";
-import { signOut } from "firebase/auth";
-import { useContext, useState } from "react";
-import { LocalUserContext } from "./LocalUserContext";
+import { Link } from "react-router-dom";
+import { Container, Grid } from "@mui/material";
+
+import { useState } from "react";
 import TitleAutocomplete from "./TitleAutocomplete";
-import {
-  UserCircle,
-  List,
-  Palette,
-  MagnifyingGlass,
-  House,
-  User,
-} from "phosphor-react";
+import { MagnifyingGlass, House, User } from "phosphor-react";
 import DropMenu from "./DropMenu";
 import { useTheme } from "@mui/material/styles";
 import EdwardMLLogo from "./EdwardMLLogo";
-import { Box } from "@mui/system";
+import HeaderTab from "./HeaderTab";
 
 function Header() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const navigate = useNavigate();
-  const location = useLocation();
   const theme = useTheme();
-  const [user] = useAuthState(auth);
 
   const [showSearch, setShowSearch] = useState(false);
 
-  let smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
-
   const toggleSearch = (e) => {
     setShowSearch(true);
-  };
-
-  function onSubmit(key) {
-    if (key === "Enter") {
-      toggleSearch();
-    }
-  }
-
-  const iconStyle = {
-    color: theme.palette.text.primary,
-    "&:hover": {
-      color: { smallDevice } ? "primary.main" : "inherit",
-    },
-  };
-
-  const tabTypogStyle = {
-    fontFamily: "interSemiBold",
-    fontSize: "1.125rem",
-    "&:hover": {
-      color: "primary.main",
-    },
+    e.preventDefault();
   };
 
   return (
@@ -102,66 +57,15 @@ function Header() {
                   justifyContent: "space-evenly",
                 }}
               >
-                <Link to="/home">
-                  {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconStyle}>
-                      <House size={24} />
-                    </IconButton>
-                  ) : (
-                    <Typography
-                      onClick={(e) => {
-                        navigate("/home");
-                      }}
-                      sx={tabTypogStyle}
-                    >
-                      Home
-                    </Typography>
-                  )}
-                </Link>
-                <Link to="/profile">
-                  {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconStyle}>
-                      <User size={24} />
-                    </IconButton>
-                  ) : (
-                    <Typography sx={tabTypogStyle}>Profile</Typography>
-                  )}
-                </Link>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    "&:hover": {
-                      color: "primary.main",
-                    },
-                  }}
+                <HeaderTab text="Home" icon={<House />} path="/home" />
+                <HeaderTab text="Profile" icon={<User />} path="/profile" />
+                <HeaderTab
+                  text="Search"
+                  icon={<MagnifyingGlass />}
+                  alwaysShowIcon
                   onClick={toggleSearch}
-                  tabIndex="0"
-                  onKeyDown={(e) => {
-                    onSubmit(e.key);
-                  }}
-                >
-                  {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconStyle}>
-                      <MagnifyingGlass size={24} />
-                    </IconButton>
-                  ) : (
-                    <>
-                      <MagnifyingGlass size={18} />
-                      <Typography
-                        sx={{
-                          fontFamily: "interSemiBold",
-                          fontSize: "1.125rem",
-                          ml: 0.75,
-                        }}
-                      >
-                        Search
-                      </Typography>
-                    </>
-                  )}
-                </Box>
-              </Grid>{" "}
+                />
+              </Grid>
             </>
           ) : (
             <Grid item lg={8.5} md={8.5} sm={6} xs={7.5} sx={{ marginY: 0.75 }}>
