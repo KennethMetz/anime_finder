@@ -28,18 +28,14 @@ export default function Top8List() {
   function handleOnDragEnd(result) {
     if (!result.destination) return;
 
-    console.log(result);
     const items = [...localUser.top8];
     const [reorderedItem] = items.splice(result.source.index, 1);
-    console.log(reorderedItem);
     items.splice(result.destination.index, 0, reorderedItem);
-    console.log(items);
 
     let newLocalUser = { ...localUser };
     newLocalUser.top8 = items;
     setLocalUser(newLocalUser);
     SaveToFirestore(user, newLocalUser);
-    console.log(localUser);
   }
 
   return (
@@ -49,7 +45,7 @@ export default function Top8List() {
           backgroundColor: "custom.subtleCardBg",
           borderRadius: "16px",
           pt: 1,
-          pb: 3,
+          pb: 2,
           mt: 1,
         }}
       >
@@ -85,12 +81,14 @@ export default function Top8List() {
                           variant="X"
                           className="invisibleX"
                           aria-label={item.display_name}
-                          disablePadding={true}
                           disableGutters={true}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          sx={{ position: "relative" }}
+                          sx={{
+                            position: "relative",
+                            padding: "4px 0px 4px 2rem",
+                          }}
                         >
                           <ListItemAvatar
                             sx={{ display: "flex", alignItems: "center" }}
@@ -125,14 +123,13 @@ export default function Top8List() {
                             }}
                             tabIndex="0"
                           >
-                            {" "}
                             {item.display_name}
                           </Typography>
 
                           <IconButton
                             sx={{
                               position: "absolute",
-                              right: "0px",
+                              right: "20px",
                               width: "40px",
                               height: "40px",
                             }}
@@ -143,10 +140,7 @@ export default function Top8List() {
                               SaveToFirestore(user, localUser);
                             }}
                           >
-                            <X
-                              size={20}
-                              // color={ ? "text.primary" : "inherit"}
-                            />{" "}
+                            <X size={20} />{" "}
                           </IconButton>
                         </ListItemButton> //
                       )}
