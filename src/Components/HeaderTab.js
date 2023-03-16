@@ -71,16 +71,18 @@ export default function HeaderTab({
         </IconButton>
       ) : (
         <Box
+          onClick={internalOnClick}
           sx={{
             display: "flex",
             alignItems: "center",
             position: "relative",
+            "&:hover": {
+              color: "primary.main",
+            },
           }}
         >
           {alwaysShowIcon && icon}
-          <Typography onClick={internalOnClick} sx={tabStyle}>
-            {text}
-          </Typography>
+          <Typography sx={tabStyle}>{text}</Typography>
         </Box>
       )}
     </Link>
