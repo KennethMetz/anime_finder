@@ -1,70 +1,24 @@
 import "../Styles/Header.css";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Container,
-  Grid,
-  Icon,
-  IconButton,
-  ListItemSecondaryAction,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "./Firebase";
-import { signOut } from "firebase/auth";
-import { useContext, useEffect, useState } from "react";
-import { LocalUserContext } from "./LocalUserContext";
+import { Link } from "react-router-dom";
+import { Container, Grid } from "@mui/material";
+
+import { useState } from "react";
 import TitleAutocomplete from "./TitleAutocomplete";
-import {
-  UserCircle,
-  List,
-  Palette,
-  MagnifyingGlass,
-  House,
-  User,
-} from "phosphor-react";
+import { MagnifyingGlass, House, User } from "phosphor-react";
 import DropMenu from "./DropMenu";
 import { useTheme } from "@mui/material/styles";
 import EdwardMLLogo from "./EdwardMLLogo";
-import { Box } from "@mui/system";
+import HeaderTab from "./HeaderTab";
 
 function Header() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const navigate = useNavigate();
-  const location = useLocation();
   const theme = useTheme();
-  const [user] = useAuthState(auth);
 
   const [showSearch, setShowSearch] = useState(false);
 
-  let smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {}, [user]);
-
   const toggleSearch = (e) => {
     setShowSearch(true);
-  };
-
-  function onSubmit(key) {
-    if (key === "Enter") {
-      toggleSearch();
-    }
-  }
-
-  const iconHoverStyle = {
-    "&:hover": {
-      color: { smallDevice } ? "primary.main" : "inherit",
-    },
-  };
-
-  const tabTypogStyle = {
-    fontFamily: "interSemiBold",
-    fontSize: "1.125rem",
-    "&:hover": {
-      color: "primary.main",
-    },
+    e.preventDefault();
   };
 
   return (
@@ -83,7 +37,7 @@ function Header() {
             paddingBottom: 0,
           }}
         >
-          <Grid item lg={2.5} md={2.5} sm={4.75} xs={2.5}>
+          <Grid item md={2.5} sm={4.75} xs={2.5}>
             <Link to="/home">
               <EdwardMLLogo />
             </Link>
@@ -92,8 +46,7 @@ function Header() {
             <>
               <Grid
                 item
-                lg={8.5}
-                md={8.5}
+                md={7}
                 sm={6}
                 xs={7.5}
                 sx={{
@@ -103,71 +56,18 @@ function Header() {
                   justifyContent: "space-evenly",
                 }}
               >
-                <Link to="/home">
-                  {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
-                      <House size={24} />
-                    </IconButton>
-                  ) : (
-                    <Typography
-                      onClick={(e) => {
-                        navigate("/home");
-                      }}
-                      sx={tabTypogStyle}
-                    >
-                      Home
-                    </Typography>
-                  )}
-                </Link>
-                <Link to="/profile">
-                  {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
-                      <User size={24} />
-                    </IconButton>
-                  ) : (
-                    <Typography onKeyDown sx={tabTypogStyle}>
-                      Profile
-                    </Typography>
-                  )}
-                </Link>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    "&:hover": {
-                      color: "primary.main",
-                    },
-                  }}
+                <HeaderTab text="Home" icon={<House />} path="/home" />
+                <HeaderTab text="Profile" icon={<User />} path="/profile" />
+                <HeaderTab
+                  text="Search"
+                  icon={<MagnifyingGlass />}
+                  alwaysShowIcon
                   onClick={toggleSearch}
-                  tabIndex="0"
-                  onKeyDown={(e) => {
-                    onSubmit(e.key);
-                  }}
-                >
-                  {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
-                      <MagnifyingGlass size={24} />
-                    </IconButton>
-                  ) : (
-                    <>
-                      <MagnifyingGlass size={18} />
-                      <Typography
-                        sx={{
-                          fontFamily: "interSemiBold",
-                          fontSize: "1.125rem",
-                          ml: 0.75,
-                        }}
-                      >
-                        Search
-                      </Typography>
-                    </>
-                  )}
-                </Box>
-              </Grid>{" "}
+                />
+              </Grid>
             </>
           ) : (
-            <Grid item lg={8.5} md={8.5} sm={6} xs={7.5} sx={{ marginY: 0.75 }}>
+            <Grid item md={7} sm={6} xs={7.5} sx={{ marginY: 0.75 }}>
               <TitleAutocomplete setShowSearch={setShowSearch} />
             </Grid>
           )}
@@ -175,7 +75,7 @@ function Header() {
             item
             xs={2}
             sm={1.25}
-            md={1}
+            md={2.5}
             textAlign="right"
             sx={{ display: "flex", justifyContent: "right" }}
           >
