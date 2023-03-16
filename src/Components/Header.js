@@ -37,7 +37,7 @@ function Header() {
             paddingBottom: 0,
           }}
         >
-          <Grid item lg={2.5} md={2.5} sm={4.75} xs={2.5}>
+          <Grid item md={2.5} sm={4.75} xs={2.5}>
             <Link to="/home">
               <EdwardMLLogo />
             </Link>
@@ -46,8 +46,7 @@ function Header() {
             <>
               <Grid
                 item
-                lg={8.5}
-                md={8.5}
+                md={7}
                 sm={6}
                 xs={7.5}
                 sx={{
@@ -68,7 +67,7 @@ function Header() {
               </Grid>
             </>
           ) : (
-            <Grid item lg={8.5} md={8.5} sm={6} xs={7.5} sx={{ marginY: 0.75 }}>
+            <Grid item md={7} sm={6} xs={7.5} sx={{ marginY: 0.75 }}>
               <TitleAutocomplete setShowSearch={setShowSearch} />
             </Grid>
           )}
@@ -76,7 +75,7 @@ function Header() {
             item
             xs={2}
             sm={1.25}
-            md={1}
+            md={2.5}
             textAlign="right"
             sx={{ display: "flex", justifyContent: "right" }}
           >
