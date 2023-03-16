@@ -53,7 +53,8 @@ function Header() {
     }
   }
 
-  const iconHoverStyle = {
+  const iconStyle = {
+    color: theme.palette.text.primary,
     "&:hover": {
       color: { smallDevice } ? "primary.main" : "inherit",
     },
@@ -105,7 +106,7 @@ function Header() {
               >
                 <Link to="/home">
                   {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
+                    <IconButton tabIndex="-1" sx={iconStyle}>
                       <House size={24} />
                     </IconButton>
                   ) : (
@@ -121,7 +122,7 @@ function Header() {
                 </Link>
                 <Link to="/profile">
                   {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
+                    <IconButton tabIndex="-1" sx={iconStyle}>
                       <User size={24} />
                     </IconButton>
                   ) : (
@@ -144,7 +145,7 @@ function Header() {
                   }}
                 >
                   {smallDevice ? (
-                    <IconButton tabIndex="-1" sx={iconHoverStyle}>
+                    <IconButton tabIndex="-1" sx={iconStyle}>
                       <MagnifyingGlass size={24} />
                     </IconButton>
                   ) : (
