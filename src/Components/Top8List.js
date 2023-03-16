@@ -41,8 +41,9 @@ export default function Top8List() {
   return (
     <>
       <Box
+        component="div"
+        className="top8background"
         sx={{
-          backgroundColor: "custom.subtleCardBg",
           borderRadius: "16px",
           pt: 1,
           pb: 2,
