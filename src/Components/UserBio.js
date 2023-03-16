@@ -48,11 +48,9 @@ export default function UserBio() {
           sx={{
             fontFamily: "interMedium",
             fontSize: "1rem",
-            backgroundColor: "custom.subtleCardBg",
             pt: 1,
             pb: 1,
-            pl: 2,
-            borderRadius: 2,
+            pl: 0,
             cursor: "pointer",
           }}
           onClick={(e) => {
@@ -89,7 +87,7 @@ export default function UserBio() {
             sx={{ width: "100%", mb: 2 }}
             InputProps={{
               style: {
-                padding: "10px 10px 10px 20px",
+                padding: "10px 10px 10px 5px",
               },
             }}
           ></TextField>
