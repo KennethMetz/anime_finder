@@ -15,7 +15,6 @@ export default function HeaderTab({
   alwaysShowIcon,
 }) {
   const location = useLocation();
-  const navigate = useNavigate();
   const theme = useTheme();
 
   const smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
@@ -25,8 +24,13 @@ export default function HeaderTab({
   const internalOnClick = (e) => {
     if (onClick) {
       onClick();
-    } else if (path) {
-      navigate(path);
+    }
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" && onClick) {
+      onClick();
+      e.preventDefault();
     }
   };
 
@@ -60,7 +64,7 @@ export default function HeaderTab({
   };
 
   return (
-    <Link to={path}>
+    <Link to={path} onKeyDown={onKeyDown}>
       {smallDevice ? (
         <IconButton tabIndex="-1" sx={iconStyle} onClick={internalOnClick}>
           {icon}
