@@ -54,7 +54,7 @@ export default function HeaderTab({
       content: "''",
       height: "4px",
       borderRadius: "2px",
-      bottom: "-4px",
+      bottom: "0px",
       margin: "0 auto",
       left: 0,
       right: 0,
