@@ -125,9 +125,7 @@ function Header() {
                       <User size={24} />
                     </IconButton>
                   ) : (
-                    <Typography onKeyDown sx={tabTypogStyle}>
-                      Profile
-                    </Typography>
+                    <Typography sx={tabTypogStyle}>Profile</Typography>
                   )}
                 </Link>
                 <Box
