@@ -14,7 +14,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "./Firebase";
 import { signOut } from "firebase/auth";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import TitleAutocomplete from "./TitleAutocomplete";
 import {
@@ -40,8 +40,6 @@ function Header() {
   const [showSearch, setShowSearch] = useState(false);
 
   let smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {}, [user]);
 
   const toggleSearch = (e) => {
     setShowSearch(true);
