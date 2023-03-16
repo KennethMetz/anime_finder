@@ -5,7 +5,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function HeaderTab({
   icon,
@@ -14,10 +14,13 @@ export default function HeaderTab({
   onClick,
   alwaysShowIcon,
 }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
 
   const smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const isPathActive = location.pathname === path;
 
   const internalOnClick = (e) => {
     if (onClick) {
@@ -41,6 +44,19 @@ export default function HeaderTab({
     "&:hover": {
       color: "primary.main",
     },
+    "&:after": {
+      display: isPathActive ? "block" : "none",
+      position: "absolute",
+      content: "''",
+      height: "4px",
+      borderRadius: "2px",
+      bottom: "-4px",
+      margin: "0 auto",
+      left: 0,
+      right: 0,
+      width: "100%",
+      background: theme.palette.primary.main,
+    },
   };
 
   return (
@@ -54,6 +70,7 @@ export default function HeaderTab({
           sx={{
             display: "flex",
             alignItems: "center",
+            position: "relative",
           }}
         >
           {alwaysShowIcon && icon}
