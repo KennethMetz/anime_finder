@@ -14,10 +14,19 @@ import { auth } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 
-export default function ProfileList({ item, index }) {
+export default function ProfileList({ item, index, list, listIndex }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+
+  function handleSaving() {
+    if (list === "likes") localUser["likes"].splice(index, 1);
+    else if (list === "dislikes") localUser["dislikes"].splice(index, 1);
+    else if (list === "lists")
+      localUser.lists[listIndex].anime.splice(index, 1);
+    setLocalUser({ ...localUser });
+    SaveToFirestore(user, localUser);
+  }
 
   return (
     <ListItem
@@ -29,9 +38,7 @@ export default function ProfileList({ item, index }) {
           edge="end"
           aria-label="delete"
           onClick={() => {
-            localUser["dislikes"].splice(index, 1);
-            setLocalUser({ ...localUser });
-            SaveToFirestore(user, localUser);
+            handleSaving();
           }}
         >
           <X size={20} />{" "}

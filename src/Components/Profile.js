@@ -84,7 +84,7 @@ export default function Profile() {
         {localUser && localUser["likes"]?.length > 0 ? (
           <List>
             {localUser["likes"].map((item, index) => (
-              <ProfileList item={item} index={index} />
+              <ProfileList item={item} index={index} list={"likes"} />
             ))}
           </List>
         ) : (
@@ -110,7 +110,7 @@ export default function Profile() {
         {localUser && localUser["dislikes"]?.length > 0 ? (
           <List>
             {localUser["dislikes"].map((item, index) => (
-              <ProfileList item={item} index={index} />
+              <ProfileList item={item} index={index} list={"dislikes"} />
             ))}
           </List>
         ) : (
@@ -164,7 +164,12 @@ export default function Profile() {
 
               <List>
                 {item["anime"]?.map((animeItem, animeIndex) => (
-                  <ProfileList item={animeItem} index={animeIndex} />
+                  <ProfileList
+                    item={animeItem}
+                    index={animeIndex}
+                    list={"lists"}
+                    listIndex={index}
+                  />
                 ))}
               </List>
             </div>

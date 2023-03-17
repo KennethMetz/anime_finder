@@ -37,7 +37,7 @@ function sortTitles(data) {
 
 export async function SaveToFirestore(user, localUser) {
   //   const [user] = useAuthState(auth);
-  console.log(localUser);
+
   if (user) {
     try {
       await setDoc(
