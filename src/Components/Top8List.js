@@ -18,6 +18,7 @@ import { auth } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import NoResultsImage from "./NoResultsImage";
 
 export default function Top8List() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -60,6 +61,7 @@ export default function Top8List() {
         >
           Top 8
         </Typography>
+        {localUser?.top8?.length === 0 ? <NoResultsImage noImage /> : ""}
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="top8titles">
             {(provided) => (
