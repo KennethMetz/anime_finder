@@ -78,6 +78,7 @@ export default function Search() {
 
             {searchResults.map((item, index) => (
               <ListItemButton
+                dense
                 onClick={() => {
                   navigate(`/anime/${item.id}`, { state: item });
                 }}
@@ -85,14 +86,19 @@ export default function Search() {
               >
                 <ListItemAvatar>
                   <Avatar
+                    variant="square"
                     alt={item.display_name}
                     src={item.image_large}
+                    sx={{ height: "56px", borderRadius: "8px" }}
                   ></Avatar>
                 </ListItemAvatar>
 
                 <ListItemText
                   primary={item.display_name}
-                  primaryTypographyProps={{ fontFamily: "interSemiBold" }}
+                  primaryTypographyProps={{
+                    fontFamily: "interSemiBold",
+                    fontSize: "1rem",
+                  }}
                 />
               </ListItemButton>
             ))}
