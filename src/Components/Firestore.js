@@ -7,6 +7,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let querySnapshot = await getDoc(docRef);
     let data = querySnapshot.data();
     let temp = sortTitles(data);
+    if (!temp.top8) temp.top8 = [];
     setLocalUser(temp);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
@@ -47,6 +48,7 @@ export async function SaveToFirestore(user, localUser) {
           lists: [...localUser.lists],
           avatar: localUser?.avatar ?? null,
           bio: localUser?.bio ?? null,
+          top8: [...localUser.top8],
         },
         { merge: true }
       );

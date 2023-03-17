@@ -21,3 +21,19 @@ li {
 .css-10hbu.MuiListItemText-primary {
   font-family: interSemiBold, Arial, Helvetica, sans-serif;
 }
+
+.top8titles {
+  margin: 0px;
+  padding: 0px;
+}
+
+.top8titles li {
+  display: flex;
+  align-items: center;
+  margin: 0.2em 5em 0.2em 0rem;
+  padding-left: 2rem;
+}
+
+.top8background {
+  background: linear-gradient(#f5f5f5, #f5eaea);
+}

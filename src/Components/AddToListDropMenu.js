@@ -27,6 +27,7 @@ import AddButton from "./AddButton";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import AddButtonForTop8 from "./AddButtonForTop8";
 
 export default function AddToListDropMenu({ anime, variant }) {
   const navigate = useNavigate();
@@ -192,6 +193,23 @@ export default function AddToListDropMenu({ anime, variant }) {
                       }}
                     />
                   </ListItemButton>
+
+                  {localUser.top8 ? (
+                    <ListItem
+                      tabIndex={-1}
+                      sx={{
+                        margin: "10px 0px 10px",
+                        fontFamily: "interSemiBold",
+                      }}
+                      secondaryAction={
+                        <AddButtonForTop8 anime={anime} list={localUser.top8} />
+                      }
+                    >
+                      MY TOP 8
+                    </ListItem>
+                  ) : (
+                    ""
+                  )}
 
                   {/*******************Print Watchlists*******************/}
                   {localUser?.lists?.length > 0
