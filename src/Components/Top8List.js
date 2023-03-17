@@ -92,6 +92,14 @@ export default function Top8List() {
                             position: "relative",
                             padding: "4px 0px 4px 2rem",
                           }}
+                          onClick={(e) => {
+                            console.log(e.target);
+                            console.log(e.currentTarget);
+
+                            if (e.target === e.currentTarget) {
+                              navigate(`/anime/${item.id}`);
+                            }
+                          }}
                         >
                           <ListItemAvatar
                             sx={{ display: "flex", alignItems: "center" }}
@@ -104,12 +112,6 @@ export default function Top8List() {
                                 height: "56px",
                                 borderRadius: "8px",
                                 cursor: "pointer",
-                                "&:hover": {
-                                  boxShadow: `0px 0px 15px grey`,
-                                },
-                              }}
-                              onClick={(e) => {
-                                navigate(`/anime/${item.id}`);
                               }}
                             ></Box>
                           </ListItemAvatar>
@@ -119,12 +121,7 @@ export default function Top8List() {
                               fontFamily: "interMedium",
                               fontSize: "1rem",
                               cursor: "pointer",
-                              "&:hover": { color: "grey" },
                             }}
-                            onClick={(e) => {
-                              navigate(`/anime/${item.id}`);
-                            }}
-                            tabIndex="0"
                           >
                             {item.display_name}
                           </Typography>
@@ -137,13 +134,16 @@ export default function Top8List() {
                               height: "40px",
                             }}
                             aria-label="delete"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
+                              console.log(e.currentTarget);
+
                               localUser.top8.splice(index, 1);
                               setLocalUser({ ...localUser });
                               SaveToFirestore(user, localUser);
                             }}
                           >
-                            <X size={20} />{" "}
+                            <X size={20} />
                           </IconButton>
                         </ListItemButton> //
                       )}
