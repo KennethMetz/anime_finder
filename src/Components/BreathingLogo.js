@@ -1902,7 +1902,7 @@ export default function BreathingLogo({ type }) {
     //Used on LayoutPage
     return (
       <Box component="div" sx={{ display: "flex", justifyContent: "center" }}>
-        <SVG style={{ scale: "1", margin: "300px 0px", maxWidth: "400px" }} />
+        <SVG style={{ scale: "1", margin: "22vh 0px", maxWidth: "400px" }} />
       </Box>
     );
   } else {
