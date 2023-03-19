@@ -21,7 +21,7 @@ import ScoreBars from "./ScoreBars";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
 
-export default function AnimePage() {
+export default function DetailedView() {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
