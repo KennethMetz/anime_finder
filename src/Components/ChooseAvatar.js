@@ -3,8 +3,18 @@ import { useState } from "react";
 import { CaretDown } from "phosphor-react";
 
 import david from "../Styles/images/userAvatars/david_martinez.160.jpg";
-import sailormoon from "../Styles/images/userAvatars/sailormoon.160.jpg";
+import davidAngry from "../Styles/images/userAvatars/david.jpg";
+import lucy from "../Styles/images/userAvatars/LUCY.jpg";
+import mainegf from "../Styles/images/userAvatars/mainegf.jpg";
+import maine from "../Styles/images/userAvatars/maine.jpg";
+import kiwi from "../Styles/images/userAvatars/kiwi.jpg";
+import rebecca from "../Styles/images/userAvatars/rebecca.jpg";
+import pilar from "../Styles/images/userAvatars/pilar.jpg";
+import lucySmoking from "../Styles/images/userAvatars/lucySmoking.jpg";
+
 import ryuko from "../Styles/images/userAvatars/ryuko.160.jpg";
+import mako from "../Styles/images/userAvatars/mako.jpg";
+import satsuki from "../Styles/images/userAvatars/satsuki.jpg";
 
 import naruto from "../Styles/images/userAvatars/naruto.160.jpg";
 import kakashi from "../Styles/images/userAvatars/kakashi.160.jpg";
@@ -49,6 +59,7 @@ import sailor2 from "../Styles/images/userAvatars/sailor2.jpg";
 import sailor3 from "../Styles/images/userAvatars/sailor3.jpg";
 import sailor4 from "../Styles/images/userAvatars/sailor4.jpg";
 import sailor5 from "../Styles/images/userAvatars/sailor5.jpg";
+import sailormoon from "../Styles/images/userAvatars/sailormoon.160.jpg";
 
 import AvatarShelf from "./AvatarShelf";
 
@@ -103,8 +114,11 @@ export default function ChooseAvatar() {
 
       {seeMore > 1 ? (
         <>
-          <Typography sx={styling}>Misc:</Typography>
-          <AvatarShelf items={avatars} />
+          <Typography sx={styling}>Cyberpunk: Edgerunners:</Typography>
+          <AvatarShelf items={cyberpunk} />
+
+          <Typography sx={styling}>Kill La Kill:</Typography>
+          <AvatarShelf items={killLaKill} />
         </>
       ) : (
         ""
@@ -130,7 +144,7 @@ export default function ChooseAvatar() {
   );
 }
 
-const avatars = [david, ryuko, sailormoon];
+const killLaKill = [ryuko, satsuki, mako];
 
 const narutoOriginal = [
   naruto,
@@ -154,4 +168,23 @@ const spyxfamily = [anya, loid, yor, yuri, bond];
 
 const hunterxhunter = [gon, killua, kurapika, leorio, illumi, hisoka];
 
-const sailormoonavatars = [sailor1, sailor2, sailor3, sailor4, sailor5];
+const cyberpunk = [
+  davidAngry,
+  lucySmoking,
+  rebecca,
+  mainegf,
+  pilar,
+  maine,
+  kiwi,
+  lucy,
+  david,
+];
+
+const sailormoonavatars = [
+  sailor1,
+  sailor2,
+  sailor3,
+  sailor4,
+  sailor5,
+  sailormoon,
+];
