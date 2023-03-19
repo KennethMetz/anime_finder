@@ -166,7 +166,7 @@ export default function DetailedView() {
             <Grid
               item
               xs={12}
-              md={9}
+              md={8.5}
               sx={{ display: { xs: "none", md: "block" } }}
             >
               <Typography variant="h2" sx={headStyle}>
@@ -177,7 +177,7 @@ export default function DetailedView() {
             <Grid
               item
               xs={12}
-              md={3}
+              md={3.5}
               sx={{
                 textAlign: { xs: "center", md: "end" },
                 marginTop: { xs: 0.5, md: 0 },
