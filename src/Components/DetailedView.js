@@ -198,7 +198,7 @@ export default function DetailedView() {
               }}
             >
               <Grid container columnSpacing={3} sx={{ position: "relative" }}>
-                {analysisFetching && analysis?.anime_id !== anime.id && (
+                {analysisFetching && analysis?.animeId !== anime.id && (
                   <Box
                     sx={{
                       position: "absolute",
