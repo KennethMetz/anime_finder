@@ -1,16 +1,21 @@
 import {
+  alpha,
   Box,
   Chip,
   Container,
   Grid,
+  IconButton,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
+import { Play } from "phosphor-react";
 import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
+import useYoutubeModal from "../Hooks/useYoutubeModal";
 import BreathingLogo from "./BreathingLogo";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
@@ -28,6 +33,8 @@ export default function DetailedView() {
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user, loading, error] = useAuthState(auth);
+
+  const [openModal] = useYoutubeModal();
 
   const params = useParams();
   const animeId = params.animeId;
@@ -115,8 +122,31 @@ export default function DetailedView() {
                 overflow: "clip",
                 zIndex: 1,
                 boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
+            >
+              {anime.promotional_video && (
+                <Tooltip title="Watch Trailer">
+                  <IconButton
+                    size="large"
+                    onClick={() => openModal(anime.promotional_video)}
+                    sx={{
+                      color: theme.palette.common.white,
+                      background: alpha(theme.palette.common.black, 0.6),
+                      border: `2px solid ${theme.palette.common.white}`,
+                      "&:hover": {
+                        color: theme.palette.common.white,
+                        background: alpha(theme.palette.common.black, 0.8),
+                      },
+                    }}
+                  >
+                    <Play />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Box>
           </Box>
 
           {/*Basic Info*/}
