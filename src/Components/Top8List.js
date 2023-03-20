@@ -43,12 +43,12 @@ export default function Top8List() {
     <>
       <Box
         component="div"
-        className="top8background"
         sx={{
           borderRadius: "16px",
           pt: 1,
           pb: 2,
           mt: 1,
+          background: theme.palette.custom.top8Bg,
         }}
       >
         <Typography
@@ -69,7 +69,6 @@ export default function Top8List() {
                 className="top8titles"
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                style={{ backgroundColor: "custom.subtleCardBg" }}
               >
                 {localUser?.top8?.length > 0 &&
                   localUser?.top8.map((item, index) => (

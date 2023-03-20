@@ -20,6 +20,9 @@ export function createAppTheme(darkMode) {
         gradientCardBg: darkMode
           ? "linear-gradient(180deg, #323232 0%, #262626 100%)"
           : "linear-gradient(180deg, #F5F5F5 0%, #F5EAEA 100%)",
+        top8Bg: darkMode
+          ? "linear-gradient(#171717, #4a3636)"
+          : "linear-gradient(#f5f5f5, #f5eaea)",
       },
     },
     breakpoints: {
