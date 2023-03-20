@@ -15,7 +15,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
-import useYoutubeModal from "../Hooks/useYoutubemodal";
+import useYoutubeModal from "../Hooks/useYoutubeModal";
 import BreathingLogo from "./BreathingLogo";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
