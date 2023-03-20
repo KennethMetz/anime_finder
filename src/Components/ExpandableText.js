@@ -5,7 +5,7 @@ export default function ExpandableText({ text, sx }) {
   const [expanded, setExpanded] = useState(false);
 
   const shortText = useMemo(() => getShortText(text), [text]);
-  const canShorten = shortText.length < text.length;
+  const canShorten = shortText?.length < text?.length;
 
   if (!canShorten) {
     return (
@@ -46,8 +46,8 @@ export default function ExpandableText({ text, sx }) {
 
 function getShortText(text) {
   let i = 550;
-  while (i < text.length && i > 0 && text[i] !== " " && text[i] !== ".") {
+  while (i < text?.length && i > 0 && text[i] !== " " && text[i] !== ".") {
     i--;
   }
-  return text.slice(0, i);
+  return text?.slice(0, i);
 }
