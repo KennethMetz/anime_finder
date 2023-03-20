@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import AnimeCard from "./AnimeCard";
 
 export default function AnimeShelf({ items }) {
@@ -58,8 +59,19 @@ export default function AnimeShelf({ items }) {
     e.preventDefault();
   };
 
+  const handlers = useSwipeable({
+    onSwiped: (eventData) => console.log("user swiped!", eventData),
+    onSwipedLeft: (eventData) =>
+      setStartIndex(
+        Math.min(startIndex + itemsPerPage, items.length - itemsPerPage)
+      ),
+    onSwipedRight: (eventData) =>
+      setStartIndex(Math.max(startIndex - itemsPerPage, 0)),
+  });
+
   return (
     <Box
+      {...handlers}
       sx={{
         display: "flex",
         flexDirection: "column",
