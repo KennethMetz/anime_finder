@@ -8,7 +8,7 @@ export default function YoutubeModalProvider({ children }) {
 
   const value = {
     open: (src) => {
-      setSrc(src);
+      setSrc(autoplaySrc(src));
       setOpen(true);
     },
     close: () => setOpen(false),
@@ -59,4 +59,13 @@ export default function YoutubeModalProvider({ children }) {
       </Modal>
     </YoutubeModalContext.Provider>
   );
+}
+
+function autoplaySrc(src) {
+  // Append autoplay to youtube embeds.
+  if (src.startsWith("https://www.youtube.com/embed") && !src.includes("?")) {
+    return src + "?autoplay=1";
+  }
+
+  return src;
 }
