@@ -209,7 +209,8 @@ export default function Home() {
             Surprise Me!
           </Button>
         </Stack>
-        <AnimeGrid items={animeRandom} />
+
+        <AnimeShelf items={animeRandom} />
 
         <div className="gap" />
       </Container>
