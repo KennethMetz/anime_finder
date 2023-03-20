@@ -1,6 +1,7 @@
 import {
   alpha,
   Box,
+  Button,
   Chip,
   Container,
   Grid,
@@ -129,21 +130,32 @@ export default function DetailedView() {
             >
               {anime.promotional_video && (
                 <Tooltip title="Watch Trailer">
-                  <IconButton
+                  <Button
                     size="large"
+                    color="inherit"
                     onClick={() => openModal(anime.promotional_video)}
                     sx={{
-                      color: theme.palette.common.white,
-                      background: alpha(theme.palette.common.black, 0.6),
-                      border: `2px solid ${theme.palette.common.white}`,
+                      width: "100%",
+                      height: "100%",
                       "&:hover": {
-                        color: theme.palette.common.white,
-                        background: alpha(theme.palette.common.black, 0.8),
+                        background: alpha(theme.palette.common.black, 0.25),
                       },
                     }}
                   >
-                    <Play />
-                  </IconButton>
+                    <Box
+                      sx={{
+                        width: "52px",
+                        height: "52px",
+                        background: alpha(theme.palette.common.black, 0.5),
+                        border: `2px solid ${theme.palette.common.white}`,
+                        borderRadius: "50%",
+                        padding: 1,
+                        color: theme.palette.common.white,
+                      }}
+                    >
+                      <Play size="32" />
+                    </Box>
+                  </Button>
                 </Tooltip>
               )}
             </Box>
