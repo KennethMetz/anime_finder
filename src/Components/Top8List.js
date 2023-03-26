@@ -119,7 +119,7 @@ export default function Top8List() {
                           <Typography
                             sx={{
                               fontFamily: "interMedium",
-                              fontSize: false ? "1rem" : "0.875rem",
+                              fontSize: "0.875rem",
                               cursor: "pointer",
                               lineHeight: "1.5",
                               maxHeight: "2.625rem",
