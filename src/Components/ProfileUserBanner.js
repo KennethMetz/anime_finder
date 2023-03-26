@@ -61,12 +61,16 @@ export default function ProfileUserBanner() {
           primaryTypographyProps={{
             fontFamily: "interBlack",
             fontSize: "1.66rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
           secondary={user?.email}
           secondaryTypographyProps={{
             fontFamily: "interMedium",
             fontSize: "1rem",
             color: "text",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         />
       </div>
@@ -74,6 +78,7 @@ export default function ProfileUserBanner() {
         <Box
           sx={{
             backgroundColor: "custom.subtleCardBg",
+            mt: 2,
             pt: 2,
             borderRadius: "24px",
           }}

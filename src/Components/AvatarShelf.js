@@ -29,7 +29,7 @@ export default function AvatarShelf({ items }) {
   const md = useMediaQuery(theme.breakpoints.up("md"));
   const lg = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const itemsPerPage = md ? 5 : sm ? 5 : fiveHundred ? 4 : fourHundred ? 3 : 2;
+  const itemsPerPage = md ? 2 : sm ? 5 : fiveHundred ? 4 : fourHundred ? 3 : 2;
 
   const columns = 12;
   const breakpoints = { xs: 12 / itemsPerPage };

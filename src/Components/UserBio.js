@@ -39,7 +39,7 @@ export default function UserBio() {
   return (
     <div>
       <Typography
-        sx={{ fontFamily: "interBlack", fontSize: "1.375rem", mt: 1 }}
+        sx={{ fontFamily: "interBlack", fontSize: "1.375rem", mt: 3 }}
       >
         Bio
       </Typography>

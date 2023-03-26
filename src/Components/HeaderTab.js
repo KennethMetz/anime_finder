@@ -19,7 +19,7 @@ export default function HeaderTab({
 
   const smallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const isPathActive = location.pathname === path;
+  const isPathActive = location.pathname?.startsWith(path);
 
   const internalOnClick = (e) => {
     if (onClick) {

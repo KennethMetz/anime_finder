@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ConfirmProvider } from "material-ui-confirm";
 import Login from "./Login";
 import Register from "./Register";
 import Reset from "./Reset";
@@ -29,23 +30,32 @@ const RouteSwitch = () => {
           <LocalUserProvider>
             <QueryClientProvider client={queryClient}>
               <YoutubeModalProvider>
-                <Routes>
-                  <Route element={<RoutingHelper />}>
-                    <Route path="/reset" element={<Reset />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/anime/:animeId" element={<DetailedView />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/sandbox" element={<Sandbox />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/logout" element={<Logout />} />
-                    <Route path="/onboarding" element={<Onboarding />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="*" element={<NotFound404 />} />
-                    <Route path="/" element={<LandingPage />} />
-                  </Route>
-                </Routes>
-                <ReactQueryDevtools initialIsOpen={false} />
+                <ConfirmProvider>
+                  <Routes>
+                    <Route element={<RoutingHelper />}>
+                      <Route path="/reset" element={<Reset />} />
+                      <Route
+                        path="/profile/list/:listId"
+                        element={<Profile />}
+                      />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/search" element={<Search />} />
+                      <Route
+                        path="/anime/:animeId"
+                        element={<DetailedView />}
+                      />
+                      <Route path="/home" element={<Home />} />
+                      <Route path="/sandbox" element={<Sandbox />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/logout" element={<Logout />} />
+                      <Route path="/onboarding" element={<Onboarding />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="*" element={<NotFound404 />} />
+                      <Route path="/" element={<LandingPage />} />
+                    </Route>
+                  </Routes>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </ConfirmProvider>
               </YoutubeModalProvider>
             </QueryClientProvider>
           </LocalUserProvider>

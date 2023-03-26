@@ -19,6 +19,7 @@ export const RoutingHelper = () => {
     "/home",
     "/search",
     "/profile",
+    "/profile/list/:listId",
     "/sandbox",
     "/anime/:animeId",
   ];
