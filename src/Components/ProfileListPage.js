@@ -10,6 +10,7 @@ import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
+import ProfileListSuggestions from "./ProfileListSuggestions";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function ProfileListPage() {
   let updateFn;
   let deleteFn;
   let canDelete = false;
+  let showSuggestions = false;
 
   if (listId.toLowerCase() === "likes") {
     items = localUser.likes;
@@ -44,6 +46,7 @@ export default function ProfileListPage() {
       (newLocalUser.lists[index] = { ...list, anime: newItems });
     deleteFn = (newLocalUser) => newLocalUser.lists.splice(index, 1);
     canDelete = true;
+    showSuggestions = true;
   }
 
   // Removes item at `index` from this list.
@@ -76,6 +79,14 @@ export default function ProfileListPage() {
     fontFamily: "interBlack",
     fontSize: { xs: "22px", md: "40px" },
     lineHeight: { xs: "27px", md: "49px" },
+  };
+
+  const subheadStyle = {
+    fontFamily: "interBlack",
+    fontSize: "22px",
+    lineHeight: "27px",
+    marginTop: "26px",
+    marginBottom: "12px",
   };
 
   return (
@@ -118,6 +129,16 @@ export default function ProfileListPage() {
         </List>
       ) : (
         <NoResultsImage />
+      )}
+
+      {/*Suggestions*/}
+      {showSuggestions && (
+        <>
+          <Typography variant="h5" style={subheadStyle}>
+            Suggested
+          </Typography>
+          <ProfileListSuggestions items={items} amount={12} />
+        </>
       )}
     </Box>
   );
