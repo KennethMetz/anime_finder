@@ -47,7 +47,7 @@ export default function Top8List() {
           borderRadius: "16px",
           pt: 1,
           pb: 2,
-          mt: 1,
+          mt: 3,
           background: theme.palette.custom.top8Bg,
         }}
       >
@@ -56,7 +56,8 @@ export default function Top8List() {
             fontFamily: "interBlack",
             fontSize: "1.375rem",
             mt: 1,
-            paddingLeft: "2rem",
+            mb: 2.5,
+            pl: 2,
           }}
         >
           Top 8
@@ -89,7 +90,7 @@ export default function Top8List() {
                           {...provided.dragHandleProps}
                           sx={{
                             position: "relative",
-                            padding: "4px 0px 4px 2rem",
+                            padding: "4px 40px 4px 1rem",
                           }}
                           onClick={(e) => {
                             console.log(e.target);
@@ -118,19 +119,21 @@ export default function Top8List() {
                           <Typography
                             sx={{
                               fontFamily: "interMedium",
-                              fontSize: "1rem",
+                              fontSize: "0.875rem",
                               cursor: "pointer",
+                              lineHeight: "1.5",
+                              maxHeight: "2.625rem",
+                              overflow: "hidden",
                             }}
                           >
                             {item.display_name}
                           </Typography>
 
                           <IconButton
+                            size="small"
                             sx={{
                               position: "absolute",
-                              right: "20px",
-                              width: "40px",
-                              height: "40px",
+                              right: "4px",
                             }}
                             aria-label="delete"
                             onClick={(e) => {
@@ -142,9 +145,9 @@ export default function Top8List() {
                               SaveToFirestore(user, localUser);
                             }}
                           >
-                            <X size={20} />
+                            <X />
                           </IconButton>
-                        </ListItemButton> //
+                        </ListItemButton>
                       )}
                     </Draggable>
                   ))}

@@ -4,6 +4,7 @@ import {
   ListItemButton,
   ListItemText,
   Tooltip,
+  useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Camera, X } from "phosphor-react";
@@ -27,18 +28,18 @@ export default function ProfileUserBanner() {
         <Tooltip title="Change your avatar">
           <ListItemButton
             onClick={handleAvatarToggle}
-            sx={{ maxWidth: "110px" }}
+            sx={{ maxWidth: "96px", p: 1, borderRadius: "16px" }}
           >
             <Avatar
               sx={{ width: "80px", height: "80px" }}
               alt={user?.displayName}
               src={localUser?.avatar}
-            ></Avatar>{" "}
+            />
             <Box
               sx={{
                 position: "absolute",
-                left: "70px",
-                top: "66px",
+                left: "63px",
+                top: "64px",
                 width: "30px",
                 height: "30px",
                 borderRadius: "20px",
@@ -56,17 +57,21 @@ export default function ProfileUserBanner() {
         </Tooltip>
 
         <ListItemText
-          sx={{ ml: 3 }}
+          sx={{ ml: 1 }}
           primary={user?.displayName ? user.displayName : "Guest"}
           primaryTypographyProps={{
             fontFamily: "interBlack",
             fontSize: "1.66rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
           secondary={user?.email}
           secondaryTypographyProps={{
             fontFamily: "interMedium",
             fontSize: "1rem",
             color: "text",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         />
       </div>
@@ -74,6 +79,7 @@ export default function ProfileUserBanner() {
         <Box
           sx={{
             backgroundColor: "custom.subtleCardBg",
+            mt: 2,
             pt: 2,
             borderRadius: "24px",
           }}
