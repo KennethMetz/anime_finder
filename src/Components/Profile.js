@@ -1,6 +1,6 @@
 import "../Styles/Profile.css";
 
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { matchPath, useLocation } from "react-router-dom";
 import ProfileListPage from "./ProfileListPage";
 import ProfileMainPage from "./ProfileMainPage";
@@ -13,6 +13,7 @@ import { auth } from "./Firebase";
 
 export default function Profile() {
   const location = useLocation();
+  const theme = useTheme();
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
@@ -28,11 +29,15 @@ export default function Profile() {
     location.pathname
   );
 
+  const md = useMediaQuery(theme.breakpoints.up("md"));
+
+  const compactSidebar = isListPage && !md;
+
   return (
     <Container maxWidth="lg">
       <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
         <Grid item xs={12} md={3} sx={{ marginBottom: "24px" }}>
-          <ProfileSidebar />
+          <ProfileSidebar hideDetails={compactSidebar} />
         </Grid>
         <Grid item xs={12} md={9}>
           {isListPage ? <ProfileListPage /> : <ProfileMainPage />}

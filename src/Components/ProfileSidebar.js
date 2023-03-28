@@ -8,7 +8,7 @@ import UserBio from "./UserBio";
 import Top8List from "./Top8List";
 import ProfileUserBanner from "./ProfileUserBanner";
 
-export default function ProfileSidebar() {
+export default function ProfileSidebar({ hideDetails }) {
   const navigate = useNavigate();
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -16,26 +16,30 @@ export default function ProfileSidebar() {
   return (
     <>
       <ProfileUserBanner />
-      {localUser?.name === "guest" && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              width: "280px",
-              mt: 3,
-              fontSize: "0.875rem",
-            }}
-            onClick={(e) => {
-              navigate("/register");
-            }}
-          >
-            Register to save your profile! <ArrowRight size={22} />
-          </Button>
-        </div>
+      {!hideDetails && (
+        <>
+          {localUser?.name === "guest" && (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="contained"
+                size="large"
+                sx={{
+                  width: "280px",
+                  mt: 3,
+                  fontSize: "0.875rem",
+                }}
+                onClick={(e) => {
+                  navigate("/register");
+                }}
+              >
+                Register to save your profile! <ArrowRight size={22} />
+              </Button>
+            </div>
+          )}
+          <UserBio />
+          <Top8List />
+        </>
       )}
-      <UserBio />
-      <Top8List />
     </>
   );
 }
