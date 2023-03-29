@@ -99,6 +99,7 @@ export default function DropMenu() {
       avatar: null,
       bio: null,
       top8: [],
+      reviews: [],
     });
     handleClose(e);
     navigate("/logout");
