@@ -87,13 +87,15 @@ export default function ReviewForm({
         reviewTitle: reviewTitle,
         uid: user.uid,
         time: new Date(),
+        emojis: { applause: [], heart: [], trash: [] },
       };
       if (!localUser.reviews) localUser.reviews = [];
       if (!localUser?.reviews?.find((x) => x === anime.id)) {
         localUser.reviews.push(anime.id);
         SaveToFirestore(user, localUser);
       }
-      SaveReviewToFirestore(user, userReview, animeID);
+      const userID = user.uid.toString();
+      SaveReviewToFirestore(userID, userReview, animeID);
       setShowReviewForm(false);
     }
   };

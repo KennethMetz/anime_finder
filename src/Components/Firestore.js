@@ -70,8 +70,7 @@ export async function SaveToFirestore(user, localUser) {
 
 // Handle "animeData" collection on firestore
 
-export async function SaveReviewToFirestore(user, userReview, animeID) {
-  const userID = user.uid.toString();
+export async function SaveReviewToFirestore(userID, userReview, animeID) {
   let reviewRef = doc(db, "animeData", animeID, "reviews", userID);
   try {
     await setDoc(reviewRef, userReview, { merge: true });
