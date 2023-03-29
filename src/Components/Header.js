@@ -18,7 +18,7 @@ function Header() {
 
   const toggleSearch = (e) => {
     setShowSearch(true);
-    e.preventDefault();
+    e?.preventDefault();
   };
 
   return (
