@@ -10,6 +10,7 @@ export const LocalUserProvider = (props) => {
     avatar: "",
     bio: "",
     top8: [],
+    reviews: [],
   });
   return (
     <LocalUserContext.Provider value={[localUser, setLocalUser]}>

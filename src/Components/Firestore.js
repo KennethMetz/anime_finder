@@ -1,5 +1,15 @@
-import { setDoc, getDoc, doc } from "firebase/firestore";
+import {
+  setDoc,
+  getDoc,
+  doc,
+  getDocs,
+  collection,
+  deleteDoc,
+} from "firebase/firestore";
+import { useFetchProfile } from "./APICalls";
 import { db } from "./Firebase";
+
+// Handle "users" collection on firestore
 
 export async function PopulateFromFirestore(user, localUser, setLocalUser) {
   try {
@@ -8,6 +18,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let data = querySnapshot.data();
     let temp = sortTitles(data);
     if (!temp.top8) temp.top8 = [];
+    if (!temp.reviews) temp.reviews = [];
     setLocalUser(temp);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
@@ -49,6 +60,7 @@ export async function SaveToFirestore(user, localUser) {
           avatar: localUser?.avatar ?? null,
           bio: localUser?.bio ?? null,
           top8: [...localUser.top8],
+          reviews: [...localUser.reviews],
         },
         { merge: true }
       );
@@ -56,4 +68,55 @@ export async function SaveToFirestore(user, localUser) {
       console.error("Error writing data to Firestore", error);
     }
   }
+}
+
+// Handle "animeData" collection on firestore
+
+export async function SaveReviewToFirestore(userID, userReview, animeID) {
+  let reviewRef = doc(db, "animeData", animeID, "reviews", userID);
+  try {
+    await setDoc(reviewRef, userReview, { merge: true });
+  } catch (error) {
+    console.error("Error writing review data to Firestore", error);
+  }
+}
+
+export async function DeleteReviewFromFirestore(user, animeID) {
+  const userID = user.uid.toString();
+  await deleteDoc(doc(db, "animeData", animeID, "reviews", userID));
+}
+
+export async function PopulateReviewsFromFirestore(anime, setAnimeReviews) {
+  try {
+    let animeID = anime.id.toString();
+    let animeRef = collection(db, "animeData", animeID, "reviews");
+    let querySnapshot = await getDocs(animeRef);
+    let temp = [];
+    querySnapshot.forEach((doc) => {
+      temp.push({ ...doc.data() });
+    });
+    temp = sortReviews(temp);
+    setAnimeReviews(temp);
+  } catch (error) {
+    console.error("Error loading data from Firebase Database", error);
+  }
+}
+
+function sortReviews(data) {
+  console.log(data);
+  let temp = [...data];
+  if (data.length > 1) {
+    temp = temp.sort(compareReviewDates);
+  }
+  return temp;
+}
+
+function compareReviewDates(a, b) {
+  if (a.time.seconds > b.time.seconds) {
+    return -1;
+  }
+  if (a.time.seconds < b.time.seconds) {
+    return 1;
+  }
+  return 0;
 }

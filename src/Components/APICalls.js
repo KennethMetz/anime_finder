@@ -99,6 +99,25 @@ export function useGetTitles(url) {
   );
 }
 
+export function useFetchProfile(userID) {
+  return useGetProfile(
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/profile/${userID}`
+  );
+}
+
+export function useGetProfile(url) {
+  return useQuery(
+    [url],
+    async () => {
+      let response = await fetch(url, { mode: "cors" });
+      await handleErrors(response);
+      let responseJson = await response.json();
+      return responseJson;
+    },
+    { staleTime: fiveMinutesMs }
+  );
+}
+
 export function useRecommendations(viewHistory) {
   return useQuery(
     ["Recommendations", viewHistory],

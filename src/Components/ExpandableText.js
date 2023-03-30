@@ -29,7 +29,10 @@ export default function ExpandableText({ text, sx }) {
           <Link
             color="inherit"
             underline="none"
-            onClick={() => setExpanded(!expanded)}
+            onClick={(e) => {
+              setExpanded(!expanded);
+              e.stopPropagation();
+            }}
             component="button"
             sx={{
               fontFamily: "interSemiBold",

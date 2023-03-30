@@ -10,8 +10,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Play } from "phosphor-react";
-import { useContext, useEffect } from "react";
+import { Minus, Play, Plus } from "phosphor-react";
+import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
@@ -20,9 +20,14 @@ import useYoutubeModal from "../Hooks/useYoutubeModal";
 import BreathingLogo from "./BreathingLogo";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
-import { PopulateFromFirestore } from "./Firestore";
+import {
+  PopulateFromFirestore,
+  PopulateReviewsFromFirestore,
+} from "./Firestore";
 import LikeButtons from "./LikeButtons";
 import { LocalUserContext } from "./LocalUserContext";
+import Review from "./Review";
+import ReviewForm from "./ReviewForm";
 import ScoreBars from "./ScoreBars";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
@@ -41,6 +46,8 @@ export default function DetailedView() {
   const animeId = params.animeId;
 
   const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
+  const [animeReviews, setAnimeReviews] = useState(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   const [analysis, analysisLoading, analysisError, analysisFetching] =
     useAnimeAnalysis(animeId);
@@ -49,7 +56,11 @@ export default function DetailedView() {
     if (loading) return;
     if (!user) return navigate("/login");
     if (user) PopulateFromFirestore(user, localUser, setLocalUser);
-  }, [user, loading]);
+  }, [user, anime, loading]);
+
+  useEffect(() => {
+    PopulateReviewsFromFirestore(anime, setAnimeReviews);
+  }, [location.pathname, anime]);
 
   // TODO Use a shared loading display component.
   if (loading || animeLoading || analysisLoading) {
@@ -320,6 +331,71 @@ export default function DetailedView() {
             Similar Titles
           </Typography>
           <SimilarContent animeId={anime.id} amount={24} />
+        </Grid>
+
+        {/* Reviews */}
+        <Grid item xs={12}>
+          <Typography
+            component="div"
+            variant="h5"
+            style={{ ...subheadStyle, display: "flex", alignItems: "center" }}
+          >
+            Reviews{" "}
+            {!showReviewForm ? (
+              <Tooltip title="Add a review">
+                <div style={{ marginLeft: "15px" }}>
+                  <IconButton
+                    variant="contained"
+                    disabled={user.isAnonymous ? true : false}
+                    sx={{ color: "inherit" }}
+                    onClick={(e) => {
+                      if (!user.isAnonymous) setShowReviewForm(true);
+                    }}
+                  >
+                    <Plus />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Close review">
+                <div style={{ marginLeft: "15px" }}>
+                  {" "}
+                  <IconButton
+                    variant="contained"
+                    sx={{ color: "inherit" }}
+                    onClick={(e) => {
+                      setShowReviewForm(false);
+                    }}
+                  >
+                    <Minus />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            )}
+          </Typography>
+          {showReviewForm ? (
+            <ReviewForm
+              anime={anime}
+              animeReviews={animeReviews}
+              setAnimeReviews={setAnimeReviews}
+              setShowReviewForm={setShowReviewForm}
+            />
+          ) : (
+            ""
+          )}
+          {animeReviews?.map((item, index) => {
+            return (
+              <Review
+                key={item.uid}
+                item={item}
+                index={index}
+                anime={anime}
+                animeReviews={animeReviews}
+                setAnimeReviews={setAnimeReviews}
+                setShowReviewForm={setShowReviewForm}
+              />
+            );
+          })}
         </Grid>
       </Grid>
       <div className="gap" />
