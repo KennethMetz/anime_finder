@@ -13,7 +13,7 @@ import format from "date-fns/format";
 import fromUnixTime from "date-fns/fromUnixTime";
 import toDate from "date-fns/toDate";
 import { HandsClapping, Heart, Trash, X } from "phosphor-react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation } from "react-router-dom";
 import { useFetchProfile } from "./APICalls";
@@ -27,6 +27,7 @@ import {
   SaveReviewToFirestore,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
+import { getAvatarSrc } from "./Avatars";
 
 export default function Review({
   item,
@@ -39,8 +40,15 @@ export default function Review({
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
+  let reviewerAvatar = undefined;
 
   const { data: reviewerInfo } = useFetchProfile(item.uid);
+  console.log(reviewerInfo);
+
+  const avatarSrc = useMemo(
+    () => getAvatarSrc(reviewerInfo?.avatar),
+    [reviewerInfo?.avatar]
+  );
 
   function deleteReview(item, index) {
     let temp = [...animeReviews];
@@ -100,10 +108,7 @@ export default function Review({
           alignItems: "center",
         }}
       >
-        <Avatar
-          sx={{ width: "80px", height: "80px" }}
-          src={reviewerInfo?.avatar}
-        ></Avatar>
+        <Avatar sx={{ width: "80px", height: "80px" }} src={avatarSrc}></Avatar>
         <Typography
           component="span"
           sx={{ fontFamily: "interSemiBold", fontSize: "1rem" }}

@@ -103,7 +103,6 @@ export async function PopulateReviewsFromFirestore(anime, setAnimeReviews) {
 }
 
 function sortReviews(data) {
-  console.log(data);
   let temp = [...data];
   if (data.length > 1) {
     temp = temp.sort(compareReviewDates);
