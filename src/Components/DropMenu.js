@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -30,6 +30,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import AppSettingsContext from "./AppSettingsContext";
+import { getAvatarSrc } from "./Avatars";
 
 export default function DropMenu() {
   const navigate = useNavigate();
@@ -43,6 +44,11 @@ export default function DropMenu() {
 
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+
+  const avatarSrc = useMemo(
+    () => getAvatarSrc(localUser?.avatar),
+    [localUser?.avatar]
+  );
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -114,7 +120,7 @@ export default function DropMenu() {
         ref={anchorRef}
         id="composition-button"
         alt={user?.displayName}
-        src={localUser?.avatar}
+        src={avatarSrc}
         aria-controls={open ? "composition-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
