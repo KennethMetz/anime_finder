@@ -386,6 +386,7 @@ export default function DetailedView() {
           {animeReviews?.map((item, index) => {
             return (
               <Review
+                key={item.uid}
                 item={item}
                 index={index}
                 anime={anime}
