@@ -87,30 +87,35 @@ export async function DeleteReviewFromFirestore(user, animeID) {
 
 export async function PopulateReviewsFromFirestore(anime, setAnimeReviews) {
   try {
-    // Populate review info
     let animeID = anime.id.toString();
     let animeRef = collection(db, "animeData", animeID, "reviews");
     let querySnapshot = await getDocs(animeRef);
-    // Populate reviewers info
     let temp = [];
-    //
-    // TODO: Break each async call to be performed in parallel
-    //
     querySnapshot.forEach((doc) => {
       temp.push({ ...doc.data() });
     });
-    //
-    // TODO: Sort reviews by date, popularity...or whatever makes sense
-    //
+    temp = sortReviews(temp);
     setAnimeReviews(temp);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
   }
+}
 
-  async function getReviewerInfo(userID) {
-    let docRef = doc(db, "users", userID);
-    let querySnapshot = await getDoc(docRef);
-    let data = querySnapshot.data();
-    return data;
+function sortReviews(data) {
+  console.log(data);
+  let temp = [...data];
+  if (data.length > 1) {
+    temp = temp.sort(compareReviewDates);
   }
+  return temp;
+}
+
+function compareReviewDates(a, b) {
+  if (a.time.seconds > b.time.seconds) {
+    return -1;
+  }
+  if (a.time.seconds < b.time.seconds) {
+    return 1;
+  }
+  return 0;
 }

@@ -37,6 +37,8 @@ export default function ReviewForm({
   let [rating, setRating] = useState(null);
   let [existingReview, setExistingReview] = useState(false);
 
+  let edited = false;
+
   // Define Yup schema
   const validationSchema = Yup.object().shape({
     reviewTitle: Yup.string().required("*A title is required"),
@@ -87,6 +89,7 @@ export default function ReviewForm({
         reviewTitle: reviewTitle,
         uid: user.uid,
         time: new Date(),
+        edited: { edited },
         emojis: { applause: [], heart: [], trash: [] },
       };
       if (!localUser.reviews) localUser.reviews = [];
@@ -96,12 +99,14 @@ export default function ReviewForm({
       }
       const userID = user.uid.toString();
       SaveReviewToFirestore(userID, userReview, animeID);
+      PopulateReviewsFromFirestore(anime, setAnimeReviews);
       setShowReviewForm(false);
     }
   };
 
   useEffect(() => {
     populateForm();
+    if (localUser.reviews.includes(anime.id)) edited = true;
   }, []);
 
   return (

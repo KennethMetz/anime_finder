@@ -19,9 +19,9 @@ export default function EmojiReactionChip({
   const theme = useTheme();
 
   useEffect(() => {
-    console.log(item);
     if (item.emojis[reaction]?.includes(user.uid)) setSelected(true);
-  }, []);
+    else setSelected(false);
+  }, [item]);
 
   function reactToReview() {
     let animeID = anime.id.toString();

@@ -41,7 +41,6 @@ export default function Review({
   const theme = useTheme();
 
   const { data: reviewerInfo } = useFetchProfile(item.uid);
-  console.log(reviewerInfo);
 
   function deleteReview(item, index) {
     let temp = [...animeReviews];
@@ -238,7 +237,7 @@ function ConvertDate({ item }) {
   const time = format(fromUnixTime(item.time.seconds), "MMMM dd, yyyy");
   return (
     <Typography sx={{ ml: 2, fontFamily: "interMedium", color: "grey" }}>
-      {time.toString()}
+      {item?.edited ? "Edited on" : ""} {time.toString()}
     </Typography>
   );
 }
