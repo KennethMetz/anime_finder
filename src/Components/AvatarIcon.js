@@ -1,9 +1,10 @@
 import { Avatar, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { LocalUserContext } from "./LocalUserContext";
 import { auth } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
+import { getAvatarSrc } from "./Avatars";
 
 export default function AvatarIcon({ avatar, index }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -16,6 +17,8 @@ export default function AvatarIcon({ avatar, index }) {
     setLocalUser(newLocalUser);
     SaveToFirestore(user, newLocalUser);
   }
+
+  const avatarSrc = useMemo(() => getAvatarSrc(avatar), [avatar]);
 
   return (
     <IconButton
@@ -34,7 +37,7 @@ export default function AvatarIcon({ avatar, index }) {
         },
       }}
     >
-      <Avatar sx={{ width: "80px", height: "80px" }} src={avatar}></Avatar>
+      <Avatar sx={{ width: "80px", height: "80px" }} src={avatarSrc}></Avatar>
     </IconButton>
   );
 }

@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Camera, X } from "phosphor-react";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { getAvatarSrc } from "./Avatars";
 import ChooseAvatar from "./ChooseAvatar";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
@@ -22,6 +23,12 @@ export default function ProfileUserBanner() {
   function handleAvatarToggle() {
     setEditAvatar((editAvatar) => !editAvatar);
   }
+
+  const avatarSrc = useMemo(
+    () => getAvatarSrc(localUser?.avatar),
+    [localUser?.avatar]
+  );
+
   return (
     <>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -33,7 +40,7 @@ export default function ProfileUserBanner() {
             <Avatar
               sx={{ width: "80px", height: "80px" }}
               alt={user?.displayName}
-              src={localUser?.avatar}
+              src={avatarSrc}
             />
             <Box
               sx={{
@@ -90,11 +97,11 @@ export default function ProfileUserBanner() {
           >
             <IconButton
               color="inherit"
-              size="small"
+              size="large"
               sx={{ mr: 1, position: "absolute", top: "-5px" }}
               onClick={handleAvatarToggle}
             >
-              <X size={40} color="grey" />
+              <X color="grey" />
             </IconButton>
           </div>
           <ChooseAvatar />
