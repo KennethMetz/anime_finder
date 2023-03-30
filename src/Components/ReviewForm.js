@@ -21,6 +21,7 @@ import {
   SaveReviewToFirestore,
   SaveToFirestore,
 } from "./Firestore";
+import { getAvatarSrc } from "./Avatars";
 
 export default function ReviewForm({
   anime,
@@ -130,7 +131,7 @@ export default function ReviewForm({
       >
         <Avatar
           sx={{ width: "48px", height: "48px" }}
-          src={localUser.avatar}
+          src={getAvatarSrc(localUser.avatar)}
         ></Avatar>
       </Box>
       <Box
