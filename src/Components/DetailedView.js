@@ -26,8 +26,8 @@ import {
 } from "./Firestore";
 import LikeButtons from "./LikeButtons";
 import { LocalUserContext } from "./LocalUserContext";
+import Review from "./Review";
 import ReviewForm from "./ReviewForm";
-import Reviews from "./Reviews";
 import ScoreBars from "./ScoreBars";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
@@ -60,7 +60,7 @@ export default function DetailedView() {
 
   useEffect(() => {
     PopulateReviewsFromFirestore(anime, setAnimeReviews);
-  }, [location.pathname]);
+  }, [location.pathname, anime]);
 
   // TODO Use a shared loading display component.
   if (loading || animeLoading || analysisLoading) {
@@ -383,12 +383,18 @@ export default function DetailedView() {
           ) : (
             ""
           )}
-          <Reviews
-            anime={anime}
-            animeReviews={animeReviews}
-            setAnimeReviews={setAnimeReviews}
-            setShowReviewForm={setShowReviewForm}
-          />
+          {animeReviews?.map((item, index) => {
+            return (
+              <Review
+                item={item}
+                index={index}
+                anime={anime}
+                animeReviews={animeReviews}
+                setAnimeReviews={setAnimeReviews}
+                setShowReviewForm={setShowReviewForm}
+              />
+            );
+          })}
         </Grid>
       </Grid>
       <div className="gap" />

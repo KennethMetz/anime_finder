@@ -6,6 +6,7 @@ import {
   collection,
   deleteDoc,
 } from "firebase/firestore";
+import { useFetchProfile } from "./APICalls";
 import { db } from "./Firebase";
 
 // Handle "users" collection on firestore
@@ -95,16 +96,8 @@ export async function PopulateReviewsFromFirestore(anime, setAnimeReviews) {
     //
     // TODO: Break each async call to be performed in parallel
     //
-    querySnapshot.forEach(async (doc) => {
-      let userInfo = await getReviewerInfo(doc.id);
-      let userReview = { ...doc.data() };
-      let review = {
-        ...userReview,
-        name: userInfo.name,
-        avatar: userInfo.avatar,
-        reviews: userInfo.reviews,
-      };
-      temp.push(review);
+    querySnapshot.forEach((doc) => {
+      temp.push({ ...doc.data() });
     });
     //
     // TODO: Sort reviews by date, popularity...or whatever makes sense
