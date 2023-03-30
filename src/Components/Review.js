@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 import { useFetchProfile } from "./APICalls";
 import AvatarIcon from "./AvatarIcon";
 import EmojiReactionChip from "./EmojiReactionChip";
+import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
 import {
   DeleteReviewFromFirestore,
@@ -168,16 +169,15 @@ export default function Review({
               sx={{ mt: 1, mb: 1 }}
             ></Rating>
 
-            <Typography
-              component="span"
+            <ExpandableText
+              text={item.review}
               sx={{
                 fontFamily: "interMedium",
-                fontSize: "1rem",
-                color: "",
+                fontSize: "16px",
+                lineHeight: "21px",
+                whiteSpace: "pre-line",
               }}
-            >
-              {item.review}
-            </Typography>
+            />
           </div>
         </Tooltip>
         <div
