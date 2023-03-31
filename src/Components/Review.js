@@ -17,7 +17,7 @@ import { HandsClapping, Heart, Trash, X } from "phosphor-react";
 import { useContext, useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation } from "react-router-dom";
-import { useFetchProfile } from "./APICalls";
+import { useProfile } from "./APICalls";
 import AvatarIcon from "./AvatarIcon";
 import EmojiReactionChip from "./EmojiReactionChip";
 import ExpandableText from "./ExpandableText";
@@ -44,7 +44,7 @@ export default function Review({
   const confirm = useConfirm();
   let reviewerAvatar = undefined;
 
-  const { data: reviewerInfo } = useFetchProfile(item.uid);
+  const { data: reviewerInfo } = useProfile(item.uid);
   console.log(reviewerInfo);
 
   const avatarSrc = useMemo(

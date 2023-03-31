@@ -99,13 +99,8 @@ export function useGetTitles(url) {
   );
 }
 
-export function useFetchProfile(userID) {
-  return useGetProfile(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/profile/${userID}`
-  );
-}
-
-export function useGetProfile(url) {
+export function useProfile(userID) {
+  const url = `https://api-jet-lfoguxrv7q-uw.a.run.app/profile/${userID}`;
   return useQuery(
     [url],
     async () => {
