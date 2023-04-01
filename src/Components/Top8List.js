@@ -1,42 +1,36 @@
 import {
-  Icon,
   IconButton,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
-  ListItemText,
-  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { X, List, Link } from "phosphor-react";
+import { X } from "phosphor-react";
 import { useContext } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "./Firebase";
-import { SaveToFirestore } from "./Firestore";
-import { LocalUserContext } from "./LocalUserContext";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import NoResultsImage from "./NoResultsImage";
+import ProfilePageContext from "./ProfilePageContext";
 
 export default function Top8List() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const [user, loading, error] = useAuthState(auth);
+  const { profile, isOwnProfile, updateTop8 } = useContext(ProfilePageContext);
   const navigate = useNavigate();
   const theme = useTheme();
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
 
-    const items = [...localUser.top8];
+    const items = [...profile.top8];
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
+    updateTop8(items);
+  }
 
-    let newLocalUser = { ...localUser };
-    newLocalUser.top8 = items;
-    setLocalUser(newLocalUser);
-    SaveToFirestore(user, newLocalUser);
+  function onRemoveItem(index) {
+    const items = [...profile.top8];
+    items.splice(index, 1);
+    updateTop8(items);
   }
 
   return (
@@ -62,7 +56,7 @@ export default function Top8List() {
         >
           Top 8
         </Typography>
-        {localUser?.top8?.length === 0 ? <NoResultsImage noImage /> : ""}
+        {profile?.top8?.length === 0 ? <NoResultsImage noImage /> : ""}
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="top8titles">
             {(provided) => (
@@ -71,12 +65,13 @@ export default function Top8List() {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {localUser?.top8?.length > 0 &&
-                  localUser?.top8.map((item, index) => (
+                {profile?.top8?.length > 0 &&
+                  profile?.top8.map((item, index) => (
                     <Draggable
                       key={item.name}
                       draggableId={item.display_name}
                       index={index}
+                      isDragDisabled={!isOwnProfile}
                     >
                       {(provided) => (
                         <ListItemButton
@@ -90,7 +85,9 @@ export default function Top8List() {
                           {...provided.dragHandleProps}
                           sx={{
                             position: "relative",
-                            padding: "4px 40px 4px 1rem",
+                            padding: isOwnProfile
+                              ? "4px 40px 4px 1rem"
+                              : "4px 1rem 4px 1rem",
                           }}
                           onClick={(e) => {
                             console.log(e.target);
@@ -129,24 +126,22 @@ export default function Top8List() {
                             {item.display_name}
                           </Typography>
 
-                          <IconButton
-                            size="small"
-                            sx={{
-                              position: "absolute",
-                              right: "4px",
-                            }}
-                            aria-label="delete"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              console.log(e.currentTarget);
-
-                              localUser.top8.splice(index, 1);
-                              setLocalUser({ ...localUser });
-                              SaveToFirestore(user, localUser);
-                            }}
-                          >
-                            <X />
-                          </IconButton>
+                          {isOwnProfile && (
+                            <IconButton
+                              size="small"
+                              sx={{
+                                position: "absolute",
+                                right: "4px",
+                              }}
+                              aria-label="delete"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                onRemoveItem(index);
+                              }}
+                            >
+                              <X />
+                            </IconButton>
+                          )}
                         </ListItemButton>
                       )}
                     </Draggable>

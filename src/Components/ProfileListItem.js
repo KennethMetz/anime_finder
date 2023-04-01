@@ -10,7 +10,7 @@ import {
 import { X } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfileListItem({ item, onRemove }) {
+export default function ProfileListItem({ item, canEdit, onRemove }) {
   const navigate = useNavigate();
 
   return (
@@ -18,18 +18,20 @@ export default function ProfileListItem({ item, onRemove }) {
       disablePadding={true}
       disableGutters={true}
       secondaryAction={
-        <Tooltip title="Remove item">
-          <IconButton
-            edge="end"
-            aria-label="delete"
-            disabled={!onRemove}
-            onClick={() => {
-              onRemove();
-            }}
-          >
-            <X size={20} />
-          </IconButton>
-        </Tooltip>
+        canEdit && (
+          <Tooltip title="Remove item">
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              disabled={!onRemove}
+              onClick={() => {
+                onRemove();
+              }}
+            >
+              <X size={20} />
+            </IconButton>
+          </Tooltip>
+        )
       }
     >
       <ListItemButton

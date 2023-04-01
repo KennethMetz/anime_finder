@@ -2,25 +2,37 @@ import { Box, IconButton, List, Tooltip, Typography } from "@mui/material";
 import { useConfirm } from "material-ui-confirm";
 import { CaretLeft, X } from "phosphor-react";
 import { useContext } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
-import { auth } from "./Firebase";
-import { SaveToFirestore } from "./Firestore";
-import { LocalUserContext } from "./LocalUserContext";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
 import ProfileListSuggestions from "./ProfileListSuggestions";
+import ProfilePageContext from "./ProfilePageContext";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
   const confirm = useConfirm();
 
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const [user, loading, error] = useAuthState(auth);
+  const {
+    profile,
+    isOwnProfile,
+    isLoading,
+    updateLikes,
+    updateDislikes,
+    updateList,
+    deleteList,
+  } = useContext(ProfilePageContext);
 
   const params = useParams();
+  const userId = params.userId;
   const listId = params.listId;
+
+  const canEdit = isOwnProfile;
+
+  // TODO Add a 'ghost' page for loading.
+  if (isLoading) {
+    return <></>;
+  }
 
   let items = [];
   let name = "";
@@ -30,21 +42,20 @@ export default function ProfileListPage() {
   let showSuggestions = false;
 
   if (listId.toLowerCase() === "likes") {
-    items = localUser.likes;
+    items = profile.likes;
     name = "Likes";
-    updateFn = (newLocalUser, newItems) => (newLocalUser.likes = newItems);
+    updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
-    items = localUser.dislikes;
+    items = profile.dislikes;
     name = "Dislikes";
-    updateFn = (newLocalUser, newItems) => (newLocalUser.dislikes = newItems);
-  } else if (findListWithSlug(localUser.lists, listId)) {
-    const list = findListWithSlug(localUser.lists, listId);
-    const index = localUser.lists.indexOf(list);
+    updateFn = (newItems) => updateDislikes(newItems);
+  } else if (findListWithSlug(profile.lists, listId)) {
+    const list = findListWithSlug(profile.lists, listId);
+    const index = profile.lists.indexOf(list);
     items = list.anime;
     name = list.name;
-    updateFn = (newLocalUser, newItems) =>
-      (newLocalUser.lists[index] = { ...list, anime: newItems });
-    deleteFn = (newLocalUser) => newLocalUser.lists.splice(index, 1);
+    updateFn = (newItems) => updateList(index, { ...list, anime: newItems });
+    deleteFn = () => deleteList(index);
     canDelete = true;
     showSuggestions = true;
   }
@@ -53,10 +64,7 @@ export default function ProfileListPage() {
   const onRemove = (index) => {
     const newItems = [...items];
     newItems.splice(index, 1);
-    const newLocalUser = { ...localUser };
-    updateFn(newLocalUser, newItems);
-    setLocalUser(newLocalUser);
-    SaveToFirestore(user, newLocalUser);
+    updateFn(newItems);
   };
 
   // Deletes this list.
@@ -67,11 +75,8 @@ export default function ProfileListPage() {
       titleProps: { sx: { fontFamily: "interExtraBold" } },
       contentProps: { sx: { fontFamily: "interMedium" } },
     }).then(() => {
-      const newLocalUser = { ...localUser };
-      deleteFn(newLocalUser);
-      setLocalUser(newLocalUser);
-      SaveToFirestore(user, newLocalUser);
-      navigate("/profile");
+      deleteFn();
+      navigate(`/profile/${userId}`);
     });
   };
 
@@ -93,7 +98,7 @@ export default function ProfileListPage() {
     <Box sx={{ paddingLeft: { xs: 0, md: "45px" } }}>
       {/* Header */}
       <Box sx={{ display: "flex", alignItems: "center", marginBottom: "32px" }}>
-        <Link to={"/profile"}>
+        <Link to={`/profile/${userId}`}>
           <IconButton color="inherit" sx={{ marginRight: "8px" }}>
             <CaretLeft />
           </IconButton>
@@ -101,7 +106,7 @@ export default function ProfileListPage() {
         <Typography variant="h3" sx={{ ...headStyle, flexGrow: 1 }}>
           {name}
         </Typography>
-        {canDelete && (
+        {canEdit && canDelete && (
           <Tooltip title="Delete list">
             <IconButton
               size="large"
@@ -123,6 +128,7 @@ export default function ProfileListPage() {
             <ProfileListItem
               key={animeItem.id}
               item={animeItem}
+              canEdit={canEdit}
               onRemove={() => onRemove(animeIndex)}
             />
           ))}

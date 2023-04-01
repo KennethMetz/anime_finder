@@ -16,7 +16,7 @@ import toDate from "date-fns/toDate";
 import { HandsClapping, Heart, Trash, X } from "phosphor-react";
 import { useContext, useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useProfile } from "./APICalls";
 import AvatarIcon from "./AvatarIcon";
 import EmojiReactionChip from "./EmojiReactionChip";
@@ -108,38 +108,47 @@ export default function Review({
       ) : (
         ""
       )}
-      <Box
-        component="div"
-        sx={{
-          minWidth: "150px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ width: "80px", height: "80px" }} src={avatarSrc}></Avatar>
-        <Typography
-          component="span"
-          sx={{ fontFamily: "interSemiBold", fontSize: "1rem" }}
+      <Link to={`/profile/${item.uid}`}>
+        <Box
+          component="div"
+          sx={{
+            minWidth: "150px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            "&:hover": { color: "primary.main" },
+          }}
         >
-          {reviewerInfo?.name}
-        </Typography>
-        {reviewerInfo?.reviews ? (
+          <Avatar
+            sx={{ width: "80px", height: "80px" }}
+            src={avatarSrc}
+          ></Avatar>
           <Typography
             component="span"
             sx={{
-              fontFamily: "interMedium",
-              fontSize: "0.9rem",
-              color: "",
+              fontFamily: "interSemiBold",
+              fontSize: "1rem",
             }}
           >
-            ({reviewerInfo?.reviews?.length}
-            {reviewerInfo?.reviews?.length === 1 ? " review" : " reviews"})
+            {reviewerInfo?.name}
           </Typography>
-        ) : (
-          ""
-        )}
-      </Box>
+          {reviewerInfo?.reviews ? (
+            <Typography
+              component="span"
+              sx={{
+                fontFamily: "interMedium",
+                fontSize: "0.9rem",
+                color: "",
+              }}
+            >
+              ({reviewerInfo?.reviews?.length}
+              {reviewerInfo?.reviews?.length === 1 ? " review" : " reviews"})
+            </Typography>
+          ) : (
+            ""
+          )}
+        </Box>
+      </Link>
       <Box
         component="div"
         sx={{

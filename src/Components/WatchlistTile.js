@@ -2,14 +2,14 @@ import { alpha, Box, Grid, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
 
-export default function WatchlistTile({ listId, name, items }) {
+export default function WatchlistTile({ userId, listId, name, items }) {
   const theme = useTheme();
 
   const bgColor = theme.palette.custom.subtleCardBg;
   const gradient = `linear-gradient(270deg, ${bgColor} 0%, rgba(245, 245, 245, 0) 67.39%)`;
 
   return (
-    <Link to={`/profile/list/${listId}`}>
+    <Link to={`/profile/${userId}/list/${listId}`}>
       <Box
         sx={{
           padding: "18px",
