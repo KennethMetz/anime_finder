@@ -9,6 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { useConfirm } from "material-ui-confirm";
 import format from "date-fns/format";
 import fromUnixTime from "date-fns/fromUnixTime";
 import toDate from "date-fns/toDate";
@@ -40,6 +41,7 @@ export default function Review({
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
+  const confirm = useConfirm();
   let reviewerAvatar = undefined;
 
   const { data: reviewerInfo } = useFetchProfile(item.uid);
@@ -51,15 +53,22 @@ export default function Review({
   );
 
   function deleteReview(item, index) {
-    let temp = [...animeReviews];
-    temp.splice(index, 1);
-    setAnimeReviews(temp);
-    let indexOfReview = localUser.reviews.indexOf(item.id);
-    localUser.reviews.splice(indexOfReview, 1);
+    confirm({
+      title: "Delete Review?",
+      content: "Deleting a review is permanent. There is no undo.",
+      titleProps: { sx: { fontFamily: "interExtraBold" } },
+      contentProps: { sx: { fontFamily: "interMedium" } },
+    }).then(() => {
+      let temp = [...animeReviews];
+      temp.splice(index, 1);
+      setAnimeReviews(temp);
+      let indexOfReview = localUser.reviews.indexOf(item.id);
+      localUser.reviews.splice(indexOfReview, 1);
 
-    let animeID = anime.id.toString();
-    SaveReviewToFirestore(user, localUser, animeID);
-    DeleteReviewFromFirestore(user, animeID);
+      let animeID = anime.id.toString();
+      SaveReviewToFirestore(user, localUser, animeID);
+      DeleteReviewFromFirestore(user, animeID);
+    });
   }
 
   function openEditor() {
