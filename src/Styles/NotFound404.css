@@ -1,0 +1,8 @@
+.doodle {
+  position: fixed;
+  z-index: -1;
+}
+
+body {
+  padding: 0;
+}
