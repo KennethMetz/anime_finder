@@ -45,7 +45,7 @@ export function NotFound404() {
           textAlign="right"
           sx={{ display: "flex", justifyContent: "right" }}
         >
-          <Link to="/" style={{ width: "100%" }}>
+          <Link to="/home" style={{ width: "100%" }}>
             <Button
               variant="contained"
               size="large"
