@@ -12,6 +12,10 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Paper,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Link from "@mui/material";
@@ -21,10 +25,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { PopulateFromFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
+import EdAndEinGif from "../Styles/images/ein-ed-compressed.gif";
 
 export default function Search() {
   const location = useLocation();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const [user, loading] = useAuthState(auth);
 
@@ -33,8 +39,7 @@ export default function Search() {
   let [search, setSearch] = useState(location.state);
   let [searchResults, setSearchResults] = useState(false);
 
-  console.log(location.state);
-  console.log(search);
+  const fourHundred = useMediaQuery(theme.breakpoints.up("fourHundred"));
 
   async function searchContent() {
     try {
@@ -104,9 +109,56 @@ export default function Search() {
             ))}
           </div>
         ) : (
-          <Box>
-            There were (0) matching results for the search term: "{search}"
-          </Box>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{ fontFamily: "interSemiBold", fontSize: "1.1rem" }}
+            >
+              Your search for "
+              <span style={{ color: theme.palette.primary.main }}>
+                {" "}
+                {search}
+              </span>{" "}
+              " did not return any results.
+            </Typography>{" "}
+            <Paper
+              elevation={0}
+              sx={{
+                background: theme.palette.custom.subtleCardBg,
+                borderRadius: "24px",
+                padding: 1.0,
+                mt: 4,
+              }}
+            >
+              <Box
+                component="div"
+                sx={{
+                  width: {
+                    fourHundred: "350px",
+                    xs: "300px",
+                  },
+                  height: {
+                    fourHundred: "250px",
+                    xs: "200px",
+                  },
+                  backgroundImage: `url(${EdAndEinGif})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "24px",
+                }}
+              />
+            </Paper>
+            <Typography
+              sx={{ fontFamily: "interSemiBold", fontSize: "1.1rem", mt: 4 }}
+            >
+              Please try again!
+            </Typography>{" "}
+          </div>
         )}
         <div className="gap" />
       </Container>
