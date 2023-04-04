@@ -353,7 +353,7 @@ export default function DetailedView() {
             style={{ ...subheadStyle, display: "flex", alignItems: "baseline" }}
           >
             Reviews{" "}
-            {animeReviews.length > 2 ? (
+            {animeReviews?.length > 2 ? (
               <Typography
                 sx={{
                   fontFamily: "interMedium",
@@ -363,7 +363,7 @@ export default function DetailedView() {
                   ml: 1,
                 }}
               >
-                ({animeReviews.length} total)
+                ({animeReviews?.length} total)
               </Typography>
             ) : (
               ""
