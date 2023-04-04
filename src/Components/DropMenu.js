@@ -83,7 +83,7 @@ export default function DropMenu() {
 
   function sendToProfile(e) {
     handleClose(e);
-    navigate("/profile");
+    navigate(`/profile/${user.uid}`);
   }
 
   function sendToLogin(e) {
