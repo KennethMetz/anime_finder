@@ -2,6 +2,8 @@ import {
   Avatar,
   Box,
   Chip,
+  Divider,
+  Grid,
   IconButton,
   Paper,
   Rating,
@@ -83,125 +85,164 @@ export default function Review({
       sx={{
         backgroundColor: "custom.subtleCardBg",
         borderRadius: "8px",
-        display: "flex",
+        display: {
+          xs: "column",
+          sm: "flex",
+        },
+        justifyContent: "center",
         position: "relative",
-        pt: 2,
-        pb: 2,
+        pt: { xs: 1, sm: 2 },
+        pr: { xs: 1, sm: 2 },
+        pb: { xs: 1, sm: 2 },
+        pl: { xs: 1, sm: 0 },
         mb: 3,
       }}
       onClick={(e) => {
         if (user.uid === item.uid) openEditor();
       }}
     >
-      {user.uid === item.uid ? (
-        <Tooltip followCursor title="Delete review">
-          <IconButton
-            sx={{ position: "absolute", top: "10px", right: "10px" }}
-            onClick={(e) => {
-              deleteReview(item, index);
-              e.stopPropagation();
-            }}
-          >
-            <X size={30} />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        ""
-      )}
       <Link to={`/profile/${item.uid}`}>
-        <Box
+        <Grid
+          item
           component="div"
           sx={{
-            minWidth: "150px",
+            width: { xs: "100%", sm: "150px" },
             display: "flex",
-            flexDirection: "column",
+            flexDirection: { xs: "flex-row", sm: "column" },
             alignItems: "center",
             "&:hover": { color: "primary.main" },
+            textAlign: { xs: "none", sm: "center" },
           }}
         >
           <Avatar
-            sx={{ width: "80px", height: "80px" }}
+            sx={{
+              width: { xs: "40px", sm: "80px" },
+              height: { xs: "40px", sm: "80px" },
+              marginRight: { xs: "16px", sm: "0px" },
+            }}
             src={avatarSrc}
           ></Avatar>
-          <Typography
-            component="span"
+          <Box
             sx={{
-              fontFamily: "interSemiBold",
-              fontSize: "1rem",
+              display: "flex",
+              flexDirection: { xs: "column", sm: "flex-row" },
             }}
           >
-            {reviewerInfo?.name}
-          </Typography>
-          {reviewerInfo?.reviews ? (
             <Typography
               component="span"
               sx={{
-                fontFamily: "interMedium",
-                fontSize: "0.9rem",
-                color: "",
+                fontFamily: "interSemiBold",
+                fontSize: "1rem",
               }}
             >
-              ({reviewerInfo?.reviews?.length}
-              {reviewerInfo?.reviews?.length === 1 ? " review" : " reviews"})
+              {reviewerInfo?.name}
             </Typography>
-          ) : (
-            ""
-          )}
-        </Box>
+            {reviewerInfo?.reviews ? (
+              <Typography
+                component="span"
+                sx={{
+                  fontFamily: "interMedium",
+                  fontSize: "0.9rem",
+                  color: { xs: "grey", sm: "inherit" },
+                }}
+              >
+                ({reviewerInfo?.reviews?.length}
+                {reviewerInfo?.reviews?.length === 1 ? " review" : " reviews"})
+              </Typography>
+            ) : (
+              ""
+            )}
+          </Box>
+        </Grid>
       </Link>
-      <Box
+      <Grid
         component="div"
         sx={{
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <Tooltip
-          key={item.uid}
-          followCursor
-          title={user.uid === item.uid ? "Edit review" : ""}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            ...(user.uid === item.uid && { cursor: "pointer" }),
+          }}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              ...(user.uid === item.uid && { cursor: "pointer" }),
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-              }}
+          <Grid container>
+            <Tooltip
+              key={item.uid}
+              followCursor
+              title={user.uid === item.uid ? "Edit review" : ""}
             >
-              <Typography
-                component="span"
-                sx={{ fontFamily: "interBlack", fontSize: "1rem" }}
+              <Grid
+                item
+                xs={10}
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: "baseline",
+                }}
               >
-                {item.reviewTitle}
-              </Typography>{" "}
-              <ConvertDate item={item} />
+                <Typography
+                  component="span"
+                  sx={{ fontFamily: "interBlack", fontSize: "1rem", mr: 2 }}
+                >
+                  {item.reviewTitle}
+                </Typography>{" "}
+                <ConvertDate item={item} />
+              </Grid>
+            </Tooltip>
+            {user.uid === item.uid ? (
+              <Grid item xs={2} sx={{ position: "relative" }}>
+                <Tooltip followCursor title="Delete review">
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      top: { xs: "-55px", sm: "-10px" },
+                      right: "0px",
+                    }}
+                    onClick={(e) => {
+                      deleteReview(item, index);
+                      e.stopPropagation();
+                    }}
+                  >
+                    <X size={30} />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            ) : (
+              <Grid item xs={0} />
+            )}
+          </Grid>
+          <Tooltip
+            followCursor
+            title={user.uid === item.uid ? "Edit review" : ""}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Rating
+                readOnly
+                value={item.rating}
+                color="primary"
+                emptyIcon={<Heart color={theme.palette.text.primary} />}
+                icon={
+                  <Heart color={theme.palette.text.primary} weight="fill" />
+                }
+                sx={{ mt: 1, mb: 1 }}
+              ></Rating>
+
+              <ExpandableText
+                text={item.review}
+                sx={{
+                  fontFamily: "interMedium",
+                  fontSize: "16px",
+                  lineHeight: "21px",
+                  whiteSpace: "pre-line",
+                }}
+              />
             </div>
-
-            <Rating
-              readOnly
-              value={item.rating}
-              color="primary"
-              emptyIcon={<Heart color={theme.palette.text.primary} />}
-              icon={<Heart color={theme.palette.text.primary} weight="fill" />}
-              sx={{ mt: 1, mb: 1 }}
-            ></Rating>
-
-            <ExpandableText
-              text={item.review}
-              sx={{
-                fontFamily: "interMedium",
-                fontSize: "16px",
-                lineHeight: "21px",
-                whiteSpace: "pre-line",
-              }}
-            />
-          </div>
-        </Tooltip>
+          </Tooltip>
+        </div>
         <div
           style={{
             display: "flex",
@@ -251,7 +292,7 @@ export default function Review({
             </div>
           </Tooltip>
         </div>
-      </Box>
+      </Grid>
     </Paper>
   );
 }
@@ -259,7 +300,9 @@ export default function Review({
 function ConvertDate({ item }) {
   const time = format(fromUnixTime(item.time.seconds), "MMMM dd, yyyy");
   return (
-    <Typography sx={{ ml: 2, fontFamily: "interMedium", color: "grey" }}>
+    <Typography
+      sx={{ fontFamily: "interMedium", color: "grey", fontSize: "0.9rem" }}
+    >
       {item?.edited ? "Edited on" : ""} {time.toString()}
     </Typography>
   );
