@@ -3,10 +3,10 @@ import NoResultsImage from "./NoResultsImage";
 import WatchlistTile from "./WatchlistTile";
 import { slugifyListName } from "../Util/ListUtil";
 import { useContext } from "react";
-import { LocalUserContext } from "./LocalUserContext";
+import ProfilePageContext from "./ProfilePageContext";
 
 export default function ProfileMainPage() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const { profile, isLoading } = useContext(ProfilePageContext);
 
   const subheadStyle = {
     fontFamily: "interBlack",
@@ -15,6 +15,16 @@ export default function ProfileMainPage() {
     marginTop: "26px",
     marginBottom: "12px",
   };
+
+  const bodyStyle = {
+    fontFamily: "interMedium",
+    fontSize: "16px",
+  };
+
+  // TODO Add a 'ghost' page for loading.
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
     <Grid
@@ -28,13 +38,19 @@ export default function ProfileMainPage() {
         </Typography>
       </Grid>
       <Grid item xs={12} md={6}>
-        <WatchlistTile listId="likes" name="Likes" items={localUser.likes} />
+        <WatchlistTile
+          userId={profile?.uid}
+          listId="likes"
+          name="Likes"
+          items={profile?.likes}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <WatchlistTile
+          userId={profile?.uid}
           listId="dislikes"
           name="Dislikes"
-          items={localUser.dislikes}
+          items={profile?.dislikes}
         />
       </Grid>
       <Grid item xs={12}>
@@ -42,16 +58,17 @@ export default function ProfileMainPage() {
           Watchlists
         </Typography>
       </Grid>
-      {localUser?.lists.map((list, index) => (
+      {profile?.lists.map((list, index) => (
         <Grid item xs={12} md={6} key={index}>
           <WatchlistTile
+            userId={profile?.uid}
             listId={slugifyListName(list.name)}
             name={list.name}
             items={list.anime}
           />
         </Grid>
       ))}
-      {!localUser?.lists?.length && (
+      {!profile?.lists?.length && (
         <Grid item xs={12}>
           <NoResultsImage />
         </Grid>

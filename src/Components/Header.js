@@ -10,8 +10,11 @@ import DropMenu from "./DropMenu";
 import { useTheme } from "@mui/material/styles";
 import EdwardMLLogo from "./EdwardMLLogo";
 import HeaderTab from "./HeaderTab";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Firebase";
 
 function Header() {
+  const [user] = useAuthState(auth);
   const theme = useTheme();
 
   const [showSearch, setShowSearch] = useState(false);
@@ -57,7 +60,11 @@ function Header() {
                 }}
               >
                 <HeaderTab text="Home" icon={<House />} path="/home" />
-                <HeaderTab text="Profile" icon={<User />} path="/profile" />
+                <HeaderTab
+                  text="Profile"
+                  icon={<User />}
+                  path={`/profile/${user.uid}`}
+                />
                 <HeaderTab
                   text="Search"
                   icon={<MagnifyingGlass />}

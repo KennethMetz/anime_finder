@@ -1,18 +1,20 @@
 import "../Styles/Profile.css";
 
 import { Container, Grid, useMediaQuery, useTheme } from "@mui/material";
-import { matchPath, useLocation } from "react-router-dom";
+import { matchPath, useLocation, useParams } from "react-router-dom";
 import ProfileListPage from "./ProfileListPage";
 import ProfileMainPage from "./ProfileMainPage";
 import ProfileSidebar from "./ProfileSidebar";
 import { useContext, useEffect } from "react";
-import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { PopulateFromFirestore } from "./Firestore";
 import { auth } from "./Firebase";
+import ProfilePageContextProvider from "./ProfilePageContextProvider";
+import { LocalUserContext } from "./LocalUserContext";
 
 export default function Profile() {
   const location = useLocation();
+  const params = useParams();
   const theme = useTheme();
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -25,7 +27,7 @@ export default function Profile() {
   }, [user, loading]);
 
   const isListPage = matchPath(
-    { path: "/profile/list/:listId" },
+    { path: "/profile/:userId/list/:listId" },
     location.pathname
   );
 
@@ -34,15 +36,17 @@ export default function Profile() {
   const compactSidebar = isListPage && !md;
 
   return (
-    <Container maxWidth="lg">
-      <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
-        <Grid item xs={12} md={3} sx={{ marginBottom: "24px" }}>
-          <ProfileSidebar hideDetails={compactSidebar} />
+    <ProfilePageContextProvider userId={params.userId}>
+      <Container maxWidth="lg">
+        <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
+          <Grid item xs={12} md={3} sx={{ marginBottom: "24px" }}>
+            <ProfileSidebar hideDetails={compactSidebar} />
+          </Grid>
+          <Grid item xs={12} md={9}>
+            {isListPage ? <ProfileListPage /> : <ProfileMainPage />}
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={9}>
-          {isListPage ? <ProfileListPage /> : <ProfileMainPage />}
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </ProfilePageContextProvider>
   );
 }

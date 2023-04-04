@@ -1,39 +1,21 @@
 import { useContext, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { LocalUserContext } from "./LocalUserContext";
-import { auth } from "./Firebase";
-import {
-  Avatar,
-  Button,
-  Divider,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 
-import { SaveToFirestore } from "./Firestore";
 import { Box } from "@mui/system";
-import { useTheme } from "@mui/material";
+import ProfilePageContext from "./ProfilePageContext";
 
 export default function UserBio() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const [user, loading, error] = useAuthState(auth);
-  const [editBio, setEditBio] = useState(false);
-  const [bio, setBio] = useState(localUser?.bio);
+  const { profile, isOwnProfile, updateBio } = useContext(ProfilePageContext);
 
-  const theme = useTheme();
+  const [editBio, setEditBio] = useState(false);
+  const [editedBio, setEditedBio] = useState(profile?.bio);
 
   function saveBio() {
-    let newLocalUser = { ...localUser };
-    newLocalUser.bio = bio;
-    setLocalUser(newLocalUser);
-    SaveToFirestore(user, newLocalUser);
+    updateBio(editedBio);
   }
 
   function handleBioToggle() {
-    setEditBio((editBio) => !editBio);
+    setEditBio(!editBio);
   }
 
   return (
@@ -51,14 +33,12 @@ export default function UserBio() {
             pt: 1,
             pb: 1,
             pl: 0,
-            cursor: "pointer",
+            cursor: isOwnProfile ? "pointer" : "unset",
           }}
-          onClick={(e) => {
-            handleBioToggle();
-          }}
+          onClick={isOwnProfile ? handleBioToggle : undefined}
         >
-          {localUser?.bio?.length > 0
-            ? localUser.bio
+          {profile?.bio?.length > 0
+            ? profile?.bio
             : "Tell us a bit about yourself..."}
         </Box>
       ) : (
@@ -79,10 +59,10 @@ export default function UserBio() {
             placeholder="Tell us a bit about yourself..."
             autoFocus
             multiline
-            value={bio}
+            value={editedBio}
             onClick={(e) => e.preventDefault()}
             onChange={(e) => {
-              setBio(e.target.value);
+              setEditedBio(e.target.value);
             }}
             sx={{ width: "100%", mb: 2 }}
             InputProps={{

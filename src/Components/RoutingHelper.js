@@ -18,8 +18,8 @@ export const RoutingHelper = () => {
   const headerRoutes = [
     "/home",
     "/search",
-    "/profile",
-    "/profile/list/:listId",
+    "/profile/:userId",
+    "/profile/:userId/list/:listId",
     "/sandbox",
     "/anime/:animeId",
   ];

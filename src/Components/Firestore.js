@@ -6,7 +6,6 @@ import {
   collection,
   deleteDoc,
 } from "firebase/firestore";
-import { useFetchProfile } from "./APICalls";
 import { db } from "./Firebase";
 
 // Handle "users" collection on firestore

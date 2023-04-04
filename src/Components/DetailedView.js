@@ -67,9 +67,6 @@ export default function DetailedView() {
   }, [location.pathname, anime]);
 
   function howManyItems(seeMore) {
-    console.log(seeMore);
-
-    console.log(animeReviews);
     if (seeMore === 1) return animeReviews?.slice(0, 4);
     if (seeMore > 1) return animeReviews?.slice(0, 4 * seeMore);
   }

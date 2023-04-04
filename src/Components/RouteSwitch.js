@@ -35,10 +35,10 @@ const RouteSwitch = () => {
                     <Route element={<RoutingHelper />}>
                       <Route path="/reset" element={<Reset />} />
                       <Route
-                        path="/profile/list/:listId"
+                        path="/profile/:userId/list/:listId"
                         element={<Profile />}
                       />
-                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/profile/:userId" element={<Profile />} />
                       <Route path="/search" element={<Search />} />
                       <Route
                         path="/anime/:animeId"

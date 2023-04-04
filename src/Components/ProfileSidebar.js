@@ -1,24 +1,29 @@
 import { useContext } from "react";
 
-import { LocalUserContext } from "./LocalUserContext";
-import { Button } from "@mui/material";
+import { Box, Button, Skeleton } from "@mui/material";
 import { ArrowRight } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import UserBio from "./UserBio";
 import Top8List from "./Top8List";
 import ProfileUserBanner from "./ProfileUserBanner";
+import ProfilePageContext from "./ProfilePageContext";
+import ProfileSidebarGhost from "./ProfileSidebarGhost";
 
 export default function ProfileSidebar({ hideDetails }) {
   const navigate = useNavigate();
 
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const { profile, isOwnProfile, isLoading } = useContext(ProfilePageContext);
+
+  if (isLoading) {
+    return <ProfileSidebarGhost />;
+  }
 
   return (
     <>
       <ProfileUserBanner />
       {!hideDetails && (
         <>
-          {localUser?.name === "guest" && (
+          {isOwnProfile && profile?.name === "guest" && (
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 variant="contained"
