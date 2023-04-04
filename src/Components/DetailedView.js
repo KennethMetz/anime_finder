@@ -49,7 +49,7 @@ export default function DetailedView() {
   const [animeReviews, setAnimeReviews] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
 
-  const [seeMore, setSeeMore] = useState(0);
+  const [seeMore, setSeeMore] = useState(1);
   const shownItems = howManyItems(seeMore);
   const showSeeMoreButton = shownItems?.length !== animeReviews?.length;
 
@@ -70,8 +70,8 @@ export default function DetailedView() {
     console.log(seeMore);
 
     console.log(animeReviews);
-    if (seeMore === 0) return animeReviews?.slice(0, 3);
-    if (seeMore > 0) return animeReviews?.slice(0, 5 * seeMore);
+    if (seeMore === 1) return animeReviews?.slice(0, 4);
+    if (seeMore > 1) return animeReviews?.slice(0, 4 * seeMore);
   }
 
   // TODO Use a shared loading display component.
