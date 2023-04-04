@@ -350,12 +350,27 @@ export default function DetailedView() {
           <Typography
             component="div"
             variant="h5"
-            style={{ ...subheadStyle, display: "flex", alignItems: "center" }}
+            style={{ ...subheadStyle, display: "flex", alignItems: "baseline" }}
           >
             Reviews{" "}
+            {animeReviews.length > 2 ? (
+              <Typography
+                sx={{
+                  fontFamily: "interMedium",
+                  fontSize: "1.0rem",
+                  marginL: "10px",
+                  color: "grey",
+                  ml: 1,
+                }}
+              >
+                ({animeReviews.length} total)
+              </Typography>
+            ) : (
+              ""
+            )}
             {!showReviewForm ? (
               <Tooltip title="Add a review">
-                <div style={{ marginLeft: "15px" }}>
+                <Box sx={{ ml: 1 }}>
                   <IconButton
                     variant="contained"
                     disabled={user.isAnonymous ? true : false}
@@ -366,7 +381,7 @@ export default function DetailedView() {
                   >
                     <Plus />
                   </IconButton>
-                </div>
+                </Box>
               </Tooltip>
             ) : (
               <Tooltip title="Close review">
@@ -385,6 +400,7 @@ export default function DetailedView() {
               </Tooltip>
             )}
           </Typography>
+
           {showReviewForm ? (
             <ReviewForm
               anime={anime}
