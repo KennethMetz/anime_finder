@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Minus, Play, Plus } from "phosphor-react";
+import { CaretDown, Minus, Play, Plus } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -49,6 +49,10 @@ export default function DetailedView() {
   const [animeReviews, setAnimeReviews] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
 
+  const [seeMore, setSeeMore] = useState(0);
+  const shownItems = howManyItems(seeMore);
+  const showSeeMoreButton = shownItems?.length !== animeReviews?.length;
+
   const [analysis, analysisLoading, analysisError, analysisFetching] =
     useAnimeAnalysis(animeId);
 
@@ -61,6 +65,14 @@ export default function DetailedView() {
   useEffect(() => {
     PopulateReviewsFromFirestore(anime, setAnimeReviews);
   }, [location.pathname, anime]);
+
+  function howManyItems(seeMore) {
+    console.log(seeMore);
+
+    console.log(animeReviews);
+    if (seeMore === 0) return animeReviews?.slice(0, 3);
+    if (seeMore > 0) return animeReviews?.slice(0, 5 * seeMore);
+  }
 
   // TODO Use a shared loading display component.
   if (loading || animeLoading || analysisLoading) {
@@ -383,7 +395,7 @@ export default function DetailedView() {
           ) : (
             ""
           )}
-          {animeReviews?.map((item, index) => {
+          {shownItems?.map((item, index) => {
             return (
               <Review
                 key={item.uid}
@@ -396,6 +408,18 @@ export default function DetailedView() {
               />
             );
           })}
+          {showSeeMoreButton && (
+            <Grid item sx={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                color="inherit"
+                variant="outlined"
+                onClick={() => setSeeMore(seeMore + 1)}
+                endIcon={<CaretDown />}
+              >
+                See more
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <div className="gap" />
