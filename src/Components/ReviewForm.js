@@ -117,16 +117,16 @@ export default function ReviewForm({
         backgroundColor: "custom.subtleCardBg",
         borderRadius: "8px",
         display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
         mb: 3,
+        padding: 1,
       }}
     >
       <Box
         sx={{
-          width: "100px",
+          width: { xs: "48px", sm: "100px" },
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          mt: 2,
+          justifyContent: "center",
         }}
       >
         <Avatar
@@ -139,7 +139,7 @@ export default function ReviewForm({
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          mr: 6,
+          mr: { xs: 0, sm: 6 },
           mb: 1.5,
         }}
       >

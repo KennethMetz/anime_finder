@@ -182,6 +182,7 @@ export default function Review({
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },
                   alignItems: "baseline",
+                  mt: 1,
                 }}
               >
                 <Typography
@@ -200,7 +201,7 @@ export default function Review({
                     sx={{
                       position: "absolute",
                       top: { xs: "-55px", sm: "-10px" },
-                      right: "0px",
+                      right: "-10px",
                     }}
                     onClick={(e) => {
                       deleteReview(item, index);
