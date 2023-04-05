@@ -5,6 +5,12 @@ import {
   getDocs,
   collection,
   deleteDoc,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  limitToLast,
+  endBefore,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -117,4 +123,46 @@ function compareReviewDates(a, b) {
     return 1;
   }
   return 0;
+}
+
+export async function GetPaginatedReviewsFromFirestore(
+  anime,
+  animeReviews,
+  setAnimeReviews,
+  sortOption,
+  lastVisible,
+  setLastVisible,
+  setSeeMore
+) {
+  try {
+    let animeID = anime.id.toString();
+    let collectionQuery = null;
+    if (!lastVisible) {
+      collectionQuery = query(
+        collection(db, "animeData", animeID, "reviews"),
+        orderBy(sortOption[0], sortOption[1]),
+        limit(4)
+      );
+    } else {
+      collectionQuery = query(
+        collection(db, "animeData", animeID, "reviews"),
+        orderBy(sortOption[0], sortOption[1]),
+        startAfter(lastVisible),
+        limit(4)
+      );
+    }
+    const documentSnapshots = await getDocs(collectionQuery);
+    if (documentSnapshots._snapshot.docChanges.length < 4) setSeeMore(false);
+
+    let temp = [];
+    if (animeReviews && lastVisible) temp = [...animeReviews];
+    documentSnapshots.forEach((doc) => {
+      temp.push({ ...doc.data() });
+    });
+    console.log(temp);
+    setAnimeReviews(temp);
+    setLastVisible(documentSnapshots.docs[documentSnapshots.docs.length - 1]);
+  } catch (error) {
+    console.error("Error loading data from Firebase Database", error);
+  }
 }
