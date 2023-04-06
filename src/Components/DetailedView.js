@@ -84,7 +84,7 @@ export default function DetailedView() {
   }, [location.pathname, anime, sortOption]);
 
   // TODO Use a shared loading display component.
-  if (loading || animeLoading || analysisLoading) {
+  if (loading || animeLoading) {
     return (
       <div className="jsxWrapper">
         <div className="gap" />
@@ -271,7 +271,11 @@ export default function DetailedView() {
                 borderRadius: "16px",
               }}
             >
-              <Grid container columnSpacing={3} sx={{ position: "relative" }}>
+              <Grid
+                container
+                columnSpacing={3}
+                sx={{ position: "relative", minHeight: "150px" }}
+              >
                 {analysisFetching && analysis?.animeId !== anime.id && (
                   <Box
                     sx={{
