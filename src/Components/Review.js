@@ -160,6 +160,7 @@ export default function Review({
         sx={{
           display: "flex",
           flexDirection: "column",
+          flexGrow: { xs: "unset", sm: 1 },
         }}
       >
         <div
