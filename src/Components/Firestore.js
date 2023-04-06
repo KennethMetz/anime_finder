@@ -132,6 +132,7 @@ export async function GetPaginatedReviewsFromFirestore(
   sortOption,
   lastVisible,
   setLastVisible,
+  seeMore,
   setSeeMore
 ) {
   try {
@@ -153,13 +154,13 @@ export async function GetPaginatedReviewsFromFirestore(
     }
     const documentSnapshots = await getDocs(collectionQuery);
     if (documentSnapshots._snapshot.docChanges.length < 4) setSeeMore(false);
+    else if (seeMore === false) setSeeMore(true);
 
     let temp = [];
     if (animeReviews && lastVisible) temp = [...animeReviews];
     documentSnapshots.forEach((doc) => {
       temp.push({ ...doc.data() });
     });
-    console.log(temp);
     setAnimeReviews(temp);
     setLastVisible(documentSnapshots.docs[documentSnapshots.docs.length - 1]);
   } catch (error) {

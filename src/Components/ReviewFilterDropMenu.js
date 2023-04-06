@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -7,46 +7,16 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
-import {
-  FunnelSimple,
-  List,
-  Moon,
-  SignOut,
-  Sun,
-  User,
-  UserCircle,
-  UserCirclePlus,
-} from "phosphor-react";
-import { useNavigate } from "react-router-dom";
-import { auth, logout } from "./Firebase";
-import { LocalUserContext } from "./LocalUserContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  Avatar,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import AppSettingsContext from "./AppSettingsContext";
+import { FunnelSimple } from "phosphor-react";
 
 export default function ReviewFilterDropMenu({
   setLastVisible,
   setSortOption,
 }) {
-  const theme = useTheme();
-
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
   const [selected, setSelected] = useState("newestFirst");
-
-  // const avatarSrc = useMemo(
-  //   () => getAvatarSrc(localUser?.avatar),
-  //   [localUser?.avatar]
-  // );
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -56,7 +26,6 @@ export default function ReviewFilterDropMenu({
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   }
 
@@ -81,7 +50,6 @@ export default function ReviewFilterDropMenu({
 
   function handleSelection(e, option) {
     handleClose(e);
-    // This triggers us to overwrite the current animeReviews list
     setLastVisible(null);
     setSortOption([option[0], option[1]]);
     setSelected(option[2]);
@@ -129,27 +97,46 @@ export default function ReviewFilterDropMenu({
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
+                  sx={{ padding: 0 }}
                 >
                   <MenuItem
                     divider
-                    sx={{ paddingTop: "10px", paddingBottom: "10px" }}
                     onClick={(e) => {
-                      handleSelection(e, ["time", "asc"], "oldestFirst");
+                      handleSelection(e, ["time", "asc", "oldestFirst"]);
                     }}
                     selected={selected === "oldestFirst" ? true : false}
                   >
-                    Date: Oldest first
+                    Date: Oldest First
                   </MenuItem>
 
                   <MenuItem
-                    value={["time", "desc"]}
-                    sx={{ marginTop: "10px" }}
+                    divider
                     onClick={(e) => {
-                      handleSelection(e, ["time", "desc"], "newestFirst");
+                      handleSelection(e, ["time", "desc", "newestFirst"]);
                     }}
                     selected={selected === "newestFirst" ? true : false}
                   >
-                    Date: Newest first{" "}
+                    Date: Newest First{" "}
+                  </MenuItem>
+
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, ["rating", "desc", "highestRating"]);
+                    }}
+                    selected={selected === "highestRating" ? true : false}
+                  >
+                    Rating: Highest First{" "}
+                  </MenuItem>
+
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, ["rating", "asc", "lowestRating"]);
+                    }}
+                    selected={selected === "lowestRating" ? true : false}
+                  >
+                    Rating: Lowest First{" "}
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>

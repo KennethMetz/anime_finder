@@ -28,7 +28,6 @@ import { auth } from "./Firebase";
 import {
   GetPaginatedReviewsFromFirestore,
   PopulateFromFirestore,
-  PopulateReviewsFromFirestore,
 } from "./Firestore";
 import LikeButtons from "./LikeButtons";
 import { LocalUserContext } from "./LocalUserContext";
@@ -72,8 +71,6 @@ export default function DetailedView() {
   }, [user, anime, loading]);
 
   useEffect(() => {
-    console.log(sortOption);
-
     GetPaginatedReviewsFromFirestore(
       anime,
       animeReviews,
@@ -81,6 +78,7 @@ export default function DetailedView() {
       sortOption,
       lastVisible,
       setLastVisible,
+      seeMore,
       setSeeMore
     );
   }, [location.pathname, anime, sortOption]);
@@ -375,7 +373,7 @@ export default function DetailedView() {
               }}
             >
               Reviews{" "}
-              {animeReviews?.length > 2 ? (
+              {animeReviews?.length > 2 && (
                 <Typography
                   sx={{
                     fontFamily: "interMedium",
@@ -387,8 +385,6 @@ export default function DetailedView() {
                 >
                   ({animeReviews?.length} total)
                 </Typography>
-              ) : (
-                ""
               )}
               {!showReviewForm ? (
                 <Tooltip title="Add a review">
@@ -434,15 +430,15 @@ export default function DetailedView() {
             )}
           </div>
 
-          {showReviewForm ? (
+          {showReviewForm && (
             <ReviewForm
               anime={anime}
               animeReviews={animeReviews}
               setAnimeReviews={setAnimeReviews}
               setShowReviewForm={setShowReviewForm}
+              setLastVisible={setLastVisible}
+              setSeeMore={setSeeMore}
             />
-          ) : (
-            ""
           )}
 
           {animeReviews?.map((item, index) => {
@@ -471,6 +467,7 @@ export default function DetailedView() {
                     sortOption,
                     lastVisible,
                     setLastVisible,
+                    seeMore,
                     setSeeMore
                   )
                 }

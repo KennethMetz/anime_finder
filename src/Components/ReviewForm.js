@@ -17,9 +17,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Fire, Heart } from "phosphor-react";
 import {
+  GetPaginatedReviewsFromFirestore,
   PopulateReviewsFromFirestore,
   SaveReviewToFirestore,
   SaveToFirestore,
+  setLastVisible,
+  setSeeMore,
 } from "./Firestore";
 import { getAvatarSrc } from "./Avatars";
 
@@ -28,6 +31,8 @@ export default function ReviewForm({
   animeReviews,
   setAnimeReviews,
   setShowReviewForm,
+  setLastVisible,
+  setSeeMore,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -100,7 +105,17 @@ export default function ReviewForm({
       }
       const userID = user.uid.toString();
       SaveReviewToFirestore(userID, userReview, animeID);
-      PopulateReviewsFromFirestore(anime, setAnimeReviews);
+      // PopulateReviewsFromFirestore(anime, setAnimeReviews);
+      GetPaginatedReviewsFromFirestore(
+        anime,
+        animeReviews,
+        setAnimeReviews,
+        null,
+        null,
+        setLastVisible,
+        null,
+        setSeeMore
+      );
       setShowReviewForm(false);
     }
   };
