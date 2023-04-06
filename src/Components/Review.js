@@ -47,7 +47,6 @@ export default function Review({
   let reviewerAvatar = undefined;
 
   const { data: reviewerInfo } = useProfile(item.uid);
-  console.log(reviewerInfo);
 
   const avatarSrc = useMemo(
     () => getAvatarSrc(reviewerInfo?.avatar),
@@ -89,7 +88,6 @@ export default function Review({
           xs: "column",
           sm: "flex",
         },
-        justifyContent: "center",
         position: "relative",
         pt: { xs: 1, sm: 2 },
         pr: { xs: 1, sm: 2 },
@@ -156,6 +154,7 @@ export default function Review({
         </Grid>
       </Link>
       <Grid
+        width="100%"
         component="div"
         sx={{
           display: "flex",

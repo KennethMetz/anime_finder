@@ -7,7 +7,7 @@ import { LocalUserProvider } from "./LocalUserContext";
 import Profile from "./Profile";
 import Onboarding from "./Onboarding";
 import Home from "./Home";
-import DetailedView from "./DetailedView";
+import DetailedViewPage from "./DetailedViewPage";
 import Search from "./Search";
 import Logout from "./Logout";
 import Sandbox from "./Sandbox";
@@ -42,7 +42,7 @@ const RouteSwitch = () => {
                       <Route path="/search" element={<Search />} />
                       <Route
                         path="/anime/:animeId"
-                        element={<DetailedView />}
+                        element={<DetailedViewPage />}
                       />
                       <Route path="/home" element={<Home />} />
                       <Route path="/sandbox" element={<Sandbox />} />
