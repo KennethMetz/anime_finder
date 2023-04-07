@@ -6,6 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
+import ProfileListPageGhost from "./ProfileListPageGhost";
 import ProfileListSuggestions from "./ProfileListSuggestions";
 import ProfilePageContext from "./ProfilePageContext";
 
@@ -29,9 +30,8 @@ export default function ProfileListPage() {
 
   const canEdit = isOwnProfile;
 
-  // TODO Add a 'ghost' page for loading.
   if (isLoading) {
-    return <></>;
+    return <ProfileListPageGhost />;
   }
 
   let items = [];

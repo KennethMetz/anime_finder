@@ -23,6 +23,7 @@ import useAnime from "../Hooks/useAnime";
 import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
 import useYoutubeModal from "../Hooks/useYoutubeModal";
 import BreathingLogo from "./BreathingLogo";
+import DetailedViewGhost from "./DetailedViewGhost";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
 import {
@@ -85,14 +86,7 @@ export default function DetailedView() {
 
   // TODO Use a shared loading display component.
   if (loading || animeLoading) {
-    return (
-      <div className="jsxWrapper">
-        <div className="gap" />
-        <Container maxWidth="lg">
-          <h4>Loading...</h4>
-        </Container>
-      </div>
-    );
+    return <DetailedViewGhost />;
   }
 
   // TODO Use a shared error display component.
