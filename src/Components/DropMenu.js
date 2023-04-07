@@ -173,7 +173,10 @@ export default function DropMenu() {
                       <Avatar
                         alt={user?.displayName}
                         src="purposefully bad link"
-                        sx={{ bgcolor: theme.palette.primary.main }}
+                        sx={{
+                          bgcolor: theme.palette.primary.main,
+                          fontFamily: "interSemiBold",
+                        }}
                       />
                     </ListItemAvatar>
 
