@@ -135,6 +135,7 @@ export default function DropMenu() {
           cursor: "pointer",
           width: "35px",
           height: "35px",
+          fontFamily: "interSemiBold",
         }}
       />
       <Popper
