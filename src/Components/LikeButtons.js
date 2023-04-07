@@ -5,7 +5,7 @@ import LikeButton from "./LikeButton";
 
 export default function LikeButtons({ anime, variant }) {
   return (
-    <Box>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Box sx={{ mr: 1 }} component="span">
         <LikeButton anime={anime} variant={variant} />
       </Box>
