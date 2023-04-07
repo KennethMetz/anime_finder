@@ -203,6 +203,7 @@ export default function Home() {
             size="small"
             startIcon={<RefreshIcon />}
             onClick={() => {
+              setAnimeRandom([]);
               refresh ? setRefresh(false) : setRefresh(true);
             }}
           >
