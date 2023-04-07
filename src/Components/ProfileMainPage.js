@@ -4,6 +4,7 @@ import WatchlistTile from "./WatchlistTile";
 import { slugifyListName } from "../Util/ListUtil";
 import { useContext } from "react";
 import ProfilePageContext from "./ProfilePageContext";
+import ProfileMainPageGhost from "./ProfileMainPageGhost";
 
 export default function ProfileMainPage() {
   const { profile, isLoading } = useContext(ProfilePageContext);
@@ -21,9 +22,8 @@ export default function ProfileMainPage() {
     fontSize: "16px",
   };
 
-  // TODO Add a 'ghost' page for loading.
   if (isLoading) {
-    return <></>;
+    return <ProfileMainPageGhost />;
   }
 
   return (
