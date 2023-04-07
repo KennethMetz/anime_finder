@@ -30,8 +30,6 @@ import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import LoadingFourdots from "./LoadingFourDots.json";
-import Lottie from "lottie-react";
 import BreathingLogo from "./BreathingLogo";
 import EdwardMLLogo from "./EdwardMLLogo";
 
