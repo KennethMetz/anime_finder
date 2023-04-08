@@ -247,7 +247,8 @@ export default function DetailedView() {
               xs={12}
               md={3.5}
               sx={{
-                textAlign: { xs: "center", md: "end" },
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-end" },
                 marginTop: { xs: 0.5, md: 0 },
                 marginBottom: { xs: 2, md: 0 },
               }}
