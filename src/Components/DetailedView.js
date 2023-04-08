@@ -163,6 +163,7 @@ export default function DetailedView() {
                     sx={{
                       width: "100%",
                       height: "100%",
+                      borderRadius: "16px",
                       "&:hover": {
                         background: alpha(theme.palette.common.black, 0.25),
                       },
