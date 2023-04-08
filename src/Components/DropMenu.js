@@ -120,8 +120,8 @@ export default function DropMenu() {
       <Avatar
         ref={anchorRef}
         id="composition-button"
-        alt={user?.displayName}
-        src={avatarSrc}
+        alt={user?.displayName ?? "Guest"}
+        src={avatarSrc ?? "purposefully bad link"}
         aria-controls={open ? "composition-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
@@ -171,13 +171,16 @@ export default function DropMenu() {
                   >
                     <ListItemAvatar>
                       <Avatar
-                        alt={user?.displayName}
-                        src="purposefully bad link"
+                        alt={user?.displayName ?? "Guest"}
+                        src={avatarSrc ?? "purposefully bad link"}
                         sx={{ bgcolor: theme.palette.primary.main }}
                       />
                     </ListItemAvatar>
 
                     <ListItemText
+                      sx={{
+                        color: user ? "primary" : theme.palette.text.primary,
+                      }}
                       primary={
                         user?.displayName ? `${user?.displayName}` : "Guest"
                       }
