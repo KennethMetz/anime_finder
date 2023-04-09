@@ -76,7 +76,7 @@ export function useAnimeMC(selectedGenre) {
 
 export function useAnimeMPTW(selectedGenre) {
   return useGetTitles(
-    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=24${selectedGenre}`
+    `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_planned_to_watch&page_size=24${selectedGenre}`
   );
 }
 
