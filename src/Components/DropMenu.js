@@ -135,6 +135,7 @@ export default function DropMenu() {
           cursor: "pointer",
           width: "35px",
           height: "35px",
+          fontFamily: "interSemiBold",
         }}
       />
       <Popper
@@ -173,7 +174,10 @@ export default function DropMenu() {
                       <Avatar
                         alt={user?.displayName ?? "Guest"}
                         src={avatarSrc ?? "purposefully bad link"}
-                        sx={{ bgcolor: theme.palette.primary.main }}
+                        sx={{
+                          bgcolor: theme.palette.primary.main,
+                          fontFamily: "interSemiBold",
+                        }}
                       />
                     </ListItemAvatar>
 
