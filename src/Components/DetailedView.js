@@ -163,6 +163,7 @@ export default function DetailedView() {
                     sx={{
                       width: "100%",
                       height: "100%",
+                      borderRadius: "16px",
                       "&:hover": {
                         background: alpha(theme.palette.common.black, 0.25),
                       },
@@ -247,7 +248,8 @@ export default function DetailedView() {
               xs={12}
               md={3.5}
               sx={{
-                textAlign: { xs: "center", md: "end" },
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-end" },
                 marginTop: { xs: 0.5, md: 0 },
                 marginBottom: { xs: 2, md: 0 },
               }}
