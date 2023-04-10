@@ -8,15 +8,19 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
 import { FunnelSimple } from "phosphor-react";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export default function ReviewFilterDropMenu({
   setLastVisible,
   setSortOption,
 }) {
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
   const [selected, setSelected] = useState("newestFirst");
+
+  const smallDevice = useMediaQuery(theme.breakpoints.down("fiveHundred"));
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -59,7 +63,7 @@ export default function ReviewFilterDropMenu({
     <Stack>
       <Button
         variant="outlined"
-        startIcon={<FunnelSimple />}
+        endIcon={smallDevice ? null : <FunnelSimple />}
         color="inherit"
         ref={anchorRef}
         id="composition-button"
@@ -71,8 +75,7 @@ export default function ReviewFilterDropMenu({
           if (e.key === "Enter") handleToggle();
         }}
       >
-        {" "}
-        Filter By{" "}
+        {smallDevice ? <FunnelSimple size={20} /> : "Filter By"}
       </Button>
       <Popper
         open={open}
