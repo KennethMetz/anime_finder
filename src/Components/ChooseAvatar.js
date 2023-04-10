@@ -15,7 +15,7 @@ export default function ChooseAvatar() {
   };
 
   let [seeMore, setSeeMore] = useState(false);
-  const showSeeMoreButton = seeMore !== 2;
+  const showSeeMoreButton = seeMore !== 1;
 
   return (
     <div>
@@ -42,6 +42,9 @@ export default function ChooseAvatar() {
 
       {seeMore > 0 ? (
         <>
+          <Typography sx={styling}>Pokémon:</Typography>
+          <AvatarShelf items={avatars.pokemon} />
+
           <Typography sx={styling}>Spy x Family:</Typography>
           <AvatarShelf items={avatars.spyXFamily} />
 
@@ -50,13 +53,7 @@ export default function ChooseAvatar() {
 
           <Typography sx={styling}>Sailor Moon:</Typography>
           <AvatarShelf items={avatars.sailorMoon} />
-        </>
-      ) : (
-        ""
-      )}
 
-      {seeMore > 1 ? (
-        <>
           <Typography sx={styling}>Cyberpunk: Edgerunners:</Typography>
           <AvatarShelf items={avatars.cyberpunk} />
 
