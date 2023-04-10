@@ -1,9 +1,9 @@
 import { Box, Skeleton } from "@mui/material";
 
 export default function ProfileListPageGhost() {
-  const rows = new Array(3).fill(0);
+  const rows = new Array(5).fill(0);
   return (
-    <Box sx={{ paddingLeft: { xs: 0, md: "45px" } }}>
+    <Box sx={{ mt: 2 }}>
       <Skeleton variant="rounded" width={160} height={40} sx={{ mb: 2 }} />
       {rows.map((i, index) => (
         <Box key={index} sx={{ display: "flex", alignItems: "center", mb: 2 }}>

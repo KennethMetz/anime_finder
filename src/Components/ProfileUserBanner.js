@@ -73,7 +73,7 @@ export default function ProfileUserBanner() {
           primary={profile?.name ?? "Guest"}
           primaryTypographyProps={{
             fontFamily: "interBlack",
-            fontSize: "1.66rem",
+            fontSize: { xs: "1.66rem", md: "2.5rem" },
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}

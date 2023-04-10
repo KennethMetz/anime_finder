@@ -82,8 +82,7 @@ export default function ProfileListPage() {
 
   const headStyle = {
     fontFamily: "interBlack",
-    fontSize: { xs: "22px", md: "40px" },
-    lineHeight: { xs: "27px", md: "49px" },
+    fontSize: { xs: "1.66rem", md: "2.5rem" },
   };
 
   const subheadStyle = {
@@ -95,15 +94,22 @@ export default function ProfileListPage() {
   };
 
   return (
-    <Box sx={{ paddingLeft: { xs: 0, md: "45px" } }}>
+    <Box>
       {/* Header */}
-      <Box sx={{ display: "flex", alignItems: "center", marginBottom: "32px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginTop: "8px",
+          marginBottom: "8px",
+        }}
+      >
         <Link to={`/profile/${userId}`}>
           <IconButton color="inherit" sx={{ marginRight: "8px" }}>
             <CaretLeft />
           </IconButton>
         </Link>
-        <Typography variant="h3" sx={{ ...headStyle, flexGrow: 1 }}>
+        <Typography variant="h3" sx={{ ...headStyle, margin: 0, flexGrow: 1 }}>
           {name}
         </Typography>
         {canEdit && canDelete && (
