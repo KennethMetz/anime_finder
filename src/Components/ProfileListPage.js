@@ -74,6 +74,9 @@ export default function ProfileListPage() {
       content: "Deleting a watchlist is permanent. There is no undo.",
       titleProps: { sx: { fontFamily: "interExtraBold" } },
       contentProps: { sx: { fontFamily: "interMedium" } },
+      confirmationText: "Delete",
+      cancellationButtonProps: { color: "inherit" },
+      cancellationText: "Cancel",
     }).then(() => {
       deleteFn();
       navigate(`/profile/${userId}`);

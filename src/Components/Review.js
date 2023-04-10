@@ -59,6 +59,9 @@ export default function Review({
       content: "Deleting a review is permanent. There is no undo.",
       titleProps: { sx: { fontFamily: "interExtraBold" } },
       contentProps: { sx: { fontFamily: "interMedium" } },
+      confirmationText: "Delete",
+      cancellationButtonProps: { color: "inherit" },
+      cancellationText: "Cancel",
     }).then(() => {
       let temp = [...animeReviews];
       temp.splice(index, 1);
