@@ -56,6 +56,27 @@ import ryuko from "../Styles/images/userAvatars/ryuko.160.jpg";
 import satsuki from "../Styles/images/userAvatars/satsuki.jpg";
 import mako from "../Styles/images/userAvatars/mako.jpg";
 
+import pikachu from "../Styles/images/userAvatars/pikachu.jpg";
+import bulbasaur from "../Styles/images/userAvatars/bulbasaur.jpg";
+import charmander from "../Styles/images/userAvatars/charmander.jpg";
+import squirtle from "../Styles/images/userAvatars/squirtle.jpg";
+import mew from "../Styles/images/userAvatars/mew.jpg";
+import jigglypuff from "../Styles/images/userAvatars/jigglypuff.jpg";
+import meowth from "../Styles/images/userAvatars/meowth.jpg";
+import psyduck from "../Styles/images/userAvatars/psyduck.jpg";
+import gengar from "../Styles/images/userAvatars/gengar.jpg";
+import marowak from "../Styles/images/userAvatars/marowak.jpg";
+import tangela from "../Styles/images/userAvatars/tangela.jpg";
+import raichu from "../Styles/images/userAvatars/raichu.jpg";
+import sandshrew from "../Styles/images/userAvatars/sandshrew.jpg";
+import dugtrio from "../Styles/images/userAvatars/dugtrio.jpg";
+import poliwag from "../Styles/images/userAvatars/poliwag.jpg";
+import gastly from "../Styles/images/userAvatars/gastly.jpg";
+import hypno from "../Styles/images/userAvatars/hypno.jpg";
+import electrode from "../Styles/images/userAvatars/electrode.jpg";
+import lickatung from "../Styles/images/userAvatars/lickatung.jpg";
+import jynx from "../Styles/images/userAvatars/jynx.jpg";
+
 // The mapping that will be built of name: url.
 const imageMapping = {};
 
@@ -93,6 +114,29 @@ const onePiece = [
   { name: "usopp", url: usopp },
   { name: "tonytony", url: tonytony },
   { name: "charlotte", url: charlotte },
+];
+
+const pokemon = [
+  { name: "pikachu", url: pikachu },
+  { name: "bulbasaur", url: bulbasaur },
+  { name: "charmander", url: charmander },
+  { name: "squirtle", url: squirtle },
+  { name: "mew", url: mew },
+  { name: "jigglypuff", url: jigglypuff },
+  { name: "meowth", url: meowth },
+  { name: "psyduck", url: psyduck },
+  { name: "gengar", url: gengar },
+  { name: "marowak", url: marowak },
+  { name: "tangela", url: tangela },
+  { name: "raichu", url: raichu },
+  { name: "sandshrew", url: sandshrew },
+  { name: "dugtrio", url: dugtrio },
+  { name: "poliwag", url: poliwag },
+  { name: "gastly", url: gastly },
+  { name: "electrode", url: electrode },
+  { name: "hypno", url: hypno },
+  { name: "lickatung", url: lickatung },
+  { name: "jynx", url: jynx },
 ];
 
 const spyxfamily = [
@@ -141,6 +185,7 @@ const killLaKill = [
 registerImages(cowboyBebop);
 registerImages(narutoAvatars);
 registerImages(onePiece);
+registerImages(pokemon);
 registerImages(spyxfamily);
 registerImages(hunterxhunter);
 registerImages(sailorMoonAvatars);
@@ -156,6 +201,7 @@ export const avatars = {
   cowboyBebop: cowboyBebop.map(nameMapper),
   naruto: narutoAvatars.map(nameMapper),
   onePiece: onePiece.map(nameMapper),
+  pokemon: pokemon.map(nameMapper),
   spyXFamily: spyxfamily.map(nameMapper),
   hunterXHunter: hunterxhunter.map(nameMapper),
   sailorMoon: sailorMoonAvatars.map(nameMapper),
