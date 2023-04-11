@@ -15,17 +15,16 @@ import {
 } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
-import {
-  Button,
-  Container,
-  Divider,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
+
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { User } from "phosphor-react";
-import { Box } from "@mui/system";
+import Box from "@mui/material/Box";
 import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

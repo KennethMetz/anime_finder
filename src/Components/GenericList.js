@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Box, Grid } from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import heart from "../Styles/images/favorite_border_black_24dp.svg";
 import frown from "../Styles/images/sentiment_dissatisfied_black_24dp.svg";
 import cancel from "../Styles/images/cancel_black_24dp.svg";

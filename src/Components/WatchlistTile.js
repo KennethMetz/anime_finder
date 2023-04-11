@@ -1,4 +1,9 @@
-import { alpha, Box, Grid, Typography, useTheme } from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import alpha from "@mui/material/styles/getOverlayAlpha";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
+
 import { Link } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
 

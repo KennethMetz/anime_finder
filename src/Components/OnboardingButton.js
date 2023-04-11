@@ -1,9 +1,11 @@
-import { Button, Container, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import useTheme from "@mui/material/styles/useTheme";
 import { SaveToFirestore } from "./Firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { useTheme } from "@mui/material/styles";
 import { useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import { Link } from "react-router-dom";

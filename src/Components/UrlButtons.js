@@ -1,4 +1,6 @@
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { Fragment } from "react";
 import crunchyroll from "../Styles/images/crunchyroll.png";
 import funimation from "../Styles/images/funimation.png";

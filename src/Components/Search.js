@@ -1,26 +1,18 @@
 import "../Styles/Search.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { GenericList } from "./GenericList";
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Paper,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Link from "@mui/material";
-import TitleAutocomplete from "./TitleAutocomplete";
-import { Container } from "@mui/system";
+import Box from "@mui/material/Box";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Divider from "@mui/material/Divider";
+import Avatar from "@mui/material/Avatar";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
+import Container from "@mui/material/Container";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { PopulateFromFirestore } from "./Firestore";

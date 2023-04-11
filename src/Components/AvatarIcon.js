@@ -1,4 +1,7 @@
-import { Avatar, IconButton, useTheme } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import useTheme from "@mui/material/styles/useTheme";
+
 import { useContext, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { LocalUserContext } from "./LocalUserContext";

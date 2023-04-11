@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Box, Grid } from "@mui/material";
+import React, { useContext, useEffect } from "react";
+import Grid from "@mui/material/Grid";
+
 import heart from "../Styles/images/favorite_border_black_24dp.svg";
 import frown from "../Styles/images/sentiment_dissatisfied_black_24dp.svg";
-import cancel from "../Styles/images/cancel_black_24dp.svg";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "./Firebase";
+import { auth } from "./Firebase";
 
 import { LocalUserContext } from "./LocalUserContext";
 import { SaveToFirestore } from "./Firestore";

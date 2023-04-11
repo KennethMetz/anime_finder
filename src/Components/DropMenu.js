@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
@@ -7,28 +6,18 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
-import {
-  List,
-  Moon,
-  SignOut,
-  Sun,
-  User,
-  UserCircle,
-  UserCirclePlus,
-} from "phosphor-react";
+import Avatar from "@mui/material/Avatar";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import useTheme from "@mui/material/styles/useTheme";
+import { Moon, SignOut, Sun, User, UserCirclePlus } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { auth, logout } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  Avatar,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+
 import AppSettingsContext from "./AppSettingsContext";
 import { getAvatarSrc } from "./Avatars";
 

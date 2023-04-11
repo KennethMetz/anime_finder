@@ -1,4 +1,9 @@
-import { Box, IconButton, List, Tooltip, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+
 import { useConfirm } from "material-ui-confirm";
 import { CaretLeft, X } from "phosphor-react";
 import { useContext } from "react";

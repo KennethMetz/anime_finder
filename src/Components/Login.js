@@ -5,30 +5,24 @@ import {
   logInWithEmailAndPassword,
   signInWithGoogle,
   signInWithTwitter,
-  logInWithPhoneNumber,
-  logInAnon,
 } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getAuth, signInWithRedirect } from "firebase/auth";
-import { TwitterAuthProvider } from "firebase/auth";
 
 import "../Styles/Login.css";
-import { PopulateFromFirestore, SaveToFirestore } from "./Firestore";
+import { PopulateFromFirestore } from "./Firestore";
 
 import { LocalUserContext } from "./LocalUserContext";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
+
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
 
 import TwitterIcon from "@mui/icons-material/Twitter";
 import google from "../Styles/images/google.svg";
-import { User } from "phosphor-react";
 import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function Login() {

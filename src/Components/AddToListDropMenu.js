@@ -11,17 +11,15 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  Divider,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import useTheme from "@mui/material/styles/useTheme";
 import { SaveToFirestore } from "./Firestore";
 import AddButton from "./AddButton";
 import * as Yup from "yup";

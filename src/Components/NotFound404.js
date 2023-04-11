@@ -1,16 +1,14 @@
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Icon";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
 import EdwardMLLogo from "./EdwardMLLogo";
 import { Link, useLocation } from "react-router-dom";
 import EdGif from "../Styles/images/edGivingUp.gif";
-import { CaretLeft, House } from "phosphor-react";
+import { House } from "phosphor-react";
 
 export function NotFound404() {
   const theme = useTheme();

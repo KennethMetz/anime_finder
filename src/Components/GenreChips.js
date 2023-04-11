@@ -1,15 +1,11 @@
-import {
-  Chip,
-  Grid,
-  IconButton,
-  Paper,
-  Stack,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { setPersistence } from "firebase/auth";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
 import { CaretLeft, CaretRight } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function GenreChips({ selectedGenre, setSelectedGenre }) {
   let genres = [

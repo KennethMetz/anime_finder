@@ -1,4 +1,5 @@
-import { Box, Link } from "@mui/material";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import { useMemo, useState } from "react";
 
 export default function ExpandableText({ text, sx }) {

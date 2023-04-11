@@ -1,4 +1,5 @@
-import { Grid, Skeleton } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import Grid from "@mui/material/Grid";
 import OnboardingAnimeCard from "./OnboardingAnimeCard";
 
 export default function OnboardingAnimeGrid({ items }) {

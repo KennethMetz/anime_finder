@@ -1,13 +1,10 @@
-import { useTheme } from "@emotion/react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Paper,
-  Rating,
-  TextField,
-  Typography,
-} from "@mui/material";
+import useTheme from "@mui/material/styles/useTheme";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Rating from "@mui/material/Rating";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
 import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
@@ -15,7 +12,7 @@ import { LocalUserContext } from "./LocalUserContext";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { Fire, Heart } from "phosphor-react";
+import { Heart } from "phosphor-react";
 import {
   GetPaginatedReviewsFromFirestore,
   PopulateReviewsFromFirestore,

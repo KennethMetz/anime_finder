@@ -9,14 +9,13 @@ import { LocalUserContext } from "./LocalUserContext";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { Button, Container, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
 
-import { SaveToFirestore } from "./Firestore";
 import OnboardingButton from "./OnboardingButton";
 import OnboardingAnimeGrid from "./OnboardingAnimeGrid";
 import OnboardingHeader from "./OnboardingHeader";
-import BreathingLogo from "./BreathingLogo";
 import CowboyBebop from "../Styles/images/onboarding/cowboybebop.jpg";
 import AttackOnTitan from "../Styles/images/onboarding/attackontitan.jpg";
 import Gintama from "../Styles/images/onboarding/gintama.jpg";

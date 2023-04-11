@@ -1,6 +1,9 @@
 import "../Styles/Profile.css";
 
-import { Container, Grid, useMediaQuery, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
 import { matchPath, useLocation, useParams } from "react-router-dom";
 import ProfileListPage from "./ProfileListPage";
 import ProfileMainPage from "./ProfileMainPage";

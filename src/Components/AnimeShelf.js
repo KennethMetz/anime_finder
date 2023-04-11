@@ -1,12 +1,11 @@
-import {
-  Box,
-  Grid,
-  IconButton,
-  Paper,
-  Skeleton,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Skeleton from "@mui/material/Skeleton";
+import Paper from "@mui/material/Paper";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
+
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";

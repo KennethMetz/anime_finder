@@ -1,3 +1,5 @@
+import "../Styles/Reset.css";
+
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -7,17 +9,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import "../Styles/Reset.css";
-import {
-  Button,
-  Container,
-  Dialog,
-  Divider,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
+
 import logo from "../Styles/images/logo.svg";
+
+import Container from "@mui/material/Container";
+import Dialog from "@mui/material/Dialog";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function Reset() {
   const [email, setEmail] = useState("");

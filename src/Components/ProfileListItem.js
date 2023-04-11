@@ -1,12 +1,11 @@
-import {
-  Box,
-  IconButton,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Tooltip,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import IconButton from "@mui/material/IconButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Tooltip from "@mui/material/Tooltip";
+
 import { X } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 

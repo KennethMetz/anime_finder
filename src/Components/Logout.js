@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Grid, Typography } from "@mui/material";
-import logo from "../Styles/images/logo.svg";
 import spike from "../Styles/images/spike-tile.png";
-import { useTheme } from "@mui/material/styles";
-import { Box } from "@mui/system";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
+
 import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function Logout() {
