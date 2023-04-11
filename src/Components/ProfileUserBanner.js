@@ -68,7 +68,7 @@ export default function ProfileUserBanner() {
 
         <ListItemText
           sx={{ ml: 1 }}
-          primary={profile?.name ?? "Guest"}
+          primary={profile?.name}
           primaryTypographyProps={{
             fontFamily: "interBlack",
             fontSize: { xs: "1.66rem", md: "2.5rem" },

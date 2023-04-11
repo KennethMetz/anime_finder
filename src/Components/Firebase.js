@@ -195,7 +195,7 @@ export const logInAnon = async () => {
           doc(db, "users", user.uid),
           {
             uid: user.uid,
-            name: "guest",
+            name: "Guest",
             authProvider: "anonymous",
           },
           { merge: true }
@@ -205,7 +205,7 @@ export const logInAnon = async () => {
           doc(db, "users", user.uid),
           {
             uid: user.uid,
-            name: "guest",
+            name: "Guest",
             authProvider: "anonymous",
           },
           { merge: true }

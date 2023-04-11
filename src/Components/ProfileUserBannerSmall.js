@@ -31,7 +31,7 @@ export default function ProfileUserBannerSmall() {
           src={avatarSrc}
         />
         <ListItemText
-          primary={profile?.name ?? "Guest"}
+          primary={profile?.name}
           primaryTypographyProps={{
             fontFamily: "interSemiBold",
             fontSize: "1.125rem",
