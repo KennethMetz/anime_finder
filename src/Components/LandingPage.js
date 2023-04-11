@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import AnimeMosaic from "../Styles/images/animeMosaic2.opt.jpg";
 import BlackBackground from "../Styles/images/BlackBackground.svg";
 import BlackSunburst from "../Styles/images/BlackSunburst.svg";
-import EdwardGIF from "../Styles/images/edwardGIF.gif";
+import EdwardGIF from "../Styles/images/edwardGIF.mp4";
 import BebopCrew from "../Styles/images/BebopCrew.opt.jpg";
 import SpikeAndJet from "../Styles/images/spikeAndJet.opt.jpg";
 import { MagnifyingGlass, ShareNetwork, User } from "phosphor-react";
@@ -188,13 +188,34 @@ export default function LandingPage() {
                 style={{
                   maxWidth: "350px",
                   height: "245px",
-                  backgroundImage: `url(${EdwardGIF})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
                   borderTopLeftRadius: "24px",
                   borderTopRightRadius: "24px",
+                  position: "relative",
                 }}
-              ></div>
+              >
+                <div
+                  style={{
+                    borderTopLeftRadius: "24px",
+                    borderTopRightRadius: "24px",
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                  }}
+                >
+                  <video
+                    style={{}}
+                    loop
+                    autoplay="autoplay"
+                    muted
+                    src={EdwardGIF}
+                  />
+                </div>
+              </div>
               <div
                 style={{
                   display: "flex",
