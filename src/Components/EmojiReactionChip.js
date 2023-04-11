@@ -1,5 +1,6 @@
-import { Chip, useTheme } from "@mui/material";
-import { HandsClapping } from "phosphor-react";
+import Chip from "@mui/material/Chip";
+import useTheme from "@mui/material/styles/useTheme";
+
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";

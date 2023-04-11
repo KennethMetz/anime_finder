@@ -1,6 +1,7 @@
 import "../Styles/App.css";
 
-import { Container, Button } from "@mui/material";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
@@ -9,7 +10,7 @@ import { auth } from "./Firebase";
 import { PopulateFromFirestore } from "./Firestore";
 import AnimeGrid from "./AnimeGrid";
 import ShelfTitle from "./ShelfTitle";
-import { Stack } from "@mui/system";
+import Stack from "@mui/material/Stack";
 import AnimeShelf from "./AnimeShelf";
 import {
   useAnimeHR,

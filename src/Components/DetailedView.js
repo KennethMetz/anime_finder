@@ -1,20 +1,13 @@
-import {
-  alpha,
-  Box,
-  Button,
-  Chip,
-  Container,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  NativeSelect,
-  Select,
-  Tooltip,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import alpha from "@mui/material/styles/getOverlayAlpha";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import useTheme from "@mui/material/styles/useTheme";
 import { CaretDown, Minus, Play, Plus } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";

@@ -1,4 +1,6 @@
-import { Typography, Button, Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+
 import { useState } from "react";
 import { CaretDown } from "phosphor-react";
 

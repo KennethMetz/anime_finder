@@ -1,4 +1,5 @@
-import { Container, useTheme } from "@mui/material";
+import Container from "@mui/material/Container";
+import useTheme from "@mui/material/styles/useTheme";
 import GenreChips from "./GenreChips";
 
 export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {

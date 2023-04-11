@@ -1,4 +1,8 @@
-import { Box, Button, Grid, Skeleton } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Skeleton from "@mui/material/Skeleton";
+
 import { CaretDown } from "phosphor-react";
 import { useEffect, useState } from "react";
 import AnimeCard from "./AnimeCard";

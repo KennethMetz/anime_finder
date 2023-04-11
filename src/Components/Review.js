@@ -1,16 +1,12 @@
-import {
-  Avatar,
-  Box,
-  Chip,
-  Divider,
-  Grid,
-  IconButton,
-  Paper,
-  Rating,
-  Tooltip,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Rating from "@mui/material/Rating";
+import useTheme from "@mui/material/styles/useTheme";
 import { useConfirm } from "material-ui-confirm";
 import format from "date-fns/format";
 import fromUnixTime from "date-fns/fromUnixTime";

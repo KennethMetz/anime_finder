@@ -1,20 +1,18 @@
 import "../Styles/App.css";
 
-import { Autocomplete, TextField, Grid } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
-import { Link } from "react-router-dom";
 import * as React from "react";
 
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 
 import Emoji from "./Emoji";
-import { User } from "firebase/auth";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { FirebaseError } from "firebase/app";
-import { flushSync } from "react-dom";
+
 import { GenericList } from "./GenericList";
 
 function App() {

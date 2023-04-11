@@ -1,11 +1,9 @@
-import {
-  Avatar,
-  IconButton,
-  ListItemButton,
-  ListItemText,
-  Tooltip,
-} from "@mui/material";
-import { Box } from "@mui/system";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
 import { Camera, X } from "phosphor-react";
 import { useContext, useMemo, useState } from "react";
 import { getAvatarSrc } from "./Avatars";

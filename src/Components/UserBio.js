@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
-
-import { Box } from "@mui/system";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import ProfilePageContext from "./ProfilePageContext";
 
 export default function UserBio() {

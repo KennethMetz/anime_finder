@@ -1,4 +1,5 @@
-import { Grid, Skeleton } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function ProfileMainPageGhost() {
   return (

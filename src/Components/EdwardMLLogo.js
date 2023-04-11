@@ -1,6 +1,6 @@
 import logo from "../Styles/images/logo.svg";
-import { useTheme } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import useTheme from "@mui/material/styles/useTheme";
+import Box from "@mui/material/Box";
 
 export default function EdwardMLLogo() {
   const theme = useTheme();

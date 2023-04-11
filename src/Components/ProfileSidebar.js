@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
+
 import { ArrowRight } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import UserBio from "./UserBio";

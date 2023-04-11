@@ -1,13 +1,14 @@
 import "../Styles/Header.css";
 
 import { Link } from "react-router-dom";
-import { Container, Grid } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 
 import { useState } from "react";
 import TitleAutocomplete from "./TitleAutocomplete";
 import { MagnifyingGlass, House, User } from "phosphor-react";
 import DropMenu from "./DropMenu";
-import { useTheme } from "@mui/material/styles";
+import useTheme from "@mui/material/styles/useTheme";
 import EdwardMLLogo from "./EdwardMLLogo";
 import HeaderTab from "./HeaderTab";
 import { useAuthState } from "react-firebase-hooks/auth";

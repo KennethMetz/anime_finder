@@ -1,4 +1,7 @@
-import { Avatar, Box, ListItemText } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
+
 import { useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { getAvatarSrc } from "./Avatars";

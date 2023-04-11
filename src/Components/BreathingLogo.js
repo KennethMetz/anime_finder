@@ -1,7 +1,6 @@
 /* eslint-disable */
 
-import { Container, Grid } from "@mui/material";
-import { Box, flexbox } from "@mui/system";
+import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { ReactComponent as SVG } from "../Styles/images/EdwardLogoAnimation.svg";
 

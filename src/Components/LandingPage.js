@@ -1,8 +1,13 @@
 import "../Styles/LandingPage.css";
 
-import { useTheme } from "@mui/material";
-import { Box, Button, Grid, Icon, Paper, Typography } from "@mui/material";
-import { Container } from "@mui/system";
+import useTheme from "@mui/material/styles/useTheme";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Icon from "@mui/material/Icon";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import AnimeMosaic from "../Styles/images/animeMosaic2.opt.jpg";
 import BlackBackground from "../Styles/images/BlackBackground.svg";

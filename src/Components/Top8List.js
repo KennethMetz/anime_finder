@@ -1,11 +1,9 @@
-import {
-  IconButton,
-  ListItemAvatar,
-  ListItemButton,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { Box } from "@mui/system";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import IconButton from "@mui/material/IconButton";
+import ListItemButton from "@mui/material/ListItemButton";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import useTheme from "@mui/material/styles/useTheme";
 import { X } from "phosphor-react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";

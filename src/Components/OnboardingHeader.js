@@ -1,5 +1,7 @@
-import { Box, Button, Grid, useTheme } from "@mui/material";
-import { Container } from "@mui/system";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import useTheme from "@mui/material/styles/useTheme";
 import { Link } from "react-router-dom";
 import logo from "../Styles/images/logo.svg";
 

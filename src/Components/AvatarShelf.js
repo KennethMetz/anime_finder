@@ -1,13 +1,10 @@
-import {
-  Box,
-  Grid,
-  IconButton,
-  Paper,
-  Skeleton,
-  Stack,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
+
 import { CaretLeft, CaretRight } from "phosphor-react";
 import { useState } from "react";
 import AvatarIcon from "./AvatarIcon";
