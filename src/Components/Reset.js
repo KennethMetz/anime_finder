@@ -18,6 +18,7 @@ import {
   useTheme,
 } from "@mui/material";
 import logo from "../Styles/images/logo.svg";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function Reset() {
   const [email, setEmail] = useState("");
@@ -90,26 +91,7 @@ export default function Reset() {
         </Dialog>
         <div className="welcomeBanner">
           <Link to="/home">
-            <img src={logo} alt="" className="welcomeLogo" />
-          </Link>
-          <Link to="/home">
-            <div className="welcomeTextBlock">
-              <h1
-                className="welcomeTitle"
-                style={{
-                  color: theme.palette.text.primary,
-                  paddingLeft: "10px",
-                }}
-              >
-                Edward
-              </h1>
-              <h1
-                className="welcomeTitle"
-                style={{ color: theme.palette.primary.main }}
-              >
-                ML
-              </h1>
-            </div>
+            <EdwardMLLogo />
           </Link>
         </div>
         <h4 className="H4" style={{ textAlign: "center" }}>
