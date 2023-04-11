@@ -40,7 +40,7 @@ export default function Top8List() {
           pt: 1,
           pb: 2,
           mt: 3,
-          background: theme.palette.custom.top8Bg,
+          background: theme.palette.custom.gradientCardBg,
         }}
       >
         <Typography
