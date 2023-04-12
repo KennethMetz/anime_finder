@@ -9,7 +9,7 @@ import { auth } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
 import { getAvatarSrc } from "./Avatars";
 
-export default function AvatarIcon({ avatar, index }) {
+export default function AvatarIcon({ avatar }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user, loading, error] = useAuthState(auth);
   const theme = useTheme();
@@ -25,7 +25,6 @@ export default function AvatarIcon({ avatar, index }) {
 
   return (
     <IconButton
-      key={index}
       onClick={(e) => {
         selectAvatar(avatar);
       }}
@@ -40,7 +39,14 @@ export default function AvatarIcon({ avatar, index }) {
         },
       }}
     >
-      <Avatar sx={{ width: "80px", height: "80px" }} src={avatarSrc}></Avatar>
+      <Avatar
+        sx={{
+          width: "80px",
+          height: "80px",
+          backgroundColor: theme.palette.divider,
+        }}
+        src={avatarSrc}
+      ></Avatar>
     </IconButton>
   );
 }

@@ -85,6 +85,7 @@ export default function AvatarShelf({ items }) {
       <Grid container spacing={2} columns={columns}>
         {currentItems.map((avatar, index) => (
           <AvatarIcon
+            key={avatar}
             avatar={avatar}
             onChangeSelected={(v) => onChangeSelected(index, v)}
           />
