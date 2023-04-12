@@ -9,13 +9,16 @@ import Tooltip from "@mui/material/Tooltip";
 import { X } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfileListItem({ item, canEdit, onRemove }) {
+export default function ProfileListItem({ item, canEdit, onRemove, provided }) {
   const navigate = useNavigate();
 
   return (
     <ListItem
       disablePadding={true}
       disableGutters={true}
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
       secondaryAction={
         canEdit && (
           <Tooltip title="Remove item">
