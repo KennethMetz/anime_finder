@@ -88,12 +88,7 @@ export default function Top8List() {
                               : "4px 1rem 4px 1rem",
                           }}
                           onClick={(e) => {
-                            console.log(e.target);
-                            console.log(e.currentTarget);
-
-                            if (e.target === e.currentTarget) {
-                              navigate(`/anime/${item.id}`);
-                            }
+                            navigate(`/anime/${item.id}`);
                           }}
                         >
                           <ListItemAvatar
