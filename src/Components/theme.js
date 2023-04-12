@@ -113,5 +113,8 @@ export function createAppTheme(darkMode) {
         ],
       },
     },
+    typography: {
+      fontFamily: ["Helvetica", "Arial", "sans-serif"],
+    },
   });
 }
