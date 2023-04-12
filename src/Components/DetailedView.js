@@ -255,7 +255,7 @@ export default function DetailedView() {
               item
               xs={12}
               sx={{
-                padding: "32px 32px",
+                padding: { xs: 2, md: 3 },
                 background: theme.palette.custom.gradientCardBg,
                 borderRadius: "16px",
               }}
