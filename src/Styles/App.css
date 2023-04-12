@@ -33,6 +33,7 @@
   font-family: montserratBold;
   src: url(./Montserrat-Bold.ttf);
 }
+
 /* GLOBAL FONTS DO NOT DELETE */
 
 .App-header {
@@ -150,7 +151,7 @@ css-1cfh48w-MuiGrid-root {
 }
 
 h4 {
-  font-family: interExtraBold, Arial, Helvetica, sans-serif;
+  font-family: interExtraBold;
   font-size: 1.5rem;
   text-align: left;
 }
