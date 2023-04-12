@@ -1,37 +1,37 @@
 /* GLOBAL FONTS DO NOT DELETE */
 @font-face {
   font-family: interExtraBold;
-  src: url(./Inter-ExtraBold.ttf);
+  src: url(./Inter-ExtraBold.woff) format("woff");
 }
 
 @font-face {
   font-family: interSemiBold;
-  src: url(./Inter-SemiBold.ttf);
+  src: url(./Inter-SemiBold.woff) format("woff");
 }
 
 @font-face {
   font-family: interMedium;
-  src: url(./Inter-Medium.ttf);
+  src: url(./Inter-Medium.woff) format("woff");
 }
 
 @font-face {
   font-family: interBlack;
-  src: url(./Inter-Black.ttf);
+  src: url(./Inter-Black.woff) format("woff");
 }
 
 @font-face {
   font-family: montserrat;
-  src: url(./Montserrat-Black.ttf);
+  src: url(./Montserrat-Black.woff) format("woff");
 }
 
 @font-face {
   font-family: montserratExtraBold;
-  src: url(./Montserrat-ExtraBold.ttf);
+  src: url(./Montserrat-ExtraBold.woff) format("woff");
 }
 
 @font-face {
   font-family: montserratBold;
-  src: url(./Montserrat-Bold.ttf);
+  src: url(./Montserrat-Bold.woff) format("woff");
 }
 /* GLOBAL FONTS DO NOT DELETE */
 
