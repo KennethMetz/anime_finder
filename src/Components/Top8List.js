@@ -7,7 +7,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import { X } from "phosphor-react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import NoResultsImage from "./NoResultsImage";
 import ProfilePageContext from "./ProfilePageContext";
 
@@ -88,12 +88,7 @@ export default function Top8List() {
                               : "4px 1rem 4px 1rem",
                           }}
                           onClick={(e) => {
-                            console.log(e.target);
-                            console.log(e.currentTarget);
-
-                            if (e.target === e.currentTarget) {
-                              navigate(`/anime/${item.id}`);
-                            }
+                            if (e.key !== " ") navigate(`/anime/${item.id}`);
                           }}
                         >
                           <ListItemAvatar
