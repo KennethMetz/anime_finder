@@ -3,8 +3,10 @@ import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Icon from "@mui/material/Icon";
+
 import useTheme from "@mui/material/styles/useTheme";
-import { X } from "phosphor-react";
+import { X, List } from "phosphor-react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
@@ -73,68 +75,90 @@ export default function Top8List() {
                     >
                       {(provided) => (
                         <ListItemButton
-                          disableRipple
                           variant="X"
                           className="invisibleX"
                           aria-label={item.display_name}
                           disableGutters={true}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
                           sx={{
                             position: "relative",
                             padding: isOwnProfile
-                              ? "4px 40px 4px 1rem"
+                              ? "4px 4px 4px 1rem"
                               : "4px 1rem 4px 1rem",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
                           }}
                           onClick={(e) => {
-                            if (e.key !== " ") navigate(`/anime/${item.id}`);
+                            navigate(`/anime/${item.id}`);
                           }}
                         >
-                          <ListItemAvatar
-                            sx={{ display: "flex", alignItems: "center" }}
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
                           >
-                            <Box
-                              component="img"
-                              alt={item.display_name}
-                              src={item.image_large ?? item.image_small}
+                            {" "}
+                            <ListItemAvatar
+                              sx={{ display: "flex", alignItems: "center" }}
+                            >
+                              <Box
+                                component="img"
+                                alt={item.display_name}
+                                src={item.image_large ?? item.image_small}
+                                sx={{
+                                  height: "56px",
+                                  borderRadius: "8px",
+                                  cursor: "pointer",
+                                }}
+                              ></Box>
+                            </ListItemAvatar>
+                            <Typography
                               sx={{
-                                height: "56px",
-                                borderRadius: "8px",
+                                fontFamily: "interMedium",
+                                fontSize: "1rem",
                                 cursor: "pointer",
-                              }}
-                            ></Box>
-                          </ListItemAvatar>
-
-                          <Typography
-                            sx={{
-                              fontFamily: "interMedium",
-                              fontSize: "1rem",
-                              cursor: "pointer",
-                              lineHeight: "1.5",
-                              maxHeight: "2.625rem",
-                              overflow: "hidden",
-                            }}
-                          >
-                            {item.display_name}
-                          </Typography>
-
-                          {isOwnProfile && (
-                            <IconButton
-                              size="small"
-                              sx={{
-                                position: "absolute",
-                                right: "4px",
-                              }}
-                              aria-label="delete"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                onRemoveItem(index);
+                                lineHeight: "1.5",
+                                maxHeight: "2.625rem",
+                                overflow: "hidden",
                               }}
                             >
-                              <X />
-                            </IconButton>
-                          )}
+                              {item.display_name}
+                            </Typography>
+                          </div>
+                          <div
+                            style={{ display: "flex" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            {isOwnProfile && (
+                              <IconButton
+                                size="small"
+                                sx={{}}
+                                aria-label="delete"
+                                onClick={(e) => {
+                                  onRemoveItem(index);
+                                }}
+                              >
+                                <X size={24} />
+                              </IconButton>
+                            )}
+                            {isOwnProfile && (
+                              <Icon
+                                tabIndex={0}
+                                sx={{
+                                  width: "34px",
+                                  height: "34px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  padding: "5px",
+                                }}
+                                {...provided.dragHandleProps}
+                              >
+                                <List />
+                              </Icon>
+                            )}
+                          </div>
                         </ListItemButton>
                       )}
                     </Draggable>
