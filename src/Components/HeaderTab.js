@@ -64,7 +64,7 @@ export default function HeaderTab({
   return (
     <Link to={path} onKeyDown={onKeyDown}>
       {smallDevice ? (
-        <IconButton tabIndex="-1" sx={iconStyle} onClick={internalOnClick}>
+        <IconButton tabIndex={-1} sx={iconStyle} onClick={internalOnClick}>
           {icon}
         </IconButton>
       ) : (
