@@ -9,9 +9,19 @@ import Tooltip from "@mui/material/Tooltip";
 
 import { List, X } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import useTheme from "@mui/material/styles/useTheme";
 
-export default function ProfileListItem({ item, canEdit, onRemove, provided }) {
+export default function ProfileListItem({
+  item,
+  canEdit,
+  onRemove,
+  provided,
+  index,
+}) {
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const theme = useTheme();
 
   return (
     <ListItem
@@ -24,6 +34,21 @@ export default function ProfileListItem({ item, canEdit, onRemove, provided }) {
         sx={{ padding: 0 }}
         onClick={(e) => {
           navigate(`/anime/${item.id}`, { state: item });
+        }}
+        onMouseEnter={(e) => {
+          setVisible(index);
+        }}
+        onDrag={(e) => {
+          setVisible(false);
+        }}
+        onMouseLeave={(e) => {
+          setVisible(false);
+        }}
+        onFocus={(e) => {
+          setVisible(index);
+        }}
+        onBlur={(e) => {
+          setVisible(false);
         }}
       >
         <ListItemAvatar>
@@ -50,6 +75,13 @@ export default function ProfileListItem({ item, canEdit, onRemove, provided }) {
               <IconButton
                 edge="end"
                 aria-label="delete"
+                tabIndex={canEdit && visible === index ? 0 : -1}
+                sx={{
+                  color:
+                    canEdit && visible === index
+                      ? "inherit"
+                      : theme.palette.background.default,
+                }}
                 disabled={!onRemove}
                 onClick={() => {
                   onRemove();

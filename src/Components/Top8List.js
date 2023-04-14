@@ -7,7 +7,7 @@ import Icon from "@mui/material/Icon";
 
 import useTheme from "@mui/material/styles/useTheme";
 import { X, List } from "phosphor-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import NoResultsImage from "./NoResultsImage";
@@ -17,6 +17,8 @@ export default function Top8List() {
   const { profile, isOwnProfile, updateTop8 } = useContext(ProfilePageContext);
   const navigate = useNavigate();
   const theme = useTheme();
+
+  const [visible, setVisible] = useState(false);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
@@ -93,6 +95,21 @@ export default function Top8List() {
                           onClick={(e) => {
                             navigate(`/anime/${item.id}`);
                           }}
+                          onMouseEnter={(e) => {
+                            setVisible(index);
+                          }}
+                          onDrag={(e) => {
+                            setVisible(false);
+                          }}
+                          onMouseLeave={(e) => {
+                            setVisible(false);
+                          }}
+                          onFocus={(e) => {
+                            setVisible(index);
+                          }}
+                          onBlur={(e) => {
+                            setVisible(false);
+                          }}
                         >
                           <div
                             style={{ display: "flex", alignItems: "center" }}
@@ -134,7 +151,13 @@ export default function Top8List() {
                             {isOwnProfile && (
                               <IconButton
                                 size="small"
-                                sx={{}}
+                                tabIndex={isOwnProfile ? 0 : -1}
+                                sx={{
+                                  zIndex:
+                                    isOwnProfile && visible === index
+                                      ? "1"
+                                      : "-1",
+                                }}
                                 aria-label="delete"
                                 onClick={(e) => {
                                   onRemoveItem(index);
