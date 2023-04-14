@@ -55,6 +55,12 @@ export default function ProfilePageContextProvider({ userId, children }) {
       const newLocalUser = { ...localUser, top8 };
       save(newLocalUser);
     },
+    updateListDesc: (desc, index) => {
+      throwIfNotOwner();
+      const newLocalUser = { ...localUser };
+      newLocalUser.lists[index].desc = desc;
+      save(newLocalUser);
+    },
   };
 
   const throwIfNotOwner = () => {

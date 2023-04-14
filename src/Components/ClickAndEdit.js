@@ -1,46 +1,35 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import ProfilePageContext from "./ProfilePageContext";
 
-export default function UserBio() {
-  const { profile, isOwnProfile, updateBio } = useContext(ProfilePageContext);
+export default function ClickAndEdit({ data, canEdit, update, index, ml }) {
+  const [editDesc, setEditDesc] = useState(false);
+  const [editedDesc, setEditedDesc] = useState(data);
 
-  const [editBio, setEditBio] = useState(false);
-  const [editedBio, setEditedBio] = useState(profile?.bio);
-
-  function saveBio() {
-    updateBio(editedBio);
+  function saveDesc() {
+    update(editedDesc, index);
   }
 
-  function handleBioToggle() {
-    setEditBio(!editBio);
+  function handleDescToggle() {
+    setEditDesc(!editDesc);
   }
 
   return (
     <div>
-      <Typography
-        sx={{ fontFamily: "interBlack", fontSize: "1.375rem", mt: 3 }}
-      >
-        Bio
-      </Typography>
-      {!editBio ? (
+      {!editDesc ? (
         <Box
           sx={{
             fontFamily: "interMedium",
             fontSize: "1rem",
-            pt: 1,
             pb: 1,
             pl: 0,
-            cursor: isOwnProfile ? "pointer" : "unset",
+            ml: ml ? 6 : 0,
+            cursor: canEdit ? "pointer" : "unset",
           }}
-          onClick={isOwnProfile ? handleBioToggle : undefined}
+          onClick={canEdit ? handleDescToggle : undefined}
         >
-          {profile?.bio?.length > 0
-            ? profile?.bio
-            : "Tell us a bit about yourself..."}
+          {data?.length > 0 ? data : "Tell us a bit about this list..."}
         </Box>
       ) : (
         <div
@@ -51,19 +40,19 @@ export default function UserBio() {
           }}
         >
           <TextField
-            name="bio"
-            id="bio"
+            name="Desc"
+            id="Desc"
             size="small"
             variant="filled"
             autoComplete="off"
             color="text"
-            placeholder="Tell us a bit about yourself..."
+            placeholder="Tell us a bit about this list..."
             autoFocus
             multiline
-            value={editedBio}
+            value={editedDesc}
             onClick={(e) => e.preventDefault()}
             onChange={(e) => {
-              setEditedBio(e.target.value);
+              setEditedDesc(e.target.value);
             }}
             sx={{ width: "100%", mb: 2 }}
             InputProps={{
@@ -76,13 +65,12 @@ export default function UserBio() {
             size="small"
             variant="outlined"
             color="inherit"
-            sx={{ width: "84px" }}
             onClick={(e) => {
-              saveBio();
-              handleBioToggle();
+              saveDesc();
+              handleDescToggle();
             }}
           >
-            Save Bio
+            Save
           </Button>
         </div>
       )}
