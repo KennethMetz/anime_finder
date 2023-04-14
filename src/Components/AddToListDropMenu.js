@@ -39,6 +39,7 @@ export default function AddToListDropMenu({ anime, variant }) {
 
   const [newList, setNewList] = React.useState(false);
   let [name, setName] = React.useState("");
+  let [desc, setDesc] = React.useState("");
 
   let listNames = localUser?.lists?.map((x) => x.name);
 
@@ -91,8 +92,8 @@ export default function AddToListDropMenu({ anime, variant }) {
   const createNewList = () => {
     let temp = { ...localUser };
     !temp.lists
-      ? (temp.lists = [{ name: name, anime: [] }])
-      : (temp.lists = [...temp.lists, { name: name, anime: [] }]);
+      ? (temp.lists = [{ name: name, anime: [], desc: desc }])
+      : (temp.lists = [...temp.lists, { name: name, anime: [], desc: desc }]);
     setLocalUser(temp);
     SaveToFirestore(user, temp);
     setName("");
@@ -268,6 +269,23 @@ export default function AddToListDropMenu({ anime, variant }) {
                         }}
                         onChange={(e) => {
                           setName(e.target.value);
+                        }}
+                      />{" "}
+                      <TextField
+                        label="Decription"
+                        name="desc"
+                        id="desc"
+                        variant="filled"
+                        autoComplete="off"
+                        required
+                        color="text"
+                        value={desc}
+                        sx={{
+                          minWidth: "200px",
+                          margin: "15px 25px 15px 25px",
+                        }}
+                        onChange={(e) => {
+                          setDesc(e.target.value);
                         }}
                       />{" "}
                       <div
