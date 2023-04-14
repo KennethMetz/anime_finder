@@ -14,6 +14,7 @@ import ProfileListItem from "./ProfileListItem";
 import ProfileListPageGhost from "./ProfileListPageGhost";
 import ProfileListSuggestions from "./ProfileListSuggestions";
 import ProfilePageContext from "./ProfilePageContext";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -88,6 +89,20 @@ export default function ProfileListPage() {
     });
   };
 
+  // Saves reordered list for drag-and-drop functionality
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+    console.log(result.source.index);
+    console.log(result.destination.index);
+
+    const newItems = [...items];
+    const reorderedItem = newItems.splice(result.source.index, 1);
+    console.log(reorderedItem);
+    newItems.splice(result.destination.index, 0, reorderedItem[0]);
+    console.log(newItems);
+    updateFn(newItems);
+  }
+
   const headStyle = {
     fontFamily: "interBlack",
     fontSize: { xs: "1.66rem", md: "2.5rem" },
@@ -137,16 +152,33 @@ export default function ProfileListPage() {
 
       {/* Items */}
       {items?.length > 0 ? (
-        <List>
-          {items.map((animeItem, animeIndex) => (
-            <ProfileListItem
-              key={animeItem.id}
-              item={animeItem}
-              canEdit={canEdit}
-              onRemove={() => onRemove(animeIndex)}
-            />
-          ))}
-        </List>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="watchlist">
+            {(provided) => (
+              <List {...provided.droppableProps} ref={provided.innerRef}>
+                {items.map((animeItem, animeIndex) => (
+                  <Draggable
+                    key={animeItem.id}
+                    draggableId={animeItem.display_name}
+                    index={animeIndex}
+                    isDragDisabled={!isOwnProfile}
+                  >
+                    {(provided) => (
+                      <ProfileListItem
+                        key={animeItem.id}
+                        item={animeItem}
+                        canEdit={canEdit}
+                        onRemove={() => onRemove(animeIndex)}
+                        provided={provided}
+                      />
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </List>
+            )}
+          </Droppable>
+        </DragDropContext>
       ) : (
         <NoResultsImage />
       )}
