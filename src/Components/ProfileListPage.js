@@ -14,7 +14,7 @@ import ProfileListItem from "./ProfileListItem";
 import ProfileListPageGhost from "./ProfileListPageGhost";
 import ProfileListSuggestions from "./ProfileListSuggestions";
 import ProfilePageContext from "./ProfilePageContext";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();

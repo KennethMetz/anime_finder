@@ -5,7 +5,6 @@ import RouteSwitch from "./Components/RouteSwitch";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  //Enabling strict mode breaks the drag-and-drop functionality of react-beautiful-dnd
   <React.StrictMode>
     <RouteSwitch />
   </React.StrictMode>
