@@ -92,9 +92,7 @@ export default function AddToListDropMenu({ anime, variant }) {
       setOpen(false);
     }
   }
-  useEffect(() => {
-    console.log(privateList);
-  }, [privateList]);
+
   //Creates new EMPTY watchlist
   const createNewList = () => {
     let temp = { ...localUser };
