@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import alpha from "@mui/material/styles/getOverlayAlpha";
+import { alpha } from "@mui/system/colorManipulator";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import useTheme from "@mui/material/styles/useTheme";
