@@ -318,7 +318,7 @@ export default function AddToListDropMenu({ anime, variant }) {
                       color="inherit"
                       variant="text"
                       onClick={(e) => {
-                        navigate("/profile");
+                        navigate(`/profile/${user?.uid}`);
                       }}
                       sx={{
                         fontFamily: "interMedium",
