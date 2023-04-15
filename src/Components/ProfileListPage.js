@@ -39,6 +39,7 @@ export default function ProfileListPage() {
   if (isLoading) {
     return <ProfileListPageGhost />;
   }
+
   let items = [];
   let name = "";
   let updateFn;
@@ -63,7 +64,6 @@ export default function ProfileListPage() {
     deleteFn = () => deleteList(index);
     canDelete = true;
     showSuggestions = true;
-    console.log(list);
   }
 
   // Removes item at `index` from this list.
