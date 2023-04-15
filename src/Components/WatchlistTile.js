@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import alpha from "@mui/material/styles/getOverlayAlpha";
+import { alpha } from "@mui/system/colorManipulator";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 
