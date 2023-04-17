@@ -52,9 +52,6 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
 
-  //Extracts index from <ClickAndEdit/>
-  const onDescSave = (newDesc) => updateListDesc(newDesc, index);
-
   if (listId.toLowerCase() === "likes") {
     items = profile.likes;
     name = "Likes";
@@ -77,6 +74,9 @@ export default function ProfileListPage() {
     canDelete = true;
     showSuggestions = true;
   }
+
+  // Extracts index from <ClickAndEdit/>.
+  const onDescSave = (newDesc) => updateListDesc(newDesc, index);
 
   // Removes item at `index` from this list.
   const onRemove = (index) => {
@@ -167,6 +167,7 @@ export default function ProfileListPage() {
           canEdit={canEdit}
           onSave={onDescSave}
           ml={true}
+          placeholder={"Tell us a bit about this list..."}
         />
       )}
       {/* Items */}

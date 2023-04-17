@@ -2,8 +2,19 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import useTheme from "@mui/material/styles/useTheme";
 
-export default function ClickAndEdit({ data, canEdit, onSave, ml }) {
+export default function ClickAndEdit({
+  data,
+  placeholder,
+  canEdit,
+  onSave,
+  ml,
+}) {
+  placeholder = placeholder ?? "Enter some text...";
+
+  const theme = useTheme();
+
   const [editDesc, setEditDesc] = useState(false);
   const [editedDesc, setEditedDesc] = useState(data);
 
@@ -22,6 +33,7 @@ export default function ClickAndEdit({ data, canEdit, onSave, ml }) {
           sx={{
             fontFamily: "interMedium",
             fontSize: "1rem",
+            color: data?.length > 0 ? "unset" : theme.palette.text.secondary,
             pb: 1,
             pl: 0,
             ml: ml ? 6 : 0,
@@ -29,7 +41,7 @@ export default function ClickAndEdit({ data, canEdit, onSave, ml }) {
           }}
           onClick={canEdit ? handleDescToggle : undefined}
         >
-          {data?.length > 0 ? data : "Tell us a bit about this list..."}
+          {data?.length > 0 ? data : canEdit ? placeholder : ""}
         </Box>
       ) : (
         <div
@@ -46,7 +58,7 @@ export default function ClickAndEdit({ data, canEdit, onSave, ml }) {
             variant="filled"
             autoComplete="off"
             color="text"
-            placeholder="Tell us a bit about this list..."
+            placeholder={placeholder}
             autoFocus
             multiline
             value={editedDesc}
