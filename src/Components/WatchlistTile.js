@@ -47,7 +47,7 @@ export default function WatchlistTile({ userId, listId, name, items }) {
               marginLeft: "8px",
             }}
           >
-            {items?.length ?? "0"} {items?.length === 1 ? "video" : "videos"}
+            {items?.length ?? "0"} {items?.length === 1 ? "item" : "items"}
           </Typography>
         </Box>
         <Grid container columnSpacing={1}>
