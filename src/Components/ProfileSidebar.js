@@ -49,7 +49,8 @@ export default function ProfileSidebar({ hideDetails }) {
           <ClickAndEdit
             data={profile?.bio}
             canEdit={isOwnProfile}
-            update={updateBio}
+            onSave={updateBio}
+            placeholder={"Tell us a bit about yourself..."}
           />
 
           <Top8List />
