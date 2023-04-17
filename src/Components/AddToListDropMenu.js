@@ -25,10 +25,6 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AddButtonForTop8 from "./AddButtonForTop8";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Icon from "@mui/material/Icon";
-import FormGroup from "@mui/material/FormGroup";
 import { useContext, useEffect, useRef, useState } from "react";
 import { PrivacySwitch } from "./PrivacySwitch";
 
@@ -98,7 +94,8 @@ export default function AddToListDropMenu({ anime, variant }) {
   const createNewList = () => {
     let temp = { ...localUser };
     !temp.lists
-      ? (temp.lists = [{ name: name, anime: [], privateList: privateList, desc: desc }])
+      ? (temp.lists = [
+      { name: name, anime: [], privateList: privateList, desc: desc }])
       : (temp.lists = [
           ...temp.lists,
           { name: name, anime: [], privateList: privateList, desc: desc },
@@ -261,6 +258,15 @@ export default function AddToListDropMenu({ anime, variant }) {
                       onKeyDown={(e) => e.stopPropagation()}
                       style={{ display: "flex", flexDirection: "column" }}
                     >
+                      <ListItemText
+                        primary="New Watchlist"
+                        primaryTypographyProps={{
+                          fontSize: "1rem",
+                          fontFamily: "interExtraBold",
+                          mt: 1.5,
+                          textAlign: "center",
+                        }}
+                      />
                       <TextField
                         label="Name"
                         name="name"
@@ -268,8 +274,9 @@ export default function AddToListDropMenu({ anime, variant }) {
                         {...register("name")}
                         error={errors.name ? true : false}
                         helperText={errors.name?.message}
-                        variant="filled"
+                        variant="outlined"
                         autoComplete="off"
+                        autoFocus
                         required
                         color="text"
                         value={name}
@@ -282,12 +289,12 @@ export default function AddToListDropMenu({ anime, variant }) {
                         }}
                       />{" "}
                       <TextField
-                        label="Decription"
+                        label="Description"
                         name="desc"
                         id="desc"
-                        variant="filled"
+                        variant="outlined"
                         autoComplete="off"
-                        required
+
                         color="text"
                         value={desc}
                         sx={{
@@ -297,9 +304,8 @@ export default function AddToListDropMenu({ anime, variant }) {
                         onChange={(e) => {
                           setDesc(e.target.value);
                         }}
-                      />{" "}
-
                       />
+
                       <PrivacySwitch
                         privateList={privateList}
                         setPrivateList={setPrivateList}

@@ -10,6 +10,7 @@ export function PrivacySwitch({ privateList, setPrivateList }) {
       <FormControlLabel
         sx={{
           justifyContent: "center",
+          mb: 2,
         }}
         control={
           <Switch
