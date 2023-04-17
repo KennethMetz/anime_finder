@@ -6,7 +6,7 @@ This project provides anime recommendations based on a user's taste profile.
 
 ## GALLERY:
 
-![](EdsTour.gif)
+|<a href = "https://anime-finder-b3751.web.app/"><img src="EdwardMLLanding.gif" width="100%"></a>
 
 ## BACKGROUND:
 
