@@ -64,7 +64,7 @@ function Header() {
                 <HeaderTab
                   text="Profile"
                   icon={<User />}
-                  path={`/profile/${user.uid}`}
+                  path={`/profile/${user?.uid}`}
                 />
                 <HeaderTab
                   text="Search"

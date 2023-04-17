@@ -3,7 +3,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import { DotsThreeOutlineVertical, Share, Trash } from "phosphor-react";
+import { DotsThreeOutlineVertical, Link, Trash } from "phosphor-react";
 import IconButton from "@mui/material/IconButton";
 
 import ListItemButton from "@mui/material/ListItemButton";
@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { useEffect, useRef, useState } from "react";
 
-export default function ProfileListDropMenu({ userId, listId, onDelete }) {
+export default function ProfileListDropMenu({ onDelete }) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
@@ -109,7 +109,7 @@ export default function ProfileListDropMenu({ userId, listId, onDelete }) {
                     }}
                   >
                     <ListItemIcon>
-                      <Share size={24} />
+                      <Link size={24} />
                     </ListItemIcon>
                     <ListItemText
                       primary="Copy Link"

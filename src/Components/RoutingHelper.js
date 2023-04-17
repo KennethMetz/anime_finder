@@ -15,14 +15,7 @@ export const RoutingHelper = () => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const headerRoutes = [
-    "/home",
-    "/search",
-    "/profile/:userId",
-    "/profile/:userId/list/:listId",
-    "/sandbox",
-    "/anime/:animeId",
-  ];
+  const headerRoutes = ["/home", "/search", "/sandbox", "/anime/:animeId"];
   const noHeaderRoutes = [
     "/login",
     "/logout",
@@ -31,9 +24,14 @@ export const RoutingHelper = () => {
     "/reset",
     "/onboarding",
   ];
+  const shareableRoutes = [
+    " /profile/:userId",
+    "/profile/:userId/list/:listId",
+  ];
 
   let headerMatch = false;
   let noHeaderMatch = false;
+  let shareableMatch = false;
 
   headerMatch = headerRoutes.find((item) => {
     return matchPath({ path: item }, location.pathname);
@@ -43,9 +41,13 @@ export const RoutingHelper = () => {
     return matchPath({ path: item }, location.pathname);
   });
 
+  shareableMatch = shareableRoutes.find((item) => {
+    return matchPath({ path: item }, location.pathname);
+  });
+
   if (loading && !user) {
     return <BreathingLogo type={"fullPage"} />;
-  } else if (user && headerMatch) {
+  } else if ((user && headerMatch) || shareableMatch) {
     return (
       <>
         <Header />

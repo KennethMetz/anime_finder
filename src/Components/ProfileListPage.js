@@ -162,13 +162,7 @@ export default function ProfileListPage() {
             {getSubtitleText(typeName, items)}
           </Typography>
         </Box>
-        {canEdit && canDelete && (
-          <ProfileListDropMenu
-            userID={userId}
-            listID={listId}
-            onDelete={onDelete}
-          />
-        )}
+        {canEdit && canDelete && <ProfileListDropMenu onDelete={onDelete} />}
       </Box>
       {listHasDesc && (
         <ClickAndEdit
