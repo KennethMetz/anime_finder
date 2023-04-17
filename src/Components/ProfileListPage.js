@@ -16,6 +16,7 @@ import ProfileListSuggestions from "./ProfileListSuggestions";
 import ProfilePageContext from "./ProfilePageContext";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import ClickAndEdit from "./ClickAndEdit";
+import ProfileListDropMenu from "./ProfileListDropMenu";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -162,17 +163,11 @@ export default function ProfileListPage() {
           </Typography>
         </Box>
         {canEdit && canDelete && (
-          <Tooltip title="Delete list">
-            <IconButton
-              size="large"
-              variant="contained"
-              color="inherit"
-              sx={{ marginLeft: "0.75rem" }}
-              onClick={onDelete}
-            >
-              <X />
-            </IconButton>
-          </Tooltip>
+          <ProfileListDropMenu
+            userID={userId}
+            listID={listId}
+            onDelete={onDelete}
+          />
         )}
       </Box>
       {listHasDesc && (
