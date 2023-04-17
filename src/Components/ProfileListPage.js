@@ -15,6 +15,7 @@ import ProfileListPageGhost from "./ProfileListPageGhost";
 import ProfileListSuggestions from "./ProfileListSuggestions";
 import ProfilePageContext from "./ProfilePageContext";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import ClickAndEdit from "./ClickAndEdit";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function ProfileListPage() {
     updateDislikes,
     updateList,
     deleteList,
+    updateListDesc,
   } = useContext(ProfilePageContext);
 
   const params = useParams();
@@ -42,10 +44,16 @@ export default function ProfileListPage() {
 
   let items = [];
   let name = "";
+  let desc = "";
+  let index = null;
   let updateFn;
   let deleteFn;
   let canDelete = false;
+  let listHasDesc = false;
   let showSuggestions = false;
+
+  //Extracts index from <ClickAndEdit/>
+  const onDescSave = (newDesc) => updateListDesc(newDesc, index);
 
   if (listId.toLowerCase() === "likes") {
     items = profile.likes;
@@ -56,11 +64,15 @@ export default function ProfileListPage() {
     name = "Dislikes";
     updateFn = (newItems) => updateDislikes(newItems);
   } else if (findListWithSlug(profile.lists, listId)) {
+    listHasDesc = true;
     const list = findListWithSlug(profile.lists, listId);
-    const index = profile.lists.indexOf(list);
+    console.log(list);
+    index = profile.lists.indexOf(list);
     items = list.anime;
     name = list.name;
-    updateFn = (newItems) => updateList(index, { ...list, anime: newItems });
+    desc = list.desc;
+    updateFn = (newItems) =>
+      updateList(index, { ...list, anime: newItems, desc: desc });
     deleteFn = () => deleteList(index);
     canDelete = true;
     showSuggestions = true;
@@ -149,7 +161,14 @@ export default function ProfileListPage() {
           </Tooltip>
         )}
       </Box>
-
+      {listHasDesc && (
+        <ClickAndEdit
+          data={desc}
+          canEdit={canEdit}
+          onSave={onDescSave}
+          ml={true}
+        />
+      )}
       {/* Items */}
       {items?.length > 0 ? (
         <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -183,7 +202,6 @@ export default function ProfileListPage() {
       ) : (
         <NoResultsImage />
       )}
-
       {/*Suggestions*/}
       {showSuggestions && (
         <>

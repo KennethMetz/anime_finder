@@ -44,6 +44,7 @@ export default function AddToListDropMenu({ anime, variant }) {
 
   const [newList, setNewList] = useState(false);
   let [name, setName] = useState("");
+  let [desc, setDesc] = useState("");
   let [privateList, setPrivateList] = useState(false);
 
   let listNames = localUser?.lists?.map((x) => x.name);
@@ -97,11 +98,12 @@ export default function AddToListDropMenu({ anime, variant }) {
   const createNewList = () => {
     let temp = { ...localUser };
     !temp.lists
-      ? (temp.lists = [{ name: name, anime: [], privateList: privateList }])
+      ? (temp.lists = [{ name: name, anime: [], privateList: privateList, desc: desc }])
       : (temp.lists = [
           ...temp.lists,
-          { name: name, anime: [], privateList: privateList },
+          { name: name, anime: [], privateList: privateList, desc: desc },
         ]);
+
     setLocalUser(temp);
     SaveToFirestore(user, temp);
     setName("");
@@ -278,11 +280,31 @@ export default function AddToListDropMenu({ anime, variant }) {
                         onChange={(e) => {
                           setName(e.target.value);
                         }}
+                      />{" "}
+                      <TextField
+                        label="Decription"
+                        name="desc"
+                        id="desc"
+                        variant="filled"
+                        autoComplete="off"
+                        required
+                        color="text"
+                        value={desc}
+                        sx={{
+                          minWidth: "200px",
+                          margin: "15px 25px 15px 25px",
+                        }}
+                        onChange={(e) => {
+                          setDesc(e.target.value);
+                        }}
+                      />{" "}
+
                       />
                       <PrivacySwitch
                         privateList={privateList}
                         setPrivateList={setPrivateList}
                       />
+
                       <div
                         style={{
                           display: "flex",
