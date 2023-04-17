@@ -192,19 +192,19 @@ export default function DropMenu() {
                     </ListItemIcon>
                     {darkMode ? "Dark Mode" : "Light Mode"}
                   </MenuItem>
-                  <MenuItem
-                    sx={{ marginTop: "10px" }}
-                    onClick={(e) => {
-                      sendToProfile(e);
-                    }}
-                  >
-                    <ListItemIcon>
-                      <User size={24} />
-                    </ListItemIcon>
-                    Your Profile
-                  </MenuItem>
-
-                  {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+                  {user && (
+                    <MenuItem
+                      sx={{ marginTop: "10px" }}
+                      onClick={(e) => {
+                        sendToProfile(e);
+                      }}
+                    >
+                      <ListItemIcon>
+                        <User size={24} />
+                      </ListItemIcon>
+                      Your Profile
+                    </MenuItem>
+                  )}
 
                   {localUser?.name === "guest" ? (
                     <MenuItem

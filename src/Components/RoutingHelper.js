@@ -24,10 +24,7 @@ export const RoutingHelper = () => {
     "/reset",
     "/onboarding",
   ];
-  const shareableRoutes = [
-    " /profile/:userId",
-    "/profile/:userId/list/:listId",
-  ];
+  const shareableRoutes = ["/profile/:userId", "/profile/:userId/list/:listId"];
 
   let headerMatch = false;
   let noHeaderMatch = false;
