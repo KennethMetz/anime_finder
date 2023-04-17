@@ -17,7 +17,7 @@ export default function ProfileUserBannerSmall() {
   );
 
   return (
-    <Link to={`/profile/${profileUserId}`}>
+    <Link to={`/profile/${profileUserId}`} style={{ display: "inline-block" }}>
       <Box
         sx={{
           display: "flex",
