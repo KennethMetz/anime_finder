@@ -95,8 +95,7 @@ export default function AddToListDropMenu({ anime, variant }) {
     let temp = { ...localUser };
     !temp.lists
       ? (temp.lists = [
-          { name: name, anime: [], privateList: privateList, desc: desc },
-        ])
+      { name: name, anime: [], privateList: privateList, desc: desc }])
       : (temp.lists = [
           ...temp.lists,
           { name: name, anime: [], privateList: privateList, desc: desc },
@@ -295,6 +294,7 @@ export default function AddToListDropMenu({ anime, variant }) {
                         id="desc"
                         variant="outlined"
                         autoComplete="off"
+
                         color="text"
                         value={desc}
                         sx={{
@@ -304,11 +304,13 @@ export default function AddToListDropMenu({ anime, variant }) {
                         onChange={(e) => {
                           setDesc(e.target.value);
                         }}
-                      />{" "}
+                      />
+
                       <PrivacySwitch
                         privateList={privateList}
                         setPrivateList={setPrivateList}
                       />
+
                       <div
                         style={{
                           display: "flex",
