@@ -132,6 +132,11 @@ export default function ProfileListPage() {
     marginBottom: "12px",
   };
 
+  const subtitleStyle = {
+    fontFamily: "interSemiBold",
+    fontSize: "16px",
+  };
+
   return (
     <Box>
       {/* Header */}
@@ -152,8 +157,8 @@ export default function ProfileListPage() {
           <Typography variant="h3" sx={{ ...headStyle, margin: 0 }}>
             {name}
           </Typography>
-          <Typography variant="body1" sx={{ fontFamily: "interSemiBold" }}>
-            {getBylineText(typeName, items)}
+          <Typography variant="body1" sx={subtitleStyle}>
+            {getSubtitleText(typeName, items)}
           </Typography>
         </Box>
         {canEdit && canDelete && (
@@ -228,7 +233,7 @@ function findListWithSlug(lists, slug) {
   return lists.find((list) => slugifyListName(list.name) === slug);
 }
 
-function getBylineText(typeName, items) {
+function getSubtitleText(typeName, items) {
   const strings = [];
   strings.push(typeName);
   strings.push(getItemsText(items));
