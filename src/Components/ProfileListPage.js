@@ -46,6 +46,7 @@ export default function ProfileListPage() {
   let name = "";
   let desc = "";
   let index = null;
+  let typeName = "";
   let updateFn;
   let deleteFn;
   let canDelete = false;
@@ -58,10 +59,12 @@ export default function ProfileListPage() {
   if (listId.toLowerCase() === "likes") {
     items = profile.likes;
     name = "Likes";
+    typeName = "Watch History";
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
     items = profile.dislikes;
     name = "Dislikes";
+    typeName = "Watch History";
     updateFn = (newItems) => updateDislikes(newItems);
   } else if (findListWithSlug(profile.lists, listId)) {
     listHasDesc = true;
@@ -70,6 +73,7 @@ export default function ProfileListPage() {
     index = profile.lists.indexOf(list);
     items = list.anime;
     name = list.name;
+    typeName = "Watchlist";
     desc = list.desc;
     updateFn = (newItems) =>
       updateList(index, { ...list, anime: newItems, desc: desc });
@@ -144,9 +148,14 @@ export default function ProfileListPage() {
             <CaretLeft />
           </IconButton>
         </Link>
-        <Typography variant="h3" sx={{ ...headStyle, margin: 0, flexGrow: 1 }}>
-          {name}
-        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+          <Typography variant="h3" sx={{ ...headStyle, margin: 0 }}>
+            {name}
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: "interSemiBold" }}>
+            {getBylineText(typeName, items)}
+          </Typography>
+        </Box>
         {canEdit && canDelete && (
           <Tooltip title="Delete list">
             <IconButton
@@ -217,4 +226,23 @@ export default function ProfileListPage() {
 
 function findListWithSlug(lists, slug) {
   return lists.find((list) => slugifyListName(list.name) === slug);
+}
+
+function getBylineText(typeName, items) {
+  const strings = [];
+  strings.push(typeName);
+  strings.push(getItemsText(items));
+  return strings.join(" • ");
+}
+
+function getItemsText(items) {
+  if (!items || !items.length) {
+    return "No items";
+  }
+
+  if (items.length == 1) {
+    return "1 item";
+  }
+
+  return `${items.length} items`;
 }
