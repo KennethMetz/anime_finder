@@ -3,12 +3,12 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-export default function ClickAndEdit({ data, canEdit, update, index, ml }) {
+export default function ClickAndEdit({ data, canEdit, onSave, ml }) {
   const [editDesc, setEditDesc] = useState(false);
   const [editedDesc, setEditedDesc] = useState(data);
 
   function saveDesc() {
-    update(editedDesc, index);
+    onSave(editedDesc);
   }
 
   function handleDescToggle() {

@@ -49,7 +49,11 @@ export default function ProfileListPage() {
   let updateFn;
   let deleteFn;
   let canDelete = false;
+  let listHasDesc = false;
   let showSuggestions = false;
+
+  //Extracts index from <ClickAndEdit/>
+  const onDescSave = (newDesc) => updateListDesc(newDesc, index);
 
   if (listId.toLowerCase() === "likes") {
     items = profile.likes;
@@ -60,6 +64,7 @@ export default function ProfileListPage() {
     name = "Dislikes";
     updateFn = (newItems) => updateDislikes(newItems);
   } else if (findListWithSlug(profile.lists, listId)) {
+    listHasDesc = true;
     const list = findListWithSlug(profile.lists, listId);
     console.log(list);
     index = profile.lists.indexOf(list);
@@ -156,16 +161,14 @@ export default function ProfileListPage() {
           </Tooltip>
         )}
       </Box>
-      {listId.toLowerCase() !== "likes" &&
-        listId.toLowerCase() !== "dislikes" && (
-          <ClickAndEdit
-            data={desc}
-            canEdit={canEdit}
-            update={updateListDesc}
-            index={index}
-            ml={true}
-          />
-        )}
+      {listHasDesc && (
+        <ClickAndEdit
+          data={desc}
+          canEdit={canEdit}
+          onSave={onDescSave}
+          ml={true}
+        />
+      )}
       {/* Items */}
       {items?.length > 0 ? (
         <DragDropContext onDragEnd={handleOnDragEnd}>
