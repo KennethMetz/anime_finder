@@ -189,6 +189,7 @@ export default function ProfileListPage() {
                         canEdit={canEdit}
                         onRemove={() => onRemove(animeIndex)}
                         provided={provided}
+                        index={animeIndex}
                       />
                     )}
                   </Draggable>

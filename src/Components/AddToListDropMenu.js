@@ -1,4 +1,3 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -6,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import { Plus } from "phosphor-react";
+import { GlobeHemisphereWest, LockSimple, Plus } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
@@ -26,20 +25,27 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AddButtonForTop8 from "./AddButtonForTop8";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import Icon from "@mui/material/Icon";
+import FormGroup from "@mui/material/FormGroup";
+import { useContext, useEffect, useRef, useState } from "react";
+import { PrivacySwitch } from "./PrivacySwitch";
 
 export default function AddToListDropMenu({ anime, variant }) {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const theme = useTheme();
 
-  const [localUser, setLocalUser] = React.useContext(LocalUserContext);
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
 
-  const [newList, setNewList] = React.useState(false);
-  let [name, setName] = React.useState("");
-  let [desc, setDesc] = React.useState("");
+  const [newList, setNewList] = useState(false);
+  let [name, setName] = useState("");
+  let [desc, setDesc] = useState("");
+  let [privateList, setPrivateList] = useState(false);
 
   let listNames = localUser?.lists?.map((x) => x.name);
 
@@ -92,16 +98,20 @@ export default function AddToListDropMenu({ anime, variant }) {
   const createNewList = () => {
     let temp = { ...localUser };
     !temp.lists
-      ? (temp.lists = [{ name: name, anime: [], desc: desc }])
-      : (temp.lists = [...temp.lists, { name: name, anime: [], desc: desc }]);
+      ? (temp.lists = [{ name: name, anime: [], privateList: privateList, desc: desc }])
+      : (temp.lists = [
+          ...temp.lists,
+          { name: name, anime: [], privateList: privateList, desc: desc },
+        ]);
+
     setLocalUser(temp);
     SaveToFirestore(user, temp);
     setName("");
   };
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -288,6 +298,13 @@ export default function AddToListDropMenu({ anime, variant }) {
                           setDesc(e.target.value);
                         }}
                       />{" "}
+
+                      />
+                      <PrivacySwitch
+                        privateList={privateList}
+                        setPrivateList={setPrivateList}
+                      />
+
                       <div
                         style={{
                           display: "flex",
@@ -323,7 +340,7 @@ export default function AddToListDropMenu({ anime, variant }) {
                       color="inherit"
                       variant="text"
                       onClick={(e) => {
-                        navigate("/profile");
+                        navigate(`/profile/${user?.uid}`);
                       }}
                       sx={{
                         fontFamily: "interMedium",

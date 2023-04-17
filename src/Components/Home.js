@@ -126,10 +126,6 @@ export default function Home() {
     }
   }, [user, loading]);
 
-  useEffect(() => {
-    console.log(localUser.likes);
-  }, [localUser]);
-
   return (
     <div>
       <Container maxWidth="lg">

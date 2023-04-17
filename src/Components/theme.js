@@ -1,5 +1,5 @@
 import createTheme from "@mui/material/styles/createTheme";
-import alpha from "@mui/material/styles/getOverlayAlpha";
+import { alpha } from "@mui/system/colorManipulator";
 
 export function createAppTheme(darkMode) {
   // A custom theme for this app
