@@ -28,7 +28,7 @@ import AddButtonForTop8 from "./AddButtonForTop8";
 import { useContext, useEffect, useRef, useState } from "react";
 import { PrivacySwitch } from "./PrivacySwitch";
 
-export default function AddToListDropMenu({ anime, variant }) {
+export default function AddToListDropMenu({ anime, variant, selected }) {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const theme = useTheme();
@@ -95,7 +95,8 @@ export default function AddToListDropMenu({ anime, variant }) {
     let temp = { ...localUser };
     !temp.lists
       ? (temp.lists = [
-      { name: name, anime: [], privateList: privateList, desc: desc }])
+          { name: name, anime: [], privateList: privateList, desc: desc },
+        ])
       : (temp.lists = [
           ...temp.lists,
           { name: name, anime: [], privateList: privateList, desc: desc },
@@ -138,15 +139,16 @@ export default function AddToListDropMenu({ anime, variant }) {
           aria-controls={open ? "composition-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
+          color={!selected ? "background" : "inherit"}
           onClick={(e) => {
             handleToggle();
             e.preventDefault();
+            e.stopPropagation();
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleToggle();
           }}
           sx={{
-            color: "inherit",
             border: "0px solid",
           }}
           size={size}
@@ -173,7 +175,7 @@ export default function AddToListDropMenu({ anime, variant }) {
                 placement === "bottom-start" ? "left top" : "left bottom",
             }}
           >
-            <Paper elevation={6} onClick={(e) => e.preventDefault()}>
+            <Paper elevation={6} onClick={(e) => e.stopPropagation()}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
                   autoFocusItem={open}
@@ -294,7 +296,6 @@ export default function AddToListDropMenu({ anime, variant }) {
                         id="desc"
                         variant="outlined"
                         autoComplete="off"
-
                         color="text"
                         value={desc}
                         sx={{
@@ -305,12 +306,10 @@ export default function AddToListDropMenu({ anime, variant }) {
                           setDesc(e.target.value);
                         }}
                       />
-
                       <PrivacySwitch
                         privateList={privateList}
                         setPrivateList={setPrivateList}
                       />
-
                       <div
                         style={{
                           display: "flex",

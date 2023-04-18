@@ -11,6 +11,7 @@ import { List, X } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useTheme from "@mui/material/styles/useTheme";
+import LikeButtons from "./LikeButtons";
 
 export default function ProfileListItem({
   item,
@@ -20,8 +21,8 @@ export default function ProfileListItem({
   index,
 }) {
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
   const theme = useTheme();
+  const [selected, setSelected] = useState(false);
 
   return (
     <ListItem
@@ -36,19 +37,19 @@ export default function ProfileListItem({
           navigate(`/anime/${item.id}`, { state: item });
         }}
         onMouseEnter={(e) => {
-          setVisible(index);
+          setSelected(true);
         }}
         onDrag={(e) => {
-          setVisible(false);
+          setSelected(false);
         }}
         onMouseLeave={(e) => {
-          setVisible(false);
+          setSelected(false);
         }}
         onFocus={(e) => {
-          setVisible(index);
+          setSelected(true);
         }}
         onBlur={(e) => {
-          setVisible(false);
+          setSelected(false);
         }}
       >
         <ListItemAvatar>
@@ -63,7 +64,7 @@ export default function ProfileListItem({
           primary={item.display_name}
           primaryTypographyProps={{ fontFamily: "interMedium" }}
         />
-
+        {<LikeButtons anime={item} selected={selected} />}
         {canEdit && (
           <div
             style={{ display: "flex", alignItems: "center" }}
@@ -75,10 +76,10 @@ export default function ProfileListItem({
               <IconButton
                 edge="end"
                 aria-label="delete"
-                tabIndex={canEdit && visible === index ? 0 : -1}
+                tabIndex={canEdit && selected ? 0 : -1}
                 sx={{
                   color:
-                    canEdit && visible === index
+                    canEdit && selected
                       ? "inherit"
                       : theme.palette.background.default,
                 }}
