@@ -72,7 +72,7 @@ export default function DropMenu() {
 
   function sendToProfile(e) {
     handleClose(e);
-    navigate(`/profile/${user.uid}`);
+    user ? navigate(`/profile/${user?.uid}`) : navigate("/login");
   }
 
   function sendToLogin(e) {
@@ -192,20 +192,17 @@ export default function DropMenu() {
                     </ListItemIcon>
                     {darkMode ? "Dark Mode" : "Light Mode"}
                   </MenuItem>
-                  {user && (
-                    <MenuItem
-                      sx={{ marginTop: "10px" }}
-                      onClick={(e) => {
-                        sendToProfile(e);
-                      }}
-                    >
-                      <ListItemIcon>
-                        <User size={24} />
-                      </ListItemIcon>
-                      Your Profile
-                    </MenuItem>
-                  )}
-
+                  <MenuItem
+                    sx={{ marginTop: "10px" }}
+                    onClick={(e) => {
+                      sendToProfile(e);
+                    }}
+                  >
+                    <ListItemIcon>
+                      <User size={24} />
+                    </ListItemIcon>
+                    Your Profile
+                  </MenuItem>
                   {localUser?.name === "guest" ? (
                     <MenuItem
                       onClick={(e) => {

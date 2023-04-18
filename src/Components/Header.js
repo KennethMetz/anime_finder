@@ -61,13 +61,11 @@ function Header() {
                 }}
               >
                 <HeaderTab text="Home" icon={<House />} path="/home" />
-                {user && (
-                  <HeaderTab
-                    text="Profile"
-                    icon={<User />}
-                    path={`/profile/${user?.uid}`}
-                  />
-                )}
+                <HeaderTab
+                  text="Profile"
+                  icon={<User />}
+                  path={user ? `/profile/${user?.uid}` : "/login"}
+                />
                 <HeaderTab
                   text="Search"
                   icon={<MagnifyingGlass />}
