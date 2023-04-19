@@ -66,7 +66,7 @@ export default function ProfileListItem({
         />
 
         {<LikeButtons anime={item} selected={selected} />}
-        {canEdit && (
+        {isListOwner && (
           <div
             style={{ display: "flex", alignItems: "center" }}
             onClick={(e) => {
@@ -77,12 +77,10 @@ export default function ProfileListItem({
               <IconButton
                 edge="end"
                 aria-label="delete"
-
                 tabIndex={isListOwner && selected ? 0 : -1}
                 sx={{
                   color:
                     isListOwner && selected
-
                       ? "inherit"
                       : theme.palette.background.default,
                 }}
