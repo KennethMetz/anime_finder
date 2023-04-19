@@ -86,6 +86,7 @@ export default function DropMenu() {
   }
 
   async function sendToLogout(e) {
+    navigate("/logout");
     await logout();
     setLocalUser({
       likes: [],
@@ -97,7 +98,6 @@ export default function DropMenu() {
       reviews: [],
     });
     handleClose(e);
-    navigate("/logout");
   }
 
   function toggleDarkMode() {
