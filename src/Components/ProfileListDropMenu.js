@@ -3,14 +3,17 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import { DotsThreeOutlineVertical, Link, Trash } from "phosphor-react";
+import { DotsThreeOutlineVertical, Link, Trash, X } from "phosphor-react";
 import IconButton from "@mui/material/IconButton";
 
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { useSnackbar } from "notistack";
+import Button from "@mui/material/Button";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileListDropMenu({
   onDelete,
@@ -19,6 +22,9 @@ export default function ProfileListDropMenu({
 }) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const theme = useTheme();
+  let buttonColor = theme.palette.text.primary;
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -110,6 +116,25 @@ export default function ProfileListDropMenu({
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
+                      enqueueSnackbar("Link copied to clipboard", {
+                        variant: "success",
+                        style: {
+                          fontFamily: "interMedium",
+                          fontSize: "0.9rem",
+                          background: theme.palette.primary.main,
+                        },
+                        anchorOrigin: {
+                          vertical: "top",
+                          horizontal: "center",
+                        },
+                        action: (key) => (
+                          <Fragment>
+                            <IconButton onClick={() => closeSnackbar(key)}>
+                              <X color="white" size={20} />
+                            </IconButton>
+                          </Fragment>
+                        ),
+                      });
                     }}
                   >
                     <ListItemIcon>
