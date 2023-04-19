@@ -8,7 +8,7 @@ export default function DislikeButton({ anime, variant, selected }) {
 
   const onClick = (e) => {
     setDisliked(!disliked);
-    e.preventDefault();
+    e.stopPropagation();
   };
   const disabled = !anime;
   const weight = disliked ? "fill" : "regular";
@@ -16,7 +16,11 @@ export default function DislikeButton({ anime, variant, selected }) {
   const size = variant === "contained" ? "large" : "medium";
 
   //Theme colors are taken from the default "palette" theme and MUST have a child color titled "main"
-  let buttonColor = !selected ? "background" : disliked ? "primary" : "inherit";
+  const buttonColor = !selected
+    ? "background"
+    : disliked
+    ? "primary"
+    : "inherit";
 
   return (
     <Tooltip title="Not for me">
