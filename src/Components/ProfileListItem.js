@@ -14,7 +14,7 @@ import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileListItem({
   item,
-  canEdit,
+  isListOwner,
   onRemove,
   provided,
   index,
@@ -64,7 +64,7 @@ export default function ProfileListItem({
           primaryTypographyProps={{ fontFamily: "interMedium" }}
         />
 
-        {canEdit && (
+        {isListOwner && (
           <div
             style={{ display: "flex", alignItems: "center" }}
             onClick={(e) => {
@@ -75,10 +75,10 @@ export default function ProfileListItem({
               <IconButton
                 edge="end"
                 aria-label="delete"
-                tabIndex={canEdit && visible === index ? 0 : -1}
+                tabIndex={isListOwner && visible === index ? 0 : -1}
                 sx={{
                   color:
-                    canEdit && visible === index
+                    isListOwner && visible === index
                       ? "inherit"
                       : theme.palette.background.default,
                 }}

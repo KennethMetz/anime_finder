@@ -37,7 +37,7 @@ export default function ProfileListPage() {
   const userId = params.userId;
   const listId = params.listId;
 
-  const canEdit = isOwnProfile;
+  const isListOwner = isOwnProfile;
 
   if (isLoading) {
     return <ProfileListPageGhost />;
@@ -50,7 +50,7 @@ export default function ProfileListPage() {
   let typeName = "";
   let updateFn;
   let deleteFn;
-  let canDelete = false;
+  let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
 
@@ -76,7 +76,7 @@ export default function ProfileListPage() {
     updateFn = (newItems) =>
       updateList(index, { ...list, anime: newItems, desc: desc });
     deleteFn = () => deleteList(index);
-    canDelete = true;
+    deletableList = true;
     showSuggestions = true;
   }
 
@@ -162,12 +162,16 @@ export default function ProfileListPage() {
             {getSubtitleText(typeName, items)}
           </Typography>
         </Box>
-        {canEdit && canDelete && <ProfileListDropMenu onDelete={onDelete} />}
+        <ProfileListDropMenu
+          onDelete={onDelete}
+          isListOwner={isListOwner}
+          deletableList={deletableList}
+        />
       </Box>
       {listHasDesc && (
         <ClickAndEdit
           data={desc}
-          canEdit={canEdit}
+          isListOwner={isListOwner}
           onSave={onDescSave}
           ml={true}
           placeholder={"Tell us a bit about this list..."}
@@ -190,7 +194,7 @@ export default function ProfileListPage() {
                       <ProfileListItem
                         key={animeItem.id}
                         item={animeItem}
-                        canEdit={canEdit}
+                        isListOwner={isListOwner}
                         onRemove={() => onRemove(animeIndex)}
                         provided={provided}
                         index={animeIndex}

@@ -12,7 +12,11 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { useEffect, useRef, useState } from "react";
 
-export default function ProfileListDropMenu({ onDelete }) {
+export default function ProfileListDropMenu({
+  onDelete,
+  isListOwner,
+  deletableList,
+}) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
@@ -102,7 +106,7 @@ export default function ProfileListDropMenu({ onDelete }) {
                   }}
                 >
                   <ListItemButton
-                    divider
+                    divider={isListOwner && deletableList ? true : false}
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
@@ -117,19 +121,21 @@ export default function ProfileListDropMenu({ onDelete }) {
                     />
                   </ListItemButton>
 
-                  <ListItemButton
-                    onClick={() => {
-                      onDelete();
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Trash size={24} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Delete List"
-                      primaryTypographyProps={listItemStyling}
-                    ></ListItemText>
-                  </ListItemButton>
+                  {isListOwner && deletableList && (
+                    <ListItemButton
+                      onClick={() => {
+                        onDelete();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Trash size={24} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Delete List"
+                        primaryTypographyProps={listItemStyling}
+                      ></ListItemText>
+                    </ListItemButton>
+                  )}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

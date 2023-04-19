@@ -72,7 +72,7 @@ export default function DropMenu() {
 
   function sendToProfile(e) {
     handleClose(e);
-    user ? navigate(`/profile/${user?.uid}`) : navigate("/login");
+    user ? navigate(`/profile/${user.uid}`) : navigate("/login");
   }
 
   function sendToLogin(e) {

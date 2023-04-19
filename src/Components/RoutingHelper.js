@@ -1,9 +1,8 @@
 import { useLayoutEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { matchPath, Outlet, useLocation, useMatch } from "react-router-dom";
+import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
-import { auth } from "./Firebase";
-import Login from "./Login";
+import { auth, logInAnon } from "./Firebase";
 import BreathingLogo from "./BreathingLogo";
 
 export const RoutingHelper = () => {
@@ -15,7 +14,14 @@ export const RoutingHelper = () => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const headerRoutes = ["/home", "/search", "/sandbox", "/anime/:animeId"];
+  const headerRoutes = [
+    "/home",
+    "/search",
+    "/sandbox",
+    "/anime/:animeId",
+    "/profile/:userId",
+    "/profile/:userId/list/:listId",
+  ];
   const noHeaderRoutes = [
     "/login",
     "/logout",
@@ -24,11 +30,9 @@ export const RoutingHelper = () => {
     "/reset",
     "/onboarding",
   ];
-  const shareableRoutes = ["/profile/:userId", "/profile/:userId/list/:listId"];
 
   let headerMatch = false;
   let noHeaderMatch = false;
-  let shareableMatch = false;
 
   headerMatch = headerRoutes.find((item) => {
     return matchPath({ path: item }, location.pathname);
@@ -38,13 +42,9 @@ export const RoutingHelper = () => {
     return matchPath({ path: item }, location.pathname);
   });
 
-  shareableMatch = shareableRoutes.find((item) => {
-    return matchPath({ path: item }, location.pathname);
-  });
-
   if (loading && !user) {
     return <BreathingLogo type={"fullPage"} />;
-  } else if ((user && headerMatch) || shareableMatch) {
+  } else if (user && headerMatch) {
     return (
       <>
         <Header />
@@ -53,8 +53,8 @@ export const RoutingHelper = () => {
     );
   } else if (noHeaderMatch) {
     return <Outlet />;
-  } else if (!user && headerMatch) {
-    return <Login />;
+  } else if (!loading && !user && headerMatch) {
+    logInAnon();
   } else {
     return <Outlet />;
   }

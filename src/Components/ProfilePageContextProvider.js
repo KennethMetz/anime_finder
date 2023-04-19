@@ -17,7 +17,7 @@ export default function ProfilePageContextProvider({ userId, children }) {
     profile: userOwnsProfile ? localUser : profile,
     profileUserId: userId,
     isOwnProfile: userOwnsProfile,
-    isLoading: loading || profileLoading,
+    isLoading: loading || profileLoading || !localUser?.uid,
     updateBio: (bio) => {
       throwIfNotOwner();
       const newLocalUser = { ...localUser, bio };

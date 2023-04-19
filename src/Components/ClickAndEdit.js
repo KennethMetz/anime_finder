@@ -7,7 +7,7 @@ import useTheme from "@mui/material/styles/useTheme";
 export default function ClickAndEdit({
   data,
   placeholder,
-  canEdit,
+  isListOwner,
   onSave,
   ml,
 }) {
@@ -37,11 +37,11 @@ export default function ClickAndEdit({
             pb: 1,
             pl: 0,
             ml: ml ? 6 : 0,
-            cursor: canEdit ? "pointer" : "unset",
+            cursor: isListOwner ? "pointer" : "unset",
           }}
-          onClick={canEdit ? handleDescToggle : undefined}
+          onClick={isListOwner ? handleDescToggle : undefined}
         >
-          {data?.length > 0 ? data : canEdit ? placeholder : ""}
+          {data?.length > 0 ? data : isListOwner ? placeholder : ""}
         </Box>
       ) : (
         <div
