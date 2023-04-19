@@ -14,6 +14,7 @@ export function createAppTheme(darkMode) {
       },
       background: {
         default: darkMode ? "#080808" : "#fcfcfc",
+        main: darkMode ? "#080808" : "#fcfcfc",
       },
       //Theses are new/custom theme keys.
       custom: {

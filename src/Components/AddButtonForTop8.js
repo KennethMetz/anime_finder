@@ -6,7 +6,7 @@ export default function AddButtonForTop8({ anime, list }) {
 
   const onClick = (e) => {
     setIncluded(!included);
-    e.preventDefault();
+    e.stopPropagation();
   };
   const disabled = !anime || (list.length === 8 && !included);
   const variant = included ? "outlined" : "contained";

@@ -66,7 +66,6 @@ export default function ProfileListPage() {
   } else if (findListWithSlug(profile.lists, listId)) {
     listHasDesc = true;
     const list = findListWithSlug(profile.lists, listId);
-    console.log(list);
     index = profile.lists.indexOf(list);
     items = list.anime;
     name = list.name;
