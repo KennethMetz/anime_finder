@@ -21,6 +21,19 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let docRef = doc(db, "users", user.uid);
     let querySnapshot = await getDoc(docRef);
     let data = querySnapshot.data();
+    if (!data.likes) {
+      data = {
+        ...data,
+        likes: [],
+        dislikes: [],
+        lists: [],
+        avatar: "",
+        bio: "",
+        top8: [],
+        reviews: [],
+      };
+    }
+
     let temp = sortTitles(data);
     if (!temp.top8) temp.top8 = [];
     if (!temp.reviews) temp.reviews = [];
