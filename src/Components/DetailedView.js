@@ -247,7 +247,7 @@ export default function DetailedView() {
                 marginBottom: { xs: 2, md: 0 },
               }}
             >
-              <LikeButtons anime={anime} variant="contained" />
+              <LikeButtons anime={anime} variant="contained" selected={true} />
             </Grid>
 
             {/* Data from Edward */}

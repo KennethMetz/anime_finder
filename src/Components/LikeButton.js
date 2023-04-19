@@ -3,12 +3,12 @@ import Tooltip from "@mui/material/Tooltip";
 import { ThumbsUp } from "phosphor-react";
 import useLikeState from "../Hooks/useLikeState";
 
-export default function LikeButton({ anime, variant }) {
+export default function LikeButton({ anime, variant, selected }) {
   const { liked, setLiked } = useLikeState(anime);
 
   const onClick = (e) => {
     setLiked(!liked);
-    e.preventDefault();
+    e.stopPropagation();
   };
   const disabled = !anime;
   const weight = liked ? "fill" : "regular";
@@ -16,7 +16,7 @@ export default function LikeButton({ anime, variant }) {
   const size = variant === "contained" ? "large" : "medium";
 
   //Theme colors are taken from the default "palette" theme and MUST have a child color titled "main"
-  const buttonColor = liked ? "primary" : "inherit";
+  const buttonColor = !selected ? "background" : liked ? "primary" : "inherit";
 
   return (
     <Tooltip title="I liked it">

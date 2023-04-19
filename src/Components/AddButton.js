@@ -7,7 +7,6 @@ export default function AddButton({ anime, list }) {
 
   const onClick = (e) => {
     setIncluded(!included);
-    e.preventDefault();
   };
   const disabled = !anime;
   const variant = included ? "outlined" : "contained";
