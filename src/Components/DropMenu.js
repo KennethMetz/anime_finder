@@ -72,7 +72,7 @@ export default function DropMenu() {
 
   function sendToProfile(e) {
     handleClose(e);
-    navigate(`/profile/${user.uid}`);
+    user ? navigate(`/profile/${user.uid}`) : navigate("/login");
   }
 
   function sendToLogin(e) {
@@ -203,9 +203,6 @@ export default function DropMenu() {
                     </ListItemIcon>
                     Your Profile
                   </MenuItem>
-
-                  {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
-
                   {localUser?.name === "guest" ? (
                     <MenuItem
                       onClick={(e) => {

@@ -1,9 +1,8 @@
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { matchPath, Outlet, useLocation, useMatch } from "react-router-dom";
+import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
-import { auth } from "./Firebase";
-import Login from "./Login";
+import { auth, logInAnon } from "./Firebase";
 import BreathingLogo from "./BreathingLogo";
 
 export const RoutingHelper = () => {
@@ -18,10 +17,10 @@ export const RoutingHelper = () => {
   const headerRoutes = [
     "/home",
     "/search",
-    "/profile/:userId",
-    "/profile/:userId/list/:listId",
     "/sandbox",
     "/anime/:animeId",
+    "/profile/:userId",
+    "/profile/:userId/list/:listId",
   ];
   const noHeaderRoutes = [
     "/login",
@@ -43,6 +42,12 @@ export const RoutingHelper = () => {
     return matchPath({ path: item }, location.pathname);
   });
 
+  useEffect(() => {
+    if (!loading && !user && headerMatch) {
+      logInAnon();
+    }
+  }, [loading, user, headerMatch]);
+
   if (loading && !user) {
     return <BreathingLogo type={"fullPage"} />;
   } else if (user && headerMatch) {
@@ -55,7 +60,7 @@ export const RoutingHelper = () => {
   } else if (noHeaderMatch) {
     return <Outlet />;
   } else if (!user && headerMatch) {
-    return <Login />;
+    return <BreathingLogo type={"fullPage"} />;
   } else {
     return <Outlet />;
   }

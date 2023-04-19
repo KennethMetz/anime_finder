@@ -15,7 +15,7 @@ import LikeButtons from "./LikeButtons";
 
 export default function ProfileListItem({
   item,
-  canEdit,
+  isListOwner,
   onRemove,
   provided,
   index,
@@ -64,6 +64,7 @@ export default function ProfileListItem({
           primary={item.display_name}
           primaryTypographyProps={{ fontFamily: "interMedium" }}
         />
+
         {<LikeButtons anime={item} selected={selected} />}
         {canEdit && (
           <div
@@ -76,10 +77,12 @@ export default function ProfileListItem({
               <IconButton
                 edge="end"
                 aria-label="delete"
-                tabIndex={canEdit && selected ? 0 : -1}
+
+                tabIndex={isListOwner && selected ? 0 : -1}
                 sx={{
                   color:
-                    canEdit && selected
+                    isListOwner && selected
+
                       ? "inherit"
                       : theme.palette.background.default,
                 }}
