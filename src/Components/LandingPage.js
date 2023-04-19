@@ -207,13 +207,7 @@ export default function LandingPage() {
                     overflow: "hidden",
                   }}
                 >
-                  <video
-                    style={{}}
-                    loop
-                    autoplay="autoplay"
-                    muted
-                    src={EdwardGIF}
-                  />
+                  <video style={{}} loop autoPlay muted src={EdwardGIF} />
                 </div>
               </div>
               <div
