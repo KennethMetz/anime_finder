@@ -90,7 +90,7 @@ export default function Reset() {
           </DialogActions>
         </Dialog>
         <div className="welcomeBanner">
-          <Link to="/home">
+          <Link to="/">
             <EdwardMLLogo />
           </Link>
         </div>

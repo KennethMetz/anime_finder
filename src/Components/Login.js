@@ -61,7 +61,9 @@ export default function Login() {
     <div className="login">
       <Container maxWidth="lg">
         <div className="welcomeBanner">
-          <EdwardMLLogo />
+          <Link to="/">
+            <EdwardMLLogo />
+          </Link>
         </div>
       </Container>
       <Container
