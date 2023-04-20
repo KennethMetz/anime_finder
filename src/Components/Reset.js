@@ -10,7 +10,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import logo from "../Styles/images/logo.svg";
 import EdwardMLLogo from "./EdwardMLLogo";
 
 import Container from "@mui/material/Container";
