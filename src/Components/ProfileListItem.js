@@ -20,7 +20,6 @@ export default function ProfileListItem({
   isListOwner,
   onRemove,
   provided,
-  index,
 }) {
   const navigate = useNavigate();
   const theme = useTheme();

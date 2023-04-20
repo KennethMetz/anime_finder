@@ -3,13 +3,11 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import { DotsThreeOutlineVertical, X } from "phosphor-react";
+import { DotsThreeOutlineVertical } from "phosphor-react";
 
 import IconButton from "@mui/material/IconButton";
-import useTheme from "@mui/material/styles/useTheme";
-import { Fragment, useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LikeButtons from "./LikeButtons";
-import Tooltip from "@mui/material/Tooltip";
 
 export default function LikeButtonsDropMenu({ anime, isListOwner, onRemove }) {
   const [open, setOpen] = useState(false);
@@ -99,8 +97,7 @@ export default function LikeButtonsDropMenu({ anime, isListOwner, onRemove }) {
                     <LikeButtons
                       anime={anime}
                       selected={true}
-                      smallScreen={true}
-                      isListOwner={isListOwner}
+                      showDeleteButton={isListOwner}
                       onRemove={onRemove}
                     />
                   </div>

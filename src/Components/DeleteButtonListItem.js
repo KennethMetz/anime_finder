@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { X } from "phosphor-react";
 
-export default function DeleteButtonListItem({ anime, isListOwner, onRemove }) {
+export default function DeleteButtonListItem({ onRemove }) {
   return (
     <Tooltip title="Remove item">
       <IconButton

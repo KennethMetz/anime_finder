@@ -2,15 +2,13 @@ import Box from "@mui/material/Box";
 import AddToListDropMenu from "./AddToListDropMenu";
 import DisikeButton from "./DislikeButton";
 import LikeButton from "./LikeButton";
-import LikeButtonsDropMenu from "./LikeButtonsDropMenu";
 import DeleteButtonListItem from "./DeleteButtonListItem";
 
 export default function LikeButtons({
   anime,
   variant,
   selected,
-  smallScreen,
-  isListOwner,
+  showDeleteButton,
   onRemove,
 }) {
   return (
@@ -28,14 +26,9 @@ export default function LikeButtons({
           selected={selected}
         />
       </Box>
-      {smallScreen && isListOwner && (
+      {showDeleteButton && (
         <Box sx={{ ml: 1, mr: 1 }} component="span">
-          <DeleteButtonListItem
-            anime={anime}
-            isListOwner={isListOwner}
-            onRemove={onRemove}
-            smallScreen={smallScreen}
-          />
+          <DeleteButtonListItem onRemove={onRemove} />
         </Box>
       )}
     </Box>

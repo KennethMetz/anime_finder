@@ -12,7 +12,6 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
-import Button from "@mui/material/Button";
 import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileListDropMenu({
@@ -24,7 +23,6 @@ export default function ProfileListDropMenu({
   const anchorRef = useRef(null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const theme = useTheme();
-  let buttonColor = theme.palette.text.primary;
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
