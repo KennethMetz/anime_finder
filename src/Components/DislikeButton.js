@@ -8,6 +8,7 @@ export default function DislikeButton({ anime, variant, selected }) {
 
   const onClick = (e) => {
     setDisliked(!disliked);
+    e.preventDefault();
     e.stopPropagation();
   };
   const disabled = !anime;
