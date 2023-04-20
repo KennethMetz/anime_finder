@@ -8,6 +8,7 @@ export default function LikeButton({ anime, variant, selected }) {
 
   const onClick = (e) => {
     setLiked(!liked);
+    e.preventDefault();
     e.stopPropagation();
   };
   const disabled = !anime;

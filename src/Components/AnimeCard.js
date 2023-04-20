@@ -84,7 +84,7 @@ export default function AnimeCard({ anime, large, onChangeSelected }) {
               {anime.display_name}
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <LikeButtons anime={anime} />
+              <LikeButtons anime={anime} selected={true} />
             </Box>
           </Box>
         </Box>
