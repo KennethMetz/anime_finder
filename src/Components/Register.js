@@ -101,7 +101,9 @@ export default function Register() {
     <div className="register">
       <Container maxWidth="lg">
         <div className="welcomeBanner">
-          <EdwardMLLogo />
+          <Link to="/">
+            <EdwardMLLogo />
+          </Link>
         </div>
       </Container>
       {/* *******************Start of Registration Block************************** */}

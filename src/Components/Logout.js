@@ -32,7 +32,7 @@ export default function Logout() {
       >
         <Grid item md={9.5} sm={9} xs={9}>
           <div className="logo">
-            <Link to="/login" style={{ display: "flex" }}>
+            <Link to="/" style={{ display: "flex" }}>
               <EdwardMLLogo />
             </Link>
           </div>
