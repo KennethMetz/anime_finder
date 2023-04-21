@@ -68,9 +68,9 @@ export default function Home() {
 
   useEffect(() => {
     getRandomNumbers();
-    getRandomAnimeListing(randomPage, randomItem).then((result) =>
-      setAnimeRandom(result).catch((error) => console.log(error))
-    );
+    getRandomAnimeListing(randomPage, randomItem)
+      .then((result) => setAnimeRandom(result))
+      .catch((error) => console.log(error));
   }, [refresh]);
 
   // API call for personalized recommendations.
