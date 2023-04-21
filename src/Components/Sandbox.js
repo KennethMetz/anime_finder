@@ -65,7 +65,7 @@ export default function Sandbox() {
           anime.map((a) => (
             <div key={a.id}>
               <div>{a.display_name}</div>
-              <LikeButtons anime={a} />
+              <LikeButtons anime={a} selected={true} />
             </div>
           ))}
       </Container>
