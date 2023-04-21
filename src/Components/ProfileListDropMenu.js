@@ -3,7 +3,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import { DotsThreeOutlineVertical, Link, Trash, X } from "phosphor-react";
+import { DotsThreeVertical, Link, Trash, X } from "phosphor-react";
 import IconButton from "@mui/material/IconButton";
 
 import ListItemButton from "@mui/material/ListItemButton";
@@ -60,6 +60,9 @@ export default function ProfileListDropMenu({
     <>
       {/**********************DROP MENU ICON**********************/}
       <IconButton
+        size="large"
+        variant="contained"
+        color="inherit"
         ref={anchorRef}
         id="composition-button"
         alt="add to watchlist"
@@ -74,11 +77,10 @@ export default function ProfileListDropMenu({
           if (e.key === "Enter") handleToggle();
         }}
         sx={{
-          color: "inherit",
           border: "0px solid",
         }}
       >
-        <DotsThreeOutlineVertical />
+        <DotsThreeVertical />
       </IconButton>
 
       {/**********************DROP MENU POP-UP**********************/}

@@ -3,7 +3,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import { DotsThreeOutlineVertical } from "phosphor-react";
+import { DotsThreeVertical } from "phosphor-react";
 
 import IconButton from "@mui/material/IconButton";
 import { useEffect, useRef, useState } from "react";
@@ -59,7 +59,7 @@ export default function LikeButtonsDropMenu({ anime, isListOwner, onRemove }) {
           if (e.key === "Enter") handleToggle();
         }}
       >
-        <DotsThreeOutlineVertical />
+        <DotsThreeVertical />
       </IconButton>
 
       {/**********************DROP MENU POP-UP**********************/}
