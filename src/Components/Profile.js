@@ -1,5 +1,6 @@
 import "../Styles/Profile.css";
 
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -9,6 +10,7 @@ import ProfileListPage from "./ProfileListPage";
 import ProfileMainPage from "./ProfileMainPage";
 import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import BackButton from "./BackButton";
 import { PopulateFromFirestore } from "./Firestore";
 import { auth } from "./Firebase";
 import ProfilePageContextProvider from "./ProfilePageContextProvider";
@@ -44,7 +46,14 @@ export default function Profile() {
       <Container maxWidth="lg">
         <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
           <Grid item xs={12}>
-            {isListPage ? <ProfileUserBannerSmall /> : <ProfileUserBanner />}
+            {isListPage ? (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <BackButton sx={{ flexShrink: 0, mr: 1 }} />
+                <ProfileUserBannerSmall />
+              </Box>
+            ) : (
+              <ProfileUserBanner />
+            )}
           </Grid>
           <Grid item xs={12}>
             {isListPage ? <ProfileListPage /> : <ProfileMainPage />}

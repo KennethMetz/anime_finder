@@ -148,11 +148,6 @@ export default function ProfileListPage() {
           marginBottom: "8px",
         }}
       >
-        <Link to={`/profile/${userId}`}>
-          <IconButton color="inherit" sx={{ marginRight: "8px" }}>
-            <CaretLeft />
-          </IconButton>
-        </Link>
         <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
           <Typography variant="h3" sx={{ ...headStyle, margin: 0 }}>
             {name}
@@ -172,7 +167,6 @@ export default function ProfileListPage() {
           data={desc}
           isListOwner={isListOwner}
           onSave={onDescSave}
-          ml={true}
           placeholder={"Tell us a bit about this list..."}
         />
       )}

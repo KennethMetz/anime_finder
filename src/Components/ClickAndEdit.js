@@ -9,7 +9,6 @@ export default function ClickAndEdit({
   placeholder,
   isListOwner,
   onSave,
-  ml,
 }) {
   placeholder = placeholder ?? "Enter some text...";
 
@@ -36,7 +35,7 @@ export default function ClickAndEdit({
             color: data?.length > 0 ? "unset" : theme.palette.text.secondary,
             pb: 1,
             pl: 0,
-            ml: ml ? 6 : 0,
+            ml: 0,
             cursor: isListOwner ? "pointer" : "unset",
           }}
           onClick={isListOwner ? handleDescToggle : undefined}
