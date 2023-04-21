@@ -19,6 +19,7 @@ import { LocalUserContext } from "./LocalUserContext";
 import EdAndEinGif from "../Styles/images/ein-ed-compressed.gif";
 import { APISearch } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
+import SearchGhost from "./SearchGhost";
 
 export default function Search() {
   const location = useLocation();
@@ -62,7 +63,7 @@ export default function Search() {
         <div className="gap" style={{ marginTop: "30px" }}></div>
 
         {!searchResults ? (
-          <BreathingLogo type="shelf" />
+          <SearchGhost />
         ) : searchResults?.length > 0 ? (
           <div className="column">
             {searchResults.map((item, index) => (
