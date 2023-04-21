@@ -34,34 +34,12 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
       };
     }
 
-    let temp = sortTitles(data);
-    if (!temp.top8) temp.top8 = [];
-    if (!temp.reviews) temp.reviews = [];
-    setLocalUser(temp);
+    if (!data.top8) data.top8 = [];
+    if (!data.reviews) data.reviews = [];
+    setLocalUser(data);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
   }
-}
-
-function compareTitles(a, b) {
-  if (a.display_name < b.display_name) {
-    return -1;
-  }
-  if (a.display_name > b.display_name) {
-    return 1;
-  }
-  return 0;
-}
-
-function sortTitles(data) {
-  let temp = { ...data };
-  if (data.likes.length > 1) {
-    temp["likes"] = temp["likes"].sort(compareTitles);
-  }
-  if (data.dislikes.length > 1) {
-    temp["dislikes"] = temp["dislikes"].sort(compareTitles);
-  }
-  return temp;
 }
 
 export async function SaveToFirestore(user, localUser) {
