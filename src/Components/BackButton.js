@@ -7,7 +7,7 @@ export default function BackButton({ sx }) {
 
   const onClick = (e) => {
     navigate(-1);
-    e.stopPropogation();
+    e.stopPropagation();
   };
 
   return (
