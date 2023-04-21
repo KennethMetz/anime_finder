@@ -6,23 +6,25 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Tooltip from "@mui/material/Tooltip";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { List, X } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useTheme from "@mui/material/styles/useTheme";
 import LikeButtons from "./LikeButtons";
+import LikeButtonsDropMenu from "./LikeButtonsDropMenu";
 
 export default function ProfileListItem({
   item,
   isListOwner,
   onRemove,
   provided,
-  index,
 }) {
   const navigate = useNavigate();
   const theme = useTheme();
   const [selected, setSelected] = useState(false);
+  const smallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <ListItem
@@ -64,8 +66,15 @@ export default function ProfileListItem({
           primary={item.display_name}
           primaryTypographyProps={{ fontFamily: "interMedium" }}
         />
-
-        {<LikeButtons anime={item} selected={selected} />}
+        {smallScreen ? (
+          <LikeButtonsDropMenu
+            anime={item}
+            isListOwner={isListOwner}
+            onRemove={onRemove}
+          />
+        ) : (
+          <LikeButtons anime={item} selected={selected} />
+        )}
         {isListOwner && (
           <div
             style={{ display: "flex", alignItems: "center" }}
@@ -73,25 +82,28 @@ export default function ProfileListItem({
               e.stopPropagation();
             }}
           >
-            <Tooltip title="Remove item">
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                tabIndex={isListOwner && selected ? 0 : -1}
-                sx={{
-                  color:
-                    isListOwner && selected
-                      ? "inherit"
-                      : theme.palette.background.default,
-                }}
-                disabled={!onRemove}
-                onClick={() => {
-                  onRemove();
-                }}
-              >
-                <X size={24} />
-              </IconButton>
-            </Tooltip>
+            {" "}
+            {!smallScreen && (
+              <Tooltip title="Remove item">
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  tabIndex={isListOwner && selected ? 0 : -1}
+                  sx={{
+                    color:
+                      isListOwner && selected
+                        ? "inherit"
+                        : theme.palette.background.default,
+                  }}
+                  disabled={!onRemove}
+                  onClick={() => {
+                    onRemove();
+                  }}
+                >
+                  <X size={24} />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Reorder item">
               <Icon
                 edge="end"
@@ -103,7 +115,7 @@ export default function ProfileListItem({
                   display: "flex",
                   alignItems: "center",
                   padding: "5px",
-                  ml: 2,
+                  ml: smallScreen ? 0 : 2,
                 }}
                 {...provided.dragHandleProps}
               >
