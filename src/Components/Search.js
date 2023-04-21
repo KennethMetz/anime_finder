@@ -9,7 +9,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 import Container from "@mui/material/Container";
 
@@ -18,6 +17,8 @@ import { auth } from "./Firebase";
 import { PopulateFromFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import EdAndEinGif from "../Styles/images/ein-ed-compressed.gif";
+import { APISearch } from "./APICalls";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Search() {
   const location = useLocation();
@@ -27,30 +28,16 @@ export default function Search() {
   const [user, loading] = useAuthState(auth);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
-  let [loadingSR, setLoadingSR] = useState(true);
-  let [search, setSearch] = useState(location.state);
+  let [search, setSearch] = useState("");
   let [searchResults, setSearchResults] = useState(false);
 
-  const fourHundred = useMediaQuery(theme.breakpoints.up("fourHundred"));
-
-  async function searchContent() {
-    try {
-      let response = await fetch(
-        `https://api-jet-lfoguxrv7q-uw.a.run.app/anime/search?query=${search}`,
-        { mode: "cors" }
-      );
-      let responseJson = await response.json();
-      setSearchResults(responseJson.items);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    setSearch(location.state);
-    searchContent();
-    setLoadingSR(false);
-  }, [search, location]);
+    if (location.state?.length > 0) {
+      setSearchResults(false);
+      setSearch(location.state);
+      APISearch(location.state).then((result) => setSearchResults(result));
+    }
+  }, [location]);
 
   useEffect(() => {
     if (loading) {
@@ -62,17 +49,22 @@ export default function Search() {
     }
   }, [user, loading]);
 
+  if (loading) {
+    return <BreathingLogo type={"fullPage"} />;
+  }
+
   return (
     <div className="jsxWrapper">
       <Container maxWidth="sm">
         <h4 style={{ textAlign: "center" }}>Search Results:</h4>
         <Divider></Divider>
-        {loadingSR ? <div id="loading"></div> : ""}
-        <div className="gap" style={{ marginTop: "30px" }}></div>
-        {searchResults[0] ? (
-          <div className="column">
-            {/* <div>SEARCH RESULTS BASED ON: "{search}" </div> */}
 
+        <div className="gap" style={{ marginTop: "30px" }}></div>
+
+        {!searchResults ? (
+          <BreathingLogo type="shelf" />
+        ) : searchResults?.length > 0 ? (
+          <div className="column">
             {searchResults.map((item, index) => (
               <ListItemButton
                 dense
