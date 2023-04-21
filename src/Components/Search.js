@@ -36,7 +36,9 @@ export default function Search() {
     if (location.state?.length > 0) {
       setSearchResults(false);
       setSearch(location.state);
-      APISearch(location.state).then((result) => setSearchResults(result));
+      APISearch(location.state)
+        .then((result) => setSearchResults(result))
+        .catch((error) => console.log(error));
     }
   }, [location]);
 

@@ -5,17 +5,13 @@ const fiveMinutesMs = 1000 * 60 * 5;
 const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
 
 export async function APISearch(inputValue) {
-  try {
-    let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
-      mode: "cors",
-    });
-    let responseJson = await response.json();
-    let temp = [];
-    responseJson.items.map((item, index) => temp.push(item));
-    return temp;
-  } catch (error) {
-    console.log(error);
-  }
+  let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
+    mode: "cors",
+  });
+  let responseJson = await response.json();
+  let temp = [];
+  responseJson.items.map((item, index) => temp.push(item));
+  return temp;
 }
 
 export async function APIGetAnime(animeId) {
@@ -133,16 +129,12 @@ export function useRecommendations(viewHistory) {
 export async function getRandomAnimeListing(randomPage, randomItem) {
   let tempItem = [];
   for (let k = 0; k < 6; k++) {
-    try {
-      let response = await fetch(`${apiUrl}/anime?page=${randomPage[k]}`, {
-        mode: "cors",
-      });
-      let responseJson = await response.json();
-      console.assert(responseJson.items.length === 10, "LIST IS LESS THAN 10");
-      tempItem = [...tempItem, responseJson.items[randomItem[k]]];
-    } catch (error) {
-      console.log(error);
-    }
+    let response = await fetch(`${apiUrl}/anime?page=${randomPage[k]}`, {
+      mode: "cors",
+    });
+    let responseJson = await response.json();
+    console.assert(responseJson.items.length === 10, "LIST IS LESS THAN 10");
+    tempItem = [...tempItem, responseJson.items[randomItem[k]]];
   }
   return tempItem;
 }

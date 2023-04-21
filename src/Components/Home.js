@@ -69,7 +69,7 @@ export default function Home() {
   useEffect(() => {
     getRandomNumbers();
     getRandomAnimeListing(randomPage, randomItem).then((result) =>
-      setAnimeRandom(result)
+      setAnimeRandom(result).catch((error) => console.log(error))
     );
   }, [refresh]);
 
