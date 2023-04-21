@@ -48,7 +48,7 @@ export default function ProfileSidebar({ hideDetails }) {
           </Typography>
           <ClickAndEdit
             data={profile?.bio}
-            canEdit={isOwnProfile}
+            isListOwner={isOwnProfile}
             onSave={updateBio}
             placeholder={"Tell us a bit about yourself..."}
           />
