@@ -13,6 +13,7 @@ import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
 import AnimeShelf from "./AnimeShelf";
 import {
+  getRandomAnimeListing,
   useAnimeHR,
   useAnimeMC,
   useAnimeMH,
@@ -22,8 +23,6 @@ import {
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
-
-  let [loadingGeneric, setLoadingGeneric] = useState(true);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
@@ -35,33 +34,6 @@ export default function Home() {
 
   let randomPage = [];
   let randomItem = [];
-
-  async function getRandomAnimeListing(
-    url,
-    animeRandom,
-    setAnimeRandom,
-    refresh
-  ) {
-    let tempItem = [];
-    for (let k = 0; k < 6; k++) {
-      try {
-        let response = await fetch(`${url}page=${randomPage[k]}`, {
-          mode: "cors",
-        });
-        let responseJson = await response.json();
-        console.assert(
-          responseJson.items.length === 10,
-          "LIST IS LESS THAN 10"
-        );
-        tempItem = [...tempItem, responseJson.items[randomItem[k]]];
-
-        setLoadingGeneric(false);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    setAnimeRandom(tempItem);
-  }
 
   function getViewHistory() {
     let data = {
@@ -94,6 +66,13 @@ export default function Home() {
     }
   }
 
+  useEffect(() => {
+    getRandomNumbers();
+    getRandomAnimeListing(randomPage, randomItem).then((result) =>
+      setAnimeRandom(result)
+    );
+  }, [refresh]);
+
   // API call for personalized recommendations.
   const viewHistory = getViewHistory();
   const { data: recommendation, isLoading: loadingRecs } =
@@ -104,17 +83,6 @@ export default function Home() {
   const { data: animeMC } = useAnimeMC(selectedGenre);
   const { data: animeMPTW } = useAnimeMPTW(selectedGenre);
   const { data: animeMH } = useAnimeMH(selectedGenre);
-
-  useEffect(() => {
-    getRandomNumbers();
-
-    getRandomAnimeListing(
-      `https://api-jet-lfoguxrv7q-uw.a.run.app/anime?`,
-      animeRandom,
-      setAnimeRandom,
-      refresh
-    );
-  }, [refresh]);
 
   useEffect(() => {
     if (loading) {
