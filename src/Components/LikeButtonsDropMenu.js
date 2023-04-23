@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import { useEffect, useRef, useState } from "react";
 import LikeButtons from "./LikeButtons";
 
-export default function LikeButtonsDropMenu({ anime, isListOwner, onRemove }) {
+export default function LikeButtonsDropMenu({ anime, isOwnProfile, onRemove }) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
@@ -97,7 +97,7 @@ export default function LikeButtonsDropMenu({ anime, isListOwner, onRemove }) {
                     <LikeButtons
                       anime={anime}
                       selected={true}
-                      showDeleteButton={isListOwner}
+                      showDeleteButton={isOwnProfile}
                       onRemove={onRemove}
                     />
                   </div>
