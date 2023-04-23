@@ -8,6 +8,7 @@ export async function APISearch(inputValue) {
   let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
     mode: "cors",
   });
+  await handleErrors(response);
   let responseJson = await response.json();
   let temp = [];
   responseJson.items.map((item, index) => temp.push(item));
@@ -119,7 +120,6 @@ export function useRecommendations(viewHistory) {
       let responseJson = await response.json();
       let temp = [];
       responseJson.items.map((item, index) => temp.push(item.anime));
-      console.log(temp);
       return temp;
     },
     { staleTime: fiveMinutesMs, keepPreviousData: true }
@@ -132,6 +132,7 @@ export async function getRandomAnimeListing(randomPage, randomItem) {
     let response = await fetch(`${apiUrl}/anime?page=${randomPage[k]}`, {
       mode: "cors",
     });
+    await handleErrors(response);
     let responseJson = await response.json();
     console.assert(responseJson.items.length === 10, "LIST IS LESS THAN 10");
     tempItem = [...tempItem, responseJson.items[randomItem[k]]];

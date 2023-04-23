@@ -10,11 +10,6 @@ export default function SearchGhost() {
       <GhostListItem />
       <GhostListItem />
       <GhostListItem />
-      <GhostListItem />
-      <GhostListItem />
-      <GhostListItem />
-      <GhostListItem />
-      <GhostListItem />
       <div className="gap" />
     </Container>
   );
