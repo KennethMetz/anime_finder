@@ -3,20 +3,14 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { useEffect, useState } from "react";
 import LikeButtons from "./LikeButtons";
-
-const url =
-  "https://api-jet-lfoguxrv7q-uw.a.run.app/anime?sort=most_rated&page_size=5";
+import { useAnimeHR } from "./APICalls";
 
 export default function Sandbox() {
   const [anime, setAnime] = useState();
+  const { data: animeHR } = useAnimeHR();
 
   useEffect(() => {
-    async function fetchData() {
-      let response = await fetch(url, { mode: "cors" });
-      let responseJson = await response.json();
-      setAnime(responseJson.items);
-    }
-    fetchData();
+    setAnime(animeHR);
   }, []);
 
   return (
