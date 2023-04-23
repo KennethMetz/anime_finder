@@ -17,7 +17,7 @@ import LikeButtonsDropMenu from "./LikeButtonsDropMenu";
 
 export default function ProfileListItem({
   item,
-  isListOwner,
+  isOwnProfile,
   onRemove,
   provided,
 }) {
@@ -69,13 +69,13 @@ export default function ProfileListItem({
         {smallScreen ? (
           <LikeButtonsDropMenu
             anime={item}
-            isListOwner={isListOwner}
+            isOwnProfile={isOwnProfile}
             onRemove={onRemove}
           />
         ) : (
           <LikeButtons anime={item} selected={selected} />
         )}
-        {isListOwner && (
+        {isOwnProfile && (
           <div
             style={{ display: "flex", alignItems: "center" }}
             onClick={(e) => {
@@ -88,10 +88,10 @@ export default function ProfileListItem({
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  tabIndex={isListOwner && selected ? 0 : -1}
+                  tabIndex={isOwnProfile && selected ? 0 : -1}
                   sx={{
                     color:
-                      isListOwner && selected
+                      isOwnProfile && selected
                         ? "inherit"
                         : theme.palette.background.default,
                   }}

@@ -4,12 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useTheme from "@mui/material/styles/useTheme";
 
-export default function ClickAndEdit({
-  data,
-  placeholder,
-  isListOwner,
-  onSave,
-}) {
+export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
   placeholder = placeholder ?? "Enter some text...";
 
   const theme = useTheme();
@@ -36,11 +31,11 @@ export default function ClickAndEdit({
             pb: 1,
             pl: 0,
             ml: 0,
-            cursor: isListOwner ? "pointer" : "unset",
+            cursor: canEdit ? "pointer" : "unset",
           }}
-          onClick={isListOwner ? handleDescToggle : undefined}
+          onClick={canEdit ? handleDescToggle : undefined}
         >
-          {data?.length > 0 ? data : isListOwner ? placeholder : ""}
+          {data?.length > 0 ? data : canEdit ? placeholder : ""}
         </Box>
       ) : (
         <div

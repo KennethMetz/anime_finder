@@ -16,7 +16,7 @@ import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileListDropMenu({
   onDelete,
-  isListOwner,
+  isOwnProfile,
   deletableList,
 }) {
   const [open, setOpen] = useState(false);
@@ -112,7 +112,7 @@ export default function ProfileListDropMenu({
                   }}
                 >
                   <ListItemButton
-                    divider={isListOwner && deletableList ? true : false}
+                    divider={isOwnProfile && deletableList ? true : false}
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
@@ -146,7 +146,7 @@ export default function ProfileListDropMenu({
                     />
                   </ListItemButton>
 
-                  {isListOwner && deletableList && (
+                  {isOwnProfile && deletableList && (
                     <ListItemButton
                       onClick={() => {
                         onDelete();

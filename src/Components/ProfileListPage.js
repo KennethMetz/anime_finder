@@ -37,8 +37,6 @@ export default function ProfileListPage() {
   const userId = params.userId;
   const listId = params.listId;
 
-  const isListOwner = isOwnProfile;
-
   if (isLoading) {
     return <ProfileListPageGhost />;
   }
@@ -158,14 +156,14 @@ export default function ProfileListPage() {
         </Box>
         <ProfileListDropMenu
           onDelete={onDelete}
-          isListOwner={isListOwner}
+          isOwnProfile={isOwnProfile}
           deletableList={deletableList}
         />
       </Box>
       {listHasDesc && (
         <ClickAndEdit
           data={desc}
-          isListOwner={isListOwner}
+          canEdit={isOwnProfile}
           onSave={onDescSave}
           placeholder={"Tell us a bit about this list..."}
         />
@@ -187,7 +185,7 @@ export default function ProfileListPage() {
                       <ProfileListItem
                         key={animeItem.id}
                         item={animeItem}
-                        isListOwner={isListOwner}
+                        isOwnProfile={isOwnProfile}
                         onRemove={() => onRemove(animeIndex)}
                         provided={provided}
                         index={animeIndex}
