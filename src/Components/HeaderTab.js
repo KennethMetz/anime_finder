@@ -32,6 +32,10 @@ export default function HeaderTab({
     }
   };
 
+  const disableLink = (e) => {
+    if (!path) e.preventDefault();
+  };
+
   const iconStyle = {
     color: theme.palette.text.primary,
     "&:hover": {
@@ -62,7 +66,7 @@ export default function HeaderTab({
   };
 
   return (
-    <Link to={path} onKeyDown={onKeyDown}>
+    <Link to={path} onKeyDown={onKeyDown} onClick={disableLink}>
       {smallDevice ? (
         <IconButton tabIndex={-1} sx={iconStyle} onClick={internalOnClick}>
           {icon}
