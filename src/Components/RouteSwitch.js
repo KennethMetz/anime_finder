@@ -20,6 +20,7 @@ import AppSettingsProvider from "./AppSettingsProvider";
 import AppThemeProvider from "./AppThemeProvider";
 import YoutubeModalProvider from "./YoutubeModalProvider";
 import { SnackbarProvider } from "notistack";
+import { AnimeObjectsProvider } from "./AnimeObjectsContext";
 
 const queryClient = new QueryClient();
 
@@ -29,38 +30,43 @@ const RouteSwitch = () => {
       <AppThemeProvider>
         <BrowserRouter>
           <LocalUserProvider>
-            <QueryClientProvider client={queryClient}>
-              <YoutubeModalProvider>
-                <ConfirmProvider>
-                  <SnackbarProvider maxSnack={3}>
-                    <Routes>
-                      <Route element={<RoutingHelper />}>
-                        <Route path="/reset" element={<Reset />} />
-                        <Route
-                          path="/profile/:userId/list/:listId"
-                          element={<Profile />}
-                        />
-                        <Route path="/profile/:userId" element={<Profile />} />
-                        <Route path="/search" element={<Search />} />
-                        <Route
-                          path="/anime/:animeId"
-                          element={<DetailedViewPage />}
-                        />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/sandbox" element={<Sandbox />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/logout" element={<Logout />} />
-                        <Route path="/onboarding" element={<Onboarding />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="*" element={<NotFound404 />} />
-                        <Route path="/" element={<LandingPage />} />
-                      </Route>
-                    </Routes>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                  </SnackbarProvider>
-                </ConfirmProvider>
-              </YoutubeModalProvider>
-            </QueryClientProvider>
+            <AnimeObjectsProvider>
+              <QueryClientProvider client={queryClient}>
+                <YoutubeModalProvider>
+                  <ConfirmProvider>
+                    <SnackbarProvider maxSnack={3}>
+                      <Routes>
+                        <Route element={<RoutingHelper />}>
+                          <Route path="/reset" element={<Reset />} />
+                          <Route
+                            path="/profile/:userId/list/:listId"
+                            element={<Profile />}
+                          />
+                          <Route
+                            path="/profile/:userId"
+                            element={<Profile />}
+                          />
+                          <Route path="/search" element={<Search />} />
+                          <Route
+                            path="/anime/:animeId"
+                            element={<DetailedViewPage />}
+                          />
+                          <Route path="/home" element={<Home />} />
+                          <Route path="/sandbox" element={<Sandbox />} />
+                          <Route path="/login" element={<Login />} />
+                          <Route path="/logout" element={<Logout />} />
+                          <Route path="/onboarding" element={<Onboarding />} />
+                          <Route path="/register" element={<Register />} />
+                          <Route path="*" element={<NotFound404 />} />
+                          <Route path="/" element={<LandingPage />} />
+                        </Route>
+                      </Routes>
+                      <ReactQueryDevtools initialIsOpen={false} />
+                    </SnackbarProvider>
+                  </ConfirmProvider>
+                </YoutubeModalProvider>
+              </QueryClientProvider>
+            </AnimeObjectsProvider>
           </LocalUserProvider>
         </BrowserRouter>
       </AppThemeProvider>

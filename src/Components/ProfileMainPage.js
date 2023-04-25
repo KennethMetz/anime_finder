@@ -7,9 +7,16 @@ import { useContext } from "react";
 import ProfilePageContext from "./ProfilePageContext";
 import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
+import { useAnimeObjects } from "./APICalls";
+import { AnimeObjectsContext } from "./AnimeObjectsContext";
 
 export default function ProfileMainPage() {
   const { profile, isLoading } = useContext(ProfilePageContext);
+  const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
+
+  useAnimeObjects(profile)
+    .then((result) => setAnimeObjects(result.data))
+    .catch((error) => console.log(error));
 
   const subheadStyle = {
     fontFamily: "interBlack",
@@ -49,7 +56,7 @@ export default function ProfileMainPage() {
               userId={profile?.uid}
               listId="likes"
               name="Likes"
-              items={profile?.likes}
+              items={animeObjects?.likes}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -57,7 +64,7 @@ export default function ProfileMainPage() {
               userId={profile?.uid}
               listId="dislikes"
               name="Dislikes"
-              items={profile?.dislikes}
+              items={animeObjects?.dislikes}
             />
           </Grid>
           <Grid item xs={12}>
@@ -65,7 +72,7 @@ export default function ProfileMainPage() {
               Watchlists
             </Typography>
           </Grid>
-          {profile?.lists.map((list, index) => (
+          {animeObjects?.lists.map((list, index) => (
             <Grid item xs={12} md={6} key={index}>
               <WatchlistTile
                 userId={profile?.uid}

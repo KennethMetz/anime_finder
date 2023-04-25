@@ -12,11 +12,18 @@ import { useNavigate } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import NoResultsImage from "./NoResultsImage";
 import ProfilePageContext from "./ProfilePageContext";
+import { useAnimeObjects } from "./APICalls";
+import { AnimeObjectsContext } from "./AnimeObjectsContext";
 
 export default function Top8List() {
   const { profile, isOwnProfile, updateTop8 } = useContext(ProfilePageContext);
   const navigate = useNavigate();
   const theme = useTheme();
+  const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
+
+  useAnimeObjects(profile)
+    .then((result) => setAnimeObjects(result.data))
+    .catch((error) => console.log(error));
 
   const [visible, setVisible] = useState(false);
 
@@ -68,10 +75,10 @@ export default function Top8List() {
                 ref={provided.innerRef}
               >
                 {profile?.top8?.length > 0 &&
-                  profile?.top8.map((item, index) => (
+                  animeObjects?.top8.map((item, index) => (
                     <Draggable
-                      key={item.name}
-                      draggableId={item.display_name}
+                      key={`${item} + ${index}`}
+                      draggableId={`${item} + ${index}`}
                       index={index}
                       isDragDisabled={!isOwnProfile}
                     >

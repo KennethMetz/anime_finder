@@ -8,19 +8,19 @@ export default function useTop8ListState(anime) {
   const [user] = useAuthState(auth);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
-  const included = Boolean(localUser.top8.find((x) => x.id === anime.id));
+  const included = Boolean(localUser.top8.find((x) => x === anime.id));
 
   const setIncluded = (value) => {
     let newLocalUser = { ...localUser };
 
     //Adds title to list
     if (value && !included) {
-      newLocalUser.top8.push(anime);
+      newLocalUser.top8.push(anime.id);
     }
 
     // Removes title from list
     if (!value) {
-      let shortenedList = newLocalUser.top8.filter((x) => x.id !== anime.id);
+      let shortenedList = newLocalUser.top8.filter((x) => x !== anime.id);
       newLocalUser.top8 = shortenedList;
     }
 

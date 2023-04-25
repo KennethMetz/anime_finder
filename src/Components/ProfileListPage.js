@@ -17,6 +17,8 @@ import ProfilePageContext from "./ProfilePageContext";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import ClickAndEdit from "./ClickAndEdit";
 import ProfileListDropMenu from "./ProfileListDropMenu";
+import { AnimeObjectsContext } from "./AnimeObjectsContext";
+import { useAnimeObjects } from "./APICalls";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -32,6 +34,11 @@ export default function ProfileListPage() {
     deleteList,
     updateListDesc,
   } = useContext(ProfilePageContext);
+  console.log(profile);
+
+  let { data } = useAnimeObjects(profile);
+
+  console.log("data", data);
 
   const params = useParams();
   const userId = params.userId;
@@ -53,12 +60,12 @@ export default function ProfileListPage() {
   let showSuggestions = false;
 
   if (listId.toLowerCase() === "likes") {
-    items = profile.likes;
+    items = data.likes;
     name = "Likes";
     typeName = "Watch History";
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
-    items = profile.dislikes;
+    items = data.dislikes;
     name = "Dislikes";
     typeName = "Watch History";
     updateFn = (newItems) => updateDislikes(newItems);
@@ -66,7 +73,7 @@ export default function ProfileListPage() {
     listHasDesc = true;
     const list = findListWithSlug(profile.lists, listId);
     index = profile.lists.indexOf(list);
-    items = list.anime;
+    items = data.lists[index];
     name = list.name;
     typeName = "Watchlist";
     desc = list.desc;

@@ -43,7 +43,7 @@ export default function Home() {
     if (localUser["likes"].length > 0) {
       for (let i = 0; i < localUser["likes"].length; i++) {
         data["history"][i] = {
-          animeId: localUser["likes"][i].id,
+          animeId: localUser["likes"][i],
           status: "COMPLETED",
         };
       }
@@ -51,7 +51,7 @@ export default function Home() {
     if (localUser["dislikes"].length > 0) {
       for (let i = 0; i < localUser["dislikes"].length; i++) {
         data["history"].push({
-          animeId: localUser["dislikes"][i].id,
+          animeId: localUser["dislikes"][i],
           status: "DROPPED",
         });
       }

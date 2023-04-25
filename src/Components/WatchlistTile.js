@@ -12,7 +12,7 @@ export default function WatchlistTile({ userId, listId, name, items }) {
 
   const bgColor = theme.palette.custom.subtleCardBg;
   const gradient = `linear-gradient(270deg, ${bgColor} 0%, rgba(245, 245, 245, 0) 67.39%)`;
-
+  console.log(items);
   return (
     <Link to={`/profile/${userId}/list/${listId}`}>
       <Box
