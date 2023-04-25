@@ -2,7 +2,7 @@ import AnimeShelf from "./AnimeShelf";
 import { useRecommendations } from "./APICalls";
 
 export default function ProfileListSuggestions({ items, amount }) {
-  const history = buildHistory(items, amount);
+  const history = buildHistory(items ?? [], amount);
   const { data: suggested } = useRecommendations(history);
 
   return (

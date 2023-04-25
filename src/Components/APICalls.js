@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
+import ProfilePageContext from "./ProfilePageContext";
 
 const fiveMinutesMs = 1000 * 60 * 5;
 
@@ -141,26 +143,27 @@ export async function getRandomAnimeListing(randomPage, randomItem) {
 }
 
 export async function useAnimeObjects(profile) {
-  let numberOfAnimeInLists = 0;
   let allAnimeInLists = [];
 
-  for (let i = 0; i < profile.lists.length; i++) {
-    numberOfAnimeInLists += profile.lists[i].anime.length;
-    allAnimeInLists.push(...profile.lists[i].anime);
+  for (let i = 0; i < profile?.lists?.length; i++) {
+    if (profile?.lists[i]?.anime)
+      allAnimeInLists.push(...profile.lists[i].anime);
   }
-
   const requestBody = {
-    ids: [
-      ...profile?.likes,
-      ...profile?.dislikes,
-      ...allAnimeInLists,
-      ...profile?.top8,
-    ],
+    ids: profile
+      ? [
+          ...profile?.likes,
+          ...profile?.dislikes,
+          ...allAnimeInLists,
+          ...profile?.top8,
+        ]
+      : [],
   };
   const animeObjects = { likes: [], dislikes: [], lists: [], top8: [] };
 
+  //To-do: Prevent initial API call when profile=undefined
   return useQuery(
-    [profile?.likes + profile?.dislikes + profile?.lists + profile?.top8],
+    [profile?.likes + profile?.dislikes + allAnimeInLists],
     async () => {
       let response = await fetch(`${apiUrl}/anime/get`, {
         method: "POST",
@@ -172,23 +175,21 @@ export async function useAnimeObjects(profile) {
       });
       await handleErrors(response);
       let responseJson = await response.json();
-      console.log(responseJson.items);
-      console.log(animeObjects);
 
-      for (let i = 0; i < profile.likes.length; i++) {
+      for (let i = 0; i < profile?.likes.length; i++) {
         animeObjects.likes.push(responseJson.items.shift());
       }
-      for (let i = 0; i < profile.dislikes.length; i++) {
+      for (let i = 0; i < profile?.dislikes.length; i++) {
         animeObjects.dislikes.push(responseJson.items.shift());
       }
-      for (let k = 0; k < profile.lists.length; k++) {
+      for (let k = 0; k < profile?.lists.length; k++) {
         for (let i = 0; i < profile.lists[k].anime.length; i++) {
           if (i === 0)
             animeObjects.lists[k] = { anime: [], name: profile.lists[k].name };
           animeObjects.lists[k].anime.push(responseJson.items.shift());
         }
       }
-      for (let i = 0; i < profile.top8.length; i++) {
+      for (let i = 0; i < profile?.top8.length; i++) {
         animeObjects.top8.push(responseJson.items.shift());
       }
       console.log(animeObjects);

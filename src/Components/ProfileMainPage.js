@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import NoResultsImage from "./NoResultsImage";
 import WatchlistTile from "./WatchlistTile";
 import { slugifyListName } from "../Util/ListUtil";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ProfilePageContext from "./ProfilePageContext";
 import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";

@@ -34,11 +34,12 @@ export default function ProfileListPage() {
     deleteList,
     updateListDesc,
   } = useContext(ProfilePageContext);
-  console.log(profile);
 
-  let { data } = useAnimeObjects(profile);
+  const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
 
-  console.log("data", data);
+  useAnimeObjects(profile)
+    .then((result) => setAnimeObjects(result.data))
+    .catch((error) => console.log(error));
 
   const params = useParams();
   const userId = params.userId;
@@ -60,12 +61,12 @@ export default function ProfileListPage() {
   let showSuggestions = false;
 
   if (listId.toLowerCase() === "likes") {
-    items = data.likes;
+    items = animeObjects?.likes;
     name = "Likes";
     typeName = "Watch History";
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
-    items = data.dislikes;
+    items = animeObjects?.dislikes;
     name = "Dislikes";
     typeName = "Watch History";
     updateFn = (newItems) => updateDislikes(newItems);
@@ -73,7 +74,7 @@ export default function ProfileListPage() {
     listHasDesc = true;
     const list = findListWithSlug(profile.lists, listId);
     index = profile.lists.indexOf(list);
-    items = data.lists[index];
+    items = animeObjects?.lists[index]?.anime;
     name = list.name;
     typeName = "Watchlist";
     desc = list.desc;
