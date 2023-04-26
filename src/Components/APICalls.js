@@ -192,9 +192,24 @@ export async function useAnimeObjects(profile) {
       for (let i = 0; i < profile?.top8.length; i++) {
         animeObjects.top8.push(responseJson.items.shift());
       }
-      console.log(animeObjects);
       return animeObjects;
     },
     { staleTime: fiveMinutesMs, keepPreviousData: true }
   );
+}
+
+export async function APIGetAnimeList(ids) {
+  const requestBody = { ids };
+
+  let response = await fetch(`${apiUrl}/anime/get`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+  await handleErrors(response);
+  let responseJson = await response.json();
+  return responseJson;
 }

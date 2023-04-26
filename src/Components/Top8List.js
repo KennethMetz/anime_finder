@@ -16,32 +16,34 @@ import { useAnimeObjects } from "./APICalls";
 import { AnimeObjectsContext } from "./AnimeObjectsContext";
 
 export default function Top8List() {
-  const { profile, isOwnProfile, updateTop8 } = useContext(ProfilePageContext);
+  const { profile, animeObjects, isOwnProfile, updateTop8 } =
+    useContext(ProfilePageContext);
   const navigate = useNavigate();
   const theme = useTheme();
-  const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
 
-  useAnimeObjects(profile)
-    .then((result) => setAnimeObjects(result.data))
-    .catch((error) => console.log(error));
+  // const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
+
+  // useAnimeObjects(profile)
+  //   .then((result) => setAnimeObjects(result.data))
+  //   .catch((error) => console.log(error));
 
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    console.log(animeObjects);
-  }, [animeObjects]);
+  // useEffect(() => {
+  //   console.log(animeObjects);
+  // }, [profile]);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
 
-    const items = [...animeObjects?.top8];
+    const items = [...profile?.top8];
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     updateTop8(items);
   }
 
   function onRemoveItem(index) {
-    const items = [...animeObjects?.top8];
+    const items = [...profile?.top8];
     items.splice(index, 1);
     updateTop8(items);
   }

@@ -9,14 +9,16 @@ import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
 import { useAnimeObjects } from "./APICalls";
 import { AnimeObjectsContext } from "./AnimeObjectsContext";
+import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfileMainPage() {
-  const { profile, isLoading } = useContext(ProfilePageContext);
-  const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
+  const { profile, animeObjects, isLoading } = useContext(ProfilePageContext);
+  // const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
 
-  useAnimeObjects(profile)
-    .then((result) => setAnimeObjects(result.data))
-    .catch((error) => console.log(error));
+  // const [animeObjects, isLoadingAnime, error] = useProfileWithAnime(profile);
+  // useAnimeObjects(profile)
+  //   .then((result) => setAnimeObjects(result.data))
+  //   .catch((error) => console.log(error));
 
   const subheadStyle = {
     fontFamily: "interBlack",
@@ -30,6 +32,8 @@ export default function ProfileMainPage() {
     fontFamily: "interMedium",
     fontSize: "16px",
   };
+
+  // To-do: Error screen on error.
 
   if (isLoading) {
     return <ProfileMainPageGhost />;

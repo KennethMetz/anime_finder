@@ -2,6 +2,7 @@ import { createContext } from "react";
 
 const ProfilePageContext = createContext({
   profile: undefined,
+  animeObjects: undefined,
   profileUserId: undefined,
   isOwnProfile: false,
   isLoading: false,

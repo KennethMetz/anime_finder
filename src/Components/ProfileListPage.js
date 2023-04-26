@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 
 import { useConfirm } from "material-ui-confirm";
 import { CaretLeft, X } from "phosphor-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
@@ -19,6 +19,7 @@ import ClickAndEdit from "./ClickAndEdit";
 import ProfileListDropMenu from "./ProfileListDropMenu";
 import { AnimeObjectsContext } from "./AnimeObjectsContext";
 import { useAnimeObjects } from "./APICalls";
+import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function ProfileListPage() {
 
   const {
     profile,
+    animeObjects,
     isOwnProfile,
     isLoading,
     updateLikes,
@@ -35,21 +37,20 @@ export default function ProfileListPage() {
     updateListDesc,
   } = useContext(ProfilePageContext);
 
-  const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
+  // const [animeObjects, isLoadingAnime, error] = useProfileWithAnime(profile);
 
-  useAnimeObjects(profile)
-    .then((result) => setAnimeObjects(result.data))
-    .catch((error) => console.log(error));
+  // const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
+
+  // useAnimeObjects(profile)
+  //   .then((result) => setAnimeObjects(result.data))
+  //   .catch((error) => console.log(error));
 
   const params = useParams();
   const userId = params.userId;
   const listId = params.listId;
 
-  if (isLoading) {
-    return <ProfileListPageGhost />;
-  }
-
   let items = [];
+  let itemsIds = [];
   let name = "";
   let desc = "";
   let index = null;
@@ -60,13 +61,23 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
 
+  // useEffect(() => {
+  //   console.log(animeObjects); // Does NOT change
+  //   console.log(profile); // Changes
+  // }, [animeObjects]);
+
+  if (isLoading) {
+    return <ProfileListPageGhost />;
+  }
   if (listId.toLowerCase() === "likes") {
     items = animeObjects?.likes;
+    itemsIds = profile.likes;
     name = "Likes";
     typeName = "Watch History";
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
     items = animeObjects?.dislikes;
+    itemsIds = profile.dislikes;
     name = "Dislikes";
     typeName = "Watch History";
     updateFn = (newItems) => updateDislikes(newItems);
@@ -75,6 +86,7 @@ export default function ProfileListPage() {
     const list = findListWithSlug(profile.lists, listId);
     index = profile.lists.indexOf(list);
     items = animeObjects?.lists[index]?.anime;
+    itemsIds = profile.lists[index]?.anime;
     name = list.name;
     typeName = "Watchlist";
     desc = list.desc;
@@ -90,7 +102,7 @@ export default function ProfileListPage() {
 
   // Removes item at `index` from this list.
   const onRemove = (index) => {
-    const newItems = [...items];
+    const newItems = [...itemsIds];
     newItems.splice(index, 1);
     updateFn(newItems);
   };
@@ -114,14 +126,10 @@ export default function ProfileListPage() {
   // Saves reordered list for drag-and-drop functionality
   function handleOnDragEnd(result) {
     if (!result.destination) return;
-    console.log(result.source.index);
-    console.log(result.destination.index);
 
-    const newItems = [...items];
+    const newItems = [...itemsIds];
     const reorderedItem = newItems.splice(result.source.index, 1);
-    console.log(reorderedItem);
     newItems.splice(result.destination.index, 0, reorderedItem[0]);
-    console.log(newItems);
     updateFn(newItems);
   }
 
@@ -182,10 +190,10 @@ export default function ProfileListPage() {
           <Droppable droppableId="watchlist">
             {(provided) => (
               <List {...provided.droppableProps} ref={provided.innerRef}>
-                {items.map((animeItem, animeIndex) => (
+                {items?.map((animeItem, animeIndex) => (
                   <Draggable
                     key={animeItem.id}
-                    draggableId={animeItem.display_name}
+                    draggableId={animeItem.display_name ?? animeItem.name}
                     index={animeIndex}
                     isDragDisabled={!isOwnProfile}
                   >
