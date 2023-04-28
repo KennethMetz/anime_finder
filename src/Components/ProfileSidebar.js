@@ -18,7 +18,7 @@ export default function ProfileSidebar({ hideDetails }) {
     <>
       {!hideDetails && (
         <>
-          {isOwnProfile && profile?.name === "guest" && (
+          {isOwnProfile && profile?.authProvider === "anonymous" && (
             <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 variant="contained"
