@@ -37,14 +37,6 @@ export default function ProfileListPage() {
     updateListDesc,
   } = useContext(ProfilePageContext);
 
-  // const [animeObjects, isLoadingAnime, error] = useProfileWithAnime(profile);
-
-  // const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
-
-  // useAnimeObjects(profile)
-  //   .then((result) => setAnimeObjects(result.data))
-  //   .catch((error) => console.log(error));
-
   const params = useParams();
   const userId = params.userId;
   const listId = params.listId;
@@ -66,10 +58,15 @@ export default function ProfileListPage() {
   //   console.log(profile); // Changes
   // }, [animeObjects]);
 
+  // useEffect(() => {
+  //   console.log(items);
+  // }, [items]);
+
   if (isLoading) {
     return <ProfileListPageGhost />;
   }
   if (listId.toLowerCase() === "likes") {
+    // console.log(animeObjects);
     items = animeObjects?.likes;
     itemsIds = profile.likes;
     name = "Likes";
@@ -185,30 +182,31 @@ export default function ProfileListPage() {
         />
       )}
       {/* Items */}
-      {items?.length > 0 ? (
+      {items[0] ? (
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="watchlist">
             {(provided) => (
               <List {...provided.droppableProps} ref={provided.innerRef}>
-                {items?.map((animeItem, animeIndex) => (
-                  <Draggable
-                    key={animeItem.id}
-                    draggableId={animeItem.display_name ?? animeItem.name}
-                    index={animeIndex}
-                    isDragDisabled={!isOwnProfile}
-                  >
-                    {(provided) => (
-                      <ProfileListItem
-                        key={animeItem.id}
-                        item={animeItem}
-                        isOwnProfile={isOwnProfile}
-                        onRemove={() => onRemove(animeIndex)}
-                        provided={provided}
-                        index={animeIndex}
-                      />
-                    )}
-                  </Draggable>
-                ))}
+                {items[0] &&
+                  items?.map((animeItem, animeIndex) => (
+                    <Draggable
+                      key={animeItem.id}
+                      draggableId={animeItem.display_name ?? animeItem.name}
+                      index={animeIndex}
+                      isDragDisabled={!isOwnProfile}
+                    >
+                      {(provided) => (
+                        <ProfileListItem
+                          key={animeItem.id}
+                          item={animeItem}
+                          isOwnProfile={isOwnProfile}
+                          onRemove={() => onRemove(animeIndex)}
+                          provided={provided}
+                          index={animeIndex}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
                 {provided.placeholder}
               </List>
             )}

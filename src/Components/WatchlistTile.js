@@ -59,8 +59,8 @@ export default function WatchlistTile({ userId, listId, name, items }) {
                   aspectRatio: "0.7",
                   background:
                     index == 4
-                      ? `${gradient}, url(${item.image_large})`
-                      : `url(${item.image_large})`,
+                      ? `${gradient}, url(${item?.image_large})`
+                      : `url(${item?.image_large})`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
                   borderRadius: "8px",

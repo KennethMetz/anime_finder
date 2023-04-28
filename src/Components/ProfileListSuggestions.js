@@ -14,7 +14,7 @@ export default function ProfileListSuggestions({ items, amount }) {
 
 function buildHistory(items, amount) {
   return {
-    history: items.map((item) => ({ animeId: item.id, status: "COMPLETED" })),
+    history: items.map((item) => ({ animeId: item?.id, status: "COMPLETED" })),
     amount: amount ?? 6,
   };
 }

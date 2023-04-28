@@ -65,7 +65,6 @@ export default function DetailedView() {
   }, [user, anime, loading]);
 
   useEffect(() => {
-    console.log(anime);
     GetPaginatedReviewsFromFirestore(
       anime,
       animeReviews,

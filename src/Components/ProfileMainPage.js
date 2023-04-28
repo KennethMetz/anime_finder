@@ -13,12 +13,6 @@ import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfileMainPage() {
   const { profile, animeObjects, isLoading } = useContext(ProfilePageContext);
-  // const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
-
-  // const [animeObjects, isLoadingAnime, error] = useProfileWithAnime(profile);
-  // useAnimeObjects(profile)
-  //   .then((result) => setAnimeObjects(result.data))
-  //   .catch((error) => console.log(error));
 
   const subheadStyle = {
     fontFamily: "interBlack",

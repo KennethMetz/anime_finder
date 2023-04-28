@@ -36,15 +36,22 @@ export default function useProfileWithAnime(profile) {
 
   // Replace anime IDs with full objects.
   const result = {
-    likes: profile?.likes?.map((id) => lookup.get(id)) ?? [],
-    dislikes: profile?.dislikes?.map((id) => lookup.get(id)) ?? [],
-    top8: profile?.top8?.map((id) => lookup.get(id)) ?? [],
+    likes:
+      profile?.likes?.map((id) => lookup.get(id)).filter((item) => !!item) ??
+      [],
+    dislikes:
+      profile?.dislikes?.map((id) => lookup.get(id)).filter((item) => !!item) ??
+      [],
+    top8:
+      profile?.top8?.map((id) => lookup.get(id)).filter((item) => !!item) ?? [],
     lists:
       profile?.lists?.map((list) => ({
         ...list,
-        anime: list.anime.map((item, index) => lookup.get(item)),
+        anime: list.anime
+          .map((item, index) => lookup.get(item))
+          .filter((item) => !!item),
       })) ?? [],
   };
 
-  return [result, isLoading, error]; // RETURNING BAD RESULTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  return [result, isLoading, error];
 }

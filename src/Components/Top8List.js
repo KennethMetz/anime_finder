@@ -21,12 +21,6 @@ export default function Top8List() {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  // const [animeObjects, setAnimeObjects] = useContext(AnimeObjectsContext);
-
-  // useAnimeObjects(profile)
-  //   .then((result) => setAnimeObjects(result.data))
-  //   .catch((error) => console.log(error));
-
   const [visible, setVisible] = useState(false);
 
   // useEffect(() => {
@@ -92,7 +86,7 @@ export default function Top8List() {
                         <ListItemButton
                           variant="X"
                           className="invisibleX"
-                          aria-label={item.display_name}
+                          aria-label={item?.display_name}
                           disableGutters={true}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
@@ -133,8 +127,8 @@ export default function Top8List() {
                             >
                               <Box
                                 component="img"
-                                alt={item.display_name}
-                                src={item.image_large ?? item.image_small}
+                                alt={item?.display_name}
+                                src={item?.image_large ?? item?.image_small}
                                 sx={{
                                   height: "56px",
                                   borderRadius: "8px",
@@ -152,7 +146,7 @@ export default function Top8List() {
                                 overflow: "hidden",
                               }}
                             >
-                              {item.display_name}
+                              {item?.display_name}
                             </Typography>
                           </div>
                           <div
