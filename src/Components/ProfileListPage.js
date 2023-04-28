@@ -182,7 +182,7 @@ export default function ProfileListPage() {
         />
       )}
       {/* Items */}
-      {items[0] ? (
+      {items && (
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="watchlist">
             {(provided) => (
@@ -212,9 +212,8 @@ export default function ProfileListPage() {
             )}
           </Droppable>
         </DragDropContext>
-      ) : (
-        <NoResultsImage />
       )}
+      {items === [] && <NoResultsImage />}
       {/*Suggestions*/}
       {showSuggestions && (
         <>
@@ -233,6 +232,8 @@ function findListWithSlug(lists, slug) {
 }
 
 function getSubtitleText(typeName, items) {
+  if (!items) return "";
+
   const strings = [];
   strings.push(typeName);
   strings.push(getItemsText(items));
@@ -240,7 +241,7 @@ function getSubtitleText(typeName, items) {
 }
 
 function getItemsText(items) {
-  if (!items || !items.length) {
+  if (!items.length) {
     return "No items";
   }
 
