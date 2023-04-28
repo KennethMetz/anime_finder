@@ -5,10 +5,12 @@ const fiveMinutesMs = 1000 * 60 * 5;
 
 export default function useAnimeList(ids) {
   // To-do: Sort ids
+  const conditionalQueryKey = ids ? ["anime", ...ids] : ["anime", "undefined"];
 
   return useQuery(
-    ["anime", ...ids],
+    [...conditionalQueryKey],
     async () => {
+      if (ids === undefined) return null;
       const response = await APIGetAnimeList(ids);
       return response.items;
     },
