@@ -8,14 +8,14 @@ export default function useProfileWithAnime(profile) {
     if (profile?.lists[i]?.anime)
       allAnimeInLists.push(...profile.lists[i].anime);
   }
-  const ids = profile
+  const ids = profile?.uid
     ? [
         ...profile?.likes,
         ...profile?.dislikes,
         ...allAnimeInLists,
         ...profile?.top8,
       ]
-    : [];
+    : undefined;
 
   const {
     data: animeLists,
