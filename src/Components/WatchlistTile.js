@@ -69,7 +69,7 @@ export default function WatchlistTile({ userId, listId, name, items }) {
               />
             </Grid>
           ))}
-          {!items?.length && (
+          {items?.length === 0 && (
             <Box
               sx={{
                 p: 1,
