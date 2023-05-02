@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 
 import { useConfirm } from "material-ui-confirm";
 import { CaretLeft, X } from "phosphor-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
@@ -24,6 +24,7 @@ export default function ProfileListPage() {
 
   const {
     profile,
+    animeObjects,
     isOwnProfile,
     isLoading,
     updateLikes,
@@ -37,11 +38,8 @@ export default function ProfileListPage() {
   const userId = params.userId;
   const listId = params.listId;
 
-  if (isLoading) {
-    return <ProfileListPageGhost />;
-  }
-
   let items = [];
+  let itemsIds = [];
   let name = "";
   let desc = "";
   let index = null;
@@ -52,13 +50,18 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
 
+  if (isLoading) {
+    return <ProfileListPageGhost />;
+  }
   if (listId.toLowerCase() === "likes") {
-    items = profile.likes;
+    items = animeObjects?.likes;
+    itemsIds = profile.likes;
     name = "Likes";
     typeName = "Watch History";
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
-    items = profile.dislikes;
+    items = animeObjects?.dislikes;
+    itemsIds = profile.dislikes;
     name = "Dislikes";
     typeName = "Watch History";
     updateFn = (newItems) => updateDislikes(newItems);
@@ -66,7 +69,8 @@ export default function ProfileListPage() {
     listHasDesc = true;
     const list = findListWithSlug(profile.lists, listId);
     index = profile.lists.indexOf(list);
-    items = list.anime;
+    items = animeObjects?.lists[index]?.anime;
+    itemsIds = profile.lists[index]?.anime;
     name = list.name;
     typeName = "Watchlist";
     desc = list.desc;
@@ -82,7 +86,7 @@ export default function ProfileListPage() {
 
   // Removes item at `index` from this list.
   const onRemove = (index) => {
-    const newItems = [...items];
+    const newItems = [...itemsIds];
     newItems.splice(index, 1);
     updateFn(newItems);
   };
@@ -106,14 +110,10 @@ export default function ProfileListPage() {
   // Saves reordered list for drag-and-drop functionality
   function handleOnDragEnd(result) {
     if (!result.destination) return;
-    console.log(result.source.index);
-    console.log(result.destination.index);
 
-    const newItems = [...items];
+    const newItems = [...itemsIds];
     const reorderedItem = newItems.splice(result.source.index, 1);
-    console.log(reorderedItem);
     newItems.splice(result.destination.index, 0, reorderedItem[0]);
-    console.log(newItems);
     updateFn(newItems);
   }
 
@@ -169,38 +169,38 @@ export default function ProfileListPage() {
         />
       )}
       {/* Items */}
-      {items?.length > 0 ? (
+      {items && (
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="watchlist">
             {(provided) => (
               <List {...provided.droppableProps} ref={provided.innerRef}>
-                {items.map((animeItem, animeIndex) => (
-                  <Draggable
-                    key={animeItem.id}
-                    draggableId={animeItem.display_name}
-                    index={animeIndex}
-                    isDragDisabled={!isOwnProfile}
-                  >
-                    {(provided) => (
-                      <ProfileListItem
-                        key={animeItem.id}
-                        item={animeItem}
-                        isOwnProfile={isOwnProfile}
-                        onRemove={() => onRemove(animeIndex)}
-                        provided={provided}
-                        index={animeIndex}
-                      />
-                    )}
-                  </Draggable>
-                ))}
+                {items[0] &&
+                  items?.map((animeItem, animeIndex) => (
+                    <Draggable
+                      key={animeItem.id}
+                      draggableId={animeItem.display_name ?? animeItem.name}
+                      index={animeIndex}
+                      isDragDisabled={!isOwnProfile}
+                    >
+                      {(provided) => (
+                        <ProfileListItem
+                          key={animeItem.id}
+                          item={animeItem}
+                          isOwnProfile={isOwnProfile}
+                          onRemove={() => onRemove(animeIndex)}
+                          provided={provided}
+                          index={animeIndex}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
                 {provided.placeholder}
               </List>
             )}
           </Droppable>
         </DragDropContext>
-      ) : (
-        <NoResultsImage />
       )}
+      {items === [] && <NoResultsImage />}
       {/*Suggestions*/}
       {showSuggestions && (
         <>
@@ -219,6 +219,8 @@ function findListWithSlug(lists, slug) {
 }
 
 function getSubtitleText(typeName, items) {
+  if (!items) return "";
+
   const strings = [];
   strings.push(typeName);
   strings.push(getItemsText(items));
@@ -226,7 +228,7 @@ function getSubtitleText(typeName, items) {
 }
 
 function getItemsText(items) {
-  if (!items || !items.length) {
+  if (!items.length) {
     return "No items";
   }
 

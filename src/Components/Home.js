@@ -40,18 +40,18 @@ export default function Home() {
       history: [],
       amount: 30,
     };
-    if (localUser["likes"].length > 0) {
+    if (localUser["likes"][0]) {
       for (let i = 0; i < localUser["likes"].length; i++) {
         data["history"][i] = {
-          animeId: localUser["likes"][i].id,
+          animeId: localUser["likes"][i],
           status: "COMPLETED",
         };
       }
     }
-    if (localUser["dislikes"].length > 0) {
+    if (localUser["dislikes"][0]) {
       for (let i = 0; i < localUser["dislikes"].length; i++) {
         data["history"].push({
-          animeId: localUser["dislikes"][i].id,
+          animeId: localUser["dislikes"][i],
           status: "DROPPED",
         });
       }

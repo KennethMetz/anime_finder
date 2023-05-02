@@ -13,7 +13,7 @@ export default function useWatchlistState(anime, list) {
   const indexOfList = allLists.findIndex((x) => x.name === list);
 
   const included = Boolean(
-    allLists[indexOfList].anime.find((x) => x.id === anime.id)
+    allLists[indexOfList].anime.find((x) => x === anime.id)
   );
 
   const setIncluded = (value) => {
@@ -22,14 +22,14 @@ export default function useWatchlistState(anime, list) {
     let newLocalUser = { ...localUser };
 
     //Adds title to list
-    if (value && !allLists[indexOfList].anime.find((x) => x.id === anime.id)) {
-      newLocalUser.lists[indexOfList].anime.push(anime);
+    if (value && !allLists[indexOfList].anime.find((x) => x === anime.id)) {
+      newLocalUser.lists[indexOfList].anime.push(anime.id);
     }
 
     // Removes title from list
     if (!value) {
       let shortenedList = newLocalUser.lists[indexOfList].anime.filter(
-        (x) => x.id !== anime.id
+        (x) => x !== anime.id
       );
       newLocalUser.lists[indexOfList].anime = shortenedList;
     }

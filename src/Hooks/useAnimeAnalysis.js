@@ -15,11 +15,11 @@ export default function useAnimeAnalysis(animeId) {
   const history = useMemo(
     () => [
       ...localUser["likes"].map((anime) => ({
-        animeId: anime.id,
+        animeId: anime,
         status: "COMPLETED",
       })),
       ...localUser["dislikes"].map((anime) => ({
-        animeId: anime.id,
+        animeId: anime,
         status: "DROPPED",
       })),
     ],

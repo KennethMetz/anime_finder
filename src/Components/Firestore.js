@@ -127,6 +127,7 @@ export async function GetPaginatedReviewsFromFirestore(
   setSeeMore
 ) {
   try {
+    if (!anime) return;
     let animeID = anime.id.toString();
     let collectionQuery = null;
     if (!lastVisible) {

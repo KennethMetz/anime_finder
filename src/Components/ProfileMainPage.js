@@ -9,7 +9,7 @@ import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
 
 export default function ProfileMainPage() {
-  const { profile, isLoading } = useContext(ProfilePageContext);
+  const { profile, animeObjects, isLoading } = useContext(ProfilePageContext);
 
   const subheadStyle = {
     fontFamily: "interBlack",
@@ -23,6 +23,8 @@ export default function ProfileMainPage() {
     fontFamily: "interMedium",
     fontSize: "16px",
   };
+
+  // To-do: Error screen on error.
 
   if (isLoading) {
     return <ProfileMainPageGhost />;
@@ -49,7 +51,7 @@ export default function ProfileMainPage() {
               userId={profile?.uid}
               listId="likes"
               name="Likes"
-              items={profile?.likes}
+              items={animeObjects?.likes}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -57,7 +59,7 @@ export default function ProfileMainPage() {
               userId={profile?.uid}
               listId="dislikes"
               name="Dislikes"
-              items={profile?.dislikes}
+              items={animeObjects?.dislikes}
             />
           </Grid>
           <Grid item xs={12}>
@@ -65,7 +67,7 @@ export default function ProfileMainPage() {
               Watchlists
             </Typography>
           </Grid>
-          {profile?.lists.map((list, index) => (
+          {animeObjects?.lists.map((list, index) => (
             <Grid item xs={12} md={6} key={index}>
               <WatchlistTile
                 userId={profile?.uid}

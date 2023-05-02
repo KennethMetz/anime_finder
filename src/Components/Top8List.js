@@ -14,7 +14,8 @@ import NoResultsImage from "./NoResultsImage";
 import ProfilePageContext from "./ProfilePageContext";
 
 export default function Top8List() {
-  const { profile, isOwnProfile, updateTop8 } = useContext(ProfilePageContext);
+  const { profile, animeObjects, isOwnProfile, updateTop8 } =
+    useContext(ProfilePageContext);
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -23,14 +24,14 @@ export default function Top8List() {
   function handleOnDragEnd(result) {
     if (!result.destination) return;
 
-    const items = [...profile.top8];
+    const items = [...profile?.top8];
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     updateTop8(items);
   }
 
   function onRemoveItem(index) {
-    const items = [...profile.top8];
+    const items = [...profile?.top8];
     items.splice(index, 1);
     updateTop8(items);
   }
@@ -68,10 +69,10 @@ export default function Top8List() {
                 ref={provided.innerRef}
               >
                 {profile?.top8?.length > 0 &&
-                  profile?.top8.map((item, index) => (
+                  animeObjects?.top8.map((item, index) => (
                     <Draggable
-                      key={item.name}
-                      draggableId={item.display_name}
+                      key={`${item} + ${index}`}
+                      draggableId={`${item} + ${index}`}
                       index={index}
                       isDragDisabled={!isOwnProfile}
                     >
@@ -79,7 +80,7 @@ export default function Top8List() {
                         <ListItemButton
                           variant="X"
                           className="invisibleX"
-                          aria-label={item.display_name}
+                          aria-label={item?.display_name}
                           disableGutters={true}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
@@ -120,8 +121,8 @@ export default function Top8List() {
                             >
                               <Box
                                 component="img"
-                                alt={item.display_name}
-                                src={item.image_large ?? item.image_small}
+                                alt={item?.display_name}
+                                src={item?.image_large ?? item?.image_small}
                                 sx={{
                                   height: "56px",
                                   borderRadius: "8px",
@@ -139,7 +140,7 @@ export default function Top8List() {
                                 overflow: "hidden",
                               }}
                             >
-                              {item.display_name}
+                              {item?.display_name}
                             </Typography>
                           </div>
                           <div

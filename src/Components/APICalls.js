@@ -139,3 +139,19 @@ export async function getRandomAnimeListing(randomPage, randomItem) {
   }
   return tempItem;
 }
+
+export async function APIGetAnimeList(ids) {
+  const requestBody = { ids };
+
+  let response = await fetch(`${apiUrl}/anime/get`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+  await handleErrors(response);
+  let responseJson = await response.json();
+  return responseJson;
+}

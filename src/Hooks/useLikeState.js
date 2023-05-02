@@ -11,8 +11,8 @@ export default function useLikeState(anime) {
   const likes = localUser?.likes ?? [];
   const dislikes = localUser?.dislikes ?? [];
 
-  const liked = Boolean(likes.find((x) => x.id === anime.id));
-  const disliked = Boolean(dislikes.find((x) => x.id === anime.id));
+  const liked = Boolean(likes.find((x) => x === anime.id));
+  const disliked = Boolean(dislikes.find((x) => x === anime.id));
 
   const setLiked = (value) => {
     const newLocalUser = {
@@ -46,14 +46,14 @@ export default function useLikeState(anime) {
 
 // Adds `anime` to `list`, if not already present.  Always returns a new list.
 function add(list, anime) {
-  if (list.find((x) => x.id === anime.id)) {
+  if (list.find((x) => x === anime.id)) {
     return [...list];
   } else {
-    return [...list, anime];
+    return [...list, anime.id];
   }
 }
 
 // Removes an `anime` from `list` if it is present. Always returns a new list.
 function remove(list, anime) {
-  return list.filter((x) => x.id !== anime.id);
+  return list.filter((x) => x !== anime.id);
 }

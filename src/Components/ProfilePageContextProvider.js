@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useProfile } from "./APICalls";
 import { auth } from "./Firebase";
 import { SaveToFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import ProfilePageContext from "./ProfilePageContext";
+import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfilePageContextProvider({ userId, children }) {
   const [user, loading] = useAuthState(auth);
@@ -12,12 +13,17 @@ export default function ProfilePageContextProvider({ userId, children }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const userOwnsProfile = user && profile && user.uid === profile.uid;
+  const profileToUse = userOwnsProfile ? localUser : profile;
+
+  const [animeObjects, isLoadingAnime, errorAnime] =
+    useProfileWithAnime(profileToUse);
 
   const value = {
-    profile: userOwnsProfile ? localUser : profile,
+    profile: profileToUse,
+    animeObjects: animeObjects,
     profileUserId: userId,
     isOwnProfile: userOwnsProfile,
-    isLoading: loading || profileLoading || !localUser?.uid,
+    isLoading: loading || profileLoading || !localUser?.uid || isLoadingAnime,
     updateBio: (bio) => {
       throwIfNotOwner();
       const newLocalUser = { ...localUser, bio };
