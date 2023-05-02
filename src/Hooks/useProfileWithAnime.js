@@ -1,8 +1,7 @@
 import useAnimeList from "./useAnimeList";
 
 export default function useProfileWithAnime(profile) {
-  // ON RE-RENDER OLD PROFILE IS PRESENT IN THIS FUNCTION
-  let allAnimeInLists = [];
+  const allAnimeInLists = [];
 
   for (let i = 0; i < profile?.lists?.length; i++) {
     if (profile?.lists[i]?.anime)
@@ -36,22 +35,25 @@ export default function useProfileWithAnime(profile) {
 
   // Replace anime IDs with full objects.
   const result = {
-    likes:
-      profile?.likes?.map((id) => lookup.get(id)).filter((item) => !!item) ??
-      [],
-    dislikes:
-      profile?.dislikes?.map((id) => lookup.get(id)).filter((item) => !!item) ??
-      [],
-    top8:
-      profile?.top8?.map((id) => lookup.get(id)).filter((item) => !!item) ?? [],
+    likes: mapIdsToObjects(profile?.likes, lookup),
+    dislikes: mapIdsToObjects(profile?.dislikes, lookup),
+    top8: mapIdsToObjects(profile?.top8, lookup),
     lists:
       profile?.lists?.map((list) => ({
         ...list,
-        anime: list.anime
-          .map((item, index) => lookup.get(item))
-          .filter((item) => !!item),
+        anime: mapIdsToObjects(list.anime, lookup),
       })) ?? [],
   };
 
   return [result, isLoading, error];
+}
+
+// Helper function to map a list of `ids` to a list of anime objects, using
+// the id -> anime object map `lookup`.
+function mapIdsToObjects(ids, lookup) {
+  if (!ids) {
+    return [];
+  }
+
+  return ids.map((id) => lookup.get(id)).filter((item) => !!item);
 }

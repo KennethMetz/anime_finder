@@ -9,16 +9,17 @@ import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfilePageContextProvider({ userId, children }) {
   const [user, loading] = useAuthState(auth);
-  const { data: profile, isLoading: profileLoading } = useProfile(userId); //THIS REACT QUERY KEY DOES NOT CHANGE WHEN LOCAL USER CHANGES
+  const { data: profile, isLoading: profileLoading } = useProfile(userId);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const userOwnsProfile = user && profile && user.uid === profile.uid;
 
-  const [animeObjects, isLoadingAnime, errorAnime] = useProfileWithAnime(
-    userOwnsProfile ? localUser : profile
-  );
+  const userOwnsProfile = user && profile && user.uid === profile.uid;
+  const profileToUse = userOwnsProfile ? localUser : profile;
+
+  const [animeObjects, isLoadingAnime, errorAnime] =
+    useProfileWithAnime(profileToUse);
 
   const value = {
-    profile: userOwnsProfile ? localUser : profile,
+    profile: profileToUse,
     animeObjects: animeObjects,
     profileUserId: userId,
     isOwnProfile: userOwnsProfile,
@@ -77,7 +78,6 @@ export default function ProfilePageContextProvider({ userId, children }) {
   const save = (newLocalUser) => {
     setLocalUser(newLocalUser);
     SaveToFirestore(user, newLocalUser);
-    console.log(localUser);
   };
 
   return (

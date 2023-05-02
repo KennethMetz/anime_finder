@@ -17,9 +17,6 @@ import ProfilePageContext from "./ProfilePageContext";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import ClickAndEdit from "./ClickAndEdit";
 import ProfileListDropMenu from "./ProfileListDropMenu";
-import { AnimeObjectsContext } from "./AnimeObjectsContext";
-import { useAnimeObjects } from "./APICalls";
-import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -53,20 +50,10 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
 
-  // useEffect(() => {
-  //   console.log(animeObjects); // Does NOT change
-  //   console.log(profile); // Changes
-  // }, [animeObjects]);
-
-  // useEffect(() => {
-  //   console.log(items);
-  // }, [items]);
-
   if (isLoading) {
     return <ProfileListPageGhost />;
   }
   if (listId.toLowerCase() === "likes") {
-    // console.log(animeObjects);
     items = animeObjects?.likes;
     itemsIds = profile.likes;
     name = "Likes";

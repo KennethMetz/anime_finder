@@ -1,6 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
-import ProfilePageContext from "./ProfilePageContext";
 
 const fiveMinutesMs = 1000 * 60 * 5;
 
@@ -140,62 +138,6 @@ export async function getRandomAnimeListing(randomPage, randomItem) {
     tempItem = [...tempItem, responseJson.items[randomItem[k]]];
   }
   return tempItem;
-}
-
-export async function useAnimeObjects(profile) {
-  let allAnimeInLists = [];
-
-  for (let i = 0; i < profile?.lists?.length; i++) {
-    if (profile?.lists[i]?.anime)
-      allAnimeInLists.push(...profile.lists[i].anime);
-  }
-  const requestBody = {
-    ids: profile
-      ? [
-          ...profile?.likes,
-          ...profile?.dislikes,
-          ...allAnimeInLists,
-          ...profile?.top8,
-        ]
-      : [],
-  };
-  const animeObjects = { likes: [], dislikes: [], lists: [], top8: [] };
-
-  //To-do: Prevent initial API call when profile=undefined
-  return useQuery(
-    [profile?.likes + profile?.dislikes + allAnimeInLists],
-    async () => {
-      let response = await fetch(`${apiUrl}/anime/get`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-      await handleErrors(response);
-      let responseJson = await response.json();
-
-      for (let i = 0; i < profile?.likes.length; i++) {
-        animeObjects.likes.push(responseJson.items.shift());
-      }
-      for (let i = 0; i < profile?.dislikes.length; i++) {
-        animeObjects.dislikes.push(responseJson.items.shift());
-      }
-      for (let k = 0; k < profile?.lists.length; k++) {
-        for (let i = 0; i < profile.lists[k].anime.length; i++) {
-          if (i === 0)
-            animeObjects.lists[k] = { anime: [], name: profile.lists[k].name };
-          animeObjects.lists[k].anime.push(responseJson.items.shift());
-        }
-      }
-      for (let i = 0; i < profile?.top8.length; i++) {
-        animeObjects.top8.push(responseJson.items.shift());
-      }
-      return animeObjects;
-    },
-    { staleTime: fiveMinutesMs, keepPreviousData: true }
-  );
 }
 
 export async function APIGetAnimeList(ids) {

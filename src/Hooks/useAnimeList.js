@@ -8,7 +8,7 @@ export default function useAnimeList(ids) {
   const conditionalQueryKey = ids ? ["anime", ...ids] : ["anime", "undefined"];
 
   return useQuery(
-    [...conditionalQueryKey],
+    conditionalQueryKey,
     async () => {
       if (ids === undefined) return null;
       const response = await APIGetAnimeList(ids);

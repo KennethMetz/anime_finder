@@ -7,13 +7,11 @@ import Icon from "@mui/material/Icon";
 
 import useTheme from "@mui/material/styles/useTheme";
 import { X, List } from "phosphor-react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import NoResultsImage from "./NoResultsImage";
 import ProfilePageContext from "./ProfilePageContext";
-import { useAnimeObjects } from "./APICalls";
-import { AnimeObjectsContext } from "./AnimeObjectsContext";
 
 export default function Top8List() {
   const { profile, animeObjects, isOwnProfile, updateTop8 } =
@@ -22,10 +20,6 @@ export default function Top8List() {
   const theme = useTheme();
 
   const [visible, setVisible] = useState(false);
-
-  // useEffect(() => {
-  //   console.log(animeObjects);
-  // }, [profile]);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;

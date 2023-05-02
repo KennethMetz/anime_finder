@@ -3,13 +3,10 @@ import Typography from "@mui/material/Typography";
 import NoResultsImage from "./NoResultsImage";
 import WatchlistTile from "./WatchlistTile";
 import { slugifyListName } from "../Util/ListUtil";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import ProfilePageContext from "./ProfilePageContext";
 import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
-import { useAnimeObjects } from "./APICalls";
-import { AnimeObjectsContext } from "./AnimeObjectsContext";
-import useProfileWithAnime from "../Hooks/useProfileWithAnime";
 
 export default function ProfileMainPage() {
   const { profile, animeObjects, isLoading } = useContext(ProfilePageContext);
