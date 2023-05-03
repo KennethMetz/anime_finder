@@ -96,6 +96,7 @@ export default function DropMenu() {
       bio: null,
       top8: [],
       reviews: [],
+      comments: [],
     });
     handleClose(e);
   }

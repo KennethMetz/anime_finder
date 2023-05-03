@@ -17,10 +17,14 @@ import ProfilePageContext from "./ProfilePageContext";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import ClickAndEdit from "./ClickAndEdit";
 import ProfileListDropMenu from "./ProfileListDropMenu";
+import ReviewContainer from "./ReviewContainer";
+import { auth } from "./Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
   const confirm = useConfirm();
+  const [user, loading, error] = useAuthState(auth);
 
   const {
     profile,
@@ -210,6 +214,13 @@ export default function ProfileListPage() {
           <ProfileListSuggestions items={items} amount={12} />
         </>
       )}
+
+      {/* Comments */}
+      <ReviewContainer
+        user={user}
+        docId={`${userId}+${listId}`}
+        type={"comments"}
+      />
     </Box>
   );
 }

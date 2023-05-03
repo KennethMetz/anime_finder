@@ -13,7 +13,7 @@ import ReviewFilterDropMenu from "./ReviewFilterDropMenu";
 import ReviewForm from "./ReviewForm";
 import Review from "./Review";
 
-export default function ReviewContainer({ user, docId }) {
+export default function ReviewContainer({ user, docId, type }) {
   const location = useLocation();
 
   const [reviews, setReviews] = useState(null);
@@ -41,7 +41,8 @@ export default function ReviewContainer({ user, docId }) {
       lastVisible,
       setLastVisible,
       seeMore,
-      setSeeMore
+      setSeeMore,
+      type
     );
   }, [location.pathname, docId, sortOption]);
 
@@ -63,7 +64,7 @@ export default function ReviewContainer({ user, docId }) {
             alignItems: "baseline",
           }}
         >
-          Reviews{" "}
+          {type === "comments" ? "Comments" : "Reviews"}
           {reviews?.length > 2 && (
             <Typography
               sx={{
@@ -78,7 +79,9 @@ export default function ReviewContainer({ user, docId }) {
             </Typography>
           )}
           {!showReviewForm ? (
-            <Tooltip title="Add a review">
+            <Tooltip
+              title={type === "Comments" ? "Add a comment" : "Add a review"}
+            >
               <Box sx={{ ml: 1 }}>
                 <IconButton
                   variant="contained"
@@ -129,6 +132,7 @@ export default function ReviewContainer({ user, docId }) {
           setShowReviewForm={setShowReviewForm}
           setLastVisible={setLastVisible}
           setSeeMore={setSeeMore}
+          type={type}
         />
       )}
 
@@ -142,6 +146,7 @@ export default function ReviewContainer({ user, docId }) {
             reviews={reviews}
             setReviews={setReviews}
             setShowReviewForm={setShowReviewForm}
+            type={type}
           />
         );
       })}
@@ -159,7 +164,8 @@ export default function ReviewContainer({ user, docId }) {
                 lastVisible,
                 setLastVisible,
                 seeMore,
-                setSeeMore
+                setSeeMore,
+                type
               )
             }
             endIcon={<CaretDown />}

@@ -321,7 +321,7 @@ export default function DetailedView() {
         </Grid>
 
         {/* Reviews */}
-        <ReviewContainer user={user} docId={anime.id} />
+        <ReviewContainer user={user} docId={anime.id} type={"reviews"} />
       </Grid>
       <div className="gap" />
     </Container>

@@ -14,6 +14,7 @@ export default function EmojiReactionChip({
   reaction,
   index,
   setReviews,
+  type,
 }) {
   const [user] = useAuthState(auth);
   let [selected, setSelected] = useState();
@@ -33,7 +34,7 @@ export default function EmojiReactionChip({
       setReviews(temp);
       setSelected(true);
       let newUserReview = { ...temp[index] };
-      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString);
+      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
     } else if (selected) {
       let temp = [...reviews];
       let indexInArray = temp[index].emojis[reaction].indexOf(user.uid);
@@ -41,7 +42,7 @@ export default function EmojiReactionChip({
       setReviews(temp);
       setSelected(false);
       let newUserReview = { ...temp[index] };
-      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString);
+      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
     }
   }
 

@@ -36,6 +36,7 @@ export default function Review({
   reviews,
   setReviews,
   setShowReviewForm,
+  type,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -65,8 +66,8 @@ export default function Review({
       setReviews(temp);
 
       // Delete review from localUsers list
-      let indexOfReview = localUser.reviews.indexOf(docId);
-      localUser.reviews.splice(indexOfReview, 1);
+      let indexOfReview = localUser[type].indexOf(docId);
+      localUser[type].splice(indexOfReview, 1);
       SaveToFirestore(user, localUser);
 
       // Delete review from Firestore documents listing
@@ -264,6 +265,7 @@ export default function Review({
                 index={index}
                 reviews={reviews}
                 setReviews={setReviews}
+                type={type}
               />
             </div>
           </Tooltip>
@@ -278,6 +280,7 @@ export default function Review({
                 index={index}
                 reviews={reviews}
                 setReviews={setReviews}
+                type={type}
               />
             </div>
           </Tooltip>
@@ -292,6 +295,7 @@ export default function Review({
                 index={index}
                 reviews={reviews}
                 setReviews={setReviews}
+                type={type}
               />
             </div>
           </Tooltip>

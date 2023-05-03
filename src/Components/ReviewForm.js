@@ -30,6 +30,7 @@ export default function ReviewForm({
   setShowReviewForm,
   setLastVisible,
   setSeeMore,
+  type,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -65,7 +66,12 @@ export default function ReviewForm({
   });
 
   function populateForm() {
-    if (localUser.reviews.includes(docId)) {
+    console.log(type);
+    console.log(localUser[type]);
+    console.log(localUser);
+    console.log(docId);
+
+    if (localUser[type].includes(docId)) {
       for (let i = 0; i < reviews.length; i++) {
         if (reviews[i].uid === user.uid) {
           setExistingReview(true);
@@ -83,7 +89,7 @@ export default function ReviewForm({
 
   const saveReview = () => {
     handleSubmit();
-    let animeID = docId.toString();
+    let docIdString = docId.toString();
     if (!errors.reviewTitle && !errors.review) {
       const userReview = {
         review: review,
@@ -94,13 +100,13 @@ export default function ReviewForm({
         edited: { edited },
         emojis: { applause: [], heart: [], trash: [] },
       };
-      if (!localUser.reviews) localUser.reviews = [];
-      if (!localUser?.reviews?.find((x) => x === docId)) {
-        localUser.reviews.push(docId);
+      if (!localUser[type]) localUser[type] = [];
+      if (!localUser[type].find((x) => x === docId)) {
+        localUser[type].push(docId);
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
-      SaveReviewToFirestore(userID, userReview, animeID);
+      SaveReviewToFirestore(userID, userReview, docIdString, type);
       GetPaginatedReviewsFromFirestore(
         docId,
         reviews,
@@ -109,7 +115,8 @@ export default function ReviewForm({
         null,
         setLastVisible,
         null,
-        setSeeMore
+        setSeeMore,
+        type
       );
       setShowReviewForm(false);
     }
@@ -117,7 +124,7 @@ export default function ReviewForm({
 
   useEffect(() => {
     populateForm();
-    if (localUser.reviews.includes(docId)) edited = true;
+    if (localUser[type].includes(docId)) edited = true;
   }, []);
 
   return (
