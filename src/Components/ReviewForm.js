@@ -83,7 +83,6 @@ export default function ReviewForm({
 
   const saveReview = () => {
     handleSubmit();
-    console.log(errors);
     let animeID = anime.id.toString();
     if (!errors.reviewTitle && !errors.review) {
       const userReview = {
@@ -107,7 +106,7 @@ export default function ReviewForm({
         anime,
         animeReviews,
         setAnimeReviews,
-        null,
+        ["time", "desc"],
         null,
         setLastVisible,
         null,
