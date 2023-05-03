@@ -24,9 +24,9 @@ import {
 import { getAvatarSrc } from "./Avatars";
 
 export default function ReviewForm({
-  anime,
-  animeReviews,
-  setAnimeReviews,
+  docId,
+  reviews,
+  setReviews,
   setShowReviewForm,
   setLastVisible,
   setSeeMore,
@@ -65,13 +65,13 @@ export default function ReviewForm({
   });
 
   function populateForm() {
-    if (localUser.reviews.includes(anime.id)) {
-      for (let i = 0; i < animeReviews.length; i++) {
-        if (animeReviews[i].uid === user.uid) {
+    if (localUser.reviews.includes(docId)) {
+      for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].uid === user.uid) {
           setExistingReview(true);
-          setReviewTitle(animeReviews[i].reviewTitle);
-          setReview(animeReviews[i].review);
-          setRating(animeReviews[i].rating);
+          setReviewTitle(reviews[i].reviewTitle);
+          setReview(reviews[i].review);
+          setRating(reviews[i].rating);
         }
       }
     }
@@ -83,7 +83,7 @@ export default function ReviewForm({
 
   const saveReview = () => {
     handleSubmit();
-    let animeID = anime.id.toString();
+    let animeID = docId.toString();
     if (!errors.reviewTitle && !errors.review) {
       const userReview = {
         review: review,
@@ -95,17 +95,16 @@ export default function ReviewForm({
         emojis: { applause: [], heart: [], trash: [] },
       };
       if (!localUser.reviews) localUser.reviews = [];
-      if (!localUser?.reviews?.find((x) => x === anime.id)) {
-        localUser.reviews.push(anime.id);
+      if (!localUser?.reviews?.find((x) => x === docId)) {
+        localUser.reviews.push(docId);
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
       SaveReviewToFirestore(userID, userReview, animeID);
-      // PopulateReviewsFromFirestore(anime, setAnimeReviews);
       GetPaginatedReviewsFromFirestore(
-        anime,
-        animeReviews,
-        setAnimeReviews,
+        docId,
+        reviews,
+        setReviews,
         ["time", "desc"],
         null,
         setLastVisible,
@@ -118,7 +117,7 @@ export default function ReviewForm({
 
   useEffect(() => {
     populateForm();
-    if (localUser.reviews.includes(anime.id)) edited = true;
+    if (localUser.reviews.includes(docId)) edited = true;
   }, []);
 
   return (
@@ -201,7 +200,6 @@ export default function ReviewForm({
         />{" "}
         <TextField
           label="Review"
-          placeholder={`Tell us what you thought of ${anime.display_name}`}
           name="review"
           id="review"
           variant="outlined"

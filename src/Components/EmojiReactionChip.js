@@ -7,13 +7,13 @@ import { auth } from "./Firebase";
 import { SaveReviewToFirestore } from "./Firestore";
 
 export default function EmojiReactionChip({
-  anime,
+  docId,
   emoji,
   item,
-  animeReviews,
+  reviews,
   reaction,
   index,
-  setAnimeReviews,
+  setReviews,
 }) {
   const [user] = useAuthState(auth);
   let [selected, setSelected] = useState();
@@ -25,23 +25,23 @@ export default function EmojiReactionChip({
   }, [item]);
 
   function reactToReview() {
-    let animeID = anime.id.toString();
+    let docIdString = docId.toString();
 
     if (!selected) {
-      let temp = [...animeReviews];
+      let temp = [...reviews];
       temp[index].emojis[reaction].push(user.uid);
-      setAnimeReviews(temp);
+      setReviews(temp);
       setSelected(true);
       let newUserReview = { ...temp[index] };
-      SaveReviewToFirestore(temp[index].uid, newUserReview, animeID);
+      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString);
     } else if (selected) {
-      let temp = [...animeReviews];
+      let temp = [...reviews];
       let indexInArray = temp[index].emojis[reaction].indexOf(user.uid);
       temp[index].emojis[reaction].splice(indexInArray, 1);
-      setAnimeReviews(temp);
+      setReviews(temp);
       setSelected(false);
       let newUserReview = { ...temp[index] };
-      SaveReviewToFirestore(temp[index].uid, newUserReview, animeID);
+      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString);
     }
   }
 

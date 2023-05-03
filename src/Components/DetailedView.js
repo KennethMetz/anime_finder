@@ -66,7 +66,7 @@ export default function DetailedView() {
 
   useEffect(() => {
     GetPaginatedReviewsFromFirestore(
-      anime,
+      anime?.id,
       animeReviews,
       setAnimeReviews,
       sortOption,
@@ -425,9 +425,9 @@ export default function DetailedView() {
 
           {showReviewForm && (
             <ReviewForm
-              anime={anime}
-              animeReviews={animeReviews}
-              setAnimeReviews={setAnimeReviews}
+              docId={anime.id}
+              reviews={animeReviews}
+              setReviews={setAnimeReviews}
               setShowReviewForm={setShowReviewForm}
               setLastVisible={setLastVisible}
               setSeeMore={setSeeMore}
@@ -440,9 +440,9 @@ export default function DetailedView() {
                 key={item.uid}
                 item={item}
                 index={index}
-                anime={anime}
-                animeReviews={animeReviews}
-                setAnimeReviews={setAnimeReviews}
+                docId={anime.id}
+                reviews={animeReviews}
+                setReviews={setAnimeReviews}
                 setShowReviewForm={setShowReviewForm}
               />
             );
@@ -454,7 +454,7 @@ export default function DetailedView() {
                 variant="outlined"
                 onClick={() =>
                   GetPaginatedReviewsFromFirestore(
-                    anime,
+                    anime.id,
                     animeReviews,
                     setAnimeReviews,
                     sortOption,

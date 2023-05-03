@@ -117,9 +117,9 @@ function compareReviewDates(a, b) {
 }
 
 export async function GetPaginatedReviewsFromFirestore(
-  anime,
-  animeReviews,
-  setAnimeReviews,
+  docId,
+  reviews,
+  setReviews,
   sortOption,
   lastVisible,
   setLastVisible,
@@ -127,18 +127,18 @@ export async function GetPaginatedReviewsFromFirestore(
   setSeeMore
 ) {
   try {
-    if (!anime) return;
-    let animeID = anime.id.toString();
+    if (!docId) return;
+    let docIdString = docId.toString();
     let collectionQuery = null;
     if (!lastVisible) {
       collectionQuery = query(
-        collection(db, "animeData", animeID, "reviews"),
+        collection(db, "animeData", docIdString, "reviews"),
         orderBy(sortOption[0], sortOption[1]),
         limit(4)
       );
     } else {
       collectionQuery = query(
-        collection(db, "animeData", animeID, "reviews"),
+        collection(db, "animeData", docIdString, "reviews"),
         orderBy(sortOption[0], sortOption[1]),
         startAfter(lastVisible),
         limit(4)
@@ -149,11 +149,11 @@ export async function GetPaginatedReviewsFromFirestore(
     else if (seeMore === false) setSeeMore(true);
 
     let temp = [];
-    if (animeReviews && lastVisible) temp = [...animeReviews];
+    if (reviews && lastVisible) temp = [...reviews];
     documentSnapshots.forEach((doc) => {
       temp.push({ ...doc.data() });
     });
-    setAnimeReviews(temp);
+    setReviews(temp);
     setLastVisible(documentSnapshots.docs[documentSnapshots.docs.length - 1]);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
