@@ -36,6 +36,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
 
     if (!data.top8) data.top8 = [];
     if (!data.reviews) data.reviews = [];
+    if (!data.comments) data.comments = [];
     setLocalUser(data);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
