@@ -24,6 +24,7 @@ import {
   DeleteReviewFromFirestore,
   PopulateReviewsFromFirestore,
   SaveReviewToFirestore,
+  SaveToFirestore,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { getAvatarSrc } from "./Avatars";
@@ -31,10 +32,11 @@ import { getAvatarSrc } from "./Avatars";
 export default function Review({
   item,
   index,
-  anime,
-  animeReviews,
-  setAnimeReviews,
+  docId,
+  reviews,
+  setReviews,
   setShowReviewForm,
+  type,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -59,15 +61,18 @@ export default function Review({
       cancellationButtonProps: { color: "inherit" },
       cancellationText: "Cancel",
     }).then(() => {
-      let temp = [...animeReviews];
+      let temp = [...reviews];
       temp.splice(index, 1);
-      setAnimeReviews(temp);
-      let indexOfReview = localUser.reviews.indexOf(item.id);
-      localUser.reviews.splice(indexOfReview, 1);
+      setReviews(temp);
 
-      let animeID = anime.id.toString();
-      SaveReviewToFirestore(user, localUser, animeID);
-      DeleteReviewFromFirestore(user, animeID);
+      // Delete review from localUsers list
+      let indexOfReview = localUser[type].indexOf(docId);
+      localUser[type].splice(indexOfReview, 1);
+      SaveToFirestore(user, localUser);
+
+      // Delete review from Firestore documents listing
+      let docIdString = docId.toString();
+      DeleteReviewFromFirestore(user, docIdString);
     });
   }
 
@@ -253,13 +258,14 @@ export default function Review({
           <Tooltip title="Applaude this review" followCursor>
             <div>
               <EmojiReactionChip
-                anime={anime}
+                docId={docId}
                 emoji={<HandsClapping size={24} />}
                 reaction="applause"
                 item={item}
                 index={index}
-                animeReviews={animeReviews}
-                setAnimeReviews={setAnimeReviews}
+                reviews={reviews}
+                setReviews={setReviews}
+                type={type}
               />
             </div>
           </Tooltip>
@@ -267,13 +273,14 @@ export default function Review({
           <Tooltip title="Love this review" followCursor>
             <div>
               <EmojiReactionChip
-                anime={anime}
+                docId={docId}
                 emoji={<Heart size={24} />}
                 reaction="heart"
                 item={item}
                 index={index}
-                animeReviews={animeReviews}
-                setAnimeReviews={setAnimeReviews}
+                reviews={reviews}
+                setReviews={setReviews}
+                type={type}
               />
             </div>
           </Tooltip>
@@ -281,13 +288,14 @@ export default function Review({
           <Tooltip title="Disagree with this review" followCursor>
             <div>
               <EmojiReactionChip
-                anime={anime}
+                docId={docId}
                 emoji={<Trash size={24} />}
                 reaction="trash"
                 item={item}
                 index={index}
-                animeReviews={animeReviews}
-                setAnimeReviews={setAnimeReviews}
+                reviews={reviews}
+                setReviews={setReviews}
+                type={type}
               />
             </div>
           </Tooltip>

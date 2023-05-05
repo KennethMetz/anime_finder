@@ -24,12 +24,13 @@ import {
 import { getAvatarSrc } from "./Avatars";
 
 export default function ReviewForm({
-  anime,
-  animeReviews,
-  setAnimeReviews,
+  docId,
+  reviews,
+  setReviews,
   setShowReviewForm,
   setLastVisible,
   setSeeMore,
+  type,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -65,13 +66,13 @@ export default function ReviewForm({
   });
 
   function populateForm() {
-    if (localUser.reviews.includes(anime.id)) {
-      for (let i = 0; i < animeReviews.length; i++) {
-        if (animeReviews[i].uid === user.uid) {
+    if (localUser[type].includes(docId)) {
+      for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].uid === user.uid) {
           setExistingReview(true);
-          setReviewTitle(animeReviews[i].reviewTitle);
-          setReview(animeReviews[i].review);
-          setRating(animeReviews[i].rating);
+          setReviewTitle(reviews[i].reviewTitle);
+          setReview(reviews[i].review);
+          setRating(reviews[i].rating);
         }
       }
     }
@@ -83,7 +84,7 @@ export default function ReviewForm({
 
   const saveReview = () => {
     handleSubmit();
-    let animeID = anime.id.toString();
+    let docIdString = docId.toString();
     if (!errors.reviewTitle && !errors.review) {
       const userReview = {
         review: review,
@@ -94,23 +95,23 @@ export default function ReviewForm({
         edited: { edited },
         emojis: { applause: [], heart: [], trash: [] },
       };
-      if (!localUser.reviews) localUser.reviews = [];
-      if (!localUser?.reviews?.find((x) => x === anime.id)) {
-        localUser.reviews.push(anime.id);
+      if (!localUser[type]) localUser[type] = [];
+      if (!localUser[type].find((x) => x === docId)) {
+        localUser[type].push(docId);
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
-      SaveReviewToFirestore(userID, userReview, animeID);
-      // PopulateReviewsFromFirestore(anime, setAnimeReviews);
+      SaveReviewToFirestore(userID, userReview, docIdString, type);
       GetPaginatedReviewsFromFirestore(
-        anime,
-        animeReviews,
-        setAnimeReviews,
+        docId,
+        reviews,
+        setReviews,
         ["time", "desc"],
         null,
         setLastVisible,
         null,
-        setSeeMore
+        setSeeMore,
+        type
       );
       setShowReviewForm(false);
     }
@@ -118,7 +119,7 @@ export default function ReviewForm({
 
   useEffect(() => {
     populateForm();
-    if (localUser.reviews.includes(anime.id)) edited = true;
+    if (localUser[type].includes(docId)) edited = true;
   }, []);
 
   return (
@@ -201,7 +202,6 @@ export default function ReviewForm({
         />{" "}
         <TextField
           label="Review"
-          placeholder={`Tell us what you thought of ${anime.display_name}`}
           name="review"
           id="review"
           variant="outlined"

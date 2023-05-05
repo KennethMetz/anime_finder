@@ -31,11 +31,13 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         bio: "",
         top8: [],
         reviews: [],
+        comments: [],
       };
     }
 
     if (!data.top8) data.top8 = [];
     if (!data.reviews) data.reviews = [];
+    if (!data.comments) data.comments = [];
     setLocalUser(data);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
@@ -57,6 +59,8 @@ export async function SaveToFirestore(user, localUser) {
           bio: localUser?.bio ?? null,
           top8: [...localUser.top8],
           reviews: [...localUser.reviews],
+          comments:
+            localUser.comments.length > 0 ? [...localUser.comments] : [],
         },
         { merge: true }
       );
@@ -68,8 +72,9 @@ export async function SaveToFirestore(user, localUser) {
 
 // Handle "animeData" collection on firestore
 
-export async function SaveReviewToFirestore(userID, userReview, animeID) {
-  let reviewRef = doc(db, "animeData", animeID, "reviews", userID);
+export async function SaveReviewToFirestore(userID, userReview, animeID, type) {
+  let collectionName = type === "reviews" ? "animeData" : "watchlistData";
+  let reviewRef = doc(db, collectionName, animeID, "reviews", userID);
   try {
     await setDoc(reviewRef, userReview, { merge: true });
   } catch (error) {
@@ -117,28 +122,30 @@ function compareReviewDates(a, b) {
 }
 
 export async function GetPaginatedReviewsFromFirestore(
-  anime,
-  animeReviews,
-  setAnimeReviews,
+  docId,
+  reviews,
+  setReviews,
   sortOption,
   lastVisible,
   setLastVisible,
   seeMore,
-  setSeeMore
+  setSeeMore,
+  type
 ) {
+  let collectionName = type === "reviews" ? "animeData" : "watchlistData";
   try {
-    if (!anime) return;
-    let animeID = anime.id.toString();
+    if (!docId) return;
+    let docIdString = docId.toString();
     let collectionQuery = null;
     if (!lastVisible) {
       collectionQuery = query(
-        collection(db, "animeData", animeID, "reviews"),
+        collection(db, collectionName, docIdString, "reviews"),
         orderBy(sortOption[0], sortOption[1]),
         limit(4)
       );
     } else {
       collectionQuery = query(
-        collection(db, "animeData", animeID, "reviews"),
+        collection(db, collectionName, docIdString, "reviews"),
         orderBy(sortOption[0], sortOption[1]),
         startAfter(lastVisible),
         limit(4)
@@ -149,11 +156,11 @@ export async function GetPaginatedReviewsFromFirestore(
     else if (seeMore === false) setSeeMore(true);
 
     let temp = [];
-    if (animeReviews && lastVisible) temp = [...animeReviews];
+    if (reviews && lastVisible) temp = [...reviews];
     documentSnapshots.forEach((doc) => {
       temp.push({ ...doc.data() });
     });
-    setAnimeReviews(temp);
+    setReviews(temp);
     setLastVisible(documentSnapshots.docs[documentSnapshots.docs.length - 1]);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);

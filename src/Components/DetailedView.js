@@ -3,13 +3,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import { alpha } from "@mui/system/colorManipulator";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import useTheme from "@mui/material/styles/useTheme";
-import { CaretDown, Minus, Play, Plus } from "phosphor-react";
-import { useContext, useEffect, useState } from "react";
+import { Play } from "phosphor-react";
+import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
@@ -19,18 +18,13 @@ import BreathingLogo from "./BreathingLogo";
 import DetailedViewGhost from "./DetailedViewGhost";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
-import {
-  GetPaginatedReviewsFromFirestore,
-  PopulateFromFirestore,
-} from "./Firestore";
+import { PopulateFromFirestore } from "./Firestore";
 import LikeButtons from "./LikeButtons";
 import { LocalUserContext } from "./LocalUserContext";
-import Review from "./Review";
-import ReviewForm from "./ReviewForm";
 import ScoreBars from "./ScoreBars";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
-import ReviewFilterDropMenu from "./ReviewFilterDropMenu";
+import ReviewContainer from "./ReviewContainer";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -46,36 +40,15 @@ export default function DetailedView() {
   const animeId = params.animeId;
 
   const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
-  const [animeReviews, setAnimeReviews] = useState(null);
-  const [showReviewForm, setShowReviewForm] = useState(false);
-
-  const [lastVisible, setLastVisible] = useState(null);
-
-  const [seeMore, setSeeMore] = useState(true);
 
   const [analysis, analysisLoading, analysisError, analysisFetching] =
     useAnimeAnalysis(animeId);
-
-  const [sortOption, setSortOption] = useState(["time", "desc"]);
 
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
     if (user) PopulateFromFirestore(user, localUser, setLocalUser);
   }, [user, anime, loading]);
-
-  useEffect(() => {
-    GetPaginatedReviewsFromFirestore(
-      anime,
-      animeReviews,
-      setAnimeReviews,
-      sortOption,
-      lastVisible,
-      setLastVisible,
-      seeMore,
-      setSeeMore
-    );
-  }, [location.pathname, anime, sortOption]);
 
   // TODO Use a shared loading display component.
   if (loading || animeLoading) {
@@ -348,129 +321,7 @@ export default function DetailedView() {
         </Grid>
 
         {/* Reviews */}
-        <Grid item xs={12}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              component="div"
-              variant="h5"
-              style={{
-                ...subheadStyle,
-                display: "flex",
-                alignItems: "baseline",
-              }}
-            >
-              Reviews{" "}
-              {animeReviews?.length > 2 && (
-                <Typography
-                  sx={{
-                    fontFamily: "interMedium",
-                    fontSize: "1.0rem",
-                    marginL: "10px",
-                    color: "grey",
-                    ml: 1,
-                  }}
-                >
-                  ({animeReviews?.length} total)
-                </Typography>
-              )}
-              {!showReviewForm ? (
-                <Tooltip title="Add a review">
-                  <Box sx={{ ml: 1 }}>
-                    <IconButton
-                      variant="contained"
-                      disabled={user.isAnonymous ? true : false}
-                      sx={{ color: "inherit" }}
-                      onClick={(e) => {
-                        if (!user.isAnonymous) setShowReviewForm(true);
-                      }}
-                    >
-                      <Plus />
-                    </IconButton>
-                  </Box>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Close review">
-                  <div style={{ marginLeft: "15px" }}>
-                    {" "}
-                    <IconButton
-                      variant="contained"
-                      sx={{ color: "inherit" }}
-                      onClick={(e) => {
-                        setShowReviewForm(false);
-                      }}
-                    >
-                      <Minus />
-                    </IconButton>
-                  </div>
-                </Tooltip>
-              )}
-            </Typography>
-            {animeReviews?.length > 1 ? (
-              <div style={{ ...subheadStyle }}>
-                <ReviewFilterDropMenu
-                  setLastVisible={setLastVisible}
-                  setSortOption={setSortOption}
-                />
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-
-          {showReviewForm && (
-            <ReviewForm
-              anime={anime}
-              animeReviews={animeReviews}
-              setAnimeReviews={setAnimeReviews}
-              setShowReviewForm={setShowReviewForm}
-              setLastVisible={setLastVisible}
-              setSeeMore={setSeeMore}
-            />
-          )}
-
-          {animeReviews?.map((item, index) => {
-            return (
-              <Review
-                key={item.uid}
-                item={item}
-                index={index}
-                anime={anime}
-                animeReviews={animeReviews}
-                setAnimeReviews={setAnimeReviews}
-                setShowReviewForm={setShowReviewForm}
-              />
-            );
-          })}
-          {seeMore && (
-            <Grid item sx={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                color="inherit"
-                variant="outlined"
-                onClick={() =>
-                  GetPaginatedReviewsFromFirestore(
-                    anime,
-                    animeReviews,
-                    setAnimeReviews,
-                    sortOption,
-                    lastVisible,
-                    setLastVisible,
-                    seeMore,
-                    setSeeMore
-                  )
-                }
-                endIcon={<CaretDown />}
-              >
-                See more
-              </Button>
-            </Grid>
-          )}
-        </Grid>
+        <ReviewContainer user={user} docId={anime.id} type={"reviews"} />
       </Grid>
       <div className="gap" />
     </Container>
