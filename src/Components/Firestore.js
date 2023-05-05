@@ -31,6 +31,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         bio: "",
         top8: [],
         reviews: [],
+        comments: [],
       };
     }
 

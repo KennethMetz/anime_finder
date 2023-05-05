@@ -66,11 +66,6 @@ export default function ReviewForm({
   });
 
   function populateForm() {
-    console.log(type);
-    console.log(localUser[type]);
-    console.log(localUser);
-    console.log(docId);
-
     if (localUser[type].includes(docId)) {
       for (let i = 0; i < reviews.length; i++) {
         if (reviews[i].uid === user.uid) {
