@@ -22,6 +22,7 @@ export default function Profile() {
   const location = useLocation();
   const params = useParams();
   const theme = useTheme();
+  const userId = params.userId;
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
@@ -48,7 +49,7 @@ export default function Profile() {
           <Grid item xs={12}>
             {isListPage ? (
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <BackButton sx={{ flexShrink: 0, mr: 1 }} />
+                <BackButton sx={{ flexShrink: 0, mr: 1 }} userId={userId} />
                 <ProfileUserBannerSmall />
               </Box>
             ) : (
