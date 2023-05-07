@@ -19,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import useTheme from "@mui/material/styles/useTheme";
-import { SaveToFirestore } from "./Firestore";
+import generateId, { SaveToFirestore } from "./Firestore";
 import AddButton from "./AddButton";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
@@ -92,14 +92,27 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
 
   //Creates new EMPTY watchlist
   const createNewList = () => {
+    let listId = generateId();
     let temp = { ...localUser };
     !temp.lists
       ? (temp.lists = [
-          { name: name, anime: [], privateList: privateList, desc: desc },
+          {
+            name: name,
+            anime: [],
+            privateList: privateList,
+            desc: desc,
+            id: listId,
+          },
         ])
       : (temp.lists = [
           ...temp.lists,
-          { name: name, anime: [], privateList: privateList, desc: desc },
+          {
+            name: name,
+            anime: [],
+            privateList: privateList,
+            desc: desc,
+            id: listId,
+          },
         ]);
 
     setLocalUser(temp);

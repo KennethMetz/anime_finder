@@ -6,18 +6,32 @@ import useTheme from "@mui/material/styles/useTheme";
 
 import { Link } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
+import Avatar from "@mui/material/Avatar";
+import ListItemText from "@mui/material/ListItemText";
+import { getAvatarSrc } from "./Avatars";
+import { Fragment, useMemo } from "react";
+import { Divider } from "@mui/material";
 
-export default function WatchlistTile({ userId, listId, name, items }) {
+export default function WatchlistTile({
+  userId,
+  listId,
+  name,
+  items,
+  creator,
+  creatorAvatar,
+}) {
   const theme = useTheme();
-
+  console.log(creatorAvatar);
   const bgColor = theme.palette.custom.subtleCardBg;
   const gradient = `linear-gradient(270deg, ${bgColor} 0%, rgba(245, 245, 245, 0) 67.39%)`;
+
+  const avatarSrc = useMemo(() => getAvatarSrc(creatorAvatar), [creatorAvatar]);
 
   return (
     <Link to={`/profile/${userId}/list/${listId}`}>
       <Box
         sx={{
-          padding: "18px",
+          padding: creator ? "18px 18px 4px 18px" : "18px 18px 18px 18px",
           background: bgColor,
           borderRadius: "16px",
           cursor: "pointer",
@@ -84,6 +98,40 @@ export default function WatchlistTile({ userId, listId, name, items }) {
             </Box>
           )}
         </Grid>
+        {creator && (
+          <Fragment>
+            <Divider sx={{ mt: 2 }} />
+            <Grid sx={{ mt: 1 }}>
+              <Link
+                to={`/profile/${userId}`}
+                style={{ display: "inline-block" }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    "&:hover": { color: "primary.main" },
+                  }}
+                >
+                  <Avatar
+                    sx={{ width: "35px", height: "35px", mr: 2 }}
+                    alt={creator}
+                    src={avatarSrc}
+                  />
+                  <ListItemText
+                    primary={creator}
+                    primaryTypographyProps={{
+                      fontFamily: "interMedium",
+                      fontSize: "1rem",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  />
+                </Box>
+              </Link>
+            </Grid>
+          </Fragment>
+        )}
       </Box>
     </Link>
   );

@@ -92,6 +92,7 @@ export default function DropMenu() {
       likes: [],
       dislikes: [],
       lists: [],
+      savedLists: [],
       avatar: null,
       bio: null,
       top8: [],

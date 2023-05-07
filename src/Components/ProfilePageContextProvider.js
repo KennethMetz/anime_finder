@@ -50,6 +50,13 @@ export default function ProfilePageContextProvider({ userId, children }) {
       newLocalUser.lists[index] = list;
       save(newLocalUser);
     },
+    updateSavedList: (userId, listId) => {
+      const newLocalUser = { ...localUser };
+      newLocalUser.savedLists = newLocalUser.savedLists
+        ? [...newLocalUser.savedLists, { userId: userId, listId: listId }]
+        : [{ userId: userId, listId: listId }];
+      save(newLocalUser);
+    },
     deleteList: (index) => {
       throwIfNotOwner();
       const newLocalUser = { ...localUser };
