@@ -26,10 +26,16 @@ export default function UrlButtons({ anime }) {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        flexWrap: "wrap",
       }}
     >
       {buttonData.map((data) => (
-        <UrlButton title={data.title} link={data.url} image={data.image} />
+        <UrlButton
+          key={data.url}
+          title={data.title}
+          link={data.url}
+          image={data.image}
+        />
       ))}
     </Box>
   );
