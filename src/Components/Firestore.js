@@ -170,6 +170,6 @@ export async function GetPaginatedReviewsFromFirestore(
   }
 }
 
-export default function generateId() {
+export function generateId() {
   return doc(collection(db, "test")).id;
 }

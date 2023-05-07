@@ -4,7 +4,7 @@ import { alpha } from "@mui/system/colorManipulator";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
@@ -20,8 +20,8 @@ export default function WatchlistTile({
   creator,
   creatorAvatar,
 }) {
+  const navigate = useNavigate();
   const theme = useTheme();
-  console.log(creatorAvatar);
   const bgColor = theme.palette.custom.subtleCardBg;
   const gradient = `linear-gradient(270deg, ${bgColor} 0%, rgba(245, 245, 245, 0) 67.39%)`;
 
@@ -102,33 +102,33 @@ export default function WatchlistTile({
           <Fragment>
             <Divider sx={{ mt: 2 }} />
             <Grid sx={{ mt: 1 }}>
-              <Link
-                to={`/profile/${userId}`}
-                style={{ display: "inline-block" }}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  "&:hover": { color: "primary.main" },
+                }}
+                onClick={(e) => {
+                  navigate(`/profile/${userId}`);
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    "&:hover": { color: "primary.main" },
+                <Avatar
+                  sx={{ width: "35px", height: "35px", mr: 2 }}
+                  alt={creator}
+                  src={avatarSrc}
+                />
+                <ListItemText
+                  primary={creator}
+                  primaryTypographyProps={{
+                    fontFamily: "interMedium",
+                    fontSize: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
-                >
-                  <Avatar
-                    sx={{ width: "35px", height: "35px", mr: 2 }}
-                    alt={creator}
-                    src={avatarSrc}
-                  />
-                  <ListItemText
-                    primary={creator}
-                    primaryTypographyProps={{
-                      fontFamily: "interMedium",
-                      fontSize: "1rem",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  />
-                </Box>
-              </Link>
+                />
+              </Box>
             </Grid>
           </Fragment>
         )}

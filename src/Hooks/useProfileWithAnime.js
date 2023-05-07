@@ -5,6 +5,7 @@ import useAnimeList from "./useAnimeList";
 export default function useProfileWithAnime(profile) {
   // Get all animeIds from *LISTS* into a single array.
   const allAnimeInLists = [];
+
   for (let i = 0; i < profile?.lists?.length; i++) {
     if (profile?.lists[i]?.anime)
       allAnimeInLists.push(...profile.lists[i].anime);
@@ -14,6 +15,7 @@ export default function useProfileWithAnime(profile) {
 
   // Create object that has the userId: [listId, listId, ...] for all saved lists
   let savedListIds = {};
+
   for (let i = 0; i < profile?.savedLists?.length; i++) {
     if (!savedListIds[profile?.savedLists[i]?.userId])
       savedListIds[profile?.savedLists[i]?.userId] = [];
@@ -22,6 +24,7 @@ export default function useProfileWithAnime(profile) {
       profile?.savedLists[i]?.listId
     );
   }
+
   // Make an array of all userIds then fetch full user profiles.
   let userIdArray = [];
   for (const [key, array] of Object.entries(savedListIds)) {
@@ -34,7 +37,7 @@ export default function useProfileWithAnime(profile) {
   let animeIdsHashmap = {}; // Saves the animeIds of each list
   let listNameHashmap = {}; // Saves the list name of each list
   let listCreatorHashmap = {}; // Saves the owner of each list
-  let creatorAvatarHashmap = {}; // Saves the owner of each list
+  let creatorAvatarHashmap = {}; // Saves the avatar of each lists owner
 
   for (let i = 0; i < savedListProfiles?.length; i++) {
     let profileId = savedListProfiles[i].uid;
@@ -54,17 +57,15 @@ export default function useProfileWithAnime(profile) {
     }
   }
 
-  // Get list of animeIds for any saved lists from each savedListProfile
-  let allAnimeInSavedLists = [];
-  let savedListsPopulated = {};
+  let savedListsPopulated = {}; // Object each unique list and all animeIds it contains
+  let allAnimeInSavedLists = []; // List of all animeIds (used for API call)
+
   if (savedListIds) {
     for (let [key, array] of Object.entries(savedListIds)) {
       for (let id of array) {
         savedListsPopulated[key + id] = animeIdsHashmap[key + id];
-        if (id !== "likes" || id !== "dislikes") {
-          let animeIds = animeIdsHashmap[key + id];
-          if (animeIds) allAnimeInSavedLists.push(...animeIds);
-        }
+        let animeIds = animeIdsHashmap[key + id];
+        if (animeIds) allAnimeInSavedLists.push(...animeIds);
       }
     }
   }

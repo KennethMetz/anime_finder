@@ -126,7 +126,6 @@ export default function ProfileListDropMenu({
                         : false
                     }
                     onClick={() => {
-                      console.log(localUser);
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
                       enqueueSnackbar("Link copied to clipboard", {

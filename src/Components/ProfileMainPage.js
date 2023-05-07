@@ -23,10 +23,6 @@ export default function ProfileMainPage() {
     fontSize: "16px",
   };
 
-  useEffect(() => {
-    console.log(animeObjects);
-  }, [animeObjects]);
-
   // To-do: Error screen on error.
 
   if (isLoading) {
