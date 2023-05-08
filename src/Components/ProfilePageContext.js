@@ -10,7 +10,8 @@ const ProfilePageContext = createContext({
   updateAvatar: (avatar) => {},
   updateLikes: (likes) => {},
   updateDislikes: (dislikes) => {},
-  updateList: (index, list) => {},
+  updateList: (list) => {},
+  updateSavedList: (userId, listId) => {},
   deleteList: (index) => {},
   updateTop8: (top8) => {},
 });

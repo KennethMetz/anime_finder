@@ -7,6 +7,7 @@ export const LocalUserProvider = (props) => {
     likes: [],
     dislikes: [],
     lists: [],
+    savedLists: [],
     avatar: "",
     bio: "",
     top8: [],

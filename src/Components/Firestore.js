@@ -27,6 +27,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         likes: [],
         dislikes: [],
         lists: [],
+        savedLists: [],
         avatar: "",
         bio: "",
         top8: [],
@@ -34,7 +35,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         comments: [],
       };
     }
-
+    if (!data.savedLists) data.savedLists = [];
     if (!data.top8) data.top8 = [];
     if (!data.reviews) data.reviews = [];
     if (!data.comments) data.comments = [];
@@ -55,12 +56,12 @@ export async function SaveToFirestore(user, localUser) {
           likes: [...localUser.likes],
           dislikes: [...localUser.dislikes],
           lists: [...localUser.lists],
+          savedLists: [...localUser.savedLists],
           avatar: localUser?.avatar ?? null,
           bio: localUser?.bio ?? null,
           top8: [...localUser.top8],
           reviews: [...localUser.reviews],
-          comments:
-            localUser.comments.length > 0 ? [...localUser.comments] : [],
+          comments: [...localUser.comments],
         },
         { merge: true }
       );
@@ -165,4 +166,8 @@ export async function GetPaginatedReviewsFromFirestore(
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
   }
+}
+
+export function generateId() {
+  return doc(collection(db, "test")).id;
 }

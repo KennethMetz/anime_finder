@@ -2,8 +2,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import NoResultsImage from "./NoResultsImage";
 import WatchlistTile from "./WatchlistTile";
-import { slugifyListName } from "../Util/ListUtil";
-import { useContext } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import ProfilePageContext from "./ProfilePageContext";
 import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
@@ -64,20 +63,42 @@ export default function ProfileMainPage() {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h3" sx={subheadStyle}>
-              Watchlists
+              My Watchlists
             </Typography>
           </Grid>
           {animeObjects?.lists.map((list, index) => (
             <Grid item xs={12} md={6} key={index}>
               <WatchlistTile
                 userId={profile?.uid}
-                listId={slugifyListName(list.name)}
+                listId={list.id}
                 name={list.name}
                 items={list.anime}
               />
             </Grid>
           ))}
           {!profile?.lists?.length && (
+            <Grid item xs={12}>
+              <NoResultsImage />
+            </Grid>
+          )}
+          <Grid item xs={12}>
+            <Typography variant="h3" sx={subheadStyle}>
+              Saved Watchlists
+            </Typography>
+          </Grid>
+          {animeObjects?.savedLists?.map((list, index) => (
+            <Grid item xs={12} md={6} key={index}>
+              <WatchlistTile
+                userId={list.userId}
+                listId={list.listId}
+                name={list.name}
+                items={list.anime}
+                creator={list.creatorName}
+                creatorAvatar={list.creatorAvatar}
+              />
+            </Grid>
+          ))}
+          {!profile?.savedLists?.length && (
             <Grid item xs={12}>
               <NoResultsImage />
             </Grid>

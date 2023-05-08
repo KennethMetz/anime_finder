@@ -104,6 +104,29 @@ export function useProfile(userID) {
   );
 }
 
+export function useGetProfiles(ids) {
+  const requestBody = { ids };
+  const fullUrl = `${apiUrl}/profile/get`;
+  return useQuery(
+    [fullUrl + ids],
+    async () => {
+      let response = await fetch(fullUrl, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      await handleErrors(response);
+      let responseJson = await response.json();
+
+      return responseJson;
+    },
+    { staleTime: fiveMinutesMs }
+  );
+}
+
 export function useRecommendations(viewHistory) {
   return useQuery(
     ["Recommendations", viewHistory],

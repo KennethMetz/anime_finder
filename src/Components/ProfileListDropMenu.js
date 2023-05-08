@@ -3,26 +3,33 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import { DotsThreeVertical, Link, Trash, X } from "phosphor-react";
+import { DotsThreeVertical, FloppyDisk, Link, Trash, X } from "phosphor-react";
 import IconButton from "@mui/material/IconButton";
 
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import useTheme from "@mui/material/styles/useTheme";
+import { LocalUserContext } from "./LocalUserContext";
+import useListSavedState from "../Hooks/useListSavedState";
 
 export default function ProfileListDropMenu({
   onDelete,
   isOwnProfile,
   deletableList,
+  userId,
+  listId,
 }) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const theme = useTheme();
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
+
+  const { saved, setSaved } = useListSavedState(listId, userId);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -111,8 +118,9 @@ export default function ProfileListDropMenu({
                     minWidth: "200px",
                   }}
                 >
+                  {/* Copy link to clipboard button */}
                   <ListItemButton
-                    divider={isOwnProfile && deletableList ? true : false}
+                    divider={(isOwnProfile && deletableList) || !isOwnProfile}
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
@@ -146,6 +154,51 @@ export default function ProfileListDropMenu({
                     />
                   </ListItemButton>
 
+                  {/* Save watchlist button */}
+                  {!isOwnProfile && (
+                    <ListItemButton
+                      divider={isOwnProfile && deletableList}
+                      onClick={() => {
+                        const wasSaved = saved;
+                        setSaved(!saved);
+                        setOpen(false);
+                        enqueueSnackbar(
+                          wasSaved
+                            ? "Watchlist unsaved from profile"
+                            : "Watchlist saved to profile",
+                          {
+                            variant: "success",
+                            style: {
+                              fontFamily: "interMedium",
+                              fontSize: "0.9rem",
+                              background: theme.palette.primary.main,
+                            },
+                            anchorOrigin: {
+                              vertical: "top",
+                              horizontal: "center",
+                            },
+                            action: (key) => (
+                              <Fragment>
+                                <IconButton onClick={() => closeSnackbar(key)}>
+                                  <X color="white" size={20} />
+                                </IconButton>
+                              </Fragment>
+                            ),
+                          }
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <FloppyDisk size={24} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={saved ? "Unsave Watchlist" : "Save Watchlist"}
+                        primaryTypographyProps={listItemStyling}
+                      />
+                    </ListItemButton>
+                  )}
+
+                  {/* Delete watchlist button */}
                   {isOwnProfile && deletableList && (
                     <ListItemButton
                       onClick={() => {

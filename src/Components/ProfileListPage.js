@@ -69,9 +69,9 @@ export default function ProfileListPage() {
     name = "Dislikes";
     typeName = "Watch History";
     updateFn = (newItems) => updateDislikes(newItems);
-  } else if (findListWithSlug(profile.lists, listId)) {
+  } else if (findListWithId(profile.lists, listId)) {
     listHasDesc = true;
-    const list = findListWithSlug(profile.lists, listId);
+    const list = findListWithId(profile.lists, listId);
     index = profile.lists.indexOf(list);
     items = animeObjects?.lists[index]?.anime;
     itemsIds = profile.lists[index]?.anime;
@@ -162,6 +162,8 @@ export default function ProfileListPage() {
           onDelete={onDelete}
           isOwnProfile={isOwnProfile}
           deletableList={deletableList}
+          userId={userId}
+          listId={listId}
         />
       </Box>
       {listHasDesc && (
@@ -225,8 +227,8 @@ export default function ProfileListPage() {
   );
 }
 
-function findListWithSlug(lists, slug) {
-  return lists.find((list) => slugifyListName(list.name) === slug);
+function findListWithId(lists, id) {
+  return lists.find((list) => list.id === id);
 }
 
 function getSubtitleText(typeName, items) {
