@@ -155,7 +155,7 @@ export async function GetPaginatedReviewsFromFirestore(
     const documentSnapshots = await getDocs(collectionQuery);
     if (documentSnapshots._snapshot.docChanges.length < 4) setSeeMore(false);
     else if (seeMore === false) setSeeMore(true);
-
+    console.log(documentSnapshots._snapshot.docChanges);
     let temp = [];
     if (reviews && lastVisible) temp = [...reviews];
     documentSnapshots.forEach((doc) => {
