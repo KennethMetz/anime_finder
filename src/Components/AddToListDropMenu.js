@@ -94,27 +94,16 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
   const createNewList = () => {
     let listId = generateId();
     let temp = { ...localUser };
-    !temp.lists
-      ? (temp.lists = [
-          {
-            name: name,
-            anime: [],
-            privateList: privateList,
-            desc: desc,
-            id: listId,
-          },
-        ])
-      : (temp.lists = [
-          ...temp.lists,
-          {
-            name: name,
-            anime: [],
-            privateList: privateList,
-            desc: desc,
-            id: listId,
-          },
-        ]);
-
+    temp.lists = [
+      ...(temp.lists ?? []),
+      {
+        name: name,
+        anime: [],
+        privateList: privateList,
+        desc: desc,
+        id: listId,
+      },
+    ];
     setLocalUser(temp);
     SaveToFirestore(user, temp);
     setName("");

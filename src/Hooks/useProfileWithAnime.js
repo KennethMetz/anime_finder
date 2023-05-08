@@ -17,12 +17,11 @@ export default function useProfileWithAnime(profile) {
   let savedListIds = {};
 
   for (let i = 0; i < profile?.savedLists?.length; i++) {
-    if (!savedListIds[profile?.savedLists[i]?.userId])
-      savedListIds[profile?.savedLists[i]?.userId] = [];
-
-    savedListIds[profile?.savedLists[i]?.userId].push(
-      profile?.savedLists[i]?.listId
-    );
+    const userId = profile.savedLists[i].userId;
+    if (!savedListIds[userId]) {
+      savedListIds[userId] = [];
+    }
+    savedListIds[userId].push(profile.savedLists[i].listId);
   }
 
   // Make an array of all userIds then fetch full user profiles.
@@ -50,10 +49,9 @@ export default function useProfileWithAnime(profile) {
     listNameHashmap[profileId + "dislikes"] = "Dislikes";
 
     for (let j = 0; j < savedListProfiles[i]?.lists?.length; j++) {
-      animeIdsHashmap[profileId + savedListProfiles[i].lists[j].id] =
-        savedListProfiles[i].lists[j].anime;
-      listNameHashmap[profileId + savedListProfiles[i].lists[j].id] =
-        savedListProfiles[i].lists[j].name;
+      let listId = savedListProfiles[i].lists[j].id;
+      animeIdsHashmap[profileId + listId] = savedListProfiles[i].lists[j].anime;
+      listNameHashmap[profileId + listId] = savedListProfiles[i].lists[j].name;
     }
   }
 

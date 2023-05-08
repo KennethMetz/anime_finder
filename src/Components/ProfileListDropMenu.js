@@ -13,8 +13,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import useTheme from "@mui/material/styles/useTheme";
-import ProfilePageContext from "./ProfilePageContext";
 import { LocalUserContext } from "./LocalUserContext";
+import useListSavedState from "../Hooks/useListSavedState";
 
 export default function ProfileListDropMenu({
   onDelete,
@@ -29,7 +29,7 @@ export default function ProfileListDropMenu({
   const theme = useTheme();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
-  const { updateSavedList } = useContext(ProfilePageContext);
+  const { saved, setSaved } = useListSavedState(listId, userId);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -120,11 +120,7 @@ export default function ProfileListDropMenu({
                 >
                   {/* Copy link to clipboard button */}
                   <ListItemButton
-                    divider={
-                      (isOwnProfile && deletableList) || !isOwnProfile
-                        ? true
-                        : false
-                    }
+                    divider={(isOwnProfile && deletableList) || !isOwnProfile}
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
@@ -161,36 +157,42 @@ export default function ProfileListDropMenu({
                   {/* Save watchlist button */}
                   {!isOwnProfile && (
                     <ListItemButton
-                      divider={isOwnProfile && deletableList ? true : false}
+                      divider={isOwnProfile && deletableList}
                       onClick={() => {
-                        updateSavedList(userId, listId);
+                        const wasSaved = saved;
+                        setSaved(!saved);
                         setOpen(false);
-                        enqueueSnackbar("Watchlist saved to profile", {
-                          variant: "success",
-                          style: {
-                            fontFamily: "interMedium",
-                            fontSize: "0.9rem",
-                            background: theme.palette.primary.main,
-                          },
-                          anchorOrigin: {
-                            vertical: "top",
-                            horizontal: "center",
-                          },
-                          action: (key) => (
-                            <Fragment>
-                              <IconButton onClick={() => closeSnackbar(key)}>
-                                <X color="white" size={20} />
-                              </IconButton>
-                            </Fragment>
-                          ),
-                        });
+                        enqueueSnackbar(
+                          wasSaved
+                            ? "Watchlist unsaved from profile"
+                            : "Watchlist saved to profile",
+                          {
+                            variant: "success",
+                            style: {
+                              fontFamily: "interMedium",
+                              fontSize: "0.9rem",
+                              background: theme.palette.primary.main,
+                            },
+                            anchorOrigin: {
+                              vertical: "top",
+                              horizontal: "center",
+                            },
+                            action: (key) => (
+                              <Fragment>
+                                <IconButton onClick={() => closeSnackbar(key)}>
+                                  <X color="white" size={20} />
+                                </IconButton>
+                              </Fragment>
+                            ),
+                          }
+                        );
                       }}
                     >
                       <ListItemIcon>
                         <FloppyDisk size={24} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Save Watchlist"
+                        primary={saved ? "Unsave Watchlist" : "Save Watchlist"}
                         primaryTypographyProps={listItemStyling}
                       />
                     </ListItemButton>

@@ -56,14 +56,12 @@ export async function SaveToFirestore(user, localUser) {
           likes: [...localUser.likes],
           dislikes: [...localUser.dislikes],
           lists: [...localUser.lists],
-          savedLists:
-            localUser.savedLists.length > 0 ? [...localUser.savedLists] : [],
+          savedLists: [...localUser.savedLists],
           avatar: localUser?.avatar ?? null,
           bio: localUser?.bio ?? null,
           top8: [...localUser.top8],
           reviews: [...localUser.reviews],
-          comments:
-            localUser.comments.length > 0 ? [...localUser.comments] : [],
+          comments: [...localUser.comments],
         },
         { merge: true }
       );

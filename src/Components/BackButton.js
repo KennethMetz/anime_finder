@@ -2,11 +2,11 @@ import IconButton from "@mui/material/IconButton";
 import { CaretLeft } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 
-export default function BackButton({ sx, userId }) {
+export default function BackButton({ sx, link }) {
   const navigate = useNavigate();
 
   const onClick = (e) => {
-    userId ? navigate(`/profile/${userId}`) : navigate(-1);
+    navigate(link ?? -1);
     e.stopPropagation();
   };
 

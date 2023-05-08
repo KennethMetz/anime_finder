@@ -49,7 +49,10 @@ export default function Profile() {
           <Grid item xs={12}>
             {isListPage ? (
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <BackButton sx={{ flexShrink: 0, mr: 1 }} userId={userId} />
+                <BackButton
+                  sx={{ flexShrink: 0, mr: 1 }}
+                  link={`/profile/${userId}`}
+                />
                 <ProfileUserBannerSmall />
               </Box>
             ) : (
