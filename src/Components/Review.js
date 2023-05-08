@@ -74,7 +74,7 @@ export default function Review({
 
       // Delete review from Firestore documents listing
       let docIdString = docId.toString();
-      DeleteReviewFromFirestore(user, docIdString);
+      DeleteReviewFromFirestore(user, docIdString, type);
     });
   }
 

@@ -83,9 +83,10 @@ export async function SaveReviewToFirestore(userID, userReview, animeID, type) {
   }
 }
 
-export async function DeleteReviewFromFirestore(user, animeID) {
+export async function DeleteReviewFromFirestore(user, animeID, type) {
+  let collectionName = type === "reviews" ? "animeData" : "watchlistData";
   const userID = user.uid.toString();
-  await deleteDoc(doc(db, "animeData", animeID, "reviews", userID));
+  await deleteDoc(doc(db, collectionName, animeID, "reviews", userID));
 }
 
 export async function PopulateReviewsFromFirestore(anime, setAnimeReviews) {
