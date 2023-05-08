@@ -66,7 +66,6 @@ export default function ReviewForm({
     reValidateMode: "onChange",
     resolver: yupResolver(validationSchema),
   });
-  console.log(localUser);
 
   function populateForm() {
     if (localUser[type].includes(docId)) {
