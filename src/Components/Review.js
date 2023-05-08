@@ -11,7 +11,7 @@ import { useConfirm } from "material-ui-confirm";
 import format from "date-fns/format";
 import fromUnixTime from "date-fns/fromUnixTime";
 import toDate from "date-fns/toDate";
-import { HandsClapping, Heart, Trash, X } from "phosphor-react";
+import { HandsClapping, Star, Trash, X, Heart } from "phosphor-react";
 import { useContext, useEffect, useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useLocation } from "react-router-dom";
@@ -229,10 +229,8 @@ export default function Review({
                 readOnly
                 value={item.rating}
                 color="primary"
-                emptyIcon={<Heart color={theme.palette.text.primary} />}
-                icon={
-                  <Heart color={theme.palette.text.primary} weight="fill" />
-                }
+                emptyIcon={<Star color={theme.palette.text.primary} />}
+                icon={<Star color={theme.palette.text.primary} weight="fill" />}
                 sx={{ mt: 1, mb: 1 }}
               ></Rating>
 

@@ -12,7 +12,7 @@ import { LocalUserContext } from "./LocalUserContext";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { Heart } from "phosphor-react";
+import { Star } from "phosphor-react";
 import {
   GetPaginatedReviewsFromFirestore,
   PopulateReviewsFromFirestore,
@@ -162,8 +162,8 @@ export default function ReviewForm({
           onChange={(event, newValue) => {
             setRating(newValue);
           }}
-          emptyIcon={<Heart color={theme.palette.text.primary} />}
-          icon={<Heart color={theme.palette.text.primary} weight="fill" />}
+          emptyIcon={<Star color={theme.palette.text.primary} />}
+          icon={<Star color={theme.palette.text.primary} weight="fill" />}
           sx={{ mt: 2 }}
         ></Rating>
         <TextField
