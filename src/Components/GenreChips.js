@@ -170,6 +170,7 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
         <Chip
           sx={{
             fontFamily: "interMedium",
+            borderRadius: "16px",
           }}
           variant={item.selected ? "filled" : "outlined"}
           clickable={true}
