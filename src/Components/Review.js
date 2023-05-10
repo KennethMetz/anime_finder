@@ -46,6 +46,8 @@ export default function Review({
 
   const { data: reviewerInfo } = useProfile(item.uid);
 
+  const typeSingular = type === "comments" ? "comment" : "review";
+
   const avatarSrc = useMemo(
     () => getAvatarSrc(reviewerInfo?.avatar),
     [reviewerInfo?.avatar]
@@ -53,8 +55,8 @@ export default function Review({
 
   function deleteReview(item, index) {
     confirm({
-      title: "Delete Review?",
-      content: "Deleting a review is permanent. There is no undo.",
+      title: `Delete ${typeSingular}`,
+      content: `Deleting a ${typeSingular} is permanent. There is no undo.`,
       titleProps: { sx: { fontFamily: "interExtraBold" } },
       contentProps: { sx: { fontFamily: "interMedium" } },
       confirmationText: "Delete",
@@ -72,7 +74,7 @@ export default function Review({
 
       // Delete review from Firestore documents listing
       let docIdString = docId.toString();
-      DeleteReviewFromFirestore(user, docIdString);
+      DeleteReviewFromFirestore(user, docIdString, type);
     });
   }
 
@@ -84,7 +86,7 @@ export default function Review({
     <Paper
       elevation={0}
       tabIndex={user.uid === item.uid ? 0 : -1}
-      aria-label="Edit review"
+      aria-label={`Edit ${typeSingular}`}
       sx={{
         backgroundColor: "custom.subtleCardBg",
         borderRadius: "8px",
@@ -177,7 +179,7 @@ export default function Review({
             <Tooltip
               key={item.uid}
               followCursor
-              title={user.uid === item.uid ? "Edit review" : ""}
+              title={user.uid === item.uid ? `Edit ${typeSingular}` : ""}
             >
               <Grid
                 item
@@ -200,7 +202,7 @@ export default function Review({
             </Tooltip>
             {user.uid === item.uid ? (
               <Grid item xs={2} sx={{ position: "relative" }}>
-                <Tooltip followCursor title="Delete review">
+                <Tooltip followCursor title={`Delete ${typeSingular}`}>
                   <IconButton
                     sx={{
                       position: "absolute",
@@ -222,7 +224,7 @@ export default function Review({
           </Grid>
           <Tooltip
             followCursor
-            title={user.uid === item.uid ? "Edit review" : ""}
+            title={user.uid === item.uid ? `Edit ${typeSingular}` : ""}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Rating
@@ -253,7 +255,7 @@ export default function Review({
             marginTop: "10px",
           }}
         >
-          <Tooltip title="Applaude this review" followCursor>
+          <Tooltip title={`Applaude this ${typeSingular}`} followCursor>
             <div>
               <EmojiReactionChip
                 docId={docId}
@@ -268,7 +270,7 @@ export default function Review({
             </div>
           </Tooltip>
 
-          <Tooltip title="Love this review" followCursor>
+          <Tooltip title={`Love this ${typeSingular}`} followCursor>
             <div>
               <EmojiReactionChip
                 docId={docId}
@@ -283,7 +285,7 @@ export default function Review({
             </div>
           </Tooltip>
 
-          <Tooltip title="Disagree with this review" followCursor>
+          <Tooltip title={`Disagree with this ${typeSingular}`} followCursor>
             <div>
               <EmojiReactionChip
                 docId={docId}

@@ -43,13 +43,15 @@ export default function ReviewForm({
 
   let edited = false;
 
+  const typeSingular = type === "comments" ? "comment" : "review";
+
   // Define Yup schema
   const validationSchema = Yup.object().shape({
     reviewTitle: Yup.string().required("*A title is required"),
     // .min(1, "*A title is required"),
     review: Yup.string()
-      .required("*A review is required")
-      .min(3, "*A review must be at least 3 characters long"),
+      .required(`*A ${typeSingular} is required`)
+      .min(3, `*A ${typeSingular} must be at least 3 characters long`),
   });
 
   //Use ReactHookForm hooks to validate Yup schema
@@ -201,7 +203,7 @@ export default function ReviewForm({
           }}
         />{" "}
         <TextField
-          label="Review"
+          label={typeSingular[0].toUpperCase() + typeSingular.slice(1)}
           name="review"
           id="review"
           variant="outlined"

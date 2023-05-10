@@ -24,6 +24,8 @@ export default function ReviewContainer({ user, docId, type }) {
   const [seeMore, setSeeMore] = useState(true);
   const [sortOption, setSortOption] = useState(["time", "desc"]);
 
+  const typeSingular = type === "comments" ? "comment" : "review";
+
   const subheadStyle = {
     fontFamily: "interBlack",
     fontSize: "22px",
@@ -79,9 +81,7 @@ export default function ReviewContainer({ user, docId, type }) {
             </Typography>
           )}
           {!showReviewForm ? (
-            <Tooltip
-              title={type === "Comments" ? "Add a comment" : "Add a review"}
-            >
+            <Tooltip title={`Add a ${typeSingular}`}>
               <Box sx={{ ml: 1 }}>
                 <IconButton
                   variant="contained"
@@ -96,7 +96,7 @@ export default function ReviewContainer({ user, docId, type }) {
               </Box>
             </Tooltip>
           ) : (
-            <Tooltip title="Close review">
+            <Tooltip title={`Close ${type}`}>
               <div style={{ marginLeft: "15px" }}>
                 {" "}
                 <IconButton
