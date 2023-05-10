@@ -5,8 +5,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import { useConfirm } from "material-ui-confirm";
-import { CaretLeft, X } from "phosphor-react";
-import { useContext, useEffect } from "react";
+import { CaretLeft, HandsClapping, Heart, Trash, X } from "phosphor-react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
@@ -20,11 +20,16 @@ import ProfileListDropMenu from "./ProfileListDropMenu";
 import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import EmojiReactionChip from "./EmojiReactionChip";
+import { GetListReactions } from "./Firestore";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
   const confirm = useConfirm();
   const [user, loading, error] = useAuthState(auth);
+  const [listRxns, setListRxns] = useState({
+    emojis: { applause: [], heart: [], trash: [] },
+  });
 
   const {
     profile,
@@ -53,6 +58,10 @@ export default function ProfileListPage() {
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
+
+  useEffect(() => {
+    GetListReactions(`${userId}+${listId}`, setListRxns);
+  }, [listId]);
 
   if (isLoading) {
     return <ProfileListPageGhost />;
@@ -158,6 +167,30 @@ export default function ProfileListPage() {
             {getSubtitleText(typeName, items)}
           </Typography>
         </Box>
+        <EmojiReactionChip
+          docId={`${userId}+${listId}`}
+          item={listRxns}
+          setItem={setListRxns}
+          emoji={<HandsClapping size={24} />}
+          reaction="applause"
+          type="list"
+        ></EmojiReactionChip>
+        <EmojiReactionChip
+          docId={`${userId}+${listId}`}
+          item={listRxns}
+          setItem={setListRxns}
+          emoji={<Heart size={24} />}
+          reaction="heart"
+          type="list"
+        ></EmojiReactionChip>
+        <EmojiReactionChip
+          docId={`${userId}+${listId}`}
+          item={listRxns}
+          setItem={setListRxns}
+          emoji={<Trash size={24} />}
+          reaction="trash"
+          type="list"
+        ></EmojiReactionChip>
         <ProfileListDropMenu
           onDelete={onDelete}
           isOwnProfile={isOwnProfile}
