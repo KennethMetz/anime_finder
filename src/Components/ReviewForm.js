@@ -43,7 +43,7 @@ export default function ReviewForm({
 
   let edited = false;
 
-  const typeSingular = type === "comments" ? "comment" : "Review";
+  const typeSingular = type === "comments" ? "comment" : "review";
 
   // Define Yup schema
   const validationSchema = Yup.object().shape({

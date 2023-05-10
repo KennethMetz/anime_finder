@@ -255,7 +255,7 @@ export default function Review({
             marginTop: "10px",
           }}
         >
-          <Tooltip title={`Applaude this ${type}`} followCursor>
+          <Tooltip title={`Applaude this ${typeSingular}`} followCursor>
             <div>
               <EmojiReactionChip
                 docId={docId}
@@ -270,7 +270,7 @@ export default function Review({
             </div>
           </Tooltip>
 
-          <Tooltip title={`Love this ${type}`} followCursor>
+          <Tooltip title={`Love this ${typeSingular}`} followCursor>
             <div>
               <EmojiReactionChip
                 docId={docId}
@@ -285,7 +285,7 @@ export default function Review({
             </div>
           </Tooltip>
 
-          <Tooltip title={`Disagree with this ${type}`} followCursor>
+          <Tooltip title={`Disagree with this ${typeSingular}`} followCursor>
             <div>
               <EmojiReactionChip
                 docId={docId}
