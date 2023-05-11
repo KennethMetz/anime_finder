@@ -4,12 +4,17 @@ import useTheme from "@mui/material/styles/useTheme";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import { SaveReviewToFirestore } from "./Firestore";
+import {
+  SaveListReactionsToFirestore,
+  SaveReviewToFirestore,
+} from "./Firestore";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function EmojiReactionChip({
   docId,
   emoji,
   item,
+  setItem, // Note, only used for list reactions (and NOT reviews/comments)
   reviews,
   reaction,
   index,
@@ -21,7 +26,7 @@ export default function EmojiReactionChip({
   const theme = useTheme();
 
   useEffect(() => {
-    if (item.emojis[reaction]?.includes(user.uid)) setSelected(true);
+    if (item?.emojis[reaction]?.includes(user.uid)) setSelected(true);
     else setSelected(false);
   }, [item]);
 
@@ -46,12 +51,41 @@ export default function EmojiReactionChip({
     }
   }
 
+  function reactToList() {
+    if (!selected) {
+      let temp = { ...item };
+      temp.emojis[reaction].push(user.uid);
+      setItem(temp);
+      setSelected(true);
+      SaveListReactionsToFirestore(docId, temp);
+    } else if (selected) {
+      let temp = { ...item };
+      let indexInArray = temp.emojis[reaction].indexOf(user.uid);
+      temp.emojis[reaction].splice(indexInArray, 1);
+      setItem(temp);
+      setSelected(false);
+      SaveListReactionsToFirestore(docId, temp);
+    }
+  }
+
+  if (!item?.emojis)
+    return (
+      <Skeleton
+        variant="rounded"
+        width={65}
+        height={32}
+        sx={{ paddingLeft: 0.5, borderRadius: "20px", mr: 2 }}
+      />
+    );
+
   return (
     <Chip
       variant={selected ? "filled" : "outlined"}
       icon={emoji}
-      label={item.emojis[reaction]?.length}
+      label={item.emojis[reaction].length}
       sx={{
+        paddingLeft: 0.5,
+        borderRadius: "20px",
         mr: 2,
         "& .MuiChip-label": { fontFamily: "interMedium", fontSize: "1rem" },
         "& .MuiChip-icon": {
@@ -59,7 +93,8 @@ export default function EmojiReactionChip({
         },
       }}
       onClick={(e) => {
-        reactToReview();
+        if (type === "list") reactToList();
+        else reactToReview();
         e?.stopPropagation();
       }}
     />

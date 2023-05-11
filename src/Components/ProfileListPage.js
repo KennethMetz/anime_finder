@@ -5,8 +5,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import { useConfirm } from "material-ui-confirm";
-import { CaretLeft, X } from "phosphor-react";
-import { useContext, useEffect } from "react";
+import { CaretLeft, HandsClapping, Heart, Trash, X } from "phosphor-react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
@@ -20,11 +20,20 @@ import ProfileListDropMenu from "./ProfileListDropMenu";
 import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import EmojiReactionChip from "./EmojiReactionChip";
+import { GetListReactions } from "./Firestore";
+import Grid from "@mui/material/Grid";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
   const confirm = useConfirm();
+  const theme = useTheme();
   const [user, loading, error] = useAuthState(auth);
+  const [listRxns, setListRxns] = useState({
+    emojis: { applause: [], heart: [], trash: [] },
+  });
 
   const {
     profile,
@@ -53,6 +62,14 @@ export default function ProfileListPage() {
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
+
+  useEffect(() => {
+    GetListReactions(`${userId}+${listId}`, setListRxns);
+  }, [listId]);
+
+  const sevenHundredFifty = useMediaQuery(
+    theme.breakpoints.up("sevenHundredFifty")
+  );
 
   if (isLoading) {
     return <ProfileListPageGhost />;
@@ -142,7 +159,8 @@ export default function ProfileListPage() {
   return (
     <Box>
       {/* Header */}
-      <Box
+      <Grid
+        container
         sx={{
           display: "flex",
           alignItems: "center",
@@ -150,30 +168,85 @@ export default function ProfileListPage() {
           marginBottom: "8px",
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <Grid
+          item
+          sevenHundredFifty={6}
+          xs={10}
+          sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+        >
           <Typography variant="h3" sx={{ ...headStyle, margin: 0 }}>
             {name}
           </Typography>
           <Typography variant="body1" sx={subtitleStyle}>
             {getSubtitleText(typeName, items)}
           </Typography>
-        </Box>
-        <ProfileListDropMenu
-          onDelete={onDelete}
-          isOwnProfile={isOwnProfile}
-          deletableList={deletableList}
-          userId={userId}
-          listId={listId}
-        />
-      </Box>
-      {listHasDesc && (
-        <ClickAndEdit
-          data={desc}
-          canEdit={isOwnProfile}
-          onSave={onDescSave}
-          placeholder={"Tell us a bit about this list..."}
-        />
-      )}
+        </Grid>
+        <Grid
+          item
+          sevenHundredFifty={5.25}
+          xs={12}
+          order={{ xs: 4, sevenHundredFifty: 2 }}
+          sx={{
+            mt: 1,
+            display: "flex",
+            justifyContent: {
+              xs: "left",
+              sevenHundredFifty: "right",
+            },
+          }}
+        >
+          <EmojiReactionChip
+            docId={`${userId}+${listId}`}
+            item={listRxns}
+            setItem={setListRxns}
+            emoji={<HandsClapping size={24} />}
+            reaction="applause"
+            type="list"
+          ></EmojiReactionChip>
+          <EmojiReactionChip
+            docId={`${userId}+${listId}`}
+            item={listRxns}
+            setItem={setListRxns}
+            emoji={<Heart size={24} />}
+            reaction="heart"
+            type="list"
+          ></EmojiReactionChip>
+          <EmojiReactionChip
+            docId={`${userId}+${listId}`}
+            item={listRxns}
+            setItem={setListRxns}
+            emoji={<Trash size={24} />}
+            reaction="trash"
+            type="list"
+          ></EmojiReactionChip>
+        </Grid>
+        <Grid
+          item
+          xs={2}
+          sevenHundredFifty={0.75}
+          order={{ xs: 2, sevenHundredFifty: 3 }}
+          sx={{ textAlign: "right" }}
+        >
+          <ProfileListDropMenu
+            onDelete={onDelete}
+            isOwnProfile={isOwnProfile}
+            deletableList={deletableList}
+            userId={userId}
+            listId={listId}
+          />
+        </Grid>
+
+        {listHasDesc && (
+          <Grid item xs={12} order={{ xs: 3, sevenHundredFifty: 4 }}>
+            <ClickAndEdit
+              data={desc}
+              canEdit={isOwnProfile}
+              onSave={onDescSave}
+              placeholder={"Tell us a bit about this list..."}
+            />
+          </Grid>
+        )}
+      </Grid>
       {/* Items */}
       {items && (
         <DragDropContext onDragEnd={handleOnDragEnd}>

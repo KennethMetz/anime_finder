@@ -171,3 +171,26 @@ export async function GetPaginatedReviewsFromFirestore(
 export function generateId() {
   return doc(collection(db, "test")).id;
 }
+
+// Handle "watchlistData / reactions" on firestore
+
+export async function GetListReactions(docId, setListRxns) {
+  try {
+    let animeRef = doc(db, "watchlistData", docId, "reactions", "emojis");
+    let querySnapshot = await getDoc(animeRef);
+    if (!querySnapshot) return;
+    let temp = querySnapshot.data();
+    setListRxns(temp);
+  } catch (error) {
+    console.error("Error loading data from Firebase Database", error);
+  }
+}
+
+export async function SaveListReactionsToFirestore(docId, updatedRxns) {
+  let Ref = doc(db, "watchlistData", docId, "reactions", "emojis");
+  try {
+    await setDoc(Ref, updatedRxns, { merge: true });
+  } catch (error) {
+    console.error("Error writing review data to Firestore", error);
+  }
+}
