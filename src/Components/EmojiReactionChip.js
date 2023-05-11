@@ -8,6 +8,7 @@ import {
   SaveListReactionsToFirestore,
   SaveReviewToFirestore,
 } from "./Firestore";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function EmojiReactionChip({
   docId,
@@ -67,11 +68,21 @@ export default function EmojiReactionChip({
     }
   }
 
+  if (!item?.emojis)
+    return (
+      <Skeleton
+        variant="rounded"
+        width={65}
+        height={32}
+        sx={{ paddingLeft: 0.5, borderRadius: "20px", mr: 2 }}
+      />
+    );
+
   return (
     <Chip
       variant={selected ? "filled" : "outlined"}
       icon={emoji}
-      label={item?.emojis[reaction]?.length}
+      label={item.emojis[reaction].length}
       sx={{
         paddingLeft: 0.5,
         borderRadius: "20px",

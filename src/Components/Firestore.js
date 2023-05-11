@@ -176,11 +176,10 @@ export function generateId() {
 
 export async function GetListReactions(docId, setListRxns) {
   try {
-    let animeRef = collection(db, "watchlistData", docId, "reactions");
-    let querySnapshot = await getDocs(animeRef);
-    // It is assumed here that only the emojis document exists within this collection.
-    if (!querySnapshot.docs[0]) return;
-    let temp = querySnapshot.docs[0].data();
+    let animeRef = doc(db, "watchlistData", docId, "reactions", "emojis");
+    let querySnapshot = await getDoc(animeRef);
+    if (!querySnapshot) return;
+    let temp = querySnapshot.data();
     setListRxns(temp);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
