@@ -1,10 +1,16 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useTheme from "@mui/material/styles/useTheme";
 
-export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
+export default function ClickAndEdit({
+  data,
+  placeholder,
+  canEdit,
+  onSave,
+  styling,
+}) {
   placeholder = placeholder ?? "Enter some text...";
 
   const theme = useTheme();
@@ -23,12 +29,12 @@ export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
   return (
     <div>
       {!editDesc ? (
-        <Box
+        <Typography
           sx={{
-            fontFamily: "interMedium",
-            fontSize: "1rem",
+            fontFamily: styling?.fontFamily ?? "interMedium",
+            fontSize: styling?.fontSize ?? "1rem",
             color: data?.length > 0 ? "unset" : theme.palette.text.secondary,
-            pb: 1,
+            pb: styling?.pb ?? 1,
             pl: 0,
             ml: 0,
             cursor: canEdit ? "pointer" : "unset",
@@ -36,7 +42,7 @@ export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
           onClick={canEdit ? handleDescToggle : undefined}
         >
           {data?.length > 0 ? data : canEdit ? placeholder : ""}
-        </Box>
+        </Typography>
       ) : (
         <div
           style={{
