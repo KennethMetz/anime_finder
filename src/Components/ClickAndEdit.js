@@ -22,8 +22,9 @@ export default function ClickAndEdit({
     onSave(editedDesc);
   }
 
-  function handleDescToggle() {
+  function handleDescToggle(e) {
     setEditDesc(!editDesc);
+    if (e?.key === "Enter") e.preventDefault();
   }
 
   return (
@@ -39,7 +40,11 @@ export default function ClickAndEdit({
             ml: 0,
             cursor: canEdit ? "pointer" : "unset",
           }}
+          tabIndex={canEdit ? "0" : "-1"}
           onClick={canEdit ? handleDescToggle : undefined}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleDescToggle(e);
+          }}
         >
           {data?.length > 0 ? data : canEdit ? placeholder : ""}
         </Typography>
@@ -61,15 +66,21 @@ export default function ClickAndEdit({
             placeholder={placeholder}
             autoFocus
             multiline
+            fullWidth={true}
             value={editedDesc}
             onClick={(e) => e.preventDefault()}
             onChange={(e) => {
               setEditedDesc(e.target.value);
             }}
-            sx={{ width: "100%", mb: 2 }}
+            sx={{ mb: 2 }}
             InputProps={{
               style: {
                 padding: "10px 10px 10px 5px",
+              },
+            }}
+            inputProps={{
+              style: {
+                maxWidth: "none",
               },
             }}
           ></TextField>
