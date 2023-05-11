@@ -178,7 +178,7 @@ export async function GetListReactions(docId, setListRxns) {
   try {
     let animeRef = doc(db, "watchlistData", docId, "reactions", "emojis");
     let querySnapshot = await getDoc(animeRef);
-    if (!querySnapshot) return;
+    if (!querySnapshot.data()) return;
     let temp = querySnapshot.data();
     setListRxns(temp);
   } catch (error) {
