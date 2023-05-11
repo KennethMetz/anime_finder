@@ -187,7 +187,7 @@ export default function ProfileListPage() {
           xs={12}
           order={{ xs: 4, sevenHundredFifty: 2 }}
           sx={{
-            mt: 1,
+            mt: { xs: 1, sevenHundredFifty: 0 },
             display: "flex",
             justifyContent: {
               xs: "left",
