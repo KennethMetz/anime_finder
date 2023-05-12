@@ -1,10 +1,16 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useTheme from "@mui/material/styles/useTheme";
 
-export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
+export default function ClickAndEdit({
+  data,
+  placeholder,
+  canEdit,
+  onSave,
+  styling,
+}) {
   placeholder = placeholder ?? "Enter some text...";
 
   const theme = useTheme();
@@ -16,27 +22,32 @@ export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
     onSave(editedDesc);
   }
 
-  function handleDescToggle() {
+  function handleDescToggle(e) {
     setEditDesc(!editDesc);
+    if (e?.key === "Enter") e.preventDefault();
   }
 
   return (
     <div>
       {!editDesc ? (
-        <Box
+        <Typography
           sx={{
-            fontFamily: "interMedium",
-            fontSize: "1rem",
+            fontFamily: styling?.fontFamily ?? "interMedium",
+            fontSize: styling?.fontSize ?? "1rem",
             color: data?.length > 0 ? "unset" : theme.palette.text.secondary,
-            pb: 1,
+            pb: styling?.pb ?? 1,
             pl: 0,
             ml: 0,
             cursor: canEdit ? "pointer" : "unset",
           }}
+          tabIndex={canEdit ? "0" : "-1"}
           onClick={canEdit ? handleDescToggle : undefined}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleDescToggle(e);
+          }}
         >
           {data?.length > 0 ? data : canEdit ? placeholder : ""}
-        </Box>
+        </Typography>
       ) : (
         <div
           style={{
@@ -55,15 +66,21 @@ export default function ClickAndEdit({ data, placeholder, canEdit, onSave }) {
             placeholder={placeholder}
             autoFocus
             multiline
+            fullWidth={true}
             value={editedDesc}
             onClick={(e) => e.preventDefault()}
             onChange={(e) => {
               setEditedDesc(e.target.value);
             }}
-            sx={{ width: "100%", mb: 2 }}
+            sx={{ mb: 2 }}
             InputProps={{
               style: {
                 padding: "10px 10px 10px 5px",
+              },
+            }}
+            inputProps={{
+              style: {
+                maxWidth: "none",
               },
             }}
           ></TextField>

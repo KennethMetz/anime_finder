@@ -45,6 +45,7 @@ export default function ProfileListPage() {
     updateList,
     deleteList,
     updateListDesc,
+    updateListTitle,
   } = useContext(ProfilePageContext);
 
   const params = useParams();
@@ -104,6 +105,7 @@ export default function ProfileListPage() {
 
   // Extracts index from <ClickAndEdit/>.
   const onDescSave = (newDesc) => updateListDesc(newDesc, index);
+  const onListTitleSave = (newTitle) => updateListTitle(newTitle, index);
 
   // Removes item at `index` from this list.
   const onRemove = (index) => {
@@ -141,6 +143,7 @@ export default function ProfileListPage() {
   const headStyle = {
     fontFamily: "interBlack",
     fontSize: { xs: "1.66rem", md: "2.5rem" },
+    pb: 0,
   };
 
   const subheadStyle = {
@@ -174,9 +177,13 @@ export default function ProfileListPage() {
           xs={10}
           sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
         >
-          <Typography variant="h3" sx={{ ...headStyle, margin: 0 }}>
-            {name}
-          </Typography>
+          <ClickAndEdit
+            data={name}
+            placeholder="Watchlist Name"
+            canEdit={isOwnProfile && typeName === "Watchlist"}
+            styling={headStyle}
+            onSave={onListTitleSave}
+          />
           <Typography variant="body1" sx={subtitleStyle}>
             {getSubtitleText(typeName, items)}
           </Typography>
