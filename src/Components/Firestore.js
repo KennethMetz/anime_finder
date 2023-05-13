@@ -178,7 +178,13 @@ export async function GetListReactions(docId, setListRxns) {
   try {
     let animeRef = doc(db, "watchlistData", docId, "reactions", "emojis");
     let querySnapshot = await getDoc(animeRef);
-    if (!querySnapshot.data()) return;
+    // Use default value if the document doesn't exist yet.
+    if (!querySnapshot.data()) {
+      setListRxns({
+        emojis: { applause: [], heart: [], trash: [] },
+      });
+      return;
+    }
     let temp = querySnapshot.data();
     setListRxns(temp);
   } catch (error) {
