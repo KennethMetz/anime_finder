@@ -31,9 +31,7 @@ export default function ProfileListPage() {
   const confirm = useConfirm();
   const theme = useTheme();
   const [user, loading, error] = useAuthState(auth);
-  const [listRxns, setListRxns] = useState({
-    emojis: { applause: [], heart: [], trash: [] },
-  });
+  const [listRxns, setListRxns] = useState(undefined);
 
   const {
     profile,
