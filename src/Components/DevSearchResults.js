@@ -54,6 +54,9 @@ export default function DevSearchResults() {
       {query.data !== null &&
         query.data !== undefined &&
         query.data.map((item) => <DevSearchResult result={item} />)}
+      {query.data !== null &&
+        query.data !== undefined &&
+        query.data.length === 0 && <Box>No results</Box>}
     </Box>
   );
 }
