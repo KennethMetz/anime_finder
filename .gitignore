@@ -7,3 +7,6 @@ build
 
 # Apple Desktop Services Store files.
 .DS_Store
+
+# Custom Environment Variables.
+.env*
