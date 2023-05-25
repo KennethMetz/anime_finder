@@ -1,3 +1,4 @@
+import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
@@ -21,23 +22,30 @@ export default function ScoreBars({ scores }) {
     <>
       {scores.map((score) => (
         <Box key={score.name} sx={{ display: "flex", alignItems: "center" }}>
-          <Typography
-            sx={{
-              fontFamily: "interMedium",
-              fontSize: "16px",
-              mb: "4px",
-              width: "104px",
-              flexShrink: 0,
-            }}
+          <Tooltip title={score.description}>
+            <Typography
+              sx={{
+                fontFamily: "interMedium",
+                fontSize: "16px",
+                mb: "4px",
+                width: "104px",
+                flexShrink: 0,
+                cursor: "default",
+              }}
+            >
+              {score.name}
+            </Typography>
+          </Tooltip>
+          <Tooltip
+            title={Math.floor((score.value * 0.8 + 0.2) * 100 * multiplier)}
           >
-            {score.name}
-          </Typography>
-          <LinearProgress
-            variant="determinate"
-            // Map the [0, 1] scores to [0.2, 1] for positive vibes.
-            value={(score.value * 0.8 + 0.2) * 100 * multiplier}
-            sx={{ height: 8, borderRadius: 4, flexGrow: 1 }}
-          />
+            <LinearProgress
+              variant="determinate"
+              // Map the [0, 1] scores to [0.2, 1] for positive vibes.
+              value={(score.value * 0.8 + 0.2) * 100 * multiplier}
+              sx={{ height: 8, borderRadius: 4, flexGrow: 1 }}
+            />
+          </Tooltip>
         </Box>
       ))}
     </>
