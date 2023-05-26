@@ -88,7 +88,6 @@ export default function ProfilePageContextProvider({ userId, children }) {
 
   const save = (newLocalUser) => {
     setLocalUser(newLocalUser);
-    console.log(localUser);
     SaveToFirestore(user, newLocalUser);
   };
 
