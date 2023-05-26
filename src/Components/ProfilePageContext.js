@@ -6,6 +6,7 @@ const ProfilePageContext = createContext({
   profileUserId: undefined,
   isOwnProfile: false,
   isLoading: false,
+  updateDisplayName: (name) => {},
   updateBio: (bio) => {},
   updateAvatar: (avatar) => {},
   updateLikes: (likes) => {},

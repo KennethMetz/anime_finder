@@ -116,7 +116,6 @@ export const signInWithTwitter = async () => {
     // const token = credential.accessToken;
     // const secret = credential.secret;
     const user = res.user;
-    console.log(user);
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
     if (docs.docs.length === 0) {
@@ -127,18 +126,7 @@ export const signInWithTwitter = async () => {
             uid: user.uid,
             name: user.displayName,
             authProvider: "twitter",
-            email: user.email,
-          },
-          { merge: true }
-        );
-      } else {
-        await setDoc(
-          doc(db, "users", user.uid),
-          {
-            uid: user.uid,
-            name: user.displayName,
-            authProvider: "twitter",
-            email: user.email,
+            email: user?.email,
           },
           { merge: true }
         );
