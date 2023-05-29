@@ -53,7 +53,6 @@ export default function Reset() {
             id="alert-dialog-title"
             sx={{
               fontWeight: 800,
-              //fontSize: "1.5rem",
               textAlign: "center",
             }}
           >
