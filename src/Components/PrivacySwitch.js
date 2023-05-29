@@ -29,11 +29,7 @@ export function PrivacySwitch({ privateList, setPrivateList }) {
               }}
             >
               <LockSimple size={20} />
-              <Typography
-                sx={{ fontFamily: "interMedium", fontSize: "1rem", ml: 0.5 }}
-              >
-                Private
-              </Typography>{" "}
+              <Typography sx={{ ml: 0.5 }}>Private</Typography>{" "}
             </div>
           ) : (
             <div
@@ -43,11 +39,7 @@ export function PrivacySwitch({ privateList, setPrivateList }) {
               }}
             >
               <GlobeHemisphereWest size={20} />{" "}
-              <Typography
-                sx={{ fontFamily: "interMedium", fontSize: "1rem", ml: 0.5 }}
-              >
-                Public
-              </Typography>{" "}
+              <Typography sx={{ ml: 0.5 }}>Public</Typography>{" "}
             </div>
           )
         }

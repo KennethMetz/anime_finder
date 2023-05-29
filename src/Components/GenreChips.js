@@ -169,7 +169,6 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       {currentItems?.map((item, index) => (
         <Chip
           sx={{
-            fontFamily: "interMedium",
             borderRadius: "16px",
           }}
           variant={item.selected ? "filled" : "outlined"}

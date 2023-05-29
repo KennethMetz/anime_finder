@@ -58,11 +58,6 @@ export default function ProfileListDropMenu({
     prevOpen.current = open;
   }, [open]);
 
-  const listItemStyling = {
-    fontSize: "1rem",
-    fontFamily: "interMedium",
-  };
-
   return (
     <>
       {/**********************DROP MENU ICON**********************/}
@@ -127,7 +122,6 @@ export default function ProfileListDropMenu({
                       enqueueSnackbar("Link copied to clipboard", {
                         variant: "success",
                         style: {
-                          fontFamily: "interMedium",
                           fontSize: "0.9rem",
                           background: theme.palette.primary.main,
                         },
@@ -148,10 +142,7 @@ export default function ProfileListDropMenu({
                     <ListItemIcon>
                       <Link size={24} />
                     </ListItemIcon>
-                    <ListItemText
-                      primary="Copy Link"
-                      primaryTypographyProps={listItemStyling}
-                    />
+                    <ListItemText primary="Copy Link" />
                   </ListItemButton>
 
                   {/* Save watchlist button */}
@@ -169,7 +160,6 @@ export default function ProfileListDropMenu({
                           {
                             variant: "success",
                             style: {
-                              fontFamily: "interMedium",
                               fontSize: "0.9rem",
                               background: theme.palette.primary.main,
                             },
@@ -193,7 +183,6 @@ export default function ProfileListDropMenu({
                       </ListItemIcon>
                       <ListItemText
                         primary={saved ? "Unsave Watchlist" : "Save Watchlist"}
-                        primaryTypographyProps={listItemStyling}
                       />
                     </ListItemButton>
                   )}
@@ -208,10 +197,7 @@ export default function ProfileListDropMenu({
                       <ListItemIcon>
                         <Trash size={24} />
                       </ListItemIcon>
-                      <ListItemText
-                        primary="Delete List"
-                        primaryTypographyProps={listItemStyling}
-                      ></ListItemText>
+                      <ListItemText primary="Delete List"></ListItemText>
                     </ListItemButton>
                   )}
                 </MenuList>

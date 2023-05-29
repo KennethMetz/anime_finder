@@ -118,8 +118,7 @@ export default function ProfileListPage() {
     confirm({
       title: "Delete Watchlist?",
       content: "Deleting a watchlist is permanent. There is no undo.",
-      titleProps: { sx: { fontFamily: "interExtraBold" } },
-      contentProps: { sx: { fontFamily: "interMedium" } },
+      titleProps: { sx: { fontWeight: 800 } },
       confirmationText: "Delete",
       cancellationButtonProps: { color: "inherit" },
       cancellationText: "Cancel",
@@ -140,22 +139,18 @@ export default function ProfileListPage() {
   }
 
   const headStyle = {
-    fontFamily: "interBlack",
+    fontWeight: 900,
     fontSize: { xs: "1.66rem", md: "2.5rem" },
     pb: 0,
   };
 
   const subheadStyle = {
-    fontFamily: "interBlack",
-    fontSize: "22px",
-    lineHeight: "27px",
     marginTop: "26px",
     marginBottom: "12px",
   };
 
   const subtitleStyle = {
-    fontFamily: "interSemiBold",
-    fontSize: "16px",
+    fontWeight: 600,
   };
 
   return (
@@ -293,7 +288,7 @@ export default function ProfileListPage() {
       {/*Suggestions*/}
       {showSuggestions && (
         <>
-          <Typography variant="h5" style={subheadStyle}>
+          <Typography variant="h3" style={subheadStyle}>
             Suggested
           </Typography>
           <ProfileListSuggestions items={items} amount={12} />

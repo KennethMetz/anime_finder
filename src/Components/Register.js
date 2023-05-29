@@ -53,7 +53,7 @@ export default function Register() {
     textTransform: "none",
     borderRadius: "24px",
     width: "350px",
-    fontFamily: "interExtraBold",
+    fontWeight: 800,
     fontSize: "1rem",
     marginBottom: "17px",
   };
@@ -271,7 +271,6 @@ export default function Register() {
               "&::before, &::after": {
                 borderColor: theme.palette.text.primary,
               },
-              fontFamily: "interMedium",
               margin: "18px 0px",
             }}
           >
@@ -290,16 +289,8 @@ export default function Register() {
             helperText={errors.username?.message}
             inputProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 paddingTop: "12.5px",
                 paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
               },
             }}
             sx={{
@@ -310,8 +301,6 @@ export default function Register() {
               },
               borderRadius: "9px",
               marginBottom: "20px",
-              fontFamily: "interMedium",
-              fontSize: "1rem",
             }}
           />
           {/* *******************EdwardML - Email Field************************** */}
@@ -327,16 +316,8 @@ export default function Register() {
             helperText={errors.email?.message}
             inputProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 paddingTop: "12.5px",
                 paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
               },
             }}
             sx={{
@@ -362,16 +343,8 @@ export default function Register() {
             helperText={errors.password?.message}
             inputProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 paddingTop: "12.5px",
                 paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
               },
             }}
             sx={{
@@ -382,8 +355,6 @@ export default function Register() {
               },
               borderRadius: "9px",
               marginBottom: "20px",
-              fontFamily: "interMedium",
-              fontSize: "1rem",
             }}
           />
           {/* *******************EdwardML - 'Let's Go!' Button************************** */}
@@ -426,16 +397,14 @@ export default function Register() {
               sx={{
                 color: "error.main",
                 marginTop: "10px",
-                fontFamily: "interExtraBold",
+                fontWeight: 800,
               }}
             >
               *Please resolve errors shown above.
             </Typography>
           )}
           {emailError && (
-            <Typography
-              sx={{ color: "error.main", fontFamily: "interExtraBold" }}
-            >
+            <Typography sx={{ color: "error.main", fontWeight: 800 }}>
               {emailError}
             </Typography>
           )}
@@ -448,15 +417,11 @@ export default function Register() {
             }}
           />
           {/* *******************Already Registered Section************************** */}
-          <div style={{ fontFamily: "interMedium" }}>
+          <div>
             Already registered?{" "}
-            <Link to="/login">
-              <span
-                style={{ fontFamily: "interExtraBold", fontWeight: "bold" }}
-              >
-                Login here!
-              </span>
-            </Link>
+            <Typography component="span" sx={{ fontWeight: 800 }}>
+              <Link to="/login">Login here!</Link>
+            </Typography>
           </div>
         </div>
       </Container>

@@ -49,9 +49,8 @@ export default function Top8List() {
         }}
       >
         <Typography
+          variant="h3"
           sx={{
-            fontFamily: "interBlack",
-            fontSize: "1.375rem",
             mt: 1,
             mb: 2.5,
             pl: 2,
@@ -132,10 +131,7 @@ export default function Top8List() {
                             </ListItemAvatar>
                             <Typography
                               sx={{
-                                fontFamily: "interMedium",
-                                fontSize: "1rem",
                                 cursor: "pointer",
-                                lineHeight: "1.5",
                                 maxHeight: "2.625rem",
                                 overflow: "hidden",
                               }}

@@ -57,8 +57,7 @@ export default function Review({
     confirm({
       title: `Delete ${typeSingular}`,
       content: `Deleting a ${typeSingular} is permanent. There is no undo.`,
-      titleProps: { sx: { fontFamily: "interExtraBold" } },
-      contentProps: { sx: { fontFamily: "interMedium" } },
+      titleProps: { sx: { fontWeight: 800 } },
       confirmationText: "Delete",
       cancellationButtonProps: { color: "inherit" },
       cancellationText: "Cancel",
@@ -135,8 +134,7 @@ export default function Review({
             <Typography
               component="span"
               sx={{
-                fontFamily: "interSemiBold",
-                fontSize: "1rem",
+                fontWeight: 600,
               }}
             >
               {reviewerInfo?.name}
@@ -145,7 +143,6 @@ export default function Review({
               <Typography
                 component="span"
                 sx={{
-                  fontFamily: "interMedium",
                   fontSize: "0.9rem",
                   color: { xs: "grey", sm: "inherit" },
                 }}
@@ -191,10 +188,7 @@ export default function Review({
                   mt: 1,
                 }}
               >
-                <Typography
-                  component="span"
-                  sx={{ fontFamily: "interBlack", fontSize: "1rem", mr: 2 }}
-                >
+                <Typography component="span" sx={{ fontWeight: 900, mr: 2 }}>
                   {item.reviewTitle}
                 </Typography>{" "}
                 <ConvertDate item={item} />
@@ -239,8 +233,6 @@ export default function Review({
               <ExpandableText
                 text={item.review}
                 sx={{
-                  fontFamily: "interMedium",
-                  fontSize: "16px",
                   lineHeight: "21px",
                   whiteSpace: "pre-line",
                 }}
@@ -308,9 +300,7 @@ export default function Review({
 function ConvertDate({ item }) {
   const time = format(fromUnixTime(item.time.seconds), "MMMM dd, yyyy");
   return (
-    <Typography
-      sx={{ fontFamily: "interMedium", color: "grey", fontSize: "0.9rem" }}
-    >
+    <Typography sx={{ color: "grey", fontSize: "0.9rem" }}>
       {item?.edited ? "Edited on" : ""} {time.toString()}
     </Typography>
   );

@@ -74,16 +74,17 @@ export default function LandingPage() {
         }}
       >
         <Typography
+          variant="h1"
           sx={{
             marginTop: {
               xs: "80px",
               sm: "145px",
             },
-            fontFamily: "montserrat",
             fontSize: {
               xs: "3rem",
               sm: "4.0rem",
             },
+            lineHeight: 1.5,
             color: "white",
             zIndex: "1",
             maxWidth: "550px",
@@ -95,7 +96,6 @@ export default function LandingPage() {
         <Typography
           sx={{
             marginTop: "27px",
-            fontFamily: "interMedium",
             fontSize: { xs: "1.1rem", sm: "1.5rem" },
             color: "white",
             zIndex: "1",
@@ -127,8 +127,6 @@ export default function LandingPage() {
           sx={{
             marginTop: "17px",
             marginBottom: "10px",
-            fontFamily: "interMedium",
-            fontSize: "1.0rem",
             color: "white",
             zIndex: "1",
             maxWidth: "600px",
@@ -239,8 +237,6 @@ export default function LandingPage() {
               </div>
               <Typography
                 sx={{
-                  fontFamily: "interMedium",
-                  fontSize: "1rem",
                   margin: "0px 34px 20px 27px",
                 }}
               >
@@ -310,14 +306,12 @@ export default function LandingPage() {
               </div>
               <Typography
                 sx={{
-                  fontFamily: "interMedium",
-                  fontSize: "1rem",
                   margin: "0px 34px 0px 27px",
                 }}
               >
                 Edward understands anime relationships and can help you discover
                 new content similar to your existing favorites.
-              </Typography>{" "}
+              </Typography>
             </Paper>
           </Grid>
           {/******************************Card #3****************************/}
@@ -380,19 +374,17 @@ export default function LandingPage() {
                     lineHeight: "1.25",
                   }}
                 >
-                  Get personalized recs{" "}
+                  Get personalized recs
                 </Typography>
               </div>
               <Typography
                 sx={{
-                  fontFamily: "interMedium",
-                  fontSize: "1rem",
                   margin: "0px 34px 20px 27px",
                 }}
               >
                 Edward learns your personal taste profile and can make new
                 suggestions that are just for you.
-              </Typography>{" "}
+              </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12}></Grid>

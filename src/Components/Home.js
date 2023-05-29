@@ -2,6 +2,7 @@ import "../Styles/App.css";
 
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useState, useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
@@ -94,34 +95,36 @@ export default function Home() {
     }
   }, [user, loading]);
 
+  const shelfTitleStyles = {
+    marginTop: "1.6em",
+    marginBottom: "0.5em",
+  };
+
   return (
     <div>
       <Container maxWidth="lg">
         <div className="gap" />
         {localUser && localUser?.likes.length > 0 ? (
           <>
-            <h2
+            <Typography
+              variant="h2"
               style={{
-                fontSize: "2.5rem",
-                fontFamily: "interBlack, Arial, Helvetica, sans-serif",
-                textAlign: "left",
                 marginBlockStart: 0,
                 marginBlockEnd: "0.5rem",
               }}
             >
               For You
-            </h2>
+            </Typography>
             <AnimeGrid items={recommendation} large />
           </>
         ) : (
           ""
         )}
         {localUser.uid && localUser?.likes.length === 0 ? (
-          <h2
+          <Typography
+            variant="h2"
             style={{
               fontSize: "2.0rem",
-              fontFamily: "interBlack, Arial, Helvetica, sans-serif",
-              textAlign: "left",
               marginBlockStart: 0,
               marginBlockEnd: "0.5rem",
             }}
@@ -129,7 +132,7 @@ export default function Home() {
             Like a show to receive{" "}
             <span className="rainbow_text_animated">personalized</span>{" "}
             recommendations!
-          </h2>
+          </Typography>
         ) : (
           ""
         )}
@@ -143,25 +146,33 @@ export default function Home() {
       />
 
       <Container maxWidth="lg">
-        <h4 className="shelfTitle"> Highest Rated {selectedGenre.slice(7)} </h4>
+        <Typography variant="h4" sx={shelfTitleStyles}>
+          Highest Rated {selectedGenre.slice(7)}{" "}
+        </Typography>
         <AnimeShelf items={animeHR} />
 
-        <h4 className="shelfTitle">Most Popular {selectedGenre.slice(7)}</h4>
+        <Typography variant="h4" sx={shelfTitleStyles}>
+          Most Popular {selectedGenre.slice(7)}
+        </Typography>
         <AnimeShelf items={animeMC} />
         {/* 
       <h4>All time Best</h4>
       <AnimeShelf items={animeMR} /> */}
 
-        <h4 className="shelfTitle">
+        <Typography variant="h4" sx={shelfTitleStyles}>
           Most Buzzed About {selectedGenre.slice(7)}
-        </h4>
+        </Typography>
         <AnimeShelf items={animeMPTW} />
 
-        <h4 className="shelfTitle">Most Obscure</h4>
+        <Typography variant="h4" sx={shelfTitleStyles}>
+          Most Obscure
+        </Typography>
         <AnimeShelf items={animeMH} />
 
         <Stack direction="row" spacing={3} sx={{ alignItems: "baseline" }}>
-          <h4 className="shelfTitle">Random</h4>
+          <Typography variant="h4" sx={shelfTitleStyles}>
+            Random
+          </Typography>
           <Button
             color="inherit"
             variant="outlined"

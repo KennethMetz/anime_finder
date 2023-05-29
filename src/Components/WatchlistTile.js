@@ -43,10 +43,9 @@ export default function WatchlistTile({
       >
         <Box sx={{ display: "flex" }}>
           <Typography
-            variant="h6"
+            variant="h5"
             sx={{
-              fontFamily: "interExtraBold",
-              fontSize: "16px",
+              fontWeight: 800,
               marginBottom: "6px",
               flexGrow: 1,
               justifyItems: "baseline",
@@ -55,9 +54,8 @@ export default function WatchlistTile({
             {name}
           </Typography>
           <Typography
+            variant="body2"
             sx={{
-              fontFamily: "interMedium",
-              fontSize: "14px",
               marginLeft: "8px",
             }}
           >
@@ -122,8 +120,6 @@ export default function WatchlistTile({
                 <ListItemText
                   primary={creator}
                   primaryTypographyProps={{
-                    fontFamily: "interMedium",
-                    fontSize: "1rem",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                   }}
