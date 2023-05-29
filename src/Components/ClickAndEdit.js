@@ -32,7 +32,7 @@ export default function ClickAndEdit({
       {!editDesc ? (
         <Typography
           sx={{
-            fontFamily: styling?.fontFamily ?? "interMedium",
+            fontWeight: styling?.fontWeight,
             fontSize: styling?.fontSize ?? "1rem",
             color: data?.length > 0 ? "unset" : theme.palette.text.secondary,
             pb: styling?.pb ?? 1,

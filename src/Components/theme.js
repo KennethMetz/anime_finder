@@ -1,6 +1,8 @@
 import createTheme from "@mui/material/styles/createTheme";
 import { alpha } from "@mui/system/colorManipulator";
 
+const mainFontStack = "Inter, Arial-fallback, sans-serif";
+
 export function createAppTheme(darkMode) {
   // A custom theme for this app
   return createTheme({
@@ -45,7 +47,8 @@ export function createAppTheme(darkMode) {
         styleOverrides: {
           root: {
             textTransform: "unset",
-            fontFamily: "interSemiBold",
+            fontFamily: mainFontStack,
+            fontWeight: 600,
           },
           sizeSmall: {
             fontSize: "0.8125rem",
@@ -74,6 +77,12 @@ export function createAppTheme(darkMode) {
           disableElevation: true,
         },
       },
+      MuiLink: {
+        root: {
+          fontFamily: mainFontStack,
+          fontWeight: 600,
+        },
+      },
       MuiChip: {
         styleOverrides: {
           root: {
@@ -92,7 +101,8 @@ export function createAppTheme(darkMode) {
             },
           },
           label: {
-            fontFamily: "interSemiBold, sans-serif",
+            fontFamily: mainFontStack,
+            fontWeight: 600,
           },
         },
       },
@@ -114,7 +124,39 @@ export function createAppTheme(darkMode) {
       },
     },
     typography: {
-      fontFamily: ["Helvetica", "Arial", "sans-serif"],
+      fontFamily: mainFontStack,
+      body1: {
+        letterSpacing: "0.00938em",
+        fontSize: "1rem",
+        lineHeight: 1.5,
+      },
+      h1: {
+        fontFamily: "montserrat, sans-serif",
+        fontSize: "4.0rem",
+      },
+      h2: {
+        fontFamily: mainFontStack,
+        fontSize: "2.5rem",
+        fontWeight: 900,
+      },
+      h3: {
+        fontFamily: mainFontStack,
+        fontSize: "1.375rem",
+        lineHeight: "1.23em",
+        fontWeight: 900,
+      },
+      h4: {
+        fontFamily: mainFontStack,
+        fontSize: "1.25rem",
+        lineHeight: "1.23em",
+        fontWeight: 600,
+      },
+      h5: {
+        fontFamily: mainFontStack,
+        fontSize: "1rem",
+        lineHeight: "1.1875em",
+        fontWeight: 800,
+      },
     },
   });
 }

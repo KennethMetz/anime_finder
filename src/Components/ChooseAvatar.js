@@ -10,7 +10,6 @@ import AvatarShelf from "./AvatarShelf";
 
 export default function ChooseAvatar() {
   let styling = {
-    fontFamily: "interMedium",
     pl: 1,
     fontSize: "0.75rem",
     marginTop: "-20px",
@@ -21,13 +20,12 @@ export default function ChooseAvatar() {
 
   return (
     <div>
-      <Typography sx={{ fontFamily: "interExtraBold", pl: 1, mb: 1 }}>
+      <Typography variant="h5" sx={{ pl: 1, mb: 1 }}>
         Select an Avatar:
       </Typography>
 
       <Typography
         sx={{
-          fontFamily: "interMedium",
           pl: 1,
           fontSize: "0.75rem",
         }}

@@ -1,4 +1,5 @@
 import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import GenreChips from "./GenreChips";
 
@@ -16,7 +17,9 @@ export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
       }}
     >
       <Container maxWidth="lg">
-        <h4 style={{ marginBottom: "0.3em" }}>{title}</h4>
+        <Typography variant="h3" sx={{ marginBottom: "0.3em" }}>
+          {title}
+        </Typography>
 
         <GenreChips
           selectedGenre={selectedGenre}

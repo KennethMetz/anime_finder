@@ -77,8 +77,8 @@ export default function Logout() {
           }}
         >
           <Typography
+            variant="h1"
             sx={{
-              fontFamily: "montserrat, Arial, Helvetica, sans-serif",
               fontSize: {
                 xs: "2.5rem",
                 sevenHundredFifty: "3rem",
@@ -91,8 +91,8 @@ export default function Logout() {
             Logout Complete.
           </Typography>
           <Typography
+            variant="h4"
             sx={{
-              fontFamily: "interSemiBold, Arial, Helvetica, sans-serif",
               fontSize: {
                 xs: "1.5rem",
                 sevenHundredFifty: "1.75rem",

@@ -68,23 +68,15 @@ export default function DetailedView() {
   }
 
   const headStyle = {
-    fontFamily: "interBlack",
-    fontSize: "40px",
-    lineHeight: "48px",
     marginBottom: "24px",
   };
 
   const subheadStyle = {
-    fontFamily: "interBlack",
-    fontSize: "22px",
-    lineHeight: "27px",
     marginTop: "24px",
     marginBottom: "12px",
   };
 
   const bodyStyle = {
-    fontFamily: "interMedium",
-    fontSize: "16px",
     lineHeight: "21px",
   };
 
@@ -155,7 +147,7 @@ export default function DetailedView() {
           </Box>
 
           {/*Basic Info*/}
-          <Typography variant="h5" sx={subheadStyle}>
+          <Typography variant="h3" sx={subheadStyle}>
             {anime.display_name}
           </Typography>
           <Typography variant="body1" sx={bodyStyle}>
@@ -264,7 +256,7 @@ export default function DetailedView() {
                 )}
                 <Grid item xs={12} md={6} sx={bodyStyle}>
                   <Typography
-                    variant="h5"
+                    variant="h3"
                     style={{ ...subheadStyle, margin: "0 0 12px 0" }}
                   >
                     Data From Edward
@@ -273,11 +265,8 @@ export default function DetailedView() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     sx={{
-                      fontFamily: "interExtraBold",
-                      fontSize: "16px",
-                      lineHeight: "19px",
                       marginTop: { xs: "24px", md: "7px" },
                       marginBottom: "12px",
                     }}
@@ -293,7 +282,7 @@ export default function DetailedView() {
 
             {/* Summary */}
             <Grid item xs={12}>
-              <Typography variant="h5" style={subheadStyle}>
+              <Typography variant="h3" style={subheadStyle}>
                 Summary
               </Typography>
               <ExpandableText
@@ -304,7 +293,7 @@ export default function DetailedView() {
 
             {/* Watch Links */}
             <Grid item xs={12}>
-              <Typography variant="h5" style={subheadStyle}>
+              <Typography variant="h3" style={subheadStyle}>
                 Watch
               </Typography>
               <Box sx={{ display: "block" }}>
@@ -314,7 +303,7 @@ export default function DetailedView() {
           </Grid>
         </Grid>
         <Grid item xs={12} md={12}>
-          <Typography variant="h5" style={subheadStyle}>
+          <Typography variant="h3" style={subheadStyle}>
             Similar Titles
           </Typography>
           <SimilarContent animeId={anime.id} amount={24} />

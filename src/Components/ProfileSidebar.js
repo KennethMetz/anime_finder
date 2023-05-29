@@ -37,9 +37,8 @@ export default function ProfileSidebar({ hideDetails }) {
             </div>
           )}
           <Typography
+            variant="h3"
             sx={{
-              fontFamily: "interBlack",
-              fontSize: "1.375rem",
               mt: 3,
               pb: 1,
             }}

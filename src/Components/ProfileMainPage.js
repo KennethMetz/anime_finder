@@ -11,16 +11,8 @@ export default function ProfileMainPage() {
   const { profile, animeObjects, isLoading } = useContext(ProfilePageContext);
 
   const subheadStyle = {
-    fontFamily: "interBlack",
-    fontSize: "22px",
-    lineHeight: "27px",
     marginTop: "26px",
     marginBottom: "12px",
-  };
-
-  const bodyStyle = {
-    fontFamily: "interMedium",
-    fontSize: "16px",
   };
 
   // To-do: Error screen on error.

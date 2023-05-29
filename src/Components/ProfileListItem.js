@@ -62,10 +62,7 @@ export default function ProfileListItem({
             sx={{ height: "56px" }}
           ></Box>{" "}
         </ListItemAvatar>
-        <ListItemText
-          primary={item.display_name}
-          primaryTypographyProps={{ fontFamily: "interMedium" }}
-        />
+        <ListItemText primary={item.display_name} />
         {smallScreen ? (
           <LikeButtonsDropMenu
             anime={item}

@@ -1,8 +1,11 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
+import useTheme from "@mui/material/styles/useTheme";
 import { useMemo, useState } from "react";
 
 export default function ExpandableText({ text, sx }) {
+  const theme = useTheme();
+
   const [expanded, setExpanded] = useState(false);
 
   const shortText = useMemo(() => getShortText(text), [text]);
@@ -29,6 +32,7 @@ export default function ExpandableText({ text, sx }) {
         >
           <Link
             color="inherit"
+            variant="body1"
             underline="none"
             onClick={(e) => {
               setExpanded(!expanded);
@@ -36,8 +40,10 @@ export default function ExpandableText({ text, sx }) {
             }}
             component="button"
             sx={{
-              fontFamily: "interSemiBold",
-              fontSize: "16px",
+              fontWeight: 600,
+              "&:hover": {
+                color: theme.palette.primary.main,
+              },
             }}
           >
             {expanded ? "Read less" : "Read more"}

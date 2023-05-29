@@ -70,13 +70,12 @@ export default function ProfileUserBanner() {
           sx={{ ml: 1 }}
           primary={profile?.name}
           primaryTypographyProps={{
-            fontFamily: "interBlack",
+            fontWeight: 900,
             fontSize: { xs: "1.66rem", md: "2.5rem" },
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
           secondaryTypographyProps={{
-            fontFamily: "interMedium",
             fontSize: "1rem",
             color: "text",
             overflow: "hidden",

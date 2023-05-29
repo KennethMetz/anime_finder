@@ -25,8 +25,6 @@ export default function ScoreBars({ scores }) {
           <Tooltip title={score.description}>
             <Typography
               sx={{
-                fontFamily: "interMedium",
-                fontSize: "16px",
                 mb: "4px",
                 width: "104px",
                 flexShrink: 0,

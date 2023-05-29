@@ -59,7 +59,9 @@ export default function Search() {
   return (
     <div className="jsxWrapper">
       <Container maxWidth="sm">
-        <h4 style={{ textAlign: "center" }}>Search Results:</h4>
+        <Typography variant="h3" style={{ textAlign: "center" }}>
+          Search Results:
+        </Typography>
         <Divider></Divider>
 
         <div className="gap" style={{ marginTop: "30px" }}></div>
@@ -88,8 +90,7 @@ export default function Search() {
                 <ListItemText
                   primary={item.display_name}
                   primaryTypographyProps={{
-                    fontFamily: "interSemiBold",
-                    fontSize: "1rem",
+                    fontWeight: 600,
                   }}
                 />
               </ListItemButton>
@@ -103,9 +104,7 @@ export default function Search() {
               alignItems: "center",
             }}
           >
-            <Typography
-              sx={{ fontFamily: "interSemiBold", fontSize: "1.1rem" }}
-            >
+            <Typography sx={{ fontWeight: 600, fontSize: "1.1rem" }}>
               Your search for "
               <span style={{ color: theme.palette.primary.main }}>
                 {" "}
@@ -140,9 +139,7 @@ export default function Search() {
                 }}
               />
             </Paper>
-            <Typography
-              sx={{ fontFamily: "interSemiBold", fontSize: "1.1rem", mt: 4 }}
-            >
+            <Typography sx={{ fontWeight: 600, fontSize: "1.1rem", mt: 4 }}>
               Please try again!
             </Typography>{" "}
           </div>

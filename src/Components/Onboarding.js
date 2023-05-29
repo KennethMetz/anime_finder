@@ -46,27 +46,17 @@ export default function Onboarding() {
       <OnboardingHeader />
       <Container maxWidth="lg">
         <Typography
-          className="leftH4"
+          variant="h2"
           sx={{
-            fontFamily: "montserratExtraBold",
-            fontSize: "2rem",
             marginTop: "30px",
             marginBottom: "23px",
           }}
         >
           Let's Get Started
         </Typography>
-        <span
-          style={{
-            fontFamily: "interSemiBold",
-            fontSize: "1.5rem",
-          }}
-        >
+        <Typography variant="h4" sx={{ mb: 4 }}>
           Pick at least one item you like
-        </span>
-        <br />
-
-        <br />
+        </Typography>
         <OnboardingAnimeGrid items={onboardingAnime} large onboarding />
         <br />
         {localUser["likes"] && localUser["likes"].length < 1 ? (

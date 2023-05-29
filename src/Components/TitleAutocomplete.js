@@ -81,8 +81,6 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
                 flexShrink: 0,
                 borderRadius: "8px",
               },
-              fontFamily: "interMedium",
-              fontSize: "1rem",
             }}
             {...props}
           >
@@ -129,8 +127,6 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
                 paddingLeft: "18px",
                 paddingTop: "4px",
                 height: "46px",
-                fontSize: "1rem",
-                fontFamily: "interMedium",
               },
               ".MuiInputLabel-root": {
                 paddingLeft: "18px",
