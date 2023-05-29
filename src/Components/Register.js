@@ -115,12 +115,12 @@ export default function Register() {
           alignItems: "center",
         }}
       >
-        <h4
-          className="H4"
+        <Typography
+          variant="h3"
           style={{ textAlign: "center", margin: 0, marginBottom: "18px" }}
         >
           Let's Get Registered!
-        </h4>
+        </Typography>
         <div
           className="register__container"
           style={{
