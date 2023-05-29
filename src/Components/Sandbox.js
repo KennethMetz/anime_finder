@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import LikeButtons from "./LikeButtons";
 import { useAnimeHR } from "./APICalls";
-import { Typography } from "@mui/material";
 
 export default function Sandbox() {
   const [anime, setAnime] = useState();
@@ -53,7 +53,9 @@ export default function Sandbox() {
           life and sealed the monstrous beast inside the newborn Naruto.
         </p>
 
-        <h4>Default Buttons</h4>
+        <Typography variant="h3" sx={headerMargin}>
+          Default Buttons
+        </Typography>
         {["small", "medium", "large"].map((size) => (
           <Box key={size} sx={{ mb: 2 }}>
             <Button variant="text" color="inherit" size={size}>
@@ -86,7 +88,9 @@ export default function Sandbox() {
           </Box>
         ))}
 
-        <h4>Like Buttons</h4>
+        <Typography variant="h3" sx={headerMargin}>
+          Like Buttons
+        </Typography>
         {!anime && <div>Loading...</div>}
         {anime &&
           anime.map((a) => (
