@@ -45,7 +45,7 @@ export default function WatchlistTile({
           <Typography
             variant="h5"
             sx={{
-              fontWeight: 800,
+              fontWeight: 600,
               marginBottom: "6px",
               flexGrow: 1,
               justifyItems: "baseline",
