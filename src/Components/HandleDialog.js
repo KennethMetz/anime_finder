@@ -1,12 +1,13 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import * as Yup from "yup";
@@ -17,8 +18,13 @@ import {
   CheckForHandleDuplicates,
   SaveToFirestore,
 } from "./Firestore";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
+import EdwardMLLogo from "./EdwardMLLogo";
+import Container from "@mui/material/Container";
 
 export default function HandleDialog({ user }) {
+  const theme = useTheme();
   const navigate = useNavigate();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   let newLocalUser;
@@ -27,6 +33,8 @@ export default function HandleDialog({ user }) {
 
   const [handle, setHandle] = useState("");
 
+  const smallScreen = useMediaQuery(theme.breakpoints.down("fiveHundred"));
+  console.log(smallScreen);
   const handleClose = (event, reason) => {
     if (reason && reason === "backdropClick") return;
     setOpen(false);
@@ -98,76 +106,109 @@ export default function HandleDialog({ user }) {
   });
 
   return (
-    <div>
-      <Dialog
-        disableEscapeKeyDown
-        maxWidth="sm  "
-        PaperProps={{
-          style: {
-            borderRadius: "11px",
-            border: "rgba(0, 0, 0, 0.12) 1px solid",
+    <Dialog
+      width={smallScreen ? "100%" : "600px"}
+      disableEscapeKeyDown
+      maxWidth="sm"
+      PaperProps={{
+        style: {
+          borderRadius: "11px",
+          border: "rgba(0, 0, 0, 0.12) 1px solid",
+        },
+      }}
+      open={open}
+      onClose={handleClose}
+      sx={{
+        "& .MuiDialog-container": {
+          "& .MuiPaper-root": {
+            width: "100%",
+            maxWidth: "500px",
+            marginLeft: "0px",
+            marginRight: "0px",
           },
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          fontWeight: 700,
+          fontSize: { xs: "1.8rem", fiveHundred: "2rem" },
+          pt: { xs: 4, fiveHundred: 3 },
+          pl: { xs: 3, fiveHundred: 5 },
+          pr: { xs: 3, fiveHundred: 5 },
         }}
-        open={open}
-        onClose={handleClose}
       >
-        <DialogTitle
-          sx={{
-            fontWeight: 700,
-            fontSize: "2rem",
-            pt: 3,
-            pl: 5,
-            pr: 5,
+        Choose account handle
+      </DialogTitle>
+      <DialogContent
+        sx={{ pl: { xs: 3, fiveHundred: 5 }, pr: { xs: 3, fiveHundred: 5 } }}
+      >
+        <DialogContentText>
+          <li type="circle">Handle names are permanent</li>
+          <li type="circle">
+            Valid characters are:
+            <Box sx={{ ml: 4 }}>
+              <li type="disc">
+                0-9 <span style={{ color: "gray" }}> (numbers)</span>
+              </li>{" "}
+              <li type="disc">
+                A-z <span style={{ color: "gray" }}> (letters)</span>
+              </li>
+              <li type="disc">
+                {" "}
+                - <span style={{ color: "gray" }}> (dashes)</span>
+              </li>
+              <li type="disc">
+                {" "}
+                _ <span style={{ color: "gray" }}> (underscores)</span>
+              </li>
+            </Box>
+          </li>
+        </DialogContentText>
+        <br />
+        <TextField
+          autoFocus
+          {...register("handle")}
+          value={handle}
+          onChange={(e) => {
+            clearErrors(["duplicateHandle"]);
+            setHandle(e.target.value);
           }}
+          margin="dense"
+          required
+          error={errors.handle || errors.duplicateHandle ? true : false}
+          helperText={errors.duplicateHandle?.message ?? errors.handle?.message}
+          id="handle"
+          label="Account handle"
+          type="text"
+          fullWidth
+          variant="outlined"
+        />
+      </DialogContent>
+      <DialogActions
+        sx={{
+          mb: { xs: 4, fiveHundred: 3 },
+          justifyContent: "space-around",
+        }}
+      >
+        <Button
+          onClick={handleCancel}
+          variant="outlined"
+          color="text"
+          size="large"
         >
-          Choose account handle
-        </DialogTitle>
-        <DialogContent sx={{ pl: 5, pr: 5 }}>
-          <DialogContentText>
-            A handle is a unique name for each account <br />
-            <br />
-            Note:
-            <li>Handle names are permanent</li>
-            <li> Valid characters are: 0-9, A-z, -, _ </li>
-          </DialogContentText>
-          <br />
-          <TextField
-            autoFocus
-            {...register("handle")}
-            value={handle}
-            onChange={(e) => {
-              clearErrors(["duplicateHandle"]);
-              setHandle(e.target.value);
-            }}
-            margin="dense"
-            required
-            error={errors.handle || errors.duplicateHandle ? true : false}
-            helperText={
-              errors.duplicateHandle?.message ?? errors.handle?.message
-            }
-            id="handle"
-            label="Account handle"
-            type="text"
-            fullWidth
-            variant="outlined"
-          />
-        </DialogContent>
-        <DialogActions sx={{ mb: 1, pr: 5 }}>
-          <Button onClick={handleCancel} variant="outlined" color="text">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSubmit(() => {
-              handleFormSubmission();
-            })}
-            variant="contained"
-          >
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+          Cancel
+        </Button>
+        <Button
+          size="large"
+          onClick={handleSubmit(() => {
+            handleFormSubmission();
+          })}
+          variant="contained"
+        >
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
-
-function normalizeHandleName() {}
