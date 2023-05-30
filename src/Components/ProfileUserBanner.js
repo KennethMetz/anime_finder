@@ -10,9 +10,10 @@ import { getAvatarSrc } from "./Avatars";
 import ChooseAvatar from "./ChooseAvatar";
 import ProfilePageContext from "./ProfilePageContext";
 import ClickAndEdit from "./ClickAndEdit";
+import ProfileUserBannerGhost from "./ProfileUserBannerGhost";
 
 export default function ProfileUserBanner() {
-  const { profile, isOwnProfile, updateDisplayName } =
+  const { profile, isOwnProfile, updateDisplayName, isLoading } =
     useContext(ProfilePageContext);
 
   const [editAvatar, setEditAvatar] = useState(false);
@@ -25,6 +26,10 @@ export default function ProfileUserBanner() {
     () => getAvatarSrc(profile?.avatar),
     [profile?.avatar]
   );
+
+  if (isLoading) {
+    return <ProfileUserBannerGhost />;
+  }
 
   return (
     <>
@@ -67,18 +72,20 @@ export default function ProfileUserBanner() {
             src={avatarSrc}
           />
         )}
-        <ClickAndEdit
-          data={profile?.name}
-          label={"Edit display name"}
-          canEdit={isOwnProfile}
-          onSave={updateDisplayName}
-          placeholder={"Your display name"}
-          styling={{
-            pb: "0px",
-            fontWeight: 900,
-            fontSize: { xs: "1.66rem", md: "2.5rem" },
-          }}
-        />
+        <Box sx={{ ml: 2 }}>
+          <ClickAndEdit
+            data={profile?.name}
+            label={"Edit display name"}
+            canEdit={isOwnProfile}
+            onSave={updateDisplayName}
+            placeholder={"Your display name"}
+            styling={{
+              pb: "0px",
+              fontWeight: 900,
+              fontSize: { xs: "1.66rem", md: "2.5rem" },
+            }}
+          />
+        </Box>
       </div>
       {editAvatar ? (
         <Box
