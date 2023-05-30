@@ -13,6 +13,7 @@ import AnimeMosaic from "../Styles/images/animeMosaic2.opt.jpg";
 import BlackBackground from "../Styles/images/BlackBackground.svg";
 import BlackSunburst from "../Styles/images/BlackSunburst.svg";
 import EdwardGIF from "../Styles/images/edwardGIF.mp4";
+import EdwardGIFfallback from "../Styles/images/edwardGIF.fallback.jpg";
 import BebopCrew from "../Styles/images/BebopCrew.opt.jpg";
 import SpikeAndJet from "../Styles/images/spikeAndJet.opt.jpg";
 import { MagnifyingGlass, ShareNetwork, User } from "phosphor-react";
@@ -205,7 +206,14 @@ export default function LandingPage() {
                     overflow: "hidden",
                   }}
                 >
-                  <video style={{}} loop autoPlay muted src={EdwardGIF} />
+                  <video
+                    style={{}}
+                    loop
+                    autoPlay
+                    muted
+                    src={EdwardGIF}
+                    poster={EdwardGIFfallback}
+                  />
                 </div>
               </div>
               <div
