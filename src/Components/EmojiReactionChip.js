@@ -87,7 +87,7 @@ export default function EmojiReactionChip({
         paddingLeft: 0.5,
         borderRadius: "20px",
         mr: 2,
-        "& .MuiChip-label": { fontFamily: "interMedium", fontSize: "1rem" },
+        "& .MuiChip-label": { fontSize: "1rem" },
         "& .MuiChip-icon": {
           ...(selected && { color: "inherit" }),
         },

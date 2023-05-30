@@ -75,7 +75,7 @@ export default function ProfileUserBanner() {
           placeholder={"Your display name"}
           styling={{
             pb: "0px",
-            fontFamily: "interBlack",
+            fontWeight: 900,
             fontSize: { xs: "1.66rem", md: "2.5rem" },
           }}
         />

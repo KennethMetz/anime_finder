@@ -88,11 +88,7 @@ function UrlButton({ title, link, image }) {
       >
         <Box component="img" src={image} alt={title} sx={{ height: 48 }} />
       </IconButton>
-      <Typography
-        sx={{ fontFamily: "interMedium", fontSize: "16px", lineHeight: "21px" }}
-      >
-        {title}
-      </Typography>
+      <Typography>{title}</Typography>
     </Box>
   );
 }

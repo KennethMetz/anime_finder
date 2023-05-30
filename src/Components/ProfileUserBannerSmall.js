@@ -33,13 +33,12 @@ export default function ProfileUserBannerSmall() {
         <ListItemText
           primary={profile?.name}
           primaryTypographyProps={{
-            fontFamily: "interSemiBold",
+            fontWeight: 600,
             fontSize: "1.125rem",
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
           secondaryTypographyProps={{
-            fontFamily: "interMedium",
             fontSize: "0.875rem",
             color: "text",
             overflow: "hidden",

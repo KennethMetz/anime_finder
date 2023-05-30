@@ -44,7 +44,7 @@ export default function HeaderTab({
   };
 
   const tabStyle = {
-    fontFamily: "interSemiBold",
+    fontWeight: 600,
     fontSize: "1.125rem",
     marginLeft: alwaysShowIcon ? 0.75 : 0,
     "&:hover": {

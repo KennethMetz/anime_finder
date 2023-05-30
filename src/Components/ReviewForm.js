@@ -194,8 +194,6 @@ export default function ReviewForm({
           }}
           inputProps={{
             style: {
-              fontSize: "1.0rem",
-              fontFamily: "interMedium",
               paddingTop: "12.5px",
               paddingBottom: "12.5px",
               maxWidth: "none",
@@ -222,8 +220,6 @@ export default function ReviewForm({
           }}
           inputProps={{
             style: {
-              fontSize: "1.0rem",
-              fontFamily: "interMedium",
               paddingTop: "0px",
               paddingBottom: "0px",
               maxWidth: "none",

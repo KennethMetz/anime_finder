@@ -13,8 +13,6 @@ export default function NoResultsImage({ noImage }) {
     >
       <Typography
         sx={{
-          fontFamily: "interMedium",
-          fontSize: "1rem",
           color: "text.secondary",
           marginBottom: "14px",
         }}

@@ -52,8 +52,7 @@ export default function Reset() {
           <DialogTitle
             id="alert-dialog-title"
             sx={{
-              fontFamily: "interExtraBold",
-              fontSize: "1.5rem",
+              fontWeight: 800,
               textAlign: "center",
             }}
           >
@@ -63,9 +62,7 @@ export default function Reset() {
             <DialogContentText
               id="alert-dialog-description"
               sx={{
-                fontFamily: "interMedium",
                 textAlign: "center",
-                fontSize: "1.1rem",
               }}
             >
               If EdwardML has an account with the email address that was
@@ -120,16 +117,8 @@ export default function Reset() {
             required
             inputProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 paddingTop: "12.5px",
                 paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
               },
             }}
             sx={{
@@ -140,8 +129,6 @@ export default function Reset() {
               },
               borderRadius: "9px",
               marginBottom: "20px",
-              fontFamily: "interMedium",
-              fontSize: "1rem",
             }}
           />
           {/* *******************'Send Password Reset' Button************************** */}
@@ -169,14 +156,10 @@ export default function Reset() {
             }}
           />
           {/* *******************Already Registered Section************************** */}
-          <div style={{ fontFamily: "interMedium" }}>
+          <div>
             Need an account?{" "}
             <Link to="/register">
-              <span
-                style={{ fontFamily: "interExtraBold", fontWeight: "bold" }}
-              >
-                Register here!
-              </span>
+              <span style={{ fontWeight: 800 }}>Register here!</span>
             </Link>
           </div>
         </div>

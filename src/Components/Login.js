@@ -42,8 +42,7 @@ export default function Login() {
     textTransform: "none",
     borderRadius: "24px",
     width: "350px",
-    fontFamily: "interExtraBold",
-    fontSize: "1rem",
+    fontWeight: 800,
     marginBottom: "17px",
   };
 
@@ -74,12 +73,12 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <h4
-          className="H4"
+        <Typography
+          variant="h3"
           style={{ textAlign: "center", margin: 0, marginBottom: "18px" }}
         >
           Let's Get Logged In!
-        </h4>
+        </Typography>
         <div
           className="register__container"
           style={{ borderColor: theme.palette.divider }}
@@ -165,7 +164,6 @@ export default function Login() {
               "&::before, &::after": {
                 borderColor: theme.palette.text.primary,
               },
-              fontFamily: "interMedium",
               margin: "16px 0px",
             }}
           >
@@ -181,16 +179,12 @@ export default function Login() {
             required
             inputProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 paddingTop: "12.5px",
                 paddingBottom: "12.5px",
               },
             }}
             InputLabelProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 marginBottom: "88.5px",
               },
             }}
@@ -215,16 +209,8 @@ export default function Login() {
             required
             inputProps={{
               style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
                 paddingTop: "12.5px",
                 paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                fontSize: "1.0rem",
-                fontFamily: "interMedium",
               },
             }}
             FormHelperTextProps={{
@@ -244,15 +230,13 @@ export default function Login() {
               },
               borderRadius: "9px",
               marginBottom: "20px",
-              fontFamily: "interMedium",
-              fontSize: "1rem",
             }}
           />
           {loginError && (
             <Typography
               sx={{
                 color: "error.main",
-                fontFamily: "interExtraBold",
+                fontWeight: 600,
                 marginY: "10px",
               }}
             >
@@ -282,15 +266,11 @@ export default function Login() {
             }}
           />
           {/* *******************Already Registered Section************************** */}
-          <div style={{ fontFamily: "interMedium" }}>
+          <div>
             Need an account?{" "}
-            <Link to="/register">
-              <span
-                style={{ fontFamily: "interExtraBold", fontWeight: "bold" }}
-              >
-                Register here!
-              </span>
-            </Link>
+            <Typography component="span" sx={{ fontWeight: 800 }}>
+              <Link to="/register"> Register here!</Link>
+            </Typography>
           </div>
         </div>
       </Container>

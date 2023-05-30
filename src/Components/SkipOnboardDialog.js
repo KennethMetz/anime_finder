@@ -29,7 +29,6 @@ export default function SkipOnboardDialog() {
           id="alert-dialog-title"
           sx={{
             textAlign: "center",
-            fontFamily: "interMedium",
             fontSize: "1.8rem",
           }}
         >

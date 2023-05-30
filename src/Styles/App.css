@@ -1,22 +1,15 @@
 /* GLOBAL FONTS DO NOT DELETE */
-@font-face {
-  font-family: interExtraBold;
-  src: url(./Inter-ExtraBold.woff) format("woff");
-}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;800;900&display=swap');
 
 @font-face {
-  font-family: interSemiBold;
-  src: url(./Inter-SemiBold.woff) format("woff");
-}
-
-@font-face {
-  font-family: interMedium;
-  src: url(./Inter-Medium.woff) format("woff");
-}
-
-@font-face {
-  font-family: interBlack;
-  src: url(./Inter-Black.woff) format("woff");
+  font-family: Arial-fallback;
+  src: local('Arial');
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  word-spacing: 0px;
 }
 
 @font-face {
@@ -33,6 +26,7 @@
   font-family: montserratBold;
   src: url(./Montserrat-Bold.woff) format("woff");
 }
+
 /* GLOBAL FONTS DO NOT DELETE */
 
 .App-header {
@@ -150,14 +144,12 @@ css-1cfh48w-MuiGrid-root {
 }
 
 h4 {
-  font-family: interExtraBold, Arial, Helvetica, sans-serif;
+  font-family: interExtraBold;
   font-size: 1.5rem;
   text-align: left;
 }
 
 .shelfTitle {
-  font-family: "interSemiBold", Georgia, "Times New Roman", Times, serif;
-  font-size: 1.25rem;
   margin-top: 2rem;
   margin-bottom: 0.5em;
 }

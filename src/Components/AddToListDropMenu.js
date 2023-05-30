@@ -199,7 +199,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                       primary="Add to Watchlists"
                       primaryTypographyProps={{
                         fontSize: "1rem",
-                        fontFamily: "interExtraBold",
+                        fontWeight: 800,
                       }}
                     />
                   </ListItemButton>
@@ -209,7 +209,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                       tabIndex={-1}
                       sx={{
                         margin: "10px 0px 10px",
-                        fontFamily: "interSemiBold",
+                        fontWeight: 600,
                       }}
                       secondaryAction={
                         <AddButtonForTop8 anime={anime} list={localUser.top8} />
@@ -230,7 +230,6 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                             tabIndex={-1}
                             sx={{
                               margin: "10px 0px 10px",
-                              fontFamily: "interMedium",
                             }}
                             secondaryAction={
                               <AddButton anime={anime} list={item.name} />
@@ -246,7 +245,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                   {/****************Create New List Button****************/}
                   {!newList ? (
                     <MenuItem
-                      sx={{ marginTop: "10px", fontFamily: "interSemiBold" }}
+                      sx={{ marginTop: "10px", fontWeight: 600 }}
                       tabIndex={0}
                       onClick={(e) => {
                         setNewList(true);
@@ -266,7 +265,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                         primary="New Watchlist"
                         primaryTypographyProps={{
                           fontSize: "1rem",
-                          fontFamily: "interExtraBold",
+                          fontWeight: 800,
                           mt: 1.5,
                           textAlign: "center",
                         }}
@@ -350,7 +349,6 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                         navigate(`/profile/${user?.uid}`);
                       }}
                       sx={{
-                        fontFamily: "interMedium",
                         fontSize: "0.8rem",
                         mt: 1,
                       }}

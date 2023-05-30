@@ -27,9 +27,6 @@ export default function ReviewContainer({ user, docId, type }) {
   const typeSingular = type === "comments" ? "comment" : "review";
 
   const subheadStyle = {
-    fontFamily: "interBlack",
-    fontSize: "22px",
-    lineHeight: "27px",
     marginTop: "24px",
     marginBottom: "12px",
   };
@@ -59,7 +56,7 @@ export default function ReviewContainer({ user, docId, type }) {
       >
         <Typography
           component="div"
-          variant="h5"
+          variant="h3"
           style={{
             ...subheadStyle,
             display: "flex",
@@ -70,8 +67,6 @@ export default function ReviewContainer({ user, docId, type }) {
           {reviews?.length > 2 && (
             <Typography
               sx={{
-                fontFamily: "interMedium",
-                fontSize: "1.0rem",
                 marginL: "10px",
                 color: "grey",
                 ml: 1,

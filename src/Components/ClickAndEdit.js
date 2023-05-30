@@ -63,8 +63,8 @@ export default function ClickAndEdit({
             >
               <Typography
                 sx={{
-                  fontFamily: styling?.fontFamily ?? "interMedium",
                   fontSize: styling?.fontSize ?? "1rem",
+                  fontWeight: styling?.fontWeight,
                   color:
                     data?.length > 0 ? "unset" : theme.palette.text.secondary,
                   pb: styling?.pb ?? 1,
@@ -117,7 +117,7 @@ export default function ClickAndEdit({
               inputProps={{
                 style: {
                   maxWidth: "none",
-                  fontFamily: styling?.fontFamily ?? "interMedium",
+                  fontWeight: styling?.fontWeight,
                   fontSize: smallScreen
                     ? styling?.fontSize?.xs ?? styling?.fontSize ?? "1rem"
                     : styling?.fontSize?.md ?? styling?.fontSize ?? "1rem",
