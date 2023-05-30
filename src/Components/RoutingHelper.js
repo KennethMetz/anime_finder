@@ -1,12 +1,17 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import { auth, logInAnon } from "./Firebase";
 import BreathingLogo from "./BreathingLogo";
+import { LocalUserContext } from "./LocalUserContext";
+import HandleDialog from "./HandleDialog";
+import { PopulateFromFirestore } from "./Firestore";
 
 export const RoutingHelper = () => {
   const [user, loading, error] = useAuthState(auth);
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
+
   const location = useLocation();
 
   // Scroll to top if path changes.
@@ -48,11 +53,18 @@ export const RoutingHelper = () => {
     }
   }, [loading, user, headerMatch]);
 
-  if (loading && !user) {
+  useEffect(() => {
+    if (user) {
+      PopulateFromFirestore(user, localUser, setLocalUser);
+    }
+  }, [user]);
+
+  if ((loading && !user) || (user && !localUser?.uid)) {
     return <BreathingLogo type={"fullPage"} />;
   } else if (user && headerMatch) {
     return (
       <>
+        {!user.isAnonymous && !localUser.handle && <HandleDialog user={user} />}
         <Header />
         <Outlet />
       </>

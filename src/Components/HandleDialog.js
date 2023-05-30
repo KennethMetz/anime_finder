@@ -52,9 +52,8 @@ export default function HandleDialog({ user }) {
 
   function handleFormSubmission() {
     let isDuplicate;
-    newLocalUser = { ...localUser };
-    newLocalUser.handle = handle;
-    CheckForHandleDuplicates(handle, user)
+    let normalizedHandle = handle.toLowerCase();
+    CheckForHandleDuplicates(normalizedHandle, user)
       .then((result) => {
         isDuplicate = result;
       })
@@ -64,9 +63,9 @@ export default function HandleDialog({ user }) {
             type: "custom",
             message: "*Handle has already been taken",
           });
-          throw new Error(`The handle: ${handle} has already been taken.`);
         } else if (isDuplicate === false) {
-          clearErrors(["duplicateHandle"]);
+          newLocalUser = { ...localUser };
+          newLocalUser.handle = handle;
           SaveToFirestore(user, newLocalUser);
           SaveHandle(handle, user.uid);
           setLocalUser(newLocalUser);
@@ -77,10 +76,10 @@ export default function HandleDialog({ user }) {
   // Define Yup schema
   const validationSchema = Yup.object().shape({
     handle: Yup.string()
-      .required("*Handle name is required")
+      .required("*A handle is required")
       .matches(
         /^[a-zA-Z0-9-_]+$/,
-        "*Invalid handle - can only use letters, numbers, dashes, and underscores"
+        "*Invalid character used - can only use letters, numbers, dashes, and underscores"
       )
       .min(3, "*Handle must have at least 3 characters"),
   });
@@ -112,7 +111,7 @@ export default function HandleDialog({ user }) {
       >
         <DialogTitle
           sx={{
-            fontFamily: "interExtraBold",
+            fontWeight: 700,
             fontSize: "2rem",
             pt: 3,
             pl: 5,
@@ -122,7 +121,7 @@ export default function HandleDialog({ user }) {
           Choose account handle
         </DialogTitle>
         <DialogContent sx={{ pl: 5, pr: 5 }}>
-          <DialogContentText sx={{ fontFamily: "interMedium" }}>
+          <DialogContentText>
             A handle is a unique name for each account <br />
             <br />
             Note:
@@ -160,7 +159,6 @@ export default function HandleDialog({ user }) {
               handleFormSubmission();
             })}
             variant="contained"
-            color="primary"
           >
             Submit
           </Button>

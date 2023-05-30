@@ -5,10 +5,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useState, useContext } from "react";
-import { LocalUserContext } from "./LocalUserContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./Firebase";
-import { PopulateFromFirestore } from "./Firestore";
 import AnimeGrid from "./AnimeGrid";
 import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
@@ -21,15 +17,16 @@ import {
   useAnimeMPTW,
   useRecommendations,
 } from "./APICalls";
-import { useLocation } from "react-router-dom";
-import HandleDialog from "./HandleDialog";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Firebase";
+import { LocalUserContext } from "./LocalUserContext";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
 
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const [user, loading, error] = useAuthState(auth);
 
-  const [user, loading] = useAuthState(auth);
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   let [selectedGenre, setSelectedGenre] = useState([]);
 
@@ -87,16 +84,6 @@ export default function Home() {
   const { data: animeMPTW } = useAnimeMPTW(selectedGenre);
   const { data: animeMH } = useAnimeMH(selectedGenre);
 
-  useEffect(() => {
-    if (loading) {
-      // trigger a loading screen?
-      return;
-    }
-    if (user) {
-      PopulateFromFirestore(user, localUser, setLocalUser);
-    }
-  }, [user, loading]);
-
   const shelfTitleStyles = {
     marginTop: "1.6em",
     marginBottom: "0.5em",
@@ -104,7 +91,6 @@ export default function Home() {
 
   return (
     <div>
-      {!user.isAnonymous && !localUser.handle && <HandleDialog user={user} />}
       <Container maxWidth="lg">
         <div className="gap" />
         {localUser && localUser?.likes.length > 0 ? (
