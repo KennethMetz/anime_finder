@@ -10,9 +10,10 @@ import { getAvatarSrc } from "./Avatars";
 import ChooseAvatar from "./ChooseAvatar";
 import ProfilePageContext from "./ProfilePageContext";
 import ClickAndEdit from "./ClickAndEdit";
+import ProfileUserBannerGhost from "./ProfileUserBannerGhost";
 
 export default function ProfileUserBanner() {
-  const { profile, isOwnProfile, updateDisplayName } =
+  const { profile, isOwnProfile, updateDisplayName, isLoading } =
     useContext(ProfilePageContext);
 
   const [editAvatar, setEditAvatar] = useState(false);
@@ -25,6 +26,10 @@ export default function ProfileUserBanner() {
     () => getAvatarSrc(profile?.avatar),
     [profile?.avatar]
   );
+
+  if (isLoading) {
+    return <ProfileUserBannerGhost />;
+  }
 
   return (
     <>

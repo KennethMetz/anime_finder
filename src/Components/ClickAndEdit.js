@@ -20,16 +20,8 @@ export default function ClickAndEdit({
   const theme = useTheme();
 
   const [editDesc, setEditDesc] = useState(false);
-  const [editedDesc, setEditedDesc] = useState(undefined);
+  const [editedDesc, setEditedDesc] = useState(data);
 
-  // TO-DO:
-  // Add in ghost cards for ProfileUserBanner, and only render ClickAndEdit
-  // when data has been loaded in.  Then below useEffect can
-  // be deleted and useState(data) for editDesc.
-
-  useEffect(() => {
-    setEditedDesc(data);
-  }, [data]);
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   // TO-DO:
@@ -45,99 +37,93 @@ export default function ClickAndEdit({
     if (e?.key === "Enter") e.preventDefault();
   }
 
-  // TO-DO:
-  // Below if statement can be deleted upon implementation of ghost cards
-  // on ProfileUserBanner.
-
-  if (data !== undefined) {
-    return (
-      <div style={{ display: "flex", flex: "1" }}>
-        {!editDesc ? (
-          <Box sx={{ display: "flex" }}>
-            <Tooltip
-              title={canEdit ? label : ""}
-              placement="bottom"
-              PopperProps={{
-                modifiers: [{ name: "offset", options: { offset: [0, -10] } }],
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: styling?.fontSize ?? "1rem",
-                  fontWeight: styling?.fontWeight,
-                  color:
-                    data?.length > 0 ? "unset" : theme.palette.text.secondary,
-                  pb: styling?.pb ?? 1,
-                  pl: 0,
-                  ml: 0,
-                  cursor: canEdit ? "pointer" : "unset",
-                }}
-                tabIndex={canEdit ? "0" : "-1"}
-                onClick={canEdit ? handleDescToggle : undefined}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleDescToggle(e);
-                }}
-              >
-                {data?.length > 0 ? data : canEdit ? placeholder : ""}
-              </Typography>
-            </Tooltip>
-          </Box>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              flex: "1",
+  return (
+    <div style={{ display: "flex", flex: "1" }}>
+      {!editDesc ? (
+        <Box sx={{ display: "flex" }}>
+          <Tooltip
+            title={canEdit ? label : ""}
+            placement="bottom"
+            PopperProps={{
+              modifiers: [{ name: "offset", options: { offset: [0, -10] } }],
             }}
           >
-            <TextField
-              name="Desc"
-              id="Desc"
-              size="small"
-              variant="outlined"
-              autoComplete="off"
-              color="text"
-              placeholder={placeholder}
-              autoFocus
-              multiline
-              fullWidth={true}
-              value={editedDesc}
-              onClick={(e) => e.preventDefault()}
-              onChange={(e) => {
-                setEditedDesc(e.target.value);
+            <Typography
+              sx={{
+                fontSize: styling?.fontSize ?? "1rem",
+                fontWeight: styling?.fontWeight,
+                color:
+                  data?.length > 0 ? "unset" : theme.palette.text.secondary,
+                pb: styling?.pb ?? 1,
+                pl: 0,
+                ml: 0,
+                cursor: canEdit ? "pointer" : "unset",
               }}
-              sx={{ mb: 2 }}
-              InputProps={{
-                style: {
-                  padding: "10px 10px 10px 5px",
-                  lineHeight: "1.5",
-                },
-              }}
-              inputProps={{
-                style: {
-                  maxWidth: "none",
-                  fontWeight: styling?.fontWeight,
-                  fontSize: smallScreen
-                    ? styling?.fontSize?.xs ?? styling?.fontSize ?? "1rem"
-                    : styling?.fontSize?.md ?? styling?.fontSize ?? "1rem",
-                },
-              }}
-            ></TextField>
-            <Button
-              size="small"
-              variant="outlined"
-              color="inherit"
-              onClick={(e) => {
-                saveDesc();
-                handleDescToggle();
+              tabIndex={canEdit ? "0" : "-1"}
+              onClick={canEdit ? handleDescToggle : undefined}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleDescToggle(e);
               }}
             >
-              Save
-            </Button>
-          </div>
-        )}
-      </div>
-    );
-  }
+              {data?.length > 0 ? data : canEdit ? placeholder : ""}
+            </Typography>
+          </Tooltip>
+        </Box>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            flex: "1",
+          }}
+        >
+          <TextField
+            name="Desc"
+            id="Desc"
+            size="small"
+            variant="outlined"
+            autoComplete="off"
+            color="text"
+            placeholder={placeholder}
+            autoFocus
+            multiline
+            fullWidth={true}
+            value={editedDesc}
+            onClick={(e) => e.preventDefault()}
+            onChange={(e) => {
+              setEditedDesc(e.target.value);
+            }}
+            sx={{ mb: 2 }}
+            InputProps={{
+              style: {
+                padding: "10px 10px 10px 5px",
+                lineHeight: "1.5",
+              },
+            }}
+            inputProps={{
+              style: {
+                maxWidth: "none",
+                fontWeight: styling?.fontWeight,
+                fontSize: smallScreen
+                  ? styling?.fontSize?.xs ?? styling?.fontSize ?? "1rem"
+                  : styling?.fontSize?.md ?? styling?.fontSize ?? "1rem",
+              },
+            }}
+          ></TextField>
+          <Button
+            size="small"
+            variant="outlined"
+            color="inherit"
+            onClick={(e) => {
+              saveDesc();
+              handleDescToggle();
+            }}
+          >
+            Save
+          </Button>
+        </div>
+      )}
+    </div>
+  );
 }
