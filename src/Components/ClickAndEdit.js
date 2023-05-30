@@ -117,7 +117,7 @@ export default function ClickAndEdit({
               inputProps={{
                 style: {
                   maxWidth: "none",
-                  fontFamily: styling?.fontFamily ?? "interMedium",
+                  fontWeight: styling?.fontWeight,
                   fontSize: smallScreen
                     ? styling?.fontSize?.xs ?? styling?.fontSize ?? "1rem"
                     : styling?.fontSize?.md ?? styling?.fontSize ?? "1rem",
