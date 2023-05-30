@@ -18,10 +18,7 @@ import {
   CheckForHandleDuplicates,
   SaveToFirestore,
 } from "./Firestore";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
-import EdwardMLLogo from "./EdwardMLLogo";
-import Container from "@mui/material/Container";
 
 export default function HandleDialog({ user }) {
   const theme = useTheme();
@@ -33,8 +30,6 @@ export default function HandleDialog({ user }) {
 
   const [handle, setHandle] = useState("");
 
-  const smallScreen = useMediaQuery(theme.breakpoints.down("fiveHundred"));
-  console.log(smallScreen);
   const handleClose = (event, reason) => {
     if (reason && reason === "backdropClick") return;
     setOpen(false);
@@ -107,9 +102,7 @@ export default function HandleDialog({ user }) {
 
   return (
     <Dialog
-      width={smallScreen ? "100%" : "600px"}
       disableEscapeKeyDown
-      maxWidth="sm"
       PaperProps={{
         style: {
           borderRadius: "11px",
@@ -122,7 +115,7 @@ export default function HandleDialog({ user }) {
         "& .MuiDialog-container": {
           "& .MuiPaper-root": {
             width: "100%",
-            maxWidth: "500px",
+            maxWidth: "470px",
             marginLeft: "0px",
             marginRight: "0px",
           },
