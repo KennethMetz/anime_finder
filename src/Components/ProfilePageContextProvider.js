@@ -24,6 +24,11 @@ export default function ProfilePageContextProvider({ userId, children }) {
     profileUserId: userId,
     isOwnProfile: userOwnsProfile,
     isLoading: loading || profileLoading || !localUser?.uid || isLoadingAnime,
+    updateDisplayName: (name) => {
+      throwIfNotOwner();
+      const newLocalUser = { ...localUser, name };
+      save(newLocalUser);
+    },
     updateBio: (bio) => {
       throwIfNotOwner();
       const newLocalUser = { ...localUser, bio };

@@ -53,6 +53,7 @@ export async function SaveToFirestore(user, localUser) {
       await setDoc(
         doc(db, "users", user.uid),
         {
+          name: localUser.name ?? null,
           likes: [...localUser.likes],
           dislikes: [...localUser.dislikes],
           lists: [...localUser.lists],

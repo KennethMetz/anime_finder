@@ -9,9 +9,11 @@ import { useContext, useMemo, useState } from "react";
 import { getAvatarSrc } from "./Avatars";
 import ChooseAvatar from "./ChooseAvatar";
 import ProfilePageContext from "./ProfilePageContext";
+import ClickAndEdit from "./ClickAndEdit";
 
 export default function ProfileUserBanner() {
-  const { profile, isOwnProfile } = useContext(ProfilePageContext);
+  const { profile, isOwnProfile, updateDisplayName } =
+    useContext(ProfilePageContext);
 
   const [editAvatar, setEditAvatar] = useState(false);
 
@@ -65,22 +67,16 @@ export default function ProfileUserBanner() {
             src={avatarSrc}
           />
         )}
-
-        <ListItemText
-          sx={{ ml: 1 }}
-          primary={profile?.name}
-          primaryTypographyProps={{
+        <ClickAndEdit
+          data={profile?.name}
+          label={"Edit display name"}
+          canEdit={isOwnProfile}
+          onSave={updateDisplayName}
+          placeholder={"Your display name"}
+          styling={{
+            pb: "0px",
             fontFamily: "interBlack",
             fontSize: { xs: "1.66rem", md: "2.5rem" },
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-          secondaryTypographyProps={{
-            fontFamily: "interMedium",
-            fontSize: "1rem",
-            color: "text",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
           }}
         />
       </div>

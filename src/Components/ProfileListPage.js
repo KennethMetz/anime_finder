@@ -69,6 +69,7 @@ export default function ProfileListPage() {
   const sevenHundredFifty = useMediaQuery(
     theme.breakpoints.up("sevenHundredFifty")
   );
+  const elevenHundred = useMediaQuery(theme.breakpoints.up("elevenHundred"));
 
   if (isLoading) {
     return <ProfileListPageGhost />;
@@ -171,12 +172,14 @@ export default function ProfileListPage() {
       >
         <Grid
           item
+          elevenHundred={8}
           sevenHundredFifty={6}
           xs={10}
           sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
         >
           <ClickAndEdit
             data={name}
+            label={"Edit watchlist name"}
             placeholder="Watchlist Name"
             canEdit={isOwnProfile && typeName === "Watchlist"}
             styling={headStyle}
@@ -188,6 +191,7 @@ export default function ProfileListPage() {
         </Grid>
         <Grid
           item
+          elevenHundred={3.25}
           sevenHundredFifty={5.25}
           xs={12}
           order={{ xs: 4, sevenHundredFifty: 2 }}
@@ -245,6 +249,7 @@ export default function ProfileListPage() {
           <Grid item xs={12} order={{ xs: 3, sevenHundredFifty: 4 }}>
             <ClickAndEdit
               data={desc}
+              label={"Edit watchlist description"}
               canEdit={isOwnProfile}
               onSave={onDescSave}
               placeholder={"Tell us a bit about this list..."}
