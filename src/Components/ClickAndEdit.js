@@ -22,12 +22,19 @@ export default function ClickAndEdit({
   const [editDesc, setEditDesc] = useState(false);
   const [editedDesc, setEditedDesc] = useState(undefined);
 
+  // TO-DO:
+  // Add in ghost cards for ProfileUserBanner, and only render ClickAndEdit
+  // when data has been loaded in.  Then below useEffect can
+  // be deleted and useState(data) for editDesc.
+
   useEffect(() => {
     setEditedDesc(data);
   }, [data]);
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  //To-do: Provide truncated name/description for lengthy entries so they don't break layout.
+  // TO-DO:
+  // Provide truncated name/description for lengthy entries so they
+  // don't break layout.
 
   function saveDesc() {
     onSave(editedDesc);
@@ -38,7 +45,11 @@ export default function ClickAndEdit({
     if (e?.key === "Enter") e.preventDefault();
   }
 
-  if (data) {
+  // TO-DO:
+  // Below if statement can be deleted upon implementation of ghost cards
+  // on ProfileUserBanner.
+
+  if (data !== undefined) {
     return (
       <div style={{ display: "flex", flex: "1" }}>
         {!editDesc ? (
