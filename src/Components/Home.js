@@ -21,6 +21,8 @@ import {
   useAnimeMPTW,
   useRecommendations,
 } from "./APICalls";
+import { useLocation } from "react-router-dom";
+import HandleDialog from "./HandleDialog";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
@@ -102,6 +104,7 @@ export default function Home() {
 
   return (
     <div>
+      {!user.isAnonymous && !localUser.handle && <HandleDialog user={user} />}
       <Container maxWidth="lg">
         <div className="gap" />
         {localUser && localUser?.likes.length > 0 ? (
@@ -138,13 +141,11 @@ export default function Home() {
         )}
         <div className="gap" />
       </Container>
-
       <ShelfTitle
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
         title={"Explore More"}
       />
-
       <Container maxWidth="lg">
         <Typography variant="h4" sx={shelfTitleStyles}>
           Highest Rated {selectedGenre.slice(7)}{" "}

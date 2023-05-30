@@ -11,6 +11,7 @@ import {
   startAfter,
   limitToLast,
   endBefore,
+  where,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -33,6 +34,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         top8: [],
         reviews: [],
         comments: [],
+        handle: "",
       };
     }
     if (!data.savedLists) data.savedLists = [];
@@ -46,8 +48,6 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
 }
 
 export async function SaveToFirestore(user, localUser) {
-  //   const [user] = useAuthState(auth);
-
   if (user) {
     try {
       await setDoc(
@@ -63,6 +63,7 @@ export async function SaveToFirestore(user, localUser) {
           top8: [...localUser.top8],
           reviews: [...localUser.reviews],
           comments: [...localUser.comments],
+          handle: localUser?.handle ?? null,
         },
         { merge: true }
       );
@@ -199,5 +200,40 @@ export async function SaveListReactionsToFirestore(docId, updatedRxns) {
     await setDoc(Ref, updatedRxns, { merge: true });
   } catch (error) {
     console.error("Error writing review data to Firestore", error);
+  }
+}
+
+export async function SaveHandle(handle, userId) {
+  let documentRef = doc(db, "handles", userId);
+  try {
+    await setDoc(
+      documentRef,
+      { handle: handle, userId: userId },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error("Error writing handle to Firestore", error);
+  }
+}
+
+export async function CheckForHandleDuplicates(
+  handle,
+  user,
+  newLocalUser,
+  setLocalUser
+) {
+  try {
+    const collectionRef = collection(db, "handles");
+    const q = query(collectionRef, where("handle", "==", handle));
+    const querySnapshot = await getDocs(q);
+    let isDuplicate = false;
+    querySnapshot.forEach((doc) => {
+      isDuplicate = true;
+    });
+    if (isDuplicate) {
+      return true;
+    } else return false;
+  } catch (error) {
+    console.error("Error checking if handle is unique via Firestore", error);
   }
 }

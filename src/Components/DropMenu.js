@@ -89,6 +89,7 @@ export default function DropMenu() {
     navigate("/logout");
     await logout();
     setLocalUser({
+      name: [],
       likes: [],
       dislikes: [],
       lists: [],
@@ -98,6 +99,7 @@ export default function DropMenu() {
       top8: [],
       reviews: [],
       comments: [],
+      handle: null,
     });
     handleClose(e);
   }
