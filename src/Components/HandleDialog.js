@@ -100,6 +100,8 @@ export default function HandleDialog({ user }) {
   return (
     <div>
       <Dialog
+        disableEscapeKeyDown
+        maxWidth="sm  "
         PaperProps={{
           style: {
             borderRadius: "11px",
