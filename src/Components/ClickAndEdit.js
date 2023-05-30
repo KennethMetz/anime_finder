@@ -63,8 +63,8 @@ export default function ClickAndEdit({
             >
               <Typography
                 sx={{
-                  fontFamily: styling?.fontFamily ?? "interMedium",
                   fontSize: styling?.fontSize ?? "1rem",
+                  fontWeight: styling?.fontWeight,
                   color:
                     data?.length > 0 ? "unset" : theme.palette.text.secondary,
                   pb: styling?.pb ?? 1,
