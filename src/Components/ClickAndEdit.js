@@ -6,6 +6,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useLocation } from "react-router-dom";
 
 export default function ClickAndEdit({
   data,
@@ -17,8 +18,9 @@ export default function ClickAndEdit({
 }) {
   placeholder = placeholder ?? "Enter some text...";
 
+  const location = useLocation();
   const theme = useTheme();
-
+  console.log(location);
   const [editDesc, setEditDesc] = useState(false);
   const [editedDesc, setEditedDesc] = useState(data);
 
@@ -37,10 +39,14 @@ export default function ClickAndEdit({
     if (e?.key === "Enter") e.preventDefault();
   }
 
+  useEffect(() => {
+    setEditDesc(false);
+  }, [location]);
+
   return (
     <div style={{ display: "flex", flex: "1" }}>
       {!editDesc ? (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", flex: "1" }}>
           <Tooltip
             title={canEdit ? label : ""}
             placement="bottom"
