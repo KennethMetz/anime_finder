@@ -72,7 +72,7 @@ export default function ProfileUserBanner() {
             src={avatarSrc}
           />
         )}
-        <Box sx={{ ml: 2 }}>
+        <Box sx={{ ml: 2, display: "flex", flex: "1" }}>
           <ClickAndEdit
             data={profile?.name}
             label={"Edit display name"}
