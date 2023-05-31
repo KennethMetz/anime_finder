@@ -20,7 +20,7 @@ export default function ClickAndEdit({
 
   const location = useLocation();
   const theme = useTheme();
-  console.log(location);
+
   const [editDesc, setEditDesc] = useState(false);
   const [editedDesc, setEditedDesc] = useState(data);
 
