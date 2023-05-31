@@ -30,7 +30,11 @@ export default function LandingPageHeader() {
         <Grid item md={9} sm={9} xs={9}>
           <div className="logo" style={{ height: "68px" }}>
             <Link to="/" style={{ display: "flex" }}>
-              <img src={logo} alt="" style={{ width: "35px" }} />
+              <img
+                src={logo}
+                alt=""
+                style={{ width: "35px", aspectRatio: "35/63.19" }}
+              />
               <Box
                 component="div"
                 sx={{ display: { xs: "none", fiveHundred: "flex" } }}
