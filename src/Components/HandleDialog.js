@@ -19,12 +19,14 @@ import {
   SaveToFirestore,
 } from "./Firestore";
 import useTheme from "@mui/material/styles/useTheme";
+import BreathingLogo from "./BreathingLogo";
 
 export default function HandleDialog({ user }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   let newLocalUser;
+  const [loadingState, setLoadingState] = useState(false);
 
   const [open, setOpen] = useState(true);
 
@@ -73,6 +75,7 @@ export default function HandleDialog({ user }) {
           SaveHandle(handle, user.uid);
           setLocalUser(newLocalUser);
         }
+        setLoadingState(false);
       });
   }
 
@@ -137,26 +140,24 @@ export default function HandleDialog({ user }) {
         sx={{ pl: { xs: 3, fiveHundred: 5 }, pr: { xs: 3, fiveHundred: 5 } }}
       >
         <DialogContentText>
-          <li type="circle">Handle names are permanent</li>
-          <li type="circle">
-            Valid characters are:
-            <Box sx={{ ml: 4 }}>
-              <li type="disc">
-                0-9 <span style={{ color: "gray" }}> (numbers)</span>
-              </li>{" "}
-              <li type="disc">
-                A-z <span style={{ color: "gray" }}> (letters)</span>
-              </li>
-              <li type="disc">
-                {" "}
-                - <span style={{ color: "gray" }}> (dashes)</span>
-              </li>
-              <li type="disc">
-                {" "}
-                _ <span style={{ color: "gray" }}> (underscores)</span>
-              </li>
-            </Box>
-          </li>
+          <li type="disc">Handle names are permanent</li>
+          <li type="disc">Valid characters are:</li>
+          <Box sx={{ ml: 5 }}>
+            <li style={{ listStyleType: "none" }}>
+              0-9 <span style={{ color: "gray" }}> (numbers)</span>
+            </li>{" "}
+            <li style={{ listStyleType: "none" }}>
+              A-z <span style={{ color: "gray" }}> (letters)</span>
+            </li>
+            <li style={{ listStyleType: "none" }}>
+              {" "}
+              - <span style={{ color: "gray" }}> (dashes)</span>
+            </li>
+            <li style={{ listStyleType: "none" }}>
+              {" "}
+              _ <span style={{ color: "gray" }}> (underscores)</span>
+            </li>
+          </Box>
         </DialogContentText>
         <br />
         <TextField
@@ -194,12 +195,14 @@ export default function HandleDialog({ user }) {
         </Button>
         <Button
           size="large"
+          sx={{ width: "100px", height: "48px" }}
           onClick={handleSubmit(() => {
+            setLoadingState(true);
             handleFormSubmission();
           })}
           variant="contained"
         >
-          Submit
+          {loadingState ? <BreathingLogo type="handleButton" /> : "Submit"}
         </Button>
       </DialogActions>
     </Dialog>
