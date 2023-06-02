@@ -86,7 +86,9 @@ export default function ProfileUserBanner() {
               fontSize: { xs: "1.66rem", md: "2.5rem" },
             }}
           />
-          <Typography variant="h4">@{profile?.handle}</Typography>
+          <Typography variant="h4">
+            {profile?.handle ? `@${profile?.handle}` : ""}
+          </Typography>
         </Box>
       </div>
       {editAvatar ? (
