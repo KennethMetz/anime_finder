@@ -5,11 +5,14 @@
 @font-face {
   font-family: Arial-fallback;
   src: local('Arial');
-  font-size: 16px;
-  line-height: 1.6;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  word-spacing: 0px;
+  size-adjust: 107.35%;
+}
+
+@font-face {
+  font-family: Roboto-fallback;
+  src: local("Roboto");
+  size-adjust: 108.5%;
+  line-gap-override: 95%;
 }
 
 @font-face {
