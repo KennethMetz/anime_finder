@@ -20,6 +20,8 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
+import HandleDialog from "./HandleDialog";
+import { PopulateFromFirestore } from "./Firestore";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
@@ -73,6 +75,10 @@ export default function Home() {
       .catch((error) => console.log(error));
   }, [refresh]);
 
+  useEffect(() => {
+    PopulateFromFirestore(user, localUser, setLocalUser);
+  }, [user]);
+
   // API call for personalized recommendations.
   const viewHistory = getViewHistory();
   const { data: recommendation, isLoading: loadingRecs } =
@@ -91,6 +97,11 @@ export default function Home() {
 
   return (
     <div>
+      {/* Below ensure the following: localUser has been loaded, user is not 
+      on a guest account, and they do NOT have a handle.*/}
+      {localUser.uid && !user.isAnonymous && !localUser.handle && (
+        <HandleDialog user={user} />
+      )}
       <Container maxWidth="lg">
         <div className="gap" />
         {localUser && localUser?.likes.length > 0 ? (

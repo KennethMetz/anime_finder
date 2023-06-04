@@ -53,18 +53,11 @@ export const RoutingHelper = () => {
     }
   }, [loading, user, headerMatch]);
 
-  useEffect(() => {
-    if (user) {
-      PopulateFromFirestore(user, localUser, setLocalUser);
-    }
-  }, [user]);
-
-  if ((loading && !user) || (user && !localUser?.uid)) {
+  if (loading && !user) {
     return <BreathingLogo type={"fullPage"} />;
   } else if (user && headerMatch) {
     return (
       <>
-        {!user.isAnonymous && !localUser.handle && <HandleDialog user={user} />}
         <Header />
         <Outlet />
       </>

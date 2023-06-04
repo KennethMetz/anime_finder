@@ -17,6 +17,7 @@ import ProfilePageContextProvider from "./ProfilePageContextProvider";
 import { LocalUserContext } from "./LocalUserContext";
 import ProfileUserBanner from "./ProfileUserBanner";
 import ProfileUserBannerSmall from "./ProfileUserBannerSmall";
+import HandleDialog from "./HandleDialog";
 
 export default function Profile() {
   const location = useLocation();
@@ -45,6 +46,11 @@ export default function Profile() {
   return (
     <ProfilePageContextProvider userId={params.userId}>
       <Container maxWidth="lg">
+        {/* Below ensure the following: localUser has been loaded, user is not 
+      on a guest account, and they do NOT have a handle.*/}
+        {localUser.uid && !user.isAnonymous && !localUser.handle && (
+          <HandleDialog user={user} />
+        )}
         <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
           <Grid item xs={12}>
             {isListPage ? (

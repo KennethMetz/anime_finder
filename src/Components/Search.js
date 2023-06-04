@@ -20,6 +20,7 @@ import EdAndEinGif from "../Styles/images/ein-ed-compressed.gif";
 import { APISearch } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
 import SearchGhost from "./SearchGhost";
+import HandleDialog from "./HandleDialog";
 
 export default function Search() {
   const location = useLocation();
@@ -58,6 +59,11 @@ export default function Search() {
 
   return (
     <div className="jsxWrapper">
+      {/* Below ensure the following: localUser has been loaded, user is not 
+      on a guest account, and they do NOT have a handle.*/}
+      {localUser.uid && !user.isAnonymous && !localUser.handle && (
+        <HandleDialog user={user} />
+      )}
       <Container maxWidth="sm">
         <Typography variant="h3" style={{ textAlign: "center" }}>
           Search Results:
