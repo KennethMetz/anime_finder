@@ -107,6 +107,9 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
       </Paper>
       {currentItems?.map((item) => (
         <Chip
+          sx={{
+            borderRadius: "16px",
+          }}
           variant={selectedGenre === item ? "filled" : "outlined"}
           clickable={true}
           key={item}
