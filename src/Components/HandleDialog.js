@@ -63,6 +63,7 @@ export default function HandleDialog({ user }) {
       await ClaimHandle(normalizedHandle, user.uid);
       newLocalUser = { ...localUser };
       newLocalUser.handle = handle;
+      if (!user.name) newLocalUser.name = handle;
       SaveToFirestore(user, newLocalUser);
       setLocalUser(newLocalUser);
     } catch (error) {

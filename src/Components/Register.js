@@ -60,7 +60,6 @@ export default function Register() {
 
   // Define Yup schema
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("*Username is required"),
     email: Yup.string()
       .required("*Email is required")
       .email("*Invalid email, must match pattern: spike@bebop.com")
@@ -276,33 +275,6 @@ export default function Register() {
           >
             or
           </Divider>
-          {/* *******************EdwardML - Username Field************************** */}
-          <TextField
-            type="text"
-            {...register("username")}
-            className="register__textBox"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            label="Username"
-            required
-            error={errors.username ? true : false}
-            helperText={errors.username?.message}
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
           {/* *******************EdwardML - Email Field************************** */}
           <TextField
             type="text"
