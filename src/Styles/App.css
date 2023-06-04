@@ -1,10 +1,10 @@
 /* GLOBAL FONTS DO NOT DELETE */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;800;900&display=swap");
 
 @font-face {
   font-family: Arial-fallback;
-  src: local('Arial');
+  src: local("Arial");
   size-adjust: 107.35%;
 }
 
@@ -18,16 +18,19 @@
 @font-face {
   font-family: montserrat;
   src: url(./Montserrat-Black.woff) format("woff");
+  font-display: swap;
 }
 
 @font-face {
   font-family: montserratExtraBold;
   src: url(./Montserrat-ExtraBold.woff) format("woff");
+  font-display: swap;
 }
 
 @font-face {
   font-family: montserratBold;
   src: url(./Montserrat-Bold.woff) format("woff");
+  font-display: swap;
 }
 
 /* GLOBAL FONTS DO NOT DELETE */

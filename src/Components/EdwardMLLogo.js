@@ -7,7 +7,11 @@ export default function EdwardMLLogo() {
 
   return (
     <div className="logo" style={{ height: "68px" }}>
-      <img src={logo} alt="" style={{ width: "35px" }} />
+      <img
+        src={logo}
+        alt=""
+        style={{ width: "35px", aspectRatio: "35/63.19" }}
+      />
       <Box component="div" sx={{ display: { xs: "none", sm: "flex" } }}>
         <h2
           className="appName"
