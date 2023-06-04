@@ -17,6 +17,7 @@ import {
   SaveHandle,
   CheckForHandleDuplicates,
   SaveToFirestore,
+  ClaimHandle,
 } from "./Firestore";
 import useTheme from "@mui/material/styles/useTheme";
 import BreathingLogo from "./BreathingLogo";
@@ -55,28 +56,34 @@ export default function HandleDialog({ user }) {
     navigate("/");
   }
 
-  function handleFormSubmission() {
-    let isDuplicate;
-    let normalizedHandle = handle.toLowerCase();
-    CheckForHandleDuplicates(normalizedHandle, user)
-      .then((result) => {
-        isDuplicate = result;
-      })
-      .then(() => {
-        if (isDuplicate === true) {
-          setError("duplicateHandle", {
-            type: "custom",
-            message: "*Handle has already been taken",
-          });
-        } else if (isDuplicate === false) {
-          newLocalUser = { ...localUser };
-          newLocalUser.handle = handle;
-          SaveToFirestore(user, newLocalUser);
-          SaveHandle(handle, user.uid);
-          setLocalUser(newLocalUser);
-        }
-        setLoadingState(false);
+  async function handleFormSubmission() {
+    setLoadingState(true);
+    const normalizedHandle = handle.toLowerCase();
+    try {
+      await ClaimHandle(normalizedHandle, user.uid);
+      newLocalUser = { ...localUser };
+      newLocalUser.handle = handle;
+      SaveToFirestore(user, newLocalUser);
+      setLocalUser(newLocalUser);
+    } catch (error) {
+      handleFormSubmissionError(error);
+    } finally {
+      setLoadingState(false);
+    }
+  }
+
+  function handleFormSubmissionError(error) {
+    if (error === "Handle has already been taken") {
+      setError("duplicateHandle", {
+        type: "custom",
+        message: "*Handle has already been taken",
       });
+    } else {
+      setError("unknownClaimError", {
+        type: "custom",
+        message: "*There was an error claiming this handle",
+      });
+    }
   }
 
   // Define Yup schema

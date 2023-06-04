@@ -12,6 +12,7 @@ import {
   limitToLast,
   endBefore,
   where,
+  runTransaction,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -203,37 +204,21 @@ export async function SaveListReactionsToFirestore(docId, updatedRxns) {
   }
 }
 
-export async function SaveHandle(handle, userId) {
-  let documentRef = doc(db, "handles", userId);
-  try {
-    await setDoc(
-      documentRef,
-      { handle: handle, userId: userId },
-      { merge: true }
-    );
-  } catch (error) {
-    console.error("Error writing handle to Firestore", error);
-  }
-}
+export async function ClaimHandle(handle, userId) {
+  const handleDocRef = doc(db, "handles", handle);
+  const userDocRef = doc(db, "users", userId);
 
-export async function CheckForHandleDuplicates(
-  handle,
-  user,
-  newLocalUser,
-  setLocalUser
-) {
-  try {
-    const collectionRef = collection(db, "handles");
-    const q = query(collectionRef, where("handle", "==", handle));
-    const querySnapshot = await getDocs(q);
-    let isDuplicate = false;
-    querySnapshot.forEach((doc) => {
-      isDuplicate = true;
-    });
-    if (isDuplicate) {
-      return true;
-    } else return false;
-  } catch (error) {
-    console.error("Error checking if handle is unique via Firestore", error);
-  }
+  return runTransaction(db, async (transaction) => {
+    // This code may get re-run multiple times if there are conflicts.
+    const handleDoc = await transaction.get(handleDocRef);
+
+    if (handleDoc.exists()) {
+      throw new Error("Handle has already been taken");
+    }
+
+    // These two writes will only succeed if the document read above has not changed since then.
+    // Otherwise, it will re-run this function.
+    transaction.set(handleDocRef, { uid: userId, handle: handle });
+    transaction.update(userDocRef, { handle: handle });
+  });
 }
