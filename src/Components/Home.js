@@ -21,6 +21,7 @@ import {
   useAnimeMPTW,
   useRecommendations,
 } from "./APICalls";
+import useGenreFilter from "../Hooks/useGenreFilter";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
@@ -29,7 +30,8 @@ export default function Home() {
 
   const [user, loading] = useAuthState(auth);
 
-  let [selectedGenre, setSelectedGenre] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useGenreFilter();
+  const genreQueryString = selectedGenre ? `&genre=${selectedGenre}` : "";
 
   let [refresh, setRefresh] = useState(false);
 
@@ -80,10 +82,10 @@ export default function Home() {
     useRecommendations(viewHistory);
 
   //API calls for generic shelf content
-  const { data: animeHR } = useAnimeHR(selectedGenre);
-  const { data: animeMC } = useAnimeMC(selectedGenre);
-  const { data: animeMPTW } = useAnimeMPTW(selectedGenre);
-  const { data: animeMH } = useAnimeMH(selectedGenre);
+  const { data: animeHR } = useAnimeHR(genreQueryString);
+  const { data: animeMC } = useAnimeMC(genreQueryString);
+  const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
+  const { data: animeMH } = useAnimeMH(genreQueryString);
 
   useEffect(() => {
     if (loading) {
@@ -147,12 +149,12 @@ export default function Home() {
 
       <Container maxWidth="lg">
         <Typography variant="h4" sx={shelfTitleStyles}>
-          Highest Rated {selectedGenre.slice(7)}{" "}
+          Highest Rated {selectedGenre}{" "}
         </Typography>
         <AnimeShelf items={animeHR} />
 
         <Typography variant="h4" sx={shelfTitleStyles}>
-          Most Popular {selectedGenre.slice(7)}
+          Most Popular {selectedGenre}
         </Typography>
         <AnimeShelf items={animeMC} />
         {/* 
@@ -160,7 +162,7 @@ export default function Home() {
       <AnimeShelf items={animeMR} /> */}
 
         <Typography variant="h4" sx={shelfTitleStyles}>
-          Most Buzzed About {selectedGenre.slice(7)}
+          Most Buzzed About {selectedGenre}
         </Typography>
         <AnimeShelf items={animeMPTW} />
 
