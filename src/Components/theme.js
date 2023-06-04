@@ -1,7 +1,7 @@
 import createTheme from "@mui/material/styles/createTheme";
 import { alpha } from "@mui/system/colorManipulator";
 
-const mainFontStack = "Inter, Arial-fallback, sans-serif";
+const mainFontStack = "Inter, Arial-fallback, Roboto-fallback, sans-serif";
 
 export function createAppTheme(darkMode) {
   // A custom theme for this app
