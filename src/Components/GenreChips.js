@@ -31,46 +31,6 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     // "Avant Garde",
   ];
 
-  let [genreState, setGenreState] = useState([
-    {
-      genre: "Action",
-      selected: false,
-    },
-    {
-      genre: "Award Winning",
-      selected: false,
-    },
-    {
-      genre: "Comedy",
-      selected: false,
-    },
-    {
-      genre: "Ecchi",
-      selected: false,
-    },
-    {
-      genre: "Gourmet",
-      selected: false,
-    },
-    {
-      genre: "Horror",
-      selected: false,
-    },
-    {
-      genre: "Romance",
-      selected: false,
-    },
-    {
-      genre: "Sci-Fi",
-      selected: false,
-    },
-    {
-      genre: "Sports",
-      selected: false,
-    },
-  ]);
-
-  const [selected, setSelected] = useState();
   const [startIndex, setStartIndex] = useState(0);
 
   const theme = useTheme();
@@ -100,16 +60,14 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     ? 3
     : 2;
 
-  const breakpoints = { xs: 12 / itemsPerPage };
-
-  const currentItems = genreState.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = genres.slice(startIndex, startIndex + itemsPerPage);
 
   const hasPrevious = startIndex > 0;
-  const hasNext = startIndex < genreState.length - itemsPerPage;
+  const hasNext = startIndex < genres.length - itemsPerPage;
 
   const onClickNext = (e) => {
     setStartIndex(
-      Math.min(startIndex + itemsPerPage, genreState.length - itemsPerPage)
+      Math.min(startIndex + itemsPerPage, genres.length - itemsPerPage)
     );
     e.preventDefault();
   };
@@ -119,29 +77,10 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
     e.preventDefault();
   };
 
-  function handleClick(item, index) {
-    const temp = [...genreState];
-    if (!temp[index + startIndex].selected) {
-      temp[index + startIndex] = {
-        ...temp[index + startIndex],
-        selected: true,
-      };
+  function handleClick(item) {
+    if (item !== selectedGenre) {
+      setSelectedGenre(item);
     } else {
-      temp[index + startIndex] = {
-        ...temp[index + startIndex],
-        selected: false,
-      };
-    }
-    for (let i = 0; i < genreState.length; i++) {
-      if (index + startIndex !== i) {
-        temp[i].selected = false;
-      }
-    }
-
-    setGenreState(temp);
-    if (temp[index + startIndex].selected)
-      setSelectedGenre(`&genre=${item.genre}`);
-    else {
       setSelectedGenre("");
     }
   }
@@ -166,17 +105,17 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
           <CaretLeft size={24} />
         </IconButton>
       </Paper>
-      {currentItems?.map((item, index) => (
+      {currentItems?.map((item) => (
         <Chip
           sx={{
             borderRadius: "16px",
           }}
-          variant={item.selected ? "filled" : "outlined"}
+          variant={selectedGenre === item ? "filled" : "outlined"}
           clickable={true}
-          key={index}
-          label={item.genre}
+          key={item}
+          label={item}
           onClick={() => {
-            handleClick(item, index);
+            handleClick(item);
           }}
         />
       ))}
