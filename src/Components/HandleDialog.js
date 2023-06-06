@@ -74,7 +74,7 @@ export default function HandleDialog({ user }) {
   }
 
   function handleFormSubmissionError(error) {
-    if (error === "Handle has already been taken") {
+    if (error.message === "Handle has already been taken") {
       setError("duplicateHandle", {
         type: "custom",
         message: "*Handle has already been taken",
@@ -178,8 +178,14 @@ export default function HandleDialog({ user }) {
           }}
           margin="dense"
           required
-          error={errors.handle || errors.duplicateHandle ? true : false}
-          helperText={errors.duplicateHandle?.message ?? errors.handle?.message}
+          error={Boolean(
+            errors.handle || errors.duplicateHandle || errors.unknownClaimError
+          )}
+          helperText={
+            errors.duplicateHandle?.message ??
+            errors.handle?.message ??
+            errors.unknownClaimError?.message
+          }
           id="handle"
           label="Account handle"
           type="text"
