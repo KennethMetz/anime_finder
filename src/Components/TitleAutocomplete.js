@@ -6,7 +6,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import { useState, useEffect, useRef } from "react";
-import { APISearch } from "./APICalls";
+import { useAPISearch } from "./APICalls";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { MagnifyingGlass } from "phosphor-react";
@@ -27,6 +27,12 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   let focusElement = useRef(null);
 
+  const {
+    data: searchOptions,
+    loading: isLoadingSearch,
+    error: errorSearch,
+  } = useAPISearch(inputValue);
+
   function onSubmit(key, input) {
     if (key === "Enter") {
       navigate("/search", { state: input });
@@ -37,13 +43,15 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   useEffect(() => {
     (async () => {
-      //Clear options when user deletes input field
+      // Clear options when user deletes input field
       if (inputValue && inputValue.length === 0) {
         setLoading(true);
         setOptions([]);
-      } else setOptions(await APISearch(inputValue));
+        // Prevents options being set to undefined while APISearch request is being sent
+      } else if (searchOptions) setOptions(searchOptions);
     })();
   }, [inputValue]);
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Autocomplete
