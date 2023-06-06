@@ -6,7 +6,7 @@ const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
 
 export function useAPISearch(inputValue) {
   return useQuery(
-    ["search" + inputValue],
+    ["search:" + inputValue],
     async () => {
       let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
         mode: "cors",
@@ -19,17 +19,6 @@ export function useAPISearch(inputValue) {
     },
     { staleTime: fiveMinutesMs }
   );
-}
-
-export async function APISearch(inputValue) {
-  let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
-    mode: "cors",
-  });
-  await handleErrors(response);
-  let responseJson = await response.json();
-  let temp = [];
-  responseJson.items.map((item, index) => temp.push(item));
-  return temp;
 }
 
 export async function APIGetAnime(animeId) {

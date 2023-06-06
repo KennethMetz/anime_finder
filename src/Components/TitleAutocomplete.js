@@ -5,11 +5,12 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useAPISearch } from "./APICalls";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { MagnifyingGlass } from "phosphor-react";
+import debounce from "@mui/material/utils/debounce";
 
 export default function TitleAutocomplete({ search, setShowSearch }) {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   let [value, setValue] = useState(null);
   let [inputValue, setInputValue] = useState(search ?? "");
+
+  let [searchTerm, setSearchTerm] = useState("");
 
   let [options, setOptions] = useState([]);
   let [loading, setLoading] = useState(false);
@@ -32,7 +35,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     data: searchOptions,
     loading: searchLoading,
     error: apiError,
-  } = useAPISearch(inputValue);
+  } = useAPISearch(searchTerm);
 
   function onSubmit(key, input) {
     if (key === "Enter") {
@@ -42,16 +45,36 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     if (key === "Escape") setShowSearch(false);
   }
 
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      const normalizedSearchTerm = value?.toLowerCase();
+      setSearchTerm(normalizedSearchTerm); // Triggers APISearch call by changing TanStack query key
+      openPopper();
+    }, 450),
+    []
+  );
+
+  const handleInput = (event, newInputValue) => {
+    setInputValue(newInputValue);
+    debouncedSearch(newInputValue);
+  };
+
   useEffect(() => {
-    (async () => {
-      // Clear options when user deletes input field
-      if (inputValue && inputValue.length === 0) {
-        setLoading(true);
-        setOptions([]);
-        // Prevents options being set to undefined while APISearch request is being sent
-      } else if (searchOptions) setOptions(searchOptions);
-    })();
-  }, [inputValue, searchOptions]);
+    console.log(searchOptions);
+  }, [searchOptions]);
+
+  // Clear options when user deletes input field
+  useEffect(() => {
+    if (inputValue && inputValue.length === 0) {
+      setLoading(true);
+      setOptions([]);
+    }
+  }, [inputValue]);
+
+  // Prevents options being set to undefined while APISearch request is being sent
+  useEffect(() => {
+    if (searchOptions) setOptions(searchOptions);
+  }, [searchOptions]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -64,10 +87,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
           }
         }}
         inputValue={inputValue}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
-          openPopper();
-        }}
+        onInputChange={handleInput}
         forcePopupIcon={false}
         fullWidth={true}
         filterSelectedOptions
