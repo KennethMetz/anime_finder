@@ -11,6 +11,8 @@ import {
   startAfter,
   limitToLast,
   endBefore,
+  where,
+  runTransaction,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -33,6 +35,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         top8: [],
         reviews: [],
         comments: [],
+        handle: "",
       };
     }
     if (!data.savedLists) data.savedLists = [];
@@ -46,8 +49,6 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
 }
 
 export async function SaveToFirestore(user, localUser) {
-  //   const [user] = useAuthState(auth);
-
   if (user) {
     try {
       await setDoc(
@@ -63,6 +64,7 @@ export async function SaveToFirestore(user, localUser) {
           top8: [...localUser.top8],
           reviews: [...localUser.reviews],
           comments: [...localUser.comments],
+          handle: localUser?.handle ?? null,
         },
         { merge: true }
       );
@@ -200,4 +202,23 @@ export async function SaveListReactionsToFirestore(docId, updatedRxns) {
   } catch (error) {
     console.error("Error writing review data to Firestore", error);
   }
+}
+
+export async function ClaimHandle(handle, userId) {
+  const handleDocRef = doc(db, "handles", handle);
+  const userDocRef = doc(db, "users", userId);
+
+  return runTransaction(db, async (transaction) => {
+    // This code may get re-run multiple times if there are conflicts.
+    const handleDoc = await transaction.get(handleDocRef);
+
+    if (handleDoc.exists()) {
+      throw new Error("Handle has already been taken");
+    }
+
+    // These two writes will only succeed if the document read above has not changed since then.
+    // Otherwise, it will re-run this function.
+    transaction.set(handleDocRef, { uid: userId, handle: handle });
+    transaction.update(userDocRef, { handle: handle });
+  });
 }

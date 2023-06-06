@@ -1,12 +1,17 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import { auth, logInAnon } from "./Firebase";
 import BreathingLogo from "./BreathingLogo";
+import { LocalUserContext } from "./LocalUserContext";
+import HandleDialog from "./HandleDialog";
+import { PopulateFromFirestore } from "./Firestore";
 
 export const RoutingHelper = () => {
   const [user, loading, error] = useAuthState(auth);
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
+
   const location = useLocation();
 
   // Scroll to top if path changes.

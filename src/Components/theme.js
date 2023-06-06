@@ -13,6 +13,7 @@ export function createAppTheme(darkMode) {
       grey: { main: "#bdbdbd" },
       text: {
         primary: darkMode ? "#fff" : "#171717",
+        main: darkMode ? "#fff" : "#171717",
       },
       background: {
         default: darkMode ? "#080808" : "#fcfcfc",

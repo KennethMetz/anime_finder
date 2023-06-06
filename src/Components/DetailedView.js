@@ -25,6 +25,7 @@ import ScoreBars from "./ScoreBars";
 import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
 import ReviewContainer from "./ReviewContainer";
+import HandleDialog from "./HandleDialog";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -82,6 +83,11 @@ export default function DetailedView() {
 
   return (
     <Container maxWidth="lg" key={anime.id}>
+      {/* Below ensure the following: localUser has been loaded, user is not 
+      on a guest account, and they do NOT have a handle.*/}
+      {localUser.uid && !user.isAnonymous && !localUser.handle && (
+        <HandleDialog user={user} />
+      )}
       <Grid container sx={{ paddingTop: { xs: "25px", md: "50px" } }}>
         <Grid
           item

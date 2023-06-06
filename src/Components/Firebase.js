@@ -41,13 +41,6 @@ export const auth = getAuth(firebaseApp);
 
 export const db = getFirestore(firebaseApp);
 
-// function onAuthStateChange() {
-//   return firebase.auth().onAuthStateChanged((user) => {
-//     if (user) console.log("user is logged in");
-//     else console.log("user is NOT logged in");
-//   });
-// }
-
 //************************Google Authentication*************************//
 const provider = new GoogleAuthProvider();
 
@@ -237,10 +230,6 @@ export const registerWithEmailAndPassword = async (
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
-    //Writes name to firebase's auth profile....as this isn't done automatically for some odd reason.
-    updateProfile(auth.currentUser, {
-      displayName: name,
-    });
     const user = res.user;
     await setDoc(
       doc(db, "users", user.uid),

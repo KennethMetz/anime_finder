@@ -5,10 +5,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useState, useContext } from "react";
-import { LocalUserContext } from "./LocalUserContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./Firebase";
-import { PopulateFromFirestore } from "./Firestore";
 import AnimeGrid from "./AnimeGrid";
 import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
@@ -21,14 +17,19 @@ import {
   useAnimeMPTW,
   useRecommendations,
 } from "./APICalls";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Firebase";
+import { LocalUserContext } from "./LocalUserContext";
+import HandleDialog from "./HandleDialog";
+import { PopulateFromFirestore } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState([]); //randomized
 
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const [user, loading, error] = useAuthState(auth);
 
-  const [user, loading] = useAuthState(auth);
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const [selectedGenre, setSelectedGenre] = useGenreFilter();
   const genreQueryString = selectedGenre ? `&genre=${selectedGenre}` : "";
@@ -76,6 +77,10 @@ export default function Home() {
       .catch((error) => console.log(error));
   }, [refresh]);
 
+  useEffect(() => {
+    PopulateFromFirestore(user, localUser, setLocalUser);
+  }, [user]);
+
   // API call for personalized recommendations.
   const viewHistory = getViewHistory();
   const { data: recommendation, isLoading: loadingRecs } =
@@ -87,16 +92,6 @@ export default function Home() {
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
 
-  useEffect(() => {
-    if (loading) {
-      // trigger a loading screen?
-      return;
-    }
-    if (user) {
-      PopulateFromFirestore(user, localUser, setLocalUser);
-    }
-  }, [user, loading]);
-
   const shelfTitleStyles = {
     marginTop: "1.6em",
     marginBottom: "0.5em",
@@ -104,6 +99,11 @@ export default function Home() {
 
   return (
     <div>
+      {/* Below ensure the following: localUser has been loaded, user is not 
+      on a guest account, and they do NOT have a handle.*/}
+      {localUser.uid && !user.isAnonymous && !localUser.handle && (
+        <HandleDialog user={user} />
+      )}
       <Container maxWidth="lg">
         <div className="gap" />
         {localUser && localUser?.likes.length > 0 ? (
@@ -140,13 +140,11 @@ export default function Home() {
         )}
         <div className="gap" />
       </Container>
-
       <ShelfTitle
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
         title={"Explore More"}
       />
-
       <Container maxWidth="lg">
         <Typography variant="h4" sx={shelfTitleStyles}>
           Highest Rated {selectedGenre}{" "}

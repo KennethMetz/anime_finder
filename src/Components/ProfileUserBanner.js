@@ -11,6 +11,7 @@ import ChooseAvatar from "./ChooseAvatar";
 import ProfilePageContext from "./ProfilePageContext";
 import ClickAndEdit from "./ClickAndEdit";
 import ProfileUserBannerGhost from "./ProfileUserBannerGhost";
+import Typography from "@mui/material/Typography";
 
 export default function ProfileUserBanner() {
   const { profile, isOwnProfile, updateDisplayName, isLoading } =
@@ -85,6 +86,9 @@ export default function ProfileUserBanner() {
               fontSize: { xs: "1.66rem", md: "2.5rem" },
             }}
           />
+          <Typography variant="h4">
+            {profile?.handle ? `@${profile?.handle}` : ""}
+          </Typography>
         </Box>
       </div>
       {editAvatar ? (

@@ -1897,6 +1897,8 @@ export default function BreathingLogo({ type }) {
   } else if (type == "smallButton") {
     //Used for Register with email/password button
     return <SVG style={{ scale: "0.28", margin: "-70px 0px" }} />;
+  } else if (type == "handleButton") {
+    return <SVG style={{ scale: "0.5" }} />;
   } else if (type == "fullPage") {
     //Used on LayoutPage
     return (
