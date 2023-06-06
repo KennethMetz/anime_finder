@@ -27,10 +27,11 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   let focusElement = useRef(null);
 
+  // To-Do: Handle loading/error states from API call
   const {
     data: searchOptions,
-    loading: isLoadingSearch,
-    error: errorSearch,
+    loading: searchLoading,
+    error: apiError,
   } = useAPISearch(inputValue);
 
   function onSubmit(key, input) {
@@ -50,7 +51,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
         // Prevents options being set to undefined while APISearch request is being sent
       } else if (searchOptions) setOptions(searchOptions);
     })();
-  }, [inputValue]);
+  }, [inputValue, searchOptions]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>

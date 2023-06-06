@@ -17,7 +17,7 @@ import { auth } from "./Firebase";
 import { PopulateFromFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import EdAndEinGif from "../Styles/images/ein-ed-compressed.gif";
-import { APISearch } from "./APICalls";
+import { useAPISearch } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
 import SearchGhost from "./SearchGhost";
 
@@ -30,16 +30,16 @@ export default function Search() {
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   let [search, setSearch] = useState("");
-  let [searchResults, setSearchResults] = useState(false);
+
+  // To-Do: Handle loading/error states from API call
+  const {
+    data: searchResults,
+    loading: searchLoading,
+    error: apiError,
+  } = useAPISearch(search);
 
   useEffect(() => {
-    if (location.state?.length > 0) {
-      setSearchResults(false);
-      setSearch(location.state);
-      APISearch(location.state)
-        .then((result) => setSearchResults(result))
-        .catch((error) => console.log(error));
-    }
+    setSearch(location.state);
   }, [location]);
 
   useEffect(() => {
