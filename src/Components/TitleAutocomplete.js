@@ -49,7 +49,8 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     debounce((value) => {
       const normalizedSearchTerm = value?.toLowerCase();
       setSearchTerm(normalizedSearchTerm); // Triggers APISearch call by changing TanStack query key
-      openPopper();
+      if (value.length !== 0) openPopper();
+      else closePopper();
     }, 450),
     []
   );
@@ -58,18 +59,6 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     setInputValue(newInputValue);
     debouncedSearch(newInputValue);
   };
-
-  useEffect(() => {
-    console.log(searchOptions);
-  }, [searchOptions]);
-
-  // Clear options when user deletes input field
-  useEffect(() => {
-    if (inputValue && inputValue.length === 0) {
-      setLoading(true);
-      setOptions([]);
-    }
-  }, [inputValue]);
 
   // Prevents options being set to undefined while APISearch request is being sent
   useEffect(() => {
@@ -90,7 +79,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
         onInputChange={handleInput}
         forcePopupIcon={false}
         fullWidth={true}
-        filterSelectedOptions
+        // filterSelectedOptions
         options={options}
         handleHomeEndKeys={true}
         open={open}

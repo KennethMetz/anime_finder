@@ -15,6 +15,9 @@ export function useAPISearch(inputValue) {
       let responseJson = await response.json();
       let temp = [];
       responseJson.items.map((item, index) => temp.push(item));
+      // Clears option field if search term is "".
+      if (inputValue.length === 0) return [];
+      // Otherwise return query results
       return temp;
     },
     { staleTime: fiveMinutesMs }
