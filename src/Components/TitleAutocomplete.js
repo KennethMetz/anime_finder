@@ -33,7 +33,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
   // To-Do: Handle loading/error states from API call
   const {
     data: searchOptions,
-    loading: searchLoading,
+    isLoading: searchLoading,
     error: apiError,
   } = useAPISearch(searchTerm);
 
@@ -45,12 +45,16 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     if (key === "Escape") setShowSearch(false);
   }
 
+  // Prevents popper from showing "No Results" during loading state and while there's no search term
+  useEffect(() => {
+    if (!searchLoading && inputValue.length > 0) openPopper();
+    else closePopper();
+  }, [searchOptions]);
+
   const debouncedSearch = useCallback(
     debounce((value) => {
       const normalizedSearchTerm = value?.toLowerCase();
       setSearchTerm(normalizedSearchTerm); // Triggers APISearch call by changing TanStack query key
-      if (value.length !== 0) openPopper();
-      else closePopper();
     }, 450),
     []
   );
@@ -62,7 +66,9 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   // Prevents options being set to undefined while APISearch request is being sent
   useEffect(() => {
-    if (searchOptions) setOptions(searchOptions);
+    if (searchOptions) {
+      setOptions(searchOptions);
+    }
   }, [searchOptions]);
 
   return (
