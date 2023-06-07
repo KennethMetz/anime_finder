@@ -85,7 +85,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
         onInputChange={handleInput}
         forcePopupIcon={false}
         fullWidth={true}
-        // filterSelectedOptions
+        filterSelectedOptions
         options={options}
         handleHomeEndKeys={true}
         open={open}
