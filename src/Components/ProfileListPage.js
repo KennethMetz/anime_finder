@@ -1,11 +1,17 @@
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import { useConfirm } from "material-ui-confirm";
-import { CaretLeft, HandsClapping, Heart, Trash, X } from "phosphor-react";
+import {
+  GlobeHemisphereWest,
+  HandsClapping,
+  Heart,
+  LockSimple,
+  Trash,
+  X,
+} from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
@@ -61,6 +67,7 @@ export default function ProfileListPage() {
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
+  let privateList = false;
 
   useEffect(() => {
     GetListReactions(`${userId}+${listId}`, setListRxns);
@@ -95,6 +102,7 @@ export default function ProfileListPage() {
     name = list.name;
     typeName = "Watchlist";
     desc = list.desc;
+    privateList = list.privateList;
     updateFn = (newItems) =>
       updateList(index, { ...list, anime: newItems, desc: desc });
     deleteFn = () => deleteList(index);
@@ -180,9 +188,12 @@ export default function ProfileListPage() {
             styling={headStyle}
             onSave={onListTitleSave}
           />
-          <Typography variant="body1" sx={subtitleStyle}>
-            {getSubtitleText(typeName, items)}
-          </Typography>
+          <div style={{ display: "flex" }}>
+            <Typography variant="body1" sx={subtitleStyle}>
+              {getSubtitleText(typeName, items)}
+            </Typography>
+            {isOwnProfile && <GetPrivacySymbol privateList={privateList} />}
+          </div>
         </Grid>
         <Grid
           item
@@ -328,4 +339,19 @@ function getItemsText(items) {
   }
 
   return `${items.length} items`;
+}
+
+function GetPrivacySymbol({ privateList }) {
+  return (
+    <Tooltip title={privateList ? "Private list" : "Public list"}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={{ ml: "0.25em", mr: "0.25em" }}> • </Typography>
+        {privateList ? (
+          <LockSimple size={20} />
+        ) : (
+          <GlobeHemisphereWest size={20} />
+        )}
+      </div>
+    </Tooltip>
+  );
 }
