@@ -248,6 +248,7 @@ export default function ProfileListPage() {
             deletableList={deletableList}
             userId={userId}
             listId={listId}
+            privateList={privateList}
           />
         </Grid>
 
