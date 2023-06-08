@@ -125,7 +125,6 @@ export default function ProfileListDropMenu({
                         variant: "success",
                         style: {
                           fontSize: "0.9rem",
-                          // background: theme.palette.primary.main,
                         },
                         anchorOrigin: {
                           vertical: "top",
@@ -182,7 +181,6 @@ export default function ProfileListDropMenu({
                             variant: "success",
                             style: {
                               fontSize: "0.9rem",
-                              // background: theme.palette.primary.main,
                             },
                             anchorOrigin: {
                               vertical: "top",

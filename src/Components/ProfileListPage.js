@@ -192,7 +192,7 @@ export default function ProfileListPage() {
             <Typography variant="body1" sx={subtitleStyle}>
               {getSubtitleText(typeName, items)}
             </Typography>
-            {isOwnProfile && <GetPrivacySymbol privateList={privateList} />}
+            {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
         </Grid>
         <Grid
@@ -342,17 +342,17 @@ function getItemsText(items) {
   return `${items.length} items`;
 }
 
-function GetPrivacySymbol({ privateList }) {
+function PrivacySymbol({ privateList }) {
   return (
-    <Tooltip title={privateList ? "Private list" : "Public list"}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Typography sx={{ ml: "0.25em", mr: "0.25em" }}> • </Typography>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Typography sx={{ ml: "0.25em", mr: "0.25em" }}> • </Typography>
+      <Tooltip title={privateList ? "Private list" : "Public list"}>
         {privateList ? (
           <LockSimple size={20} />
         ) : (
           <GlobeHemisphereWest size={20} />
         )}
-      </div>
-    </Tooltip>
+      </Tooltip>
+    </div>
   );
 }
