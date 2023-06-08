@@ -41,7 +41,7 @@ export default function WatchlistTile({
           },
         }}
       >
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", justifyContent: "stretch" }}>
           <Typography
             variant="h5"
             sx={{
@@ -57,6 +57,7 @@ export default function WatchlistTile({
             variant="body2"
             sx={{
               marginLeft: "8px",
+              flexShrink: 0,
             }}
           >
             {items?.length ?? "0"} {items?.length === 1 ? "item" : "items"}

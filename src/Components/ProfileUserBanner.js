@@ -39,7 +39,12 @@ export default function ProfileUserBanner() {
           <Tooltip title="Change your avatar">
             <ListItemButton
               onClick={handleAvatarToggle}
-              sx={{ maxWidth: "96px", p: 1, borderRadius: "16px" }}
+              sx={{
+                maxWidth: "96px",
+                p: 1,
+                borderRadius: "16px",
+                flexShrink: 0,
+              }}
             >
               <Avatar
                 sx={{ width: "80px", height: "80px" }}
@@ -68,12 +73,12 @@ export default function ProfileUserBanner() {
           </Tooltip>
         ) : (
           <Avatar
-            sx={{ width: "80px", height: "80px", mr: 1 }}
+            sx={{ width: "80px", height: "80px", mr: 1, flexShrink: 0 }}
             alt={profile?.name}
             src={avatarSrc}
           />
         )}
-        <Box sx={{ ml: 2, display: "flex", flex: "1" }}>
+        <Box sx={{ ml: 2, display: "flex", flexDirection: "column" }}>
           <ClickAndEdit
             data={profile?.name}
             label={"Edit display name"}

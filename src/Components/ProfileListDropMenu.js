@@ -22,6 +22,7 @@ export default function ProfileListDropMenu({
   deletableList,
   userId,
   listId,
+  privateList,
 }) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -119,11 +120,11 @@ export default function ProfileListDropMenu({
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       setOpen(false);
+
                       enqueueSnackbar("Link copied to clipboard", {
                         variant: "success",
                         style: {
                           fontSize: "0.9rem",
-                          background: theme.palette.primary.main,
                         },
                         anchorOrigin: {
                           vertical: "top",
@@ -137,6 +138,25 @@ export default function ProfileListDropMenu({
                           </Fragment>
                         ),
                       });
+                      if (privateList) {
+                        enqueueSnackbar("Only you can view this PRIVATE list", {
+                          variant: "warning",
+                          style: {
+                            fontSize: "0.9rem",
+                          },
+                          anchorOrigin: {
+                            vertical: "top",
+                            horizontal: "center",
+                          },
+                          action: (key) => (
+                            <Fragment>
+                              <IconButton onClick={() => closeSnackbar(key)}>
+                                <X color="white" size={20} />
+                              </IconButton>
+                            </Fragment>
+                          ),
+                        });
+                      }
                     }}
                   >
                     <ListItemIcon>
@@ -161,7 +181,6 @@ export default function ProfileListDropMenu({
                             variant: "success",
                             style: {
                               fontSize: "0.9rem",
-                              background: theme.palette.primary.main,
                             },
                             anchorOrigin: {
                               vertical: "top",
