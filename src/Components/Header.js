@@ -8,7 +8,13 @@ import useTheme from "@mui/material/styles/useTheme";
 
 import { useState } from "react";
 import TitleAutocomplete from "./TitleAutocomplete";
-import { MagnifyingGlass, House, User } from "phosphor-react";
+import {
+  MagnifyingGlass,
+  House,
+  User,
+  ChatCircle,
+  Binoculars,
+} from "phosphor-react";
 import DropMenu from "./DropMenu";
 import EdwardMLLogo from "./EdwardMLLogo";
 import HeaderTab from "./HeaderTab";
@@ -72,6 +78,11 @@ function Header() {
                     }}
                   >
                     <HeaderTab text="Home" icon={<House />} path="/home" />
+                    <HeaderTab
+                      text="Dev Search"
+                      icon={<Binoculars />}
+                      path="/dev-search"
+                    />
                     <HeaderTab
                       text="Profile"
                       icon={<User />}

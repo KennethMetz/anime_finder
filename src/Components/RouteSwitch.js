@@ -20,6 +20,7 @@ import AppSettingsProvider from "./AppSettingsProvider";
 import AppThemeProvider from "./AppThemeProvider";
 import YoutubeModalProvider from "./YoutubeModalProvider";
 import { SnackbarProvider } from "notistack";
+import DevSearch from "./DevSearch";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const RouteSwitch = () => {
                         />
                         <Route path="/home" element={<Home />} />
                         <Route path="/sandbox" element={<Sandbox />} />
+                        <Route path="/dev-search" element={<DevSearch />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/logout" element={<Logout />} />
                         <Route path="/onboarding" element={<Onboarding />} />

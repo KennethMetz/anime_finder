@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 
 const fiveMinutesMs = 1000 * 60 * 5;
 
-const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
+//const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
+const apiUrl = "https://api-jet-dev-lfoguxrv7q-uw.a.run.app";
 
 export async function APISearch(inputValue) {
   let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
@@ -13,6 +14,33 @@ export async function APISearch(inputValue) {
   let temp = [];
   responseJson.items.map((item, index) => temp.push(item));
   return temp;
+}
+
+export async function APIAlgoliaSearch(inputValue, pageSize) {
+  let url = `${apiUrl}/anime/search-v2?query=${inputValue}`;
+  url += "&backend=algolia";
+  url += `&page_size=${pageSize ?? 10}`;
+  let response = await fetch(url, {
+    mode: "cors",
+  });
+  await handleErrors(response);
+  const responseJson = await response.json();
+  return responseJson.results ?? [];
+}
+
+export async function APISemanticSearch(inputValue, pageSize, corpora) {
+  let url = `${apiUrl}/anime/search-v2?query=${inputValue}`;
+  url += "&backend=semantic-search";
+  url += `&page_size=${pageSize ?? 10}`;
+  if (corpora?.length == 1) {
+    url += `&corpora=${corpora[0]}`;
+  }
+  const response = await fetch(url, {
+    mode: "cors",
+  });
+  await handleErrors(response);
+  const responseJson = await response.json();
+  return responseJson.results ?? [];
 }
 
 export async function APIGetAnime(animeId) {
