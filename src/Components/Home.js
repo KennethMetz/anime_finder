@@ -106,22 +106,6 @@ export default function Home() {
       )}
       <Container maxWidth="lg">
         <div className="gap" />
-        {localUser && localUser?.likes.length > 0 ? (
-          <>
-            <Typography
-              variant="h2"
-              style={{
-                marginBlockStart: 0,
-                marginBlockEnd: "0.5rem",
-              }}
-            >
-              For You
-            </Typography>
-            <AnimeGrid items={recommendation} large />
-          </>
-        ) : (
-          ""
-        )}
         {localUser.uid && localUser?.likes.length === 0 ? (
           <Typography
             variant="h2"
@@ -136,7 +120,18 @@ export default function Home() {
             recommendations!
           </Typography>
         ) : (
-          ""
+          <>
+            <Typography
+              variant="h2"
+              style={{
+                marginBlockStart: 0,
+                marginBlockEnd: "0.5rem",
+              }}
+            >
+              For You
+            </Typography>
+            <AnimeGrid items={recommendation} large />
+          </>
         )}
         <div className="gap" />
       </Container>
