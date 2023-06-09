@@ -1,17 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  auth,
-  logInWithEmailAndPassword,
-  signInWithGoogle,
-  signInWithTwitter,
-} from "./Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 import "../Styles/Login.css";
-import { PopulateFromFirestore } from "./Firestore";
-
-import { LocalUserContext } from "./LocalUserContext";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -24,13 +14,14 @@ import useTheme from "@mui/material/styles/useTheme";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import google from "../Styles/images/google.svg";
 import EdwardMLLogo from "./EdwardMLLogo";
+import useAuthActions from "../Hooks/useAuthActions";
 
 export default function Login() {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const authActions = useAuthActions();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -46,16 +37,38 @@ export default function Login() {
     marginBottom: "17px",
   };
 
-  useEffect(() => {
-    if (loading) {
-      // trigger a loading screen?
-      return;
-    }
-    if (user) {
-      PopulateFromFirestore(user, localUser, setLocalUser);
+  const login = async (provider) => {
+    try {
+      setLoginError(null);
+      if (provider === "google") {
+        await authActions.loginWithGoogle();
+      } else if (provider === "twitter") {
+        await authActions.loginWithTwitter();
+      } else if (provider === "email") {
+        await authActions.loginWithEmail(email, password);
+      } else {
+        throw new Error("Unknown login provider");
+      }
       navigate("/home");
+    } catch (error) {
+      console.error(error);
+      if (error["code"]?.search(/\buser-not-found\b/) > -1) {
+        setLoginError("*Email not found");
+      } else if (error["code"]?.search(/\bwrong-password\b/) > -1) {
+        setLoginError("*Incorrect password");
+      } else if (error["code"]?.search(/\btoo-many-requests\b/) > -1) {
+        setLoginError(
+          "*Your account has been locked due to too many login attempts. " +
+            "Please reset your password to unlock your account."
+        );
+      } else {
+        setLoginError(
+          "Ooops - there was an error logging in. Please try again!"
+        );
+      }
     }
-  }, [user, loading]);
+  };
+
   return (
     <div className="login">
       <Container maxWidth="lg">
@@ -102,7 +115,7 @@ export default function Login() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={signInWithGoogle}
+            onClick={() => login("google")}
             startIcon={
               <Box
                 component="img"
@@ -141,7 +154,7 @@ export default function Login() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={signInWithTwitter}
+            onClick={() => login("twitter")}
             startIcon={
               <TwitterIcon
                 sx={{
@@ -250,9 +263,7 @@ export default function Login() {
             sx={{
               width: "211px",
             }}
-            onClick={() => {
-              logInWithEmailAndPassword(email, password, setLoginError);
-            }}
+            onClick={() => login("email")}
           >
             Login
           </Button>
