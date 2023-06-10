@@ -1,16 +1,14 @@
-import { useContext, useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
-import { auth, logInAnon } from "./Firebase";
+import { auth } from "./Firebase";
 import BreathingLogo from "./BreathingLogo";
-import { LocalUserContext } from "./LocalUserContext";
-import HandleDialog from "./HandleDialog";
-import { PopulateFromFirestore } from "./Firestore";
+import useAuthActions from "../Hooks/useAuthActions";
 
 export const RoutingHelper = () => {
   const [user, loading, error] = useAuthState(auth);
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const authActions = useAuthActions();
 
   const location = useLocation();
 
@@ -49,7 +47,7 @@ export const RoutingHelper = () => {
 
   useEffect(() => {
     if (!loading && !user && headerMatch) {
-      logInAnon();
+      authActions.registerAnonymously();
     }
   }, [loading, user, headerMatch]);
 

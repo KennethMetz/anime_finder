@@ -48,10 +48,10 @@ export default function useAuthActions() {
       newLocalUser.name = displayNameOverride ?? user.displayName;
       setLocalUser(newLocalUser);
       await SaveToFirestore(user, newLocalUser);
-    } else {
-      // Otherwise, for existing users, load the user's LocalUser data.
-      await PopulateFromFirestore(user, localUser, setLocalUser);
     }
+
+    // FInally, in all cases, load the user's LocalUser from /users.
+    await PopulateFromFirestore(user, localUser, setLocalUser);
   }
 
   async function onLoginSuccess(userCredential, authProvider) {
