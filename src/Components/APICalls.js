@@ -5,23 +5,19 @@ const fiveMinutesMs = 1000 * 60 * 5;
 const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
 
 export function useAPISearch(inputValue) {
-  return useQuery(
-    ["search:" + inputValue],
-    async () => {
+  return useQuery({
+    queryKey: ["search:" + inputValue],
+    queryFn: async () => {
       let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
         mode: "cors",
       });
       await handleErrors(response);
       let responseJson = await response.json();
-      let temp = [];
-      responseJson.items.map((item, index) => temp.push(item));
-      // Clears option field if search term is "".
-      if (inputValue.length === 0) return [];
-      // Otherwise return query results
-      return temp;
+      return responseJson.items ?? [];
     },
-    { staleTime: fiveMinutesMs }
-  );
+    staleTime: fiveMinutesMs,
+    placeholderData: [],
+  });
 }
 
 export async function APIGetAnime(animeId) {

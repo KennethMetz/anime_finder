@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
@@ -11,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { MagnifyingGlass } from "phosphor-react";
 import debounce from "@mui/material/utils/debounce";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function TitleAutocomplete({ search, setShowSearch }) {
   const navigate = useNavigate();
@@ -21,21 +21,21 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
 
   let [searchTerm, setSearchTerm] = useState("");
 
-  let [options, setOptions] = useState([]);
-  let [loading, setLoading] = useState(false);
-
   let [open, setOpen] = useState(false);
   const closePopper = () => setOpen(false);
   const openPopper = () => setOpen(true);
 
   let focusElement = useRef(null);
 
-  // To-Do: Handle loading/error states from API call
+  // To-Do: Handle error state from API call
   const {
-    data: searchOptions,
+    data: options,
     isLoading: searchLoading,
     error: apiError,
+    isFetching: searchFetching,
   } = useAPISearch(searchTerm);
+
+  const loading = searchLoading || searchFetching;
 
   function onSubmit(key, input) {
     if (key === "Enter") {
@@ -44,18 +44,11 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     }
     if (key === "Escape") setShowSearch(false);
   }
-
-  // Prevents popper from showing "No Results" during loading state and while there's no search term
-  useEffect(() => {
-    if (!searchLoading && inputValue.length > 0) openPopper();
-    else closePopper();
-  }, [searchOptions]);
-
   const debouncedSearch = useCallback(
     debounce((value) => {
       const normalizedSearchTerm = value?.toLowerCase();
       setSearchTerm(normalizedSearchTerm); // Triggers APISearch call by changing TanStack query key
-    }, 450),
+    }, 200),
     []
   );
 
@@ -63,13 +56,6 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     setInputValue(newInputValue);
     debouncedSearch(newInputValue);
   };
-
-  // Prevents options being set to undefined while APISearch request is being sent
-  useEffect(() => {
-    if (searchOptions) {
-      setOptions(searchOptions);
-    }
-  }, [searchOptions]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -85,16 +71,19 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
         onInputChange={handleInput}
         forcePopupIcon={false}
         fullWidth={true}
-        filterSelectedOptions
+        filterOptions={(x) => x}
         options={options}
         handleHomeEndKeys={true}
-        open={open}
         openOnFocus={true}
+        onOpen={openPopper}
+        onClose={closePopper}
         clearOnBlur={false}
         blurOnSelect
         onBlur={(e) => {
           setShowSearch(false);
         }}
+        loading={loading}
+        loadingText="Loading..."
         getOptionLabel={(option) => option.display_name || ""}
         renderOption={(props, options) => (
           <Box
@@ -116,8 +105,6 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
             {options.display_name}
           </Box>
         )}
-        loading={loading}
-        loadingText="Enter anime title (ie. Naruto)"
         sx={{ width: "450px", height: "46px" }}
         renderInput={(params) => (
           <TextField
@@ -130,7 +117,15 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
             InputProps={{
               ...params.InputProps,
               endAdornment: (
-                <InputAdornment position="end">
+                <InputAdornment
+                  position="end"
+                  sx={{
+                    width: "64px",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  {loading && <CircularProgress size={20} />}
                   <Tooltip title="Search">
                     <IconButton
                       onClick={(e) => {
