@@ -36,16 +36,13 @@ export function NotFound404() {
           xs={3}
           sm={3}
           md={2.5}
-          textAlign="center"
+          textAlign="right"
           sx={{ display: "flex", justifyContent: "right" }}
         >
           <Link to="/home" style={{ width: "100%" }}>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ fontSize: "0.875rem", mr: 2, p: 2 }}
-            >
-              <House size={24} /> Home
+            <Button variant="contained" size="large">
+              <House size={20} style={{ marginRight: "4px" }} />
+              Home
             </Button>
           </Link>
         </Grid>
