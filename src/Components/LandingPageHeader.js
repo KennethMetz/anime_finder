@@ -6,6 +6,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import { Link } from "react-router-dom";
 
 import logo from "../Styles/images/logo.svg";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function LandingPageHeader() {
   const theme = useTheme();
@@ -28,47 +29,9 @@ export default function LandingPageHeader() {
         }}
       >
         <Grid item md={9} sm={9} xs={9}>
-          <div className="logo" style={{ height: "68px" }}>
-            <Link to="/" style={{ display: "flex" }}>
-              <img
-                src={logo}
-                alt=""
-                style={{ width: "35px", aspectRatio: "35/63.19" }}
-              />
-              <Box
-                component="div"
-                sx={{ display: { xs: "none", fiveHundred: "flex" } }}
-              >
-                <h2
-                  className="appName"
-                  style={{
-                    color: theme.palette.text.primary,
-                    paddingLeft: "10px",
-                    fontFamily: "montserratBold",
-                    fontSize: "1.25rem",
-                    display: {
-                      xs: "none",
-                      fiveHundred: "block",
-                    },
-                  }}
-                >
-                  Edward
-                </h2>
-                <h2
-                  className="appName"
-                  style={{
-                    color: theme.palette.primary.main,
-                    fontFamily: "montserratBold",
-                    fontSize: "1.25rem",
-                  }}
-                >
-                  ML
-                </h2>
-              </Box>
-            </Link>
-          </div>
-
-          <div></div>
+          <Link to="/" style={{ display: "flex" }}>
+            <EdwardMLLogo />
+          </Link>
         </Grid>
         <Grid
           item
