@@ -21,9 +21,7 @@ import { useAPISearch } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
 import SearchGhost from "./SearchGhost";
 import HandleDialog from "./HandleDialog";
-import { getAvatarSrc } from "./Avatars";
 import SearchAvatars from "./SearchAvatars";
-import { darken, lighten } from "@mui/material";
 import SearchResultsBanner from "./SearchResultsBanner";
 
 export default function Search() {
@@ -34,18 +32,23 @@ export default function Search() {
   const [user, loading] = useAuthState(auth);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
-  let [search, setSearch] = useState("");
+  let [search, setSearch] = useState(location.state ?? null);
 
   // To-Do: Handle loading/error states from API call
   const {
     data: searchResults,
-    loading: searchLoading,
+    isLoading: searchLoading,
+    isFetching: searchFetching,
     error: apiError,
-  } = useAPISearch(search);
+  } = useAPISearch(search, 10);
 
-  const avatarSrc = useMemo((item) => getAvatarSrc(item?.avatar));
+  const loadingSearch = searchLoading || searchFetching;
 
   const [indexOfUsers, setIndexOfUsers] = useState();
+
+  useEffect(() => {
+    setSearch(location.state);
+  }, [location]);
 
   useEffect(() => {
     for (let i = 0; i < searchResults.length; i++) {
@@ -55,10 +58,6 @@ export default function Search() {
       }
     }
   }, [searchResults]);
-
-  useEffect(() => {
-    setSearch(location.state);
-  }, [location]);
 
   useEffect(() => {
     if (loading) {
@@ -86,16 +85,15 @@ export default function Search() {
           Search Results:
         </Typography>
         <Divider></Divider>
-
         <div className="gap" style={{ marginTop: "30px" }}></div>
-
-        {!searchResults ? (
-          <SearchGhost />
-        ) : searchResults?.length > 0 ? (
+        {/****** GHOST CARD LOADING STATE *******/}
+        {(!searchResults || loadingSearch) && <SearchGhost />}{" "}
+        {/****** SEARCHES WITH >0 RESULTS *******/}
+        {searchResults?.length > 0 && (
           <div className="column">
             {searchResults[0].id && <SearchResultsBanner text={"TITLES"} />}
             {searchResults.map((item, index) => (
-              <Fragment>
+              <Fragment key={item.uid || item.id}>
                 {index === indexOfUsers && (
                   <SearchResultsBanner text={"USERS"} />
                 )}
@@ -103,9 +101,10 @@ export default function Search() {
                 <ListItemButton
                   dense
                   onClick={() => {
-                    navigate(`/anime/${item.id}`, { state: item });
+                    item.id
+                      ? navigate(`/anime/${item.id}`, { state: item })
+                      : navigate(`/profile/${item.uid}`, { state: item });
                   }}
-                  key={index}
                 >
                   <ListItemAvatar>
                     {item.id && (
@@ -130,7 +129,9 @@ export default function Search() {
               </Fragment>
             ))}
           </div>
-        ) : (
+        )}
+        {/******* SEARCHES WITH 0 RESULTS *******/}
+        {searchResults.length === 0 && !loadingSearch && (
           <div
             style={{
               display: "flex",

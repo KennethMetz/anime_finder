@@ -11,9 +11,8 @@ import { useLocation } from "react-router-dom";
 import { MagnifyingGlass } from "phosphor-react";
 import debounce from "@mui/material/utils/debounce";
 import CircularProgress from "@mui/material/CircularProgress";
-import { getAvatarSrc } from "./Avatars";
 import RenderedOptions from "./TitleAutocompleteOptions";
-import { darken, lighten, styled } from "@mui/material";
+import { darken, lighten, styled } from "@mui/material"; //TO:DO FIND THESE PACKAGES AND LOAD THEM INDIVIDUALLY
 
 export default function TitleAutocomplete({ search, setShowSearch }) {
   const navigate = useNavigate();
@@ -52,7 +51,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
     isLoading: searchLoading,
     error: apiError,
     isFetching: searchFetching,
-  } = useAPISearch(searchTerm);
+  } = useAPISearch(searchTerm, 5);
 
   const loading = searchLoading || searchFetching;
 

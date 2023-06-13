@@ -4,14 +4,14 @@ const fiveMinutesMs = 1000 * 60 * 5;
 
 const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
 
-export function useAPISearch(inputValue, smallBatch) {
+export function useAPISearch(inputValue, itemsReturned) {
   let queryResults = [];
   return useQuery({
     queryKey: ["search:" + inputValue],
     queryFn: async () => {
       // Searches through anime titles
       let response = await fetch(
-        `${apiUrl}/anime/search?query=${inputValue}&page_size=6`,
+        `${apiUrl}/anime/search?query=${inputValue}&page_size=${itemsReturned}`,
         {
           mode: "cors",
         }
@@ -21,7 +21,7 @@ export function useAPISearch(inputValue, smallBatch) {
       queryResults = [...responseJson.items];
       // Searches through user names
       response = await fetch(
-        `${apiUrl}/profile/search?query=${inputValue}&page_size=6`,
+        `${apiUrl}/profile/search?query=${inputValue}&page_size=${itemsReturned}`,
         {
           mode: "cors",
         }

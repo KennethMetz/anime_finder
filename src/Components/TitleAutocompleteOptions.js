@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import { useMemo } from "react";
 import { getAvatarSrc } from "./Avatars";
-import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 
 export default function RenderedOptions({ props, options }) {
