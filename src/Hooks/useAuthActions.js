@@ -33,7 +33,7 @@ export default function useAuthActions() {
     const userDocRef = doc(db, "users", user.uid);
 
     const existingUserDoc = await getDoc(userDocRef);
-    const userDocAlreadyExists = existingUserDoc.exists;
+    const userDocAlreadyExists = existingUserDoc.exists();
 
     // Always write auth info to /users.
     await setDoc(
