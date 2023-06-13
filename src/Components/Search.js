@@ -51,6 +51,7 @@ export default function Search() {
   }, [location]);
 
   useEffect(() => {
+    setIndexOfUsers(undefined);
     for (let i = 0; i < searchResults.length; i++) {
       if (searchResults[i].uid) {
         setIndexOfUsers(i);
