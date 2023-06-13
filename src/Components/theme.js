@@ -3,6 +3,9 @@ import { alpha } from "@mui/system/colorManipulator";
 
 const mainFontStack = "Inter, Arial-fallback, Roboto-fallback, sans-serif";
 
+const montserratBoldStack = "montserratBold, sans-serif";
+const montserratBlackStack = "montserratBlack, sans-serif";
+
 export function createAppTheme(darkMode) {
   // A custom theme for this app
   return createTheme({
@@ -132,7 +135,7 @@ export function createAppTheme(darkMode) {
         lineHeight: 1.5,
       },
       h1: {
-        fontFamily: "montserrat, sans-serif",
+        fontFamily: montserratBlackStack,
         fontSize: "4.0rem",
       },
       h2: {
@@ -157,6 +160,9 @@ export function createAppTheme(darkMode) {
         fontSize: "1rem",
         lineHeight: "1.1875em",
         fontWeight: 800,
+      },
+      h6: {
+        fontFamily: montserratBoldStack,
       },
     },
   });

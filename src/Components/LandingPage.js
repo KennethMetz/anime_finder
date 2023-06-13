@@ -233,8 +233,8 @@ export default function LandingPage() {
                   <MagnifyingGlass size={35} />
                 </Icon>
                 <Typography
+                  variant="h6"
                   sx={{
-                    fontFamily: "montserratBold",
                     fontSize: "1.5rem",
                     marginRight: "15px",
                     lineHeight: "1.25",
@@ -302,8 +302,8 @@ export default function LandingPage() {
                   <ShareNetwork size={35} />
                 </Icon>
                 <Typography
+                  variant="h6"
                   sx={{
-                    fontFamily: "montserratBold",
                     fontSize: "1.5rem",
                     marginRight: "20px",
                     lineHeight: "1.25",
@@ -375,8 +375,8 @@ export default function LandingPage() {
                   <User size={35} />
                 </Icon>
                 <Typography
+                  variant="h6"
                   sx={{
-                    fontFamily: "montserratBold",
                     fontSize: "1.5rem",
                     marginRight: "15px",
                     lineHeight: "1.25",

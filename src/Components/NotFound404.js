@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Icon";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -14,8 +14,6 @@ export function NotFound404() {
   const theme = useTheme();
   const location = useLocation();
 
-  console.log(location);
-
   return (
     <Container maxWidth="lg">
       <Grid
@@ -27,13 +25,11 @@ export function NotFound404() {
         }}
       >
         <Grid item md={9.5} sm={9} xs={9}>
-          <div className="logo">
-            <Link to="/home" style={{ display: "flex" }}>
+          <div style={{ display: "flex" }}>
+            <Link to="/home" style={{ flexShrink: 1 }}>
               <EdwardMLLogo />
             </Link>
           </div>
-
-          <div></div>
         </Grid>
         <Grid
           item
@@ -44,20 +40,18 @@ export function NotFound404() {
           sx={{ display: "flex", justifyContent: "right" }}
         >
           <Link to="/home" style={{ width: "100%" }}>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ fontSize: "0.875rem" }}
-            >
-              <House size={24} style={{ marginRight: "10px" }} /> Home
+            <Button variant="contained" size="large">
+              <House size={20} style={{ marginRight: "4px" }} />
+              Home
             </Button>
           </Link>
         </Grid>
       </Grid>
       <Typography
+        variant="h1"
         sx={{
           textAlign: "center",
-          fontFamily: "Montserrat",
+
           fontSize: {
             sm: "8rem",
             xs: "5rem",
@@ -67,9 +61,9 @@ export function NotFound404() {
         404
       </Typography>
       <Typography
+        variant="h6"
         sx={{
           textAlign: "center",
-          fontFamily: "MontserratBold",
           fontSize: {
             sm: "2.5rem",
             xs: "1.75rem",
@@ -115,9 +109,10 @@ export function NotFound404() {
       </Grid>
 
       <Typography
+        variant="h6"
         sx={{
           textAlign: "center",
-          fontFamily: "MontserratBold",
+
           fontSize: {
             sm: "2.5rem",
             xs: "1.75rem",

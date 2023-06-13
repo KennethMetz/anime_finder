@@ -1,6 +1,7 @@
 import logo from "../Styles/images/logo.svg";
 import useTheme from "@mui/material/styles/useTheme";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export default function EdwardMLLogo() {
   const theme = useTheme();
@@ -13,27 +14,27 @@ export default function EdwardMLLogo() {
         style={{ width: "35px", aspectRatio: "35/63.19" }}
       />
       <Box component="div" sx={{ display: { xs: "none", sm: "flex" } }}>
-        <h2
+        <Typography
+          variant="h6"
           className="appName"
           style={{
             color: theme.palette.text.primary,
             paddingLeft: "10px",
-            fontFamily: "montserratBold",
             fontSize: "1.25rem",
           }}
         >
           Edward
-        </h2>
-        <h2
+        </Typography>
+        <Typography
+          variant="h6"
           className="appName"
           style={{
             color: theme.palette.primary.main,
-            fontFamily: "montserratBold",
             fontSize: "1.25rem",
           }}
         >
           ML
-        </h2>
+        </Typography>
       </Box>
     </div>
   );

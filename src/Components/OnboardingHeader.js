@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import useTheme from "@mui/material/styles/useTheme";
 import { Link } from "react-router-dom";
 import logo from "../Styles/images/logo.svg";
+import EdwardMLLogo from "./EdwardMLLogo";
 
 export default function OnboardingHeader() {
   const theme = useTheme();
@@ -26,34 +27,11 @@ export default function OnboardingHeader() {
         }}
       >
         <Grid item xs={9}>
-          <div className="logo" style={{ height: "68px" }}>
-            <Link to="/" style={{ display: "flex" }}>
-              <img src={logo} alt="" style={{ width: "35px" }} />
-              <h2
-                className="appName"
-                style={{
-                  color: theme.palette.text.primary,
-                  paddingLeft: "10px",
-                  fontFamily: "montserratBold",
-                  fontSize: "1.25rem",
-                }}
-              >
-                Edward
-              </h2>
-              <h2
-                className="appName"
-                style={{
-                  color: theme.palette.primary.main,
-                  fontFamily: "montserratBold",
-                  fontSize: "1.25rem",
-                }}
-              >
-                ML
-              </h2>
+          <div style={{ display: "flex" }}>
+            <Link to="/" style={{ flexShrink: 1 }}>
+              <EdwardMLLogo />
             </Link>
           </div>
-
-          <div></div>
         </Grid>
         <Grid
           item

@@ -16,14 +16,8 @@
 }
 
 @font-face {
-  font-family: montserrat;
+  font-family: montserratBlack;
   src: url(./Montserrat-Black.woff) format("woff");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: montserratExtraBold;
-  src: url(./Montserrat-ExtraBold.woff) format("woff");
   font-display: swap;
 }
 
