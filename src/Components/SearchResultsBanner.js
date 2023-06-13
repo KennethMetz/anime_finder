@@ -1,4 +1,5 @@
-import { darken, lighten, useTheme } from "@mui/material";
+import { darken, lighten } from "@mui/system/colorManipulator";
+import useTheme from "@mui/material/styles/useTheme";
 import Box from "@mui/material/Box";
 
 export default function SearchResultsBanner({ text }) {

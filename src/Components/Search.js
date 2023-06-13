@@ -50,6 +50,7 @@ export default function Search() {
     setSearch(location.state);
   }, [location]);
 
+  // Locates where to place the "USERS" banner
   useEffect(() => {
     setIndexOfUsers(undefined);
     for (let i = 0; i < searchResults.length; i++) {

@@ -29,7 +29,6 @@ export function useAPISearch(inputValue, itemsReturned) {
       await handleErrors(response);
       responseJson = await response.json();
       queryResults = [...queryResults, ...responseJson.items];
-      // Populate avatars so autocomplete can display them
       return queryResults;
     },
     staleTime: fiveMinutesMs,

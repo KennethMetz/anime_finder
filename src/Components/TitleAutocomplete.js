@@ -12,7 +12,8 @@ import { MagnifyingGlass } from "phosphor-react";
 import debounce from "@mui/material/utils/debounce";
 import CircularProgress from "@mui/material/CircularProgress";
 import RenderedOptions from "./TitleAutocompleteOptions";
-import { darken, lighten, styled } from "@mui/material"; //TO:DO FIND THESE PACKAGES AND LOAD THEM INDIVIDUALLY
+import { darken, lighten } from "@mui/system/colorManipulator";
+import styled from "@mui/material/styles/styled";
 
 export default function TitleAutocomplete({ search, setShowSearch }) {
   const navigate = useNavigate();
