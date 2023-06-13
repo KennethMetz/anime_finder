@@ -16,7 +16,7 @@ import {
   PopulateFromFirestore,
   SaveToFirestore,
 } from "../Components/Firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default function useAuthActions() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -30,9 +30,14 @@ export default function useAuthActions() {
   ) {
     const user = userCredential.user;
 
+    const userDocRef = doc(db, "users", user.uid);
+
+    const existingUserDoc = await getDoc(userDocRef);
+    const userDocAlreadyExists = existingUserDoc.exists;
+
     // Always write auth info to /users.
     await setDoc(
-      doc(db, "users", user.uid),
+      userDocRef,
       {
         uid: user.uid,
         authProvider: authProvider,
@@ -41,8 +46,8 @@ export default function useAuthActions() {
       { merge: true }
     );
 
-    // If this is registration, write onboarding LocalUser to /users.
-    if (isRegistration) {
+    // If this is a new registration, write onboarding LocalUser to /users.
+    if (isRegistration && !userDocAlreadyExists) {
       // Set initial display name first.
       const newLocalUser = { ...localUser };
       newLocalUser.name = displayNameOverride ?? user.displayName;
