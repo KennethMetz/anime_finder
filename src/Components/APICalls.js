@@ -4,16 +4,33 @@ const fiveMinutesMs = 1000 * 60 * 5;
 
 const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
 
-export function useAPISearch(inputValue) {
+export function useAPISearch(inputValue, smallBatch) {
+  let queryResults = [];
   return useQuery({
     queryKey: ["search:" + inputValue],
     queryFn: async () => {
-      let response = await fetch(`${apiUrl}/anime/search?query=${inputValue}`, {
-        mode: "cors",
-      });
+      // Searches through anime titles
+      let response = await fetch(
+        `${apiUrl}/anime/search?query=${inputValue}&page_size=6`,
+        {
+          mode: "cors",
+        }
+      );
       await handleErrors(response);
       let responseJson = await response.json();
-      return responseJson.items ?? [];
+      queryResults = [...responseJson.items];
+      // Searches through user names
+      response = await fetch(
+        `${apiUrl}/profile/search?query=${inputValue}&page_size=6`,
+        {
+          mode: "cors",
+        }
+      );
+      await handleErrors(response);
+      responseJson = await response.json();
+      queryResults = [...queryResults, ...responseJson.items];
+      // Populate avatars so autocomplete can display them
+      return queryResults;
     },
     staleTime: fiveMinutesMs,
     placeholderData: [],

@@ -1,6 +1,6 @@
 import "../Styles/Search.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo, Fragment } from "react";
 import Box from "@mui/material/Box";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Divider from "@mui/material/Divider";
@@ -21,6 +21,10 @@ import { useAPISearch } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
 import SearchGhost from "./SearchGhost";
 import HandleDialog from "./HandleDialog";
+import { getAvatarSrc } from "./Avatars";
+import SearchAvatars from "./SearchAvatars";
+import { darken, lighten } from "@mui/material";
+import SearchResultsBanner from "./SearchResultsBanner";
 
 export default function Search() {
   const location = useLocation();
@@ -38,6 +42,19 @@ export default function Search() {
     loading: searchLoading,
     error: apiError,
   } = useAPISearch(search);
+
+  const avatarSrc = useMemo((item) => getAvatarSrc(item?.avatar));
+
+  const [indexOfUsers, setIndexOfUsers] = useState();
+
+  useEffect(() => {
+    for (let i = 0; i < searchResults.length; i++) {
+      if (searchResults[i].uid) {
+        setIndexOfUsers(i);
+        return;
+      }
+    }
+  }, [searchResults]);
 
   useEffect(() => {
     setSearch(location.state);
@@ -76,30 +93,41 @@ export default function Search() {
           <SearchGhost />
         ) : searchResults?.length > 0 ? (
           <div className="column">
+            {searchResults[0].id && <SearchResultsBanner text={"TITLES"} />}
             {searchResults.map((item, index) => (
-              <ListItemButton
-                dense
-                onClick={() => {
-                  navigate(`/anime/${item.id}`, { state: item });
-                }}
-                key={index}
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    variant="square"
-                    alt={item.display_name}
-                    src={item.image_large}
-                    sx={{ height: "56px", borderRadius: "8px" }}
-                  ></Avatar>
-                </ListItemAvatar>
+              <Fragment>
+                {index === indexOfUsers && (
+                  <SearchResultsBanner text={"USERS"} />
+                )}
 
-                <ListItemText
-                  primary={item.display_name}
-                  primaryTypographyProps={{
-                    fontWeight: 600,
+                <ListItemButton
+                  dense
+                  onClick={() => {
+                    navigate(`/anime/${item.id}`, { state: item });
                   }}
-                />
-              </ListItemButton>
+                  key={index}
+                >
+                  <ListItemAvatar>
+                    {item.id && (
+                      <Avatar
+                        variant="square"
+                        alt={item.display_name}
+                        src={item.image_large}
+                        sx={{ height: "56px", borderRadius: "8px" }}
+                      ></Avatar>
+                    )}
+                    {item.uid && <SearchAvatars item={item} />}
+                  </ListItemAvatar>
+
+                  <ListItemText
+                    primary={item.display_name ?? item.name}
+                    primaryTypographyProps={{
+                      fontWeight: 600,
+                    }}
+                    secondary={item.uid ? `@${item.handle}` : null}
+                  />
+                </ListItemButton>
+              </Fragment>
             ))}
           </div>
         ) : (
