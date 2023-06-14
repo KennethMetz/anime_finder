@@ -41,7 +41,7 @@ export default function ReviewForm({
   let [rating, setRating] = useState(null);
   let [existingReview, setExistingReview] = useState(false);
 
-  let edited = false;
+  let [edited, setEdited] = useState(false);
 
   const typeSingular = type === "comments" ? "comment" : "review";
 
@@ -121,8 +121,8 @@ export default function ReviewForm({
 
   useEffect(() => {
     populateForm();
-    if (localUser[type].includes(docId)) edited = true;
-  }, []);
+    if (localUser[type].includes(docId)) setEdited(true);
+  }, [localUser]);
 
   return (
     <Paper

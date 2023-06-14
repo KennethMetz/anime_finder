@@ -301,7 +301,7 @@ function ConvertDate({ item }) {
   const time = format(fromUnixTime(item.time.seconds), "MMMM dd, yyyy");
   return (
     <Typography sx={{ color: "grey", fontSize: "0.9rem" }}>
-      {item?.edited ? "Edited on" : ""} {time.toString()}
+      {item.edited.edited ? "Edited on" : ""} {time.toString()}
     </Typography>
   );
 }
