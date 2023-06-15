@@ -38,7 +38,7 @@ export default function DropMenu() {
     () => getAvatarSrc(localUser?.avatar),
     [localUser?.avatar]
   );
-  console.log(localUser);
+
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
