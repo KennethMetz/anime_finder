@@ -63,7 +63,9 @@ export default function HandleDialog({ user }) {
       await ClaimHandle(normalizedHandle, user.uid);
       newLocalUser = { ...localUser };
       newLocalUser.handle = handle;
-      if (!user.name) newLocalUser.name = handle;
+      // Make the display name match their handle only if they don't currently have a custom name
+      if (localUser.name === "Guest" || localUser.name === "")
+        newLocalUser.name = handle;
       SaveToFirestore(user, newLocalUser);
       setLocalUser(newLocalUser);
     } catch (error) {
@@ -134,6 +136,7 @@ export default function HandleDialog({ user }) {
       }}
     >
       <DialogTitle
+        variant={"h5"}
         sx={{
           fontWeight: 700,
           fontSize: { xs: "1.8rem", fiveHundred: "2rem" },
@@ -147,7 +150,7 @@ export default function HandleDialog({ user }) {
       <DialogContent
         sx={{ pl: { xs: 3, fiveHundred: 5 }, pr: { xs: 3, fiveHundred: 5 } }}
       >
-        <DialogContentText>
+        <DialogContentText component={"div"}>
           <li type="disc">Handle names are permanent</li>
           <li type="disc">Valid characters are:</li>
           <Box sx={{ ml: 5 }}>
