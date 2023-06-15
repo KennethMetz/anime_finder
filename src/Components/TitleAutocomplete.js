@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 import { MagnifyingGlass } from "phosphor-react";
 import debounce from "@mui/material/utils/debounce";
 import CircularProgress from "@mui/material/CircularProgress";
-import RenderedOptions from "./TitleAutocompleteOptions";
+import TitleAutocompleteOption from "./TitleAutocompleteOption";
 import { darken, lighten } from "@mui/system/colorManipulator";
 import styled from "@mui/material/styles/styled";
 
@@ -109,7 +109,7 @@ export default function TitleAutocomplete({ search, setShowSearch }) {
         loadingText="Loading..."
         getOptionLabel={(option) => option.display_name ?? option.name}
         renderOption={(props, options) => (
-          <RenderedOptions props={props} options={options} />
+          <TitleAutocompleteOption props={props} options={options} />
         )}
         sx={{ width: "450px", height: "46px" }}
         renderInput={(params) => (

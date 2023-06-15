@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { getAvatarSrc } from "./Avatars";
 import ListItemText from "@mui/material/ListItemText";
 
-export default function RenderedOptions({ props, options }) {
+export default function TitleAutocompleteOption({ props, options }) {
   const avatarSrc = useMemo(
     () => getAvatarSrc(options?.avatar),
     [options?.avatar]

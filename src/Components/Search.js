@@ -44,21 +44,16 @@ export default function Search() {
 
   const loadingSearch = searchLoading || searchFetching;
 
-  const [indexOfUsers, setIndexOfUsers] = useState();
-
   useEffect(() => {
     setSearch(location.state);
   }, [location]);
 
   // Locates where to place the "USERS" banner
-  useEffect(() => {
-    setIndexOfUsers(undefined);
+  const indexOfUsers = useMemo(() => {
     for (let i = 0; i < searchResults.length; i++) {
-      if (searchResults[i].uid) {
-        setIndexOfUsers(i);
-        return;
-      }
+      if (searchResults[i].uid) return i;
     }
+    return undefined;
   }, [searchResults]);
 
   useEffect(() => {
