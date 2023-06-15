@@ -1,6 +1,6 @@
 import "../Styles/Search.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo, Fragment } from "react";
 import Box from "@mui/material/Box";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Divider from "@mui/material/Divider";
@@ -21,6 +21,8 @@ import { useAPISearch } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
 import SearchGhost from "./SearchGhost";
 import HandleDialog from "./HandleDialog";
+import SearchAvatars from "./SearchAvatars";
+import SearchResultsBanner from "./SearchResultsBanner";
 
 export default function Search() {
   const location = useLocation();
@@ -30,18 +32,29 @@ export default function Search() {
   const [user, loading] = useAuthState(auth);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
-  let [search, setSearch] = useState("");
+  let [search, setSearch] = useState(location.state ?? null);
 
   // To-Do: Handle loading/error states from API call
   const {
     data: searchResults,
-    loading: searchLoading,
+    isLoading: searchLoading,
+    isFetching: searchFetching,
     error: apiError,
-  } = useAPISearch(search);
+  } = useAPISearch(search, 10);
+
+  const loadingSearch = searchLoading || searchFetching;
 
   useEffect(() => {
     setSearch(location.state);
   }, [location]);
+
+  // Locates where to place the "USERS" banner
+  const indexOfUsers = useMemo(() => {
+    for (let i = 0; i < searchResults.length; i++) {
+      if (searchResults[i].uid) return i;
+    }
+    return undefined;
+  }, [searchResults]);
 
   useEffect(() => {
     if (loading) {
@@ -69,40 +82,53 @@ export default function Search() {
           Search Results:
         </Typography>
         <Divider></Divider>
-
         <div className="gap" style={{ marginTop: "30px" }}></div>
-
-        {!searchResults ? (
-          <SearchGhost />
-        ) : searchResults?.length > 0 ? (
+        {/****** GHOST CARD LOADING STATE *******/}
+        {(!searchResults || loadingSearch) && <SearchGhost />}{" "}
+        {/****** SEARCHES WITH >0 RESULTS *******/}
+        {searchResults?.length > 0 && (
           <div className="column">
+            {searchResults[0].id && <SearchResultsBanner text={"TITLES"} />}
             {searchResults.map((item, index) => (
-              <ListItemButton
-                dense
-                onClick={() => {
-                  navigate(`/anime/${item.id}`, { state: item });
-                }}
-                key={index}
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    variant="square"
-                    alt={item.display_name}
-                    src={item.image_large}
-                    sx={{ height: "56px", borderRadius: "8px" }}
-                  ></Avatar>
-                </ListItemAvatar>
+              <Fragment key={item.uid || item.id}>
+                {index === indexOfUsers && (
+                  <SearchResultsBanner text={"USERS"} />
+                )}
 
-                <ListItemText
-                  primary={item.display_name}
-                  primaryTypographyProps={{
-                    fontWeight: 600,
+                <ListItemButton
+                  dense
+                  onClick={() => {
+                    item.id
+                      ? navigate(`/anime/${item.id}`, { state: item })
+                      : navigate(`/profile/${item.uid}`, { state: item });
                   }}
-                />
-              </ListItemButton>
+                >
+                  <ListItemAvatar>
+                    {item.id && (
+                      <Avatar
+                        variant="square"
+                        alt={item.display_name}
+                        src={item.image_large}
+                        sx={{ height: "56px", borderRadius: "8px" }}
+                      ></Avatar>
+                    )}
+                    {item.uid && <SearchAvatars item={item} />}
+                  </ListItemAvatar>
+
+                  <ListItemText
+                    primary={item.display_name ?? item.name}
+                    primaryTypographyProps={{
+                      fontWeight: 600,
+                    }}
+                    secondary={item.uid ? `@${item.handle}` : null}
+                  />
+                </ListItemButton>
+              </Fragment>
             ))}
           </div>
-        ) : (
+        )}
+        {/******* SEARCHES WITH 0 RESULTS *******/}
+        {searchResults.length === 0 && !loadingSearch && (
           <div
             style={{
               display: "flex",
