@@ -205,7 +205,7 @@ export default function DropMenu() {
                     </ListItemIcon>
                     Your Profile
                   </MenuItem>
-                  {localUser?.name === "guest" ? (
+                  {localUser?.authProvider === "anonymous" && (
                     <MenuItem
                       onClick={(e) => {
                         sendToRegister(e);
@@ -216,8 +216,6 @@ export default function DropMenu() {
                       </ListItemIcon>
                       Save Account
                     </MenuItem>
-                  ) : (
-                    ""
                   )}
 
                   {user ? (
