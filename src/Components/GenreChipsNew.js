@@ -17,7 +17,7 @@ const genres = [
   "Sports",
 ];
 
-export default function ChipShelf({ selectedGenre, setSelectedGenre }) {
+export default function GenreChipsNew({ selectedGenre, setSelectedGenre }) {
   const onClick = (genre) => {
     if (selectedGenre === genre) {
       setSelectedGenre("");

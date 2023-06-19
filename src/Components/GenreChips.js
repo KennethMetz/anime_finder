@@ -1,6 +1,6 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
 import GenreChipsClassic from "./GenreChipsClassic";
-import ChipShelf from "./ChipShelf";
+import GenreChipsNew from "./GenreChipsNew";
 
 export default function GenreChips({ selectedGenre, setSelectedGenre }) {
   const cannotHover = useMediaQuery("(hover: none)");
@@ -10,7 +10,7 @@ export default function GenreChips({ selectedGenre, setSelectedGenre }) {
 
   if (isTouchscreen) {
     return (
-      <ChipShelf
+      <GenreChipsNew
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
       />
