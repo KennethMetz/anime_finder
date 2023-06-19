@@ -31,6 +31,7 @@ export default function ReviewForm({
   setLastVisible,
   setSeeMore,
   type,
+  reviewCount,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -84,7 +85,7 @@ export default function ReviewForm({
     setShowReviewForm(false);
   };
 
-  const saveReview = () => {
+  const saveReview = async () => {
     handleSubmit();
     let docIdString = docId.toString();
     if (!errors.reviewTitle && !errors.review) {
@@ -103,8 +104,14 @@ export default function ReviewForm({
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
-      SaveReviewToFirestore(userID, userReview, docIdString, type);
-      GetPaginatedReviewsFromFirestore(
+      await SaveReviewToFirestore(
+        userID,
+        userReview,
+        docIdString,
+        type,
+        reviewCount
+      );
+      await GetPaginatedReviewsFromFirestore(
         docId,
         reviews,
         setReviews,
