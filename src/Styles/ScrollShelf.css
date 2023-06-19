@@ -1,0 +1,38 @@
+.scrollWrapper {
+  margin-left: -16px;
+  margin-right: -16px;
+}
+
+.scrollContainer {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  padding-left: 16px;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (min-width: 600px)
+{
+  .scrollWrapper {
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+  
+  .scrollContainer {
+    padding-left: 24px;
+  }
+}
+
+@media screen and (min-width: 1200px)
+{
+  .scrollWrapper {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .scrollContainer {
+    padding-left: 0;
+  }
+}
