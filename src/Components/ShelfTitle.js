@@ -13,7 +13,7 @@ export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
         top: "68px",
         backgroundColor: theme.palette.background.default,
         zIndex: "3",
-        width: "100vw",
+        // width: "100vw",
       }}
     >
       <Container maxWidth="lg">
