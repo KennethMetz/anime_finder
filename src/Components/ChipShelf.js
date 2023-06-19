@@ -27,26 +27,27 @@ export default function ChipShelf({ selectedGenre, setSelectedGenre }) {
   };
 
   return (
-    <Box sx={{ mx: { xs: -2, sm: -3, lg: 0 } }}>
-      <ScrollMenu scrollContainerClassName={"scrollContainer"}>
-        {genres.map((genre) => (
-          <Chip
-            key={genre}
-            itemId={genre}
-            sx={{
-              borderRadius: "16px",
-              mr: 1,
-              my: 1,
-            }}
-            variant={genre === selectedGenre ? "filled" : "outlined"}
-            clickable={true}
-            label={genre}
-            onClick={() => onClick(genre)}
-          >
-            {genre}
-          </Chip>
-        ))}
-      </ScrollMenu>
-    </Box>
+    <ScrollMenu
+      wrapperClassName={"scrollWrapper"}
+      scrollContainerClassName={"scrollContainer"}
+    >
+      {genres.map((genre) => (
+        <Chip
+          key={genre}
+          itemId={genre}
+          sx={{
+            borderRadius: "16px",
+            mr: 1,
+            my: 1,
+          }}
+          variant={genre === selectedGenre ? "filled" : "outlined"}
+          clickable={true}
+          label={genre}
+          onClick={() => onClick(genre)}
+        >
+          {genre}
+        </Chip>
+      ))}
+    </ScrollMenu>
   );
 }
