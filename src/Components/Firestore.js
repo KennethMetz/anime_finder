@@ -13,6 +13,7 @@ import {
   endBefore,
   where,
   runTransaction,
+  getCountFromServer,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -76,11 +77,23 @@ export async function SaveToFirestore(user, localUser) {
 
 // Handle "animeData" collection on firestore
 
-export async function SaveReviewToFirestore(userID, userReview, animeID, type) {
+export async function SaveReviewToFirestore(
+  userID,
+  userReview,
+  docIdString,
+  type,
+  reviewCount
+) {
   let collectionName = type === "reviews" ? "animeData" : "watchlistData";
-  let reviewRef = doc(db, collectionName, animeID, "reviews", userID);
   try {
-    await setDoc(reviewRef, userReview, { merge: true });
+    let subdocumentRef = doc(
+      db,
+      collectionName,
+      docIdString,
+      "reviews",
+      userID
+    );
+    await setDoc(subdocumentRef, userReview, { merge: true });
   } catch (error) {
     console.error("Error writing review data to Firestore", error);
   }
@@ -135,7 +148,8 @@ export async function GetPaginatedReviewsFromFirestore(
   setLastVisible,
   seeMore,
   setSeeMore,
-  type
+  type,
+  setReviewCount
 ) {
   let collectionName = type === "reviews" ? "animeData" : "watchlistData";
   try {
@@ -157,6 +171,7 @@ export async function GetPaginatedReviewsFromFirestore(
       );
     }
     const documentSnapshots = await getDocs(collectionQuery);
+    // To-Do: Prevent seeMore button from showing up when all results are showing (ie. if there are 4, 8, 12...results)
     if (documentSnapshots._snapshot.docChanges.length < 4) setSeeMore(false);
     else if (seeMore === false) setSeeMore(true);
     let temp = [];
@@ -167,7 +182,31 @@ export async function GetPaginatedReviewsFromFirestore(
     setReviews(temp);
     setLastVisible(documentSnapshots.docs[documentSnapshots.docs.length - 1]);
   } catch (error) {
-    console.error("Error loading data from Firebase Database", error);
+    console.error("Error loading data from Firebase Database: ", error);
+  }
+}
+
+export async function GetReviewCount(docId, type, setReviewCount) {
+  if (!docId || !type) return;
+  let collectionName = type === "reviews" ? "animeData" : "watchlistData";
+  let docIdString = docId.toString();
+  try {
+    let collectionRef = collection(db, collectionName, docIdString, "reviews");
+    let q = query(collectionRef);
+    // Get count of docs - NOT WORKING CORRECTLY FOR COMMENTS
+    const countSnapshot = await getCountFromServer(q);
+    let numOfReviews = countSnapshot.data().count;
+    setReviewCount(numOfReviews);
+    console.log(numOfReviews);
+    // Get docs - works fine and proves the docs ARE there!!
+    let docSnapshot = await getDocs(q);
+    let docs = [];
+    docSnapshot.forEach((x) => {
+      docs.push(x.data());
+    });
+    console.log(docs);
+  } catch (error) {
+    console.error("Error getting review count from Firebase Database: ", error);
   }
 }
 

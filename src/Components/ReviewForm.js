@@ -36,7 +36,7 @@ export default function ReviewForm({
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
-
+  console.log(localUser);
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
