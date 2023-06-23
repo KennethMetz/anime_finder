@@ -8,12 +8,13 @@ import useTheme from "@mui/material/styles/useTheme";
 
 import { useState } from "react";
 import TitleAutocomplete from "./TitleAutocomplete";
-import { MagnifyingGlass, House, User } from "phosphor-react";
+import { MagnifyingGlass, House, User, Bell } from "phosphor-react";
 import DropMenu from "./DropMenu";
 import EdwardMLLogo from "./EdwardMLLogo";
 import HeaderTab from "./HeaderTab";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
+import NotificationDropMenu from "./NotificationDropMenu";
 
 function Header() {
   const [user] = useAuthState(auth);
@@ -96,8 +97,13 @@ function Header() {
                 sm={1.25}
                 md={2.5}
                 textAlign="right"
-                sx={{ display: "flex", justifyContent: "right" }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "center",
+                }}
               >
+                <NotificationDropMenu />
                 <DropMenu />
               </Grid>
             </>

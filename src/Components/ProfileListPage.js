@@ -217,6 +217,7 @@ export default function ProfileListPage() {
             emoji={<HandsClapping size={24} />}
             reaction="applause"
             type="list"
+            ownerId={userId}
           ></EmojiReactionChip>
           <EmojiReactionChip
             docId={`${userId}+${listId}`}
@@ -225,6 +226,7 @@ export default function ProfileListPage() {
             emoji={<Heart size={24} />}
             reaction="heart"
             type="list"
+            ownerId={userId}
           ></EmojiReactionChip>
           <EmojiReactionChip
             docId={`${userId}+${listId}`}
@@ -233,6 +235,7 @@ export default function ProfileListPage() {
             emoji={<Trash size={24} />}
             reaction="trash"
             type="list"
+            ownerId={userId}
           ></EmojiReactionChip>
         </Grid>
         <Grid
@@ -312,6 +315,8 @@ export default function ProfileListPage() {
         user={user}
         docId={`${userId}+${listId}`}
         type={"comments"}
+        listOwnerId={userId}
+        listId={listId}
       />
     </Box>
   );

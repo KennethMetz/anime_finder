@@ -6,9 +6,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import {
   SaveListReactionsToFirestore,
+  SaveNotification,
   SaveReviewToFirestore,
 } from "./Firestore";
 import Skeleton from "@mui/material/Skeleton";
+import { useParams } from "react-router-dom";
 
 export default function EmojiReactionChip({
   docId,
@@ -25,10 +27,28 @@ export default function EmojiReactionChip({
   let [selected, setSelected] = useState();
   const theme = useTheme();
 
+  const params = useParams();
+  const ownerId = params.userId;
+  const listId = params.listId;
+
   useEffect(() => {
     if (item?.emojis[reaction]?.includes(user.uid)) setSelected(true);
     else setSelected(false);
   }, [item]);
+
+  const notification = {
+    interactorId: user.uid, // Person sending the emoji
+    action: reaction,
+    docId: docId,
+    docType: type,
+    time: new Date(),
+    read: false,
+    listId: listId ?? null,
+    listOwnerId: ownerId ?? null,
+    commentOwnerId: item?.uid ?? null,
+  };
+
+  // To-Do: Prevent repeated clicking of a reaction from filling up someone's notification stack.
 
   function reactToReview() {
     let docIdString = docId.toString();
@@ -40,6 +60,7 @@ export default function EmojiReactionChip({
       setSelected(true);
       let newUserReview = { ...temp[index] };
       SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
+      if (reaction !== "trash") SaveNotification(notification, item.uid);
     } else if (selected) {
       let temp = [...reviews];
       let indexInArray = temp[index].emojis[reaction].indexOf(user.uid);
@@ -58,6 +79,7 @@ export default function EmojiReactionChip({
       setItem(temp);
       setSelected(true);
       SaveListReactionsToFirestore(docId, temp);
+      if (reaction !== "trash") SaveNotification(notification, ownerId);
     } else if (selected) {
       let temp = { ...item };
       let indexInArray = temp.emojis[reaction].indexOf(user.uid);

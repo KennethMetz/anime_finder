@@ -13,7 +13,13 @@ import ReviewFilterDropMenu from "./ReviewFilterDropMenu";
 import ReviewForm from "./ReviewForm";
 import Review from "./Review";
 
-export default function ReviewContainer({ user, docId, type }) {
+export default function ReviewContainer({
+  user,
+  docId,
+  type,
+  listOwnerId,
+  listId,
+}) {
   const location = useLocation();
 
   const [reviews, setReviews] = useState(null);
@@ -128,13 +134,15 @@ export default function ReviewContainer({ user, docId, type }) {
           setLastVisible={setLastVisible}
           setSeeMore={setSeeMore}
           type={type}
+          listOwnerId={listOwnerId}
+          listId={listId}
         />
       )}
 
       {reviews?.map((item, index) => {
         return (
           <Review
-            key={item.uid}
+            key={`${item.uid}+${item.time.seconds}`}
             item={item}
             index={index}
             docId={docId}

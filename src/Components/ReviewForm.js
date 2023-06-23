@@ -16,6 +16,7 @@ import { Star } from "phosphor-react";
 import {
   GetPaginatedReviewsFromFirestore,
   PopulateReviewsFromFirestore,
+  SaveNotification,
   SaveReviewToFirestore,
   SaveToFirestore,
   setLastVisible,
@@ -31,6 +32,8 @@ export default function ReviewForm({
   setLastVisible,
   setSeeMore,
   type,
+  listOwnerId,
+  listId,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -83,6 +86,17 @@ export default function ReviewForm({
   const cancelReview = () => {
     setShowReviewForm(false);
   };
+  const notification = {
+    interactorId: user.uid, // Person writing the review
+    action: listOwnerId ? "comment" : "review",
+    docId: docId,
+    docType: null,
+    time: new Date(),
+    read: false,
+    listId: listId ?? null,
+    listOwnerId: listOwnerId ?? null,
+    commentOwnerId: null,
+  };
 
   const saveReview = () => {
     handleSubmit();
@@ -104,6 +118,8 @@ export default function ReviewForm({
       }
       const userID = user.uid.toString();
       SaveReviewToFirestore(userID, userReview, docIdString, type);
+      SaveNotification(notification, listOwnerId);
+
       GetPaginatedReviewsFromFirestore(
         docId,
         reviews,

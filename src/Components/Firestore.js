@@ -13,6 +13,8 @@ import {
   endBefore,
   where,
   runTransaction,
+  arrayUnion,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -221,4 +223,18 @@ export async function ClaimHandle(handle, userId) {
     transaction.set(handleDocRef, { uid: userId, handle: handle });
     transaction.update(userDocRef, { handle: handle });
   });
+}
+
+export async function SaveNotification(notification, IdToNotify) {
+  let ref = doc(db, "notifications", IdToNotify);
+  try {
+    // TO DO: Either check if this notification already exists, or add a DeleteNotification if someone "unlikes" or deletes their comment
+    await setDoc(
+      ref,
+      { notificationStack: arrayUnion(notification) },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error("Error writing review data to Firestore", error);
+  }
 }
