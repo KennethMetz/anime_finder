@@ -71,8 +71,7 @@ export default function ReviewContainer({ user, docId, type }) {
           }}
         >
           {type === "comments" ? "Comments" : "Reviews"}
-          {/* CHANGE BACK ONCE DONE DEBUGGING!!!!!!!!!!!!!!!! */}
-          {reviews?.length >= 0 && (
+          {reviews?.length > 2 && (
             <Typography
               sx={{
                 marginL: "10px",
@@ -115,15 +114,13 @@ export default function ReviewContainer({ user, docId, type }) {
             </Tooltip>
           )}
         </Typography>
-        {reviews?.length > 1 ? (
+        {reviews?.length > 1 && (
           <div style={{ ...subheadStyle }}>
             <ReviewFilterDropMenu
               setLastVisible={setLastVisible}
               setSortOption={setSortOption}
             />
           </div>
-        ) : (
-          ""
         )}
       </div>
 

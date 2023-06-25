@@ -193,18 +193,9 @@ export async function GetReviewCount(docId, type, setReviewCount) {
   try {
     let collectionRef = collection(db, collectionName, docIdString, "reviews");
     let q = query(collectionRef);
-    // Get count of docs - NOT WORKING CORRECTLY FOR COMMENTS
     const countSnapshot = await getCountFromServer(q);
     let numOfReviews = countSnapshot.data().count;
     setReviewCount(numOfReviews);
-    console.log(numOfReviews);
-    // Get docs - works fine and proves the docs ARE there!!
-    let docSnapshot = await getDocs(q);
-    let docs = [];
-    docSnapshot.forEach((x) => {
-      docs.push(x.data());
-    });
-    console.log(docs);
   } catch (error) {
     console.error("Error getting review count from Firebase Database: ", error);
   }
