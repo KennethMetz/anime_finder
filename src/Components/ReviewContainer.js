@@ -6,15 +6,17 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 
 import { CaretDown, Minus, Plus } from "phosphor-react";
-import { GetPaginatedReviewsFromFirestore } from "./Firestore";
-import { useEffect, useState } from "react";
+import { GetPaginatedReviewsFromFirestore, GetReviewCount } from "./Firestore";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReviewFilterDropMenu from "./ReviewFilterDropMenu";
 import ReviewForm from "./ReviewForm";
 import Review from "./Review";
+import { LocalUserContext } from "./LocalUserContext";
 
 export default function ReviewContainer({ user, docId, type }) {
   const location = useLocation();
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   const [reviews, setReviews] = useState(null);
 
@@ -23,6 +25,7 @@ export default function ReviewContainer({ user, docId, type }) {
   const [lastVisible, setLastVisible] = useState(null);
   const [seeMore, setSeeMore] = useState(true);
   const [sortOption, setSortOption] = useState(["time", "desc"]);
+  const [reviewCount, setReviewCount] = useState(undefined);
 
   const typeSingular = type === "comments" ? "comment" : "review";
 
@@ -44,6 +47,10 @@ export default function ReviewContainer({ user, docId, type }) {
       type
     );
   }, [location.pathname, docId, sortOption]);
+
+  useEffect(() => {
+    GetReviewCount(docId, type, setReviewCount);
+  }, [localUser.reviews, localUser.comments]);
 
   return (
     <Grid item xs={12}>
@@ -72,7 +79,7 @@ export default function ReviewContainer({ user, docId, type }) {
                 ml: 1,
               }}
             >
-              ({reviews?.length} total)
+              ({reviewCount} total)
             </Typography>
           )}
           {!showReviewForm ? (
@@ -107,15 +114,13 @@ export default function ReviewContainer({ user, docId, type }) {
             </Tooltip>
           )}
         </Typography>
-        {reviews?.length > 1 ? (
+        {reviews?.length > 1 && (
           <div style={{ ...subheadStyle }}>
             <ReviewFilterDropMenu
               setLastVisible={setLastVisible}
               setSortOption={setSortOption}
             />
           </div>
-        ) : (
-          ""
         )}
       </div>
 
@@ -128,6 +133,7 @@ export default function ReviewContainer({ user, docId, type }) {
           setLastVisible={setLastVisible}
           setSeeMore={setSeeMore}
           type={type}
+          reviewCount={reviewCount}
         />
       )}
 
