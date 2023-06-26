@@ -2,18 +2,8 @@ import "../Styles/Register.css";
 
 import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import {
-  auth,
-  linkWithEmailAndPassword,
-  linkWithGoogle,
-  linkWithTwitter,
-  logInAnon,
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-  signInWithTwitter,
-} from "./Firebase";
-import { SaveToFirestore } from "./Firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 
 import Container from "@mui/material/Container";
@@ -31,17 +21,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import BreathingLogo from "./BreathingLogo";
 import EdwardMLLogo from "./EdwardMLLogo";
+import useAuthActions from "../Hooks/useAuthActions";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [user, loading, error] = useAuthState(auth);
+  const authActions = useAuthActions();
   const navigate = useNavigate();
-  const location = useLocation();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const theme = useTheme();
-  const [emailError, setEmailError] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
   const [regLoadingEmail, setRegLoadingEmail] = useState(false);
@@ -89,12 +79,46 @@ export default function Register() {
     if (loading) return;
     //Registering users without any likes causes /home rendering to error out --> this prevents that.
     if (localUser["likes"]?.length === 0) navigate("/");
-    if (user && forwardToken) {
-      SaveToFirestore(user, localUser).then(() => {
-        navigate("/home");
-      });
-    }
   }, [user, loading, forwardToken]);
+
+  const handleRegister = async (provider) => {
+    try {
+      setRegisterError(null);
+      if (provider === "google") {
+        !user
+          ? await authActions.registerWithGoogle()
+          : await authActions.linkWithGoogle();
+      } else if (provider === "twitter") {
+        !user
+          ? await authActions.registerWithTwitter()
+          : await authActions.linkWithTwitter();
+      } else if (provider === "email") {
+        setRegLoadingEmail(true);
+        !user
+          ? await authActions.registerWithEmail(email, password)
+          : await authActions.linkWithEmail(email, password);
+      } else if (provider === "anonymous") {
+        setRegLoadingGuest(true);
+        await authActions.registerAnonymously();
+      } else {
+        throw new Error("Unknown registration provider");
+      }
+      navigate("/home");
+    } catch (error) {
+      console.error(error);
+      // Alert user their email address is already used in an account.
+      if (error["code"]?.search(/\bemail-already-in-use\b/) > -1) {
+        setRegisterError("*Email address has already been taken.");
+      } else {
+        setRegisterError(
+          "Ooops - there was an error registering.  Please try again!"
+        );
+      }
+    } finally {
+      setRegLoadingEmail(false);
+      setRegLoadingGuest(false);
+    }
+  };
 
   return (
     <div className="register">
@@ -146,14 +170,7 @@ export default function Register() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={() => {
-              if (!user) {
-                signInWithGoogle();
-                setForwardToken(true);
-              } else {
-                linkWithGoogle(setForwardToken);
-              }
-            }}
+            onClick={() => handleRegister("google")}
             startIcon={
               <Box
                 component="img"
@@ -191,14 +208,7 @@ export default function Register() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={() => {
-              if (!user) {
-                signInWithTwitter();
-                setForwardToken(true);
-              } else {
-                linkWithTwitter(setForwardToken);
-              }
-            }}
+            onClick={() => handleRegister("twitter")}
             startIcon={
               <TwitterIcon
                 sx={{
@@ -235,11 +245,7 @@ export default function Register() {
                 border: "3px #EF2727 solid",
               },
             }}
-            onClick={() => {
-              setRegLoadingGuest(true);
-              logInAnon();
-              setForwardToken(true);
-            }}
+            onClick={() => handleRegister("anonymous")}
             startIcon={
               regLoadingGuest ? (
                 ""
@@ -336,27 +342,7 @@ export default function Register() {
             sx={{
               width: "211px",
             }}
-            onClick={handleSubmit(() => {
-              setRegLoadingEmail(true);
-              if (!user) {
-                registerWithEmailAndPassword(
-                  name,
-                  email,
-                  password,
-                  setEmailError,
-                  setRegLoadingEmail
-                );
-                setForwardToken(true);
-              } else {
-                linkWithEmailAndPassword(
-                  setForwardToken,
-                  email,
-                  password,
-                  name,
-                  setRegLoadingEmail
-                );
-              }
-            })}
+            onClick={handleSubmit(() => handleRegister("email"))}
           >
             {regLoadingEmail ? (
               <BreathingLogo type={"smallButton"} />
@@ -375,9 +361,9 @@ export default function Register() {
               *Please resolve errors shown above.
             </Typography>
           )}
-          {emailError && (
+          {registerError && (
             <Typography sx={{ color: "error.main", fontWeight: 800 }}>
-              {emailError}
+              {registerError}
             </Typography>
           )}
           <Divider

@@ -13,11 +13,10 @@ export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
         top: "68px",
         backgroundColor: theme.palette.background.default,
         zIndex: "3",
-        width: "100vw",
       }}
     >
       <Container maxWidth="lg">
-        <Typography variant="h3" sx={{ marginBottom: "0.3em" }}>
+        <Typography variant="h3" sx={{ marginBottom: "0.125em" }}>
           {title}
         </Typography>
 
@@ -26,8 +25,6 @@ export default function ShelfTitle({ selectedGenre, setSelectedGenre, title }) {
           setSelectedGenre={setSelectedGenre}
         />
       </Container>
-
-      <div style={{ marginTop: "-15px", height: "1px" }}></div>
     </div>
   );
 }

@@ -32,19 +32,20 @@ export default function ReviewForm({
   setLastVisible,
   setSeeMore,
   type,
+  reviewCount,
   listOwnerId,
   listId,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
-
+  console.log(localUser);
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
   let [existingReview, setExistingReview] = useState(false);
 
-  let edited = false;
+  let [edited, setEdited] = useState(false);
 
   const typeSingular = type === "comments" ? "comment" : "review";
 
@@ -98,7 +99,7 @@ export default function ReviewForm({
     commentOwnerId: null,
   };
 
-  const saveReview = () => {
+  const saveReview = async () => {
     handleSubmit();
     let docIdString = docId.toString();
     if (!errors.reviewTitle && !errors.review) {
@@ -117,10 +118,16 @@ export default function ReviewForm({
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
-      SaveReviewToFirestore(userID, userReview, docIdString, type);
+      await SaveReviewToFirestore(
+        userID,
+        userReview,
+        docIdString,
+        type,
+        reviewCount
+      );
       SaveNotification(notification, listOwnerId);
 
-      GetPaginatedReviewsFromFirestore(
+      await GetPaginatedReviewsFromFirestore(
         docId,
         reviews,
         setReviews,
@@ -137,8 +144,8 @@ export default function ReviewForm({
 
   useEffect(() => {
     populateForm();
-    if (localUser[type].includes(docId)) edited = true;
-  }, []);
+    if (localUser[type].includes(docId)) setEdited(true);
+  }, [localUser]);
 
   return (
     <Paper

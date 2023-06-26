@@ -211,7 +211,7 @@ export default function ProfileListPage() {
           }}
         >
           <EmojiReactionChip
-            docId={`${userId}+${listId}`}
+            docId={`${userId}${listId}`}
             item={listRxns}
             setItem={setListRxns}
             emoji={<HandsClapping size={24} />}
@@ -220,7 +220,7 @@ export default function ProfileListPage() {
             ownerId={userId}
           ></EmojiReactionChip>
           <EmojiReactionChip
-            docId={`${userId}+${listId}`}
+            docId={`${userId}${listId}`}
             item={listRxns}
             setItem={setListRxns}
             emoji={<Heart size={24} />}
@@ -229,7 +229,7 @@ export default function ProfileListPage() {
             ownerId={userId}
           ></EmojiReactionChip>
           <EmojiReactionChip
-            docId={`${userId}+${listId}`}
+            docId={`${userId}${listId}`}
             item={listRxns}
             setItem={setListRxns}
             emoji={<Trash size={24} />}
@@ -313,7 +313,7 @@ export default function ProfileListPage() {
       {/* Comments */}
       <ReviewContainer
         user={user}
-        docId={`${userId}+${listId}`}
+        docId={`${userId}${listId}`}
         type={"comments"}
         listOwnerId={userId}
         listId={listId}
