@@ -41,9 +41,6 @@ export default function OnboardingButton({ disabled }) {
             sx={{
               minWidth: "211px",
             }}
-            onClick={(e) => {
-              SaveToFirestore(user, localUser);
-            }}
           >
             Let's Go!
           </Button>
