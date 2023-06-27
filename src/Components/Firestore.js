@@ -266,10 +266,26 @@ export async function SaveNotification(notification, IdToNotify) {
     "usersNotifications"
   );
   try {
-    // TO DO: Either check if this notification already exists, or add a DeleteNotification if someone "unlikes" or deletes their comment
     await addDoc(subcollectionRef, notification);
   } catch (error) {
     console.error("Error writing notifications to Firestore: ", error);
+  }
+}
+
+export async function DeleteNotification(notification, IdToUnnotify) {
+  try {
+    const d = query(
+      collection(db, "notifications", IdToUnnotify, "usersNotifications"),
+      where("interactorId", "==", notification.interactorId),
+      where("docId", "==", notification.docId),
+      where("action", "==", notification.action)
+    );
+    const docSnap = await getDocs(d);
+    docSnap.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+  } catch (error) {
+    console.error("Error deleting notification from Firestore: ", error);
   }
 }
 

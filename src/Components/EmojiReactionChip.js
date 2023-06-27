@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import {
+  DeleteNotification,
   SaveListReactionsToFirestore,
   SaveNotification,
   SaveReviewToFirestore,
@@ -49,7 +50,7 @@ export default function EmojiReactionChip({
     commentOwnerId: item?.uid ?? null,
   };
 
-  // To-Do: Prevent repeated clicking of a reaction from filling up someone's notification stack.
+  // To-Do: Prevent repeated clicking of a reaction from filling up someone's notification stack. - DONE
 
   // To-Do: Paginate notifications. - DONE
   //        Get see more button to work - DONE
@@ -62,7 +63,7 @@ export default function EmojiReactionChip({
 
   // To-Do: Get scroll bar AND elevation to show up on Popper - DONE
 
-  // To-Do: Add ghost cards while info needed to display notis is loading
+  // To-Do: Add ghost cards while info needed to display notis is loading - NOT NEEDED
 
   // To-Do: Get comment notifications working
 
@@ -85,7 +86,7 @@ export default function EmojiReactionChip({
       setSelected(false);
       let newUserReview = { ...temp[index] };
       SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
-      // if (reaction !== "trash") SaveNotification(notification, item.uid);
+      if (reaction !== "trash") DeleteNotification(notification, item.uid);
     }
   }
 
@@ -105,7 +106,7 @@ export default function EmojiReactionChip({
       setSelected(false);
       SaveListReactionsToFirestore(docId, temp);
       console.log(notification, ownerId);
-      // if (reaction !== "trash") UpdateNotification(notification, ownerId);
+      if (reaction !== "trash") DeleteNotification(notification, ownerId);
     }
   }
 

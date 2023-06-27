@@ -70,7 +70,7 @@ export default function NotificationDropMenu() {
 
   // Mark all notifications as "seen" when the popper is opened
   useMemo(() => {
-    if (open) {
+    if (open && notifications) {
       let temp = [];
       for (let item of notifications) {
         if (!item.seen) {
@@ -157,7 +157,7 @@ export default function NotificationDropMenu() {
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  {notifications.map((item, index) => {
+                  {notifications?.map((item, index) => {
                     return (
                       <NotificationListItem
                         item={item}
@@ -190,14 +190,3 @@ export default function NotificationDropMenu() {
     </Stack>
   );
 }
-
-// function getUnreadCount(input) {
-//   if (!input || input.length === 0) {
-//     return 0;
-//   }
-//   let count = 0;
-//   for (let item of input) {
-//     if (item.seen === false) count++;
-//   }
-//   return count;
-// }

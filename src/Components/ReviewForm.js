@@ -39,7 +39,7 @@ export default function ReviewForm({
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
-  console.log(localUser);
+
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
@@ -126,7 +126,9 @@ export default function ReviewForm({
         type,
         reviewCount
       );
-      SaveNotification(notification, listOwnerId);
+
+      // Only provide notification when a comment is created NOT when edited
+      if (!edited) SaveNotification(notification, listOwnerId);
 
       await GetPaginatedReviewsFromFirestore(
         docId,

@@ -2,7 +2,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
-import { Fragment, useContext, useMemo, useState } from "react";
+import { Fragment, useContext, useEffect, useMemo, useState } from "react";
 import useTheme from "@mui/material/styles/useTheme";
 import { getAvatarSrc } from "./Avatars";
 import { APIGetAnime, useProfile } from "../Components/APICalls";
@@ -14,19 +14,15 @@ import useAnime from "../Hooks/useAnime";
 import { LocalUserContext } from "./LocalUserContext";
 import { Asterisk, AsteriskSimple, Circle } from "phosphor-react";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
 //
 // @param {Object} item - The notification object.
-// @param {string} item.action - The type of reaction.
-// @param {string} item.docId - The document ID that was reacted to.
-// @param {boolean} item.read - Has the notification been seen.
-// @param {object} item.time - The time the notification was created.
-// @param {string} item.uid - The uid of the notification creator.
-//
 
 export function NotificationListItem({ item, handleClose, index }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobileWidth = useMediaQuery(theme.breakpoints.down("sm"));
+  const [showGhosts, setShowGhosts] = useState(false);
 
   const { data: interactorData } = useProfile(item.interactorId);
 
@@ -86,16 +82,13 @@ export function NotificationListItem({ item, handleClose, index }) {
           <ListCommentText item={item} interactorData={interactorData} />
         )}
         {notificationType === "emojiOnComment" && (
-          <EmojiOnCommentText item={item} interactorData={interactorData} />
+          <EmojiOnCommentText item={item} />
         )}
         {notificationType === "emojiOnReview" && (
-          <EmojiOnReviewText item={item} interactorData={interactorData} />
+          <EmojiOnReviewText item={item} />
         )}
-        {notificationType === "emojiOnList" && (
-          <EmojiOnListText item={item} interactorData={interactorData} />
-        )}
+        {notificationType === "emojiOnList" && <EmojiOnListText item={item} />}
       </Box>
-
       <Box sx={{ textAlign: "center", flexShrink: 0, ml: 2 }}>
         <Typography>{time}</Typography>
       </Box>
@@ -108,6 +101,7 @@ export function NotificationListItem({ item, handleClose, index }) {
 function ListCommentText({ item }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const contentName = getContentName(item.listId, localUser?.lists);
+
   return (
     <Fragment>
       <Typography
@@ -120,10 +114,11 @@ function ListCommentText({ item }) {
   );
 }
 
-function EmojiOnCommentText({ item, interactorData }) {
+function EmojiOnCommentText({ item, setLoading }) {
   const verbed = getInteractionType(item.action);
   const { data: listOwnerData } = useProfile(item.listOwnerId);
   const contentName = getContentName(item.listId, listOwnerData?.lists);
+
   if (!listOwnerData) return;
   return (
     <Fragment>
@@ -140,7 +135,8 @@ function EmojiOnCommentText({ item, interactorData }) {
 function EmojiOnReviewText({ item }) {
   const verbed = getInteractionType(item.action);
   const [anime, animeLoading, animeError] = useAnime(item.docId.toString());
-  if (animeError) console.error(animeError);
+
+  if (!anime) return;
   return (
     <Fragment>
       <Typography sx={{ display: "inline" }}>
