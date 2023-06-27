@@ -12,7 +12,8 @@ import { formatDistanceToNowStrict, fromUnixTime } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import { LocalUserContext } from "./LocalUserContext";
-
+import { Asterisk, AsteriskSimple, Circle } from "phosphor-react";
+import useMediaQuery from "@mui/material/useMediaQuery";
 //
 // @param {Object} item - The notification object.
 // @param {string} item.action - The type of reaction.
@@ -22,9 +23,10 @@ import { LocalUserContext } from "./LocalUserContext";
 // @param {string} item.uid - The uid of the notification creator.
 //
 
-export function NotificationListItem({ item, handleClose }) {
+export function NotificationListItem({ item, handleClose, index }) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isMobileWidth = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { data: interactorData } = useProfile(item.interactorId);
 
@@ -40,10 +42,18 @@ export function NotificationListItem({ item, handleClose }) {
   if (item.docType === "reviews") notificationType = "emojiOnReview";
   if (item.docType === "list") notificationType = "emojiOnList";
 
-  const time = getTimeElapsed(item.time);
+  const time = getTimeElapsed(item.time, isMobileWidth);
+
   return (
     <MenuItem
-      sx={{ whiteSpace: "normal", mt: 1, mb: 1 }}
+      selected={!item.read ? true : false}
+      autoFocus={index === 0 ? true : false}
+      sx={{
+        whiteSpace: "normal",
+        mt: 1,
+        mb: 1,
+        bgcolor: !item.read ? theme.palette.custom.subtleCardBg : "inherit",
+      }}
       onClick={(e) => {
         handleClose(e);
         if (notificationType === "emojiOnReview")
@@ -51,6 +61,11 @@ export function NotificationListItem({ item, handleClose }) {
         else navigate(`/profile/${item.listOwnerId}/list/${item.listId}`);
       }}
     >
+      {!item.read && (
+        <Box sx={{ display: "flex", alignItems: "center", mr: 2, ml: 0 }}>
+          <Circle size={14} weight="fill" color={theme.palette.primary.main} />
+        </Box>
+      )}
       <ListItemAvatar>
         <Avatar
           alt={interactorData?.name ?? "Guest"}
@@ -170,7 +185,32 @@ function getContentName(listId, listOwnersLists) {
   }
 }
 
-function getTimeElapsed(input) {
-  const inputDate = fromUnixTime(input.seconds);
-  return formatDistanceToNowStrict(inputDate);
+function getTimeElapsed(input, isMobileWidth) {
+  const inputDate = fromUnixTime(input?.seconds);
+  if (!isMobileWidth) return formatDistanceToNowStrict(inputDate);
+  // Returns an abbreviated time interval on mobile devices (ie. h instead of hours)
+  else {
+    let date = formatDistanceToNowStrict(inputDate);
+    let splitString = date.split(" ");
+    let target = splitString[1];
+    //Create hashmaps of possible words we want to abbreviate;
+    let hashmap = {};
+    hashmap.second = "s";
+    hashmap.seconds = "s";
+    hashmap.minute = "m";
+    hashmap.minutes = "m";
+    hashmap.hour = "h";
+    hashmap.hours = "h";
+    hashmap.day = "d";
+    hashmap.days = "d";
+    hashmap.month = "mo";
+    hashmap.months = "mo";
+    hashmap.year = "y";
+    hashmap.years = "y";
+    let abbreviatedTimeElapsed;
+    if (hashmap[target]) {
+      abbreviatedTimeElapsed = date.replace(target, hashmap[target]);
+    }
+    return abbreviatedTimeElapsed;
+  }
 }

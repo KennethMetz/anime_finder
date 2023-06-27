@@ -42,13 +42,29 @@ export default function EmojiReactionChip({
     docId: docId,
     docType: type,
     time: new Date(),
-    read: false,
+    seen: false, // Remains true until noti popper is opened.
+    read: false, // Remains true until popper is closed (so it can be specially marked)
     listId: listId ?? null,
     listOwnerId: ownerId ?? null,
     commentOwnerId: item?.uid ?? null,
   };
 
   // To-Do: Prevent repeated clicking of a reaction from filling up someone's notification stack.
+
+  // To-Do: Paginate notifications. - DONE
+  //        Get see more button to work - DONE
+  //        Get read/seen working - DONE
+  //        Fix unread count - DONE
+
+  // To-Do: Responsive design for mobile
+  //         Add loading spinner after clicking see more
+  //         Add margin left on mobile
+
+  // To-Do: Get scroll bar AND elevation to show up on Popper - DONE
+
+  // To-Do: Add ghost cards while info needed to display notis is loading
+
+  // To-Do: Get comment notifications working
 
   function reactToReview() {
     let docIdString = docId.toString();
@@ -69,6 +85,7 @@ export default function EmojiReactionChip({
       setSelected(false);
       let newUserReview = { ...temp[index] };
       SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
+      // if (reaction !== "trash") SaveNotification(notification, item.uid);
     }
   }
 
@@ -87,6 +104,8 @@ export default function EmojiReactionChip({
       setItem(temp);
       setSelected(false);
       SaveListReactionsToFirestore(docId, temp);
+      console.log(notification, ownerId);
+      // if (reaction !== "trash") UpdateNotification(notification, ownerId);
     }
   }
 

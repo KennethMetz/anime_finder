@@ -16,6 +16,9 @@ import {
   getCountFromServer,
   arrayUnion,
   onSnapshot,
+  addDoc,
+  writeBatch,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -256,15 +259,33 @@ export async function ClaimHandle(handle, userId) {
 }
 
 export async function SaveNotification(notification, IdToNotify) {
-  let ref = doc(db, "notifications", IdToNotify);
+  let subcollectionRef = collection(
+    db,
+    "notifications",
+    IdToNotify,
+    "usersNotifications"
+  );
   try {
     // TO DO: Either check if this notification already exists, or add a DeleteNotification if someone "unlikes" or deletes their comment
-    await setDoc(
-      ref,
-      { notificationStack: arrayUnion(notification) },
-      { merge: true }
-    );
+    await addDoc(subcollectionRef, notification);
   } catch (error) {
-    console.error("Error writing review data to Firestore", error);
+    console.error("Error writing notifications to Firestore: ", error);
+  }
+}
+
+export async function MarkNotificationsSeenOrRead(notiArray, IdToNotify, verb) {
+  for (let item of notiArray) {
+    const docRef = doc(
+      db,
+      "notifications",
+      IdToNotify,
+      "usersNotifications",
+      item.firestoreDocId
+    );
+    try {
+      await updateDoc(docRef, { [verb]: true });
+    } catch (error) {
+      console.error("Error updating notifcations on Firestore: ", error);
+    }
   }
 }
