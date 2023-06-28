@@ -4,6 +4,7 @@ import {
   collection,
   doc,
   getCountFromServer,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -16,8 +17,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export default function NotificationsProvider(props) {
   const [user, loading, error] = useAuthState(auth);
   const [notifications, setNotifications] = useState();
-  const [totalNotis, setTotalNotis] = useState();
-  const [unreadNotiCount, setUnreadNotiCount] = useState();
+  const [showMore, setShowMore] = useState(false);
+  const [hideBadge, setHideBadge] = useState(true);
   const [moreNotiRequests, setMoreNotiRequests] = useState(0);
 
   // Read initial state from Firestore, or else use blank array.
@@ -41,48 +42,41 @@ export default function NotificationsProvider(props) {
       querySnapshot.forEach((doc) => {
         notis.push({ ...doc.data(), firestoreDocId: doc.id });
       });
-      setNotifications(notis ?? []);
+      // Check if there are more notifications than being sent back.
+      if (notis.length === 5 + moreNotiRequests * 5) {
+        notis.splice(notis.length - 1);
+        setNotifications(notis);
+        setShowMore(true);
+      } else {
+        setNotifications(notis ?? []);
+        setShowMore(false);
+      }
     });
   }, [user, moreNotiRequests]);
 
   // The count() firestore fn can't be used with real-time listeners...so this is my work-around.
   useMemo(() => {
-    if (!user) return;
-    GetTotalNotiCount().then((result) => {
-      setTotalNotis(result);
-    });
-    GetUnreadNotiCount().then((result) => {
-      setUnreadNotiCount(result);
+    if (!user || !notifications) return;
+    GetUnseenNotiCount().then((result) => {
+      setHideBadge(result);
     });
   }, [notifications]);
 
-  async function GetTotalNotiCount() {
+  async function GetUnseenNotiCount() {
     const notisRef = collection(
       db,
       "notifications",
       user?.uid,
       "usersNotifications"
     );
-    const qCollection = query(notisRef);
+    const qCollection = query(notisRef, where("seen", "==", false), limit(1));
     try {
-      const countSnapshot = await getCountFromServer(qCollection);
-      return countSnapshot.data().count;
-    } catch (error) {
-      console.error("Error getting notification count: ", error);
-    }
-  }
-
-  async function GetUnreadNotiCount() {
-    const notisRef = collection(
-      db,
-      "notifications",
-      user?.uid,
-      "usersNotifications"
-    );
-    const qCollection = query(notisRef, where("seen", "==", false));
-    try {
-      const countSnapshot = await getCountFromServer(qCollection);
-      return countSnapshot.data().count;
+      const docSnap = await getDocs(qCollection);
+      let hideBadge = true;
+      docSnap.forEach((doc) => {
+        if (doc.exists()) hideBadge = false;
+      });
+      return hideBadge;
     } catch (error) {
       console.error("Error getting notification count: ", error);
     }
@@ -93,8 +87,8 @@ export default function NotificationsProvider(props) {
       value={[
         notifications,
         setNotifications,
-        totalNotis,
-        unreadNotiCount,
+        showMore,
+        hideBadge,
         moreNotiRequests,
         setMoreNotiRequests,
       ]}

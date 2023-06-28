@@ -30,8 +30,8 @@ export default function NotificationDropMenu() {
   const [
     notifications,
     setNotifications,
-    totalNotis,
-    unreadNotiCount,
+    showMore,
+    hideBadge,
     moreNotiRequests,
     setMoreNotiRequests,
   ] = useContext(NotificationsContext);
@@ -101,7 +101,7 @@ export default function NotificationDropMenu() {
 
   // Makes popper show default # of notifications when re-opened.
   useMemo(() => {
-    if (open === false) setMoreNotiRequests(0);
+    if (notifications && open === false) setMoreNotiRequests(0);
   }, [open]);
 
   useMemo(() => {
@@ -122,8 +122,16 @@ export default function NotificationDropMenu() {
           aria-controls={open ? "composition-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
-          badgeContent={unreadNotiCount}
+          invisible={hideBadge}
           color="primary"
+          variant="dot"
+          sx={{
+            "& .MuiBadge-dot": {
+              borderRadius: "6px",
+              width: "12px",
+              height: "12px",
+            },
+          }}
         >
           <Bell size={24} />
         </Badge>
@@ -172,7 +180,7 @@ export default function NotificationDropMenu() {
                     );
                   })}
                   {/* Render SEE MORE button */}
-                  {totalNotis > notifications?.length && (
+                  {showMore && (
                     <ListItemButton
                       sx={{ display: "flex", justifyContent: "center" }}
                       onClick={() => {
