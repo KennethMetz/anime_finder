@@ -70,7 +70,7 @@ export default function ProfileListPage() {
   let privateList = false;
 
   useEffect(() => {
-    GetListReactions(`${userId}+${listId}`, setListRxns);
+    GetListReactions(`${userId}${listId}`, setListRxns);
   }, [listId]);
 
   const sevenHundredFifty = useMediaQuery(
