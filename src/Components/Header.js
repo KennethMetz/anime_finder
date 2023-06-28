@@ -64,7 +64,7 @@ function Header() {
                     item
                     md={7}
                     sm={6}
-                    xs={7.5}
+                    xs={5.5}
                     sx={{
                       marginY: 0.75,
                       display: "flex",
@@ -93,7 +93,7 @@ function Header() {
               )}
               <Grid
                 item
-                xs={2}
+                xs={4}
                 sm={1.25}
                 md={2.5}
                 textAlign="right"

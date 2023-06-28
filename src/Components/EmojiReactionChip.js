@@ -50,23 +50,6 @@ export default function EmojiReactionChip({
     commentOwnerId: item?.uid ?? null,
   };
 
-  // To-Do: Prevent repeated clicking of a reaction from filling up someone's notification stack. - DONE
-
-  // To-Do: Paginate notifications. - DONE
-  //        Get see more button to work - DONE
-  //        Get read/seen working - DONE
-  //        Fix unread count - DONE
-
-  // To-Do: Responsive design for mobile
-  //         Add loading spinner after clicking see more
-  //         Add margin left on mobile
-
-  // To-Do: Get scroll bar AND elevation to show up on Popper - DONE
-
-  // To-Do: Add ghost cards while info needed to display notis is loading - NOT NEEDED
-
-  // To-Do: Get comment notifications working
-
   function reactToReview() {
     let docIdString = docId.toString();
 
@@ -105,7 +88,6 @@ export default function EmojiReactionChip({
       setItem(temp);
       setSelected(false);
       SaveListReactionsToFirestore(docId, temp);
-      console.log(notification, ownerId);
       if (reaction !== "trash") DeleteNotification(notification, ownerId);
     }
   }

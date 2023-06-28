@@ -7,26 +7,25 @@ import MenuList from "@mui/material/MenuList";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import useTheme from "@mui/material/styles/useTheme";
-
-import { Bell, CaretDown } from "phosphor-react";
-
+import ListItemButton from "@mui/material/ListItemButton";
+import CircularProgress from "@mui/material/CircularProgress";
 import Badge from "@mui/material/Badge";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+import { Bell, CaretDown } from "phosphor-react";
+
 import NotificationsContext from "./NotificationsContext";
 import { NotificationListItem } from "./NotificationListItem";
-import { MarkNotificationsSeenOrRead, SaveNotification } from "./Firestore";
+import { MarkNotificationsSeenOrRead } from "./Firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 
 export default function NotificationDropMenu() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [user, loading, error] = useAuthState(auth);
+  const [loadingMoreNotis, setLoadingMoreNotis] = useState(false);
 
   const [
     notifications,
@@ -37,7 +36,9 @@ export default function NotificationDropMenu() {
     setMoreNotiRequests,
   ] = useContext(NotificationsContext);
 
-  const isMobileWidth = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileWidth = useMediaQuery(
+    theme.breakpoints.down("sevenHundredFifty")
+  );
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -99,15 +100,19 @@ export default function NotificationDropMenu() {
   }, [open]);
 
   // Makes popper show default # of notifications when re-opened.
-  useEffect(() => {
+  useMemo(() => {
     if (open === false) setMoreNotiRequests(0);
   }, [open]);
+
+  useMemo(() => {
+    setLoadingMoreNotis(false);
+  }, [notifications]);
 
   return (
     <Stack>
       <IconButton
         aria-label="notifications"
-        sx={{ mr: 2 }}
+        sx={{ mr: isMobileWidth ? 0 : 2 }}
         onClick={handleToggle}
         ref={anchorRef}
       >
@@ -126,11 +131,10 @@ export default function NotificationDropMenu() {
       <Popper
         open={open}
         anchorEl={anchorRef.current}
-        role={undefined}
         transition
         style={{
           zIndex: "4",
-          maxWidth: "530px",
+          maxWidth: isMobileWidth ? "95vw" : "530px",
         }}
       >
         {({ TransitionProps }) => (
@@ -173,12 +177,15 @@ export default function NotificationDropMenu() {
                       sx={{ display: "flex", justifyContent: "center" }}
                       onClick={() => {
                         setMoreNotiRequests(moreNotiRequests + 1);
+                        setLoadingMoreNotis(true);
                       }}
                     >
-                      See More
-                      <ListItemIcon sx={{ ml: 2 }}>
-                        <CaretDown size={32} />
-                      </ListItemIcon>
+                      {!loadingMoreNotis ? "See More" : ""}
+                      {!loadingMoreNotis ? (
+                        <CaretDown size={32} style={{ marginLeft: "10px" }} />
+                      ) : (
+                        <CircularProgress />
+                      )}
                     </ListItemButton>
                   )}
                 </MenuList>
