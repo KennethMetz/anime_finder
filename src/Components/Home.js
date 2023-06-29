@@ -25,7 +25,7 @@ import { PopulateFromFirestore } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 
 export default function Home() {
-  let [animeRandom, setAnimeRandom] = useState([]); //randomized
+  let [animeRandom, setAnimeRandom] = useState(null); //randomized
 
   const [user, loading, error] = useAuthState(auth);
 
@@ -174,7 +174,7 @@ export default function Home() {
             size="small"
             startIcon={<RefreshIcon />}
             onClick={() => {
-              setAnimeRandom([]);
+              setAnimeRandom(null);
               refresh ? setRefresh(false) : setRefresh(true);
             }}
           >
