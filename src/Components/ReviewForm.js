@@ -93,8 +93,8 @@ export default function ReviewForm({
     docId: docId,
     docType: null,
     time: new Date(),
-    seen: false, // Remains true until noti popper is opened.
-    read: false, // Remains true until popper is closed (so it can be specially marked)
+    seen: false, // Remains false until noti popper is opened.
+    read: false, // Remains galse until popper is closed (so it can be specially styled)
     listId: listId ?? null,
     listOwnerId: listOwnerId ?? null,
     commentOwnerId: null,

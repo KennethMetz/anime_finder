@@ -301,7 +301,7 @@ export async function MarkNotificationsSeenOrRead(notiArray, IdToNotify, verb) {
     try {
       await updateDoc(docRef, { [verb]: true });
     } catch (error) {
-      console.error("Error updating notifcations on Firestore: ", error);
+      console.error("Error updating notifications on Firestore: ", error);
     }
   }
 }

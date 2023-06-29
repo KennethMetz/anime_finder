@@ -43,8 +43,8 @@ export default function EmojiReactionChip({
     docId: docId,
     docType: type,
     time: new Date(),
-    seen: false, // Remains true until noti popper is opened.
-    read: false, // Remains true until popper is closed (so it can be specially marked)
+    seen: false, // Remains false until noti popper is opened.
+    read: false, // Remains false until popper is closed (so it can be specially styled)
     listId: listId ?? null,
     listOwnerId: ownerId ?? null,
     commentOwnerId: item?.uid ?? null,
@@ -60,7 +60,7 @@ export default function EmojiReactionChip({
       setSelected(true);
       let newUserReview = { ...temp[index] };
       SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
-      if (reaction !== "trash") SaveNotification(notification, item.uid);
+      if (reaction !== "trash") SaveNotification(notification, item.uid); // Good vibes only on EdwardML!
     } else if (selected) {
       let temp = [...reviews];
       let indexInArray = temp[index].emojis[reaction].indexOf(user.uid);
