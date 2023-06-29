@@ -74,7 +74,7 @@ export function NotificationListItem({ item, handleClose, index }) {
           }}
         />
       </ListItemAvatar>
-      <Box>
+      <Box sx={{ flexGrow: 1 }}>
         <Typography sx={{ fontWeight: "800", display: "inline" }}>
           {`@${interactorData?.handle} `}
         </Typography>
