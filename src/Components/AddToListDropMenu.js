@@ -355,23 +355,6 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                       </div>{" "}
                     </div>
                   )}
-
-                  {/*******************View my Lists Button*******************/}
-                  {/* <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                      color="inherit"
-                      variant="text"
-                      onClick={(e) => {
-                        navigate(`/profile/${user?.uid}`);
-                      }}
-                      sx={{
-                        fontSize: "0.8rem",
-                        mt: 1,
-                      }}
-                    >
-                      View my Lists
-                    </Button>
-                  </div> */}
                 </MenuList>
               </ClickAwayListener>
             </Paper>
