@@ -167,7 +167,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         role={undefined}
         placement="bottom"
         transition
-        style={{ zIndex: "4" }}
+        style={{ zIndex: "4", maxWidth: "600px" }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -215,7 +215,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                         <AddButtonForTop8 anime={anime} list={localUser.top8} />
                       }
                     >
-                      MY TOP 8
+                      <ListItemText primary="My Top 8" sx={{ mr: 4 }} />
                     </ListItem>
                   ) : (
                     ""
@@ -235,7 +235,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                               <AddButton anime={anime} list={item.name} />
                             }
                           >
-                            {item.name}
+                            <ListItemText primary={item.name} sx={{ mr: 4 }} />
                           </ListItem>
                         );
                       })

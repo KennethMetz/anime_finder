@@ -137,7 +137,7 @@ export default function DropMenu() {
         role={undefined}
         placement="bottom-start"
         transition
-        style={{ zIndex: "4" }}
+        style={{ zIndex: "4", maxWidth: "320px" }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -179,12 +179,25 @@ export default function DropMenu() {
                         color: user ? "primary" : theme.palette.text.primary,
                       }}
                       primary={localUser?.name ? `${localUser?.name}` : "Guest"}
-                      primaryTypographyProps={{ fontWeight: 600 }}
+                      primaryTypographyProps={{
+                        variant: "h3",
+                        color: theme.palette.text.main,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                      secondary={`@${localUser?.handle}`}
+                      secondaryTypographyProps={{
+                        variant: "body1",
+                        color: theme.palette.text.main,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
                     />
                   </ListItemButton>
                   <MenuItem
-                    divider
-                    sx={{ paddingTop: "10px", paddingBottom: "10px" }}
+                    sx={{ paddingTop: "10px" }}
                     onClick={(e) => {
                       toggleDarkMode(e);
                     }}
@@ -195,7 +208,6 @@ export default function DropMenu() {
                     {darkMode ? "Dark Mode" : "Light Mode"}
                   </MenuItem>
                   <MenuItem
-                    sx={{ marginTop: "10px" }}
                     onClick={(e) => {
                       sendToProfile(e);
                     }}
@@ -225,6 +237,7 @@ export default function DropMenu() {
                       }}
                     >
                       <ListItemIcon>
+                        {" "}
                         <SignOut size={24} />
                       </ListItemIcon>
                       Logout
@@ -237,6 +250,7 @@ export default function DropMenu() {
                     >
                       {" "}
                       <ListItemIcon>
+                        {" "}
                         <SignOut size={24} />
                       </ListItemIcon>
                       Login
