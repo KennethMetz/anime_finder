@@ -237,7 +237,6 @@ export default function DropMenu() {
                       }}
                     >
                       <ListItemIcon>
-                        {" "}
                         <SignOut size={24} />
                       </ListItemIcon>
                       Logout
@@ -250,7 +249,6 @@ export default function DropMenu() {
                     >
                       {" "}
                       <ListItemIcon>
-                        {" "}
                         <SignOut size={24} />
                       </ListItemIcon>
                       Login

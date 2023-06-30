@@ -27,6 +27,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddButtonForTop8 from "./AddButtonForTop8";
 import { useContext, useEffect, useRef, useState } from "react";
 import { PrivacySwitch } from "./PrivacySwitch";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function AddToListDropMenu({ anime, variant, selected }) {
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
   let [privateList, setPrivateList] = useState(false);
 
   let listNames = localUser?.lists?.map((x) => x.name);
+
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Define Yup schema
   const validationSchema = Yup.object().shape({
@@ -167,7 +170,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         role={undefined}
         placement="bottom"
         transition
-        style={{ zIndex: "4", maxWidth: "600px" }}
+        sx={{ zIndex: "4", maxWidth: smallScreen ? "98vw" : "600px" }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -235,7 +238,15 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                               <AddButton anime={anime} list={item.name} />
                             }
                           >
-                            <ListItemText primary={item.name} sx={{ mr: 4 }} />
+                            <ListItemText
+                              primary={item.name}
+                              primaryTypographyProps={{
+                                mr: 8,
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            />
                           </ListItem>
                         );
                       })
