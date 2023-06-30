@@ -6,7 +6,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { GlobeHemisphereWest, LockSimple, Plus } from "phosphor-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -28,6 +28,7 @@ import AddButtonForTop8 from "./AddButtonForTop8";
 import { useContext, useEffect, useRef, useState } from "react";
 import { PrivacySwitch } from "./PrivacySwitch";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { Typography } from "@mui/material";
 
 export default function AddToListDropMenu({ anime, variant, selected }) {
   const navigate = useNavigate();
@@ -168,18 +169,11 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement="bottom"
         transition
         sx={{ zIndex: "4", maxWidth: smallScreen ? "98vw" : "600px" }}
       >
         {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom-start" ? "left top" : "left bottom",
-            }}
-          >
+          <Grow {...TransitionProps} style={{ transformOrigin: "center-top" }}>
             <Paper elevation={6} onClick={(e) => e.stopPropagation()}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
@@ -218,7 +212,14 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                         <AddButtonForTop8 anime={anime} list={localUser.top8} />
                       }
                     >
-                      <ListItemText primary="My Top 8" sx={{ mr: 4 }} />
+                      <Typography
+                        sx={{
+                          mr: 8,
+                          ":hover": { color: theme.palette.primary.main },
+                        }}
+                      >
+                        <Link to={`/profile/${user.uid}`}>My Top 8</Link>
+                      </Typography>
                     </ListItem>
                   ) : (
                     ""
@@ -238,15 +239,19 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                               <AddButton anime={anime} list={item.name} />
                             }
                           >
-                            <ListItemText
-                              primary={item.name}
-                              primaryTypographyProps={{
+                            <Typography
+                              sx={{
                                 mr: 8,
+                                ":hover": { color: theme.palette.primary.main },
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                               }}
-                            />
+                            >
+                              <Link to={`/profile/${user.uid}/list/${item.id}`}>
+                                {item.name}{" "}
+                              </Link>
+                            </Typography>
                           </ListItem>
                         );
                       })
@@ -352,7 +357,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                   )}
 
                   {/*******************View my Lists Button*******************/}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
+                  {/* <div style={{ display: "flex", justifyContent: "center" }}>
                     <Button
                       color="inherit"
                       variant="text"
@@ -366,7 +371,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                     >
                       View my Lists
                     </Button>
-                  </div>
+                  </div> */}
                 </MenuList>
               </ClickAwayListener>
             </Paper>
