@@ -31,6 +31,7 @@ export function createAppTheme(darkMode) {
         top8Bg: darkMode
           ? "linear-gradient(#171717, #4a3636)"
           : "linear-gradient(#f5f5f5, #f5eaea)",
+        missingAnimeCover: darkMode ? "#2c2c2c" : "#cccccc",
       },
     },
     breakpoints: {

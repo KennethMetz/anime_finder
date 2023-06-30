@@ -26,7 +26,7 @@ export default function WatchlistTile({
   const gradient = `linear-gradient(270deg, ${bgColor} 0%, rgba(245, 245, 245, 0) 67.39%)`;
 
   const avatarSrc = useMemo(() => getAvatarSrc(creatorAvatar), [creatorAvatar]);
-
+  console.log(items);
   return (
     <Link to={`/profile/${userId}/list/${listId}`}>
       <Box
@@ -78,6 +78,7 @@ export default function WatchlistTile({
                   backgroundSize: "cover",
                   borderRadius: "8px",
                   overflow: "clip",
+                  backgroundColor: theme.palette.custom.missingAnimeCover,
                 }}
               />
             </Grid>

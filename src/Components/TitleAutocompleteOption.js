@@ -3,8 +3,10 @@ import Avatar from "@mui/material/Avatar";
 import { useMemo } from "react";
 import { getAvatarSrc } from "./Avatars";
 import ListItemText from "@mui/material/ListItemText";
+import { useTheme } from "@mui/material";
 
 export default function TitleAutocompleteOption({ props, options }) {
+  const theme = useTheme();
   const avatarSrc = useMemo(
     () => getAvatarSrc(options?.avatar),
     [options?.avatar]
@@ -24,10 +26,19 @@ export default function TitleAutocompleteOption({ props, options }) {
       {...props}
     >
       {options.id && (
-        <img
-          width="35"
-          src={options.image_large || options.image_small || avatarSrc}
-          alt=""
+        <Box
+          alt={options.display_name}
+          sx={{
+            width: "35px",
+            aspectRatio: "0.7",
+            background: `url(${options?.image_large})` ?? avatarSrc,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            borderRadius: "8px",
+            overflow: "clip",
+            backgroundColor: theme.palette.custom.missingAnimeCover,
+            mr: 2,
+          }}
         />
       )}
       {options.uid && (
