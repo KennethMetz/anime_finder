@@ -31,7 +31,8 @@ export default function TitleAutocompleteOption({ props, options }) {
           sx={{
             width: "35px",
             aspectRatio: "0.7",
-            background: `url(${options?.image_large})` ?? avatarSrc,
+            background:
+              `url(${options?.image_large})` ?? `url(${options?.image_small})`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             borderRadius: "8px",
