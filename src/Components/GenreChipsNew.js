@@ -34,7 +34,6 @@ export default function GenreChipsNew({ selectedGenre, setSelectedGenre }) {
       {genres.map((genre) => (
         <Chip
           key={genre}
-          itemId={genre}
           sx={{
             borderRadius: "16px",
             mr: 1,
