@@ -281,9 +281,7 @@ export async function DeleteNotification(notification, IdToUnnotify) {
       where("action", "==", notification.action)
     );
     const docSnap = await getDocs(d);
-    docSnap.forEach((doc) => {
-      deleteDoc(doc.ref);
-    });
+    await Promise.all(docSnap.docs.map((doc) => deleteDoc(doc.ref)));
   } catch (error) {
     console.error("Error deleting notification from Firestore: ", error);
   }
