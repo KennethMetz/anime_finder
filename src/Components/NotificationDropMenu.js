@@ -111,8 +111,9 @@ export default function NotificationDropMenu() {
   return (
     <Stack>
       <IconButton
+        color="inherit"
         aria-label="notifications"
-        sx={{ mr: isMobileWidth ? 0 : 2 }}
+        sx={{ mr: 2 }}
         onClick={handleToggle}
         ref={anchorRef}
       >

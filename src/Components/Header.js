@@ -53,7 +53,7 @@ function Header() {
             </Grid>
           ) : (
             <>
-              <Grid item md={2.5} sm={4.75} xs={2.5}>
+              <Grid item md={2.5} sm={4} xs={2.5}>
                 <Link to="/home">
                   <EdwardMLLogo />
                 </Link>
@@ -94,7 +94,7 @@ function Header() {
               <Grid
                 item
                 xs={4}
-                sm={1.25}
+                sm={2}
                 md={2.5}
                 textAlign="right"
                 sx={{
