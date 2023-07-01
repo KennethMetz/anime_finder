@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import NotificationsContext from "./NotificationsContext";
 import {
   collection,
@@ -23,7 +23,7 @@ export default function NotificationsProvider(props) {
 
   // Read initial state from Firestore, or else use blank array.
   // It calls Firestore one time, after user has been authed.
-  useMemo(() => {
+  useEffect(() => {
     if (!user) return;
     // Get notifications
     const notisRef = collection(
@@ -37,7 +37,7 @@ export default function NotificationsProvider(props) {
       orderBy("time", "desc"),
       limit(5 + moreNotiRequests * 5)
     );
-    onSnapshot(q, (querySnapshot) => {
+    const unsub = onSnapshot(q, (querySnapshot) => {
       const notis = [];
       querySnapshot.forEach((doc) => {
         notis.push({ ...doc.data(), firestoreDocId: doc.id });
@@ -52,10 +52,12 @@ export default function NotificationsProvider(props) {
         setShowMore(false);
       }
     });
+
+    return unsub;
   }, [user, moreNotiRequests]);
 
   // The count() firestore fn can't be used with real-time listeners...so this is my work-around.
-  useMemo(() => {
+  useEffect(() => {
     if (!user || !notifications) return;
     GetUnseenNotiCount().then((result) => {
       setHideBadge(result);

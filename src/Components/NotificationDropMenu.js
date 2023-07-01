@@ -70,7 +70,7 @@ export default function NotificationDropMenu() {
   }, [open]);
 
   // Mark all notifications as "seen" when the popper is opened
-  useMemo(() => {
+  useEffect(() => {
     if (open && notifications) {
       let temp = [];
       for (let item of notifications) {
@@ -85,7 +85,7 @@ export default function NotificationDropMenu() {
   }, [open, notifications]);
 
   // Mark all notifications as "read" when the popper is closed
-  useMemo(() => {
+  useEffect(() => {
     if (!open && notifications) {
       let temp = [];
       for (let item of notifications) {
@@ -100,11 +100,11 @@ export default function NotificationDropMenu() {
   }, [open]);
 
   // Makes popper show default # of notifications when re-opened.
-  useMemo(() => {
+  useEffect(() => {
     if (notifications && open === false) setMoreNotiRequests(0);
   }, [open]);
 
-  useMemo(() => {
+  useEffect(() => {
     setLoadingMoreNotis(false);
   }, [notifications]);
 
