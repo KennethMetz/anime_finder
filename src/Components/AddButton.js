@@ -22,7 +22,7 @@ export default function AddButton({ anime, list }) {
       onClick={onClick}
       disabled={disabled}
       color={buttonColor}
-      sx={{}}
+      sx={{ flexShrink: 0 }}
     >
       {buttonText}
     </Button>

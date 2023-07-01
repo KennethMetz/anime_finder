@@ -6,7 +6,7 @@ import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { GlobeHemisphereWest, LockSimple, Plus } from "phosphor-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -27,6 +27,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddButtonForTop8 from "./AddButtonForTop8";
 import { useContext, useEffect, useRef, useState } from "react";
 import { PrivacySwitch } from "./PrivacySwitch";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Typography } from "@mui/material";
 
 export default function AddToListDropMenu({ anime, variant, selected }) {
   const navigate = useNavigate();
@@ -44,6 +46,8 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
   let [privateList, setPrivateList] = useState(false);
 
   let listNames = localUser?.lists?.map((x) => x.name);
+
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Define Yup schema
   const validationSchema = Yup.object().shape({
@@ -165,18 +169,11 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement="bottom"
         transition
-        style={{ zIndex: "4" }}
+        sx={{ zIndex: "4", maxWidth: smallScreen ? "98vw" : "600px" }}
       >
         {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom-start" ? "left top" : "left bottom",
-            }}
-          >
+          <Grow {...TransitionProps} style={{ transformOrigin: "center-top" }}>
             <Paper elevation={6} onClick={(e) => e.stopPropagation()}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
@@ -215,7 +212,14 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                         <AddButtonForTop8 anime={anime} list={localUser.top8} />
                       }
                     >
-                      MY TOP 8
+                      <Typography
+                        sx={{
+                          mr: 8,
+                          ":hover": { color: theme.palette.primary.main },
+                        }}
+                      >
+                        <Link to={`/profile/${user.uid}`}>My Top 8</Link>
+                      </Typography>
                     </ListItem>
                   ) : (
                     ""
@@ -235,7 +239,19 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                               <AddButton anime={anime} list={item.name} />
                             }
                           >
-                            {item.name}
+                            <Typography
+                              sx={{
+                                mr: 8,
+                                ":hover": { color: theme.palette.primary.main },
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              <Link to={`/profile/${user.uid}/list/${item.id}`}>
+                                {item.name}{" "}
+                              </Link>
+                            </Typography>
                           </ListItem>
                         );
                       })
@@ -339,23 +355,6 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
                       </div>{" "}
                     </div>
                   )}
-
-                  {/*******************View my Lists Button*******************/}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                      color="inherit"
-                      variant="text"
-                      onClick={(e) => {
-                        navigate(`/profile/${user?.uid}`);
-                      }}
-                      sx={{
-                        fontSize: "0.8rem",
-                        mt: 1,
-                      }}
-                    >
-                      View my Lists
-                    </Button>
-                  </div>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
