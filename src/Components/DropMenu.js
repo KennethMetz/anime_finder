@@ -135,16 +135,14 @@ export default function DropMenu() {
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement="bottom-start"
         transition
         style={{ zIndex: "4", maxWidth: "320px" }}
       >
-        {({ TransitionProps, placement }) => (
+        {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin:
-                placement === "bottom-start" ? "left top" : "left bottom",
+              transformOrigin: "right top",
             }}
           >
             <Paper elevation={6}>

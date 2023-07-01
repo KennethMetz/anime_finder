@@ -14,6 +14,11 @@ import {
   where,
   runTransaction,
   getCountFromServer,
+  arrayUnion,
+  onSnapshot,
+  addDoc,
+  writeBatch,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -251,4 +256,50 @@ export async function ClaimHandle(handle, userId) {
     transaction.set(handleDocRef, { uid: userId, handle: handle });
     transaction.update(userDocRef, { handle: handle });
   });
+}
+
+export async function SaveNotification(notification, IdToNotify) {
+  let subcollectionRef = collection(
+    db,
+    "notifications",
+    IdToNotify,
+    "usersNotifications"
+  );
+  try {
+    await addDoc(subcollectionRef, notification);
+  } catch (error) {
+    console.error("Error writing notifications to Firestore: ", error);
+  }
+}
+
+export async function DeleteNotification(notification, IdToUnnotify) {
+  try {
+    const d = query(
+      collection(db, "notifications", IdToUnnotify, "usersNotifications"),
+      where("interactorId", "==", notification.interactorId),
+      where("docId", "==", notification.docId),
+      where("action", "==", notification.action)
+    );
+    const docSnap = await getDocs(d);
+    await Promise.all(docSnap.docs.map((doc) => deleteDoc(doc.ref)));
+  } catch (error) {
+    console.error("Error deleting notification from Firestore: ", error);
+  }
+}
+
+export async function MarkNotificationsSeenOrRead(notiArray, IdToNotify, verb) {
+  for (let item of notiArray) {
+    const docRef = doc(
+      db,
+      "notifications",
+      IdToNotify,
+      "usersNotifications",
+      item.firestoreDocId
+    );
+    try {
+      await updateDoc(docRef, { [verb]: true });
+    } catch (error) {
+      console.error("Error updating notifications on Firestore: ", error);
+    }
+  }
 }

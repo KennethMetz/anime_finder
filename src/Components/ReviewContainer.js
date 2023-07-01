@@ -14,7 +14,13 @@ import ReviewForm from "./ReviewForm";
 import Review from "./Review";
 import { LocalUserContext } from "./LocalUserContext";
 
-export default function ReviewContainer({ user, docId, type }) {
+export default function ReviewContainer({
+  user,
+  docId,
+  type,
+  listOwnerId,
+  listId,
+}) {
   const location = useLocation();
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
@@ -134,13 +140,15 @@ export default function ReviewContainer({ user, docId, type }) {
           setSeeMore={setSeeMore}
           type={type}
           reviewCount={reviewCount}
+          listOwnerId={listOwnerId}
+          listId={listId}
         />
       )}
 
       {reviews?.map((item, index) => {
         return (
           <Review
-            key={item.uid}
+            key={`${item.uid}+${item.time.seconds}`}
             item={item}
             index={index}
             docId={docId}
@@ -148,6 +156,7 @@ export default function ReviewContainer({ user, docId, type }) {
             setReviews={setReviews}
             setShowReviewForm={setShowReviewForm}
             type={type}
+            listOwnerId={listOwnerId}
           />
         );
       })}

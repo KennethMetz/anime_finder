@@ -16,6 +16,7 @@ import { Star } from "phosphor-react";
 import {
   GetPaginatedReviewsFromFirestore,
   PopulateReviewsFromFirestore,
+  SaveNotification,
   SaveReviewToFirestore,
   SaveToFirestore,
   setLastVisible,
@@ -32,11 +33,13 @@ export default function ReviewForm({
   setSeeMore,
   type,
   reviewCount,
+  listOwnerId,
+  listId,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
-  console.log(localUser);
+
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
@@ -84,6 +87,18 @@ export default function ReviewForm({
   const cancelReview = () => {
     setShowReviewForm(false);
   };
+  const notification = {
+    interactorId: user.uid, // Person writing the review
+    action: listOwnerId ? "comment" : "review",
+    docId: docId,
+    docType: null,
+    time: new Date(),
+    seen: false, // Remains false until noti popper is opened.
+    read: false, // Remains galse until popper is closed (so it can be specially styled)
+    listId: listId ?? null,
+    listOwnerId: listOwnerId ?? null,
+    commentOwnerId: null,
+  };
 
   const saveReview = async () => {
     handleSubmit();
@@ -111,6 +126,10 @@ export default function ReviewForm({
         type,
         reviewCount
       );
+
+      // Only provide notification when a comment is created NOT when edited
+      if (!edited) SaveNotification(notification, listOwnerId);
+
       await GetPaginatedReviewsFromFirestore(
         docId,
         reviews,

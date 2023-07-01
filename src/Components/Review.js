@@ -21,6 +21,7 @@ import EmojiReactionChip from "./EmojiReactionChip";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
 import {
+  DeleteNotification,
   DeleteReviewFromFirestore,
   PopulateReviewsFromFirestore,
   SaveReviewToFirestore,
@@ -37,12 +38,12 @@ export default function Review({
   setReviews,
   setShowReviewForm,
   type,
+  listOwnerId,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
   const theme = useTheme();
   const confirm = useConfirm();
-  let reviewerAvatar = undefined;
 
   const { data: reviewerInfo } = useProfile(item.uid);
 
@@ -74,6 +75,16 @@ export default function Review({
       // Delete review from Firestore documents listing
       let docIdString = docId.toString();
       DeleteReviewFromFirestore(user, docIdString, type);
+
+      // Delete notification from firestore
+      if (type === "comments") {
+        const notiInfo = {
+          interactorId: user.uid,
+          docId: docId,
+          action: "comment",
+        };
+        DeleteNotification(notiInfo, listOwnerId);
+      }
     });
   }
 
