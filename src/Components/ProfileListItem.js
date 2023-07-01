@@ -56,10 +56,20 @@ export default function ProfileListItem({
       >
         <ListItemAvatar>
           <Box
-            component="img"
             alt={item.display_name}
             src={item.image_large ?? item.image_small}
-            sx={{ height: "56px" }}
+            sx={{
+              height: "56px",
+              aspectRatio: "0.7",
+              background: `url(${item?.image_large})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              borderRadius: "8px",
+              overflow: "clip",
+              backgroundColor: theme.palette.custom.missingAnimeCover,
+              mr: 2,
+              my: 0.3,
+            }}
           ></Box>{" "}
         </ListItemAvatar>
         <ListItemText primary={item.display_name} />

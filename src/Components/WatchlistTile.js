@@ -78,6 +78,7 @@ export default function WatchlistTile({
                   backgroundSize: "cover",
                   borderRadius: "8px",
                   overflow: "clip",
+                  backgroundColor: theme.palette.custom.missingAnimeCover,
                 }}
               />
             </Grid>
