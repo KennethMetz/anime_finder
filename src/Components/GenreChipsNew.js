@@ -44,9 +44,7 @@ export default function GenreChipsNew({ selectedGenre, setSelectedGenre }) {
           clickable={true}
           label={genre}
           onClick={() => onClick(genre)}
-        >
-          {genre}
-        </Chip>
+        />
       ))}
     </ScrollMenu>
   );
