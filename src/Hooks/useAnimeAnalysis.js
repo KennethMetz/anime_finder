@@ -3,6 +3,8 @@ import { useContext, useMemo } from "react";
 import { APIGetAnimeAnalysis } from "../Components/APICalls";
 import { LocalUserContext } from "../Components/LocalUserContext";
 
+const fiveMinutesMs = 1000 * 60 * 5;
+
 /**
  * A hook that provides anime analysis for the given `animeId`.
  * @param {string} animeId The anime id to get analysis for.
@@ -31,7 +33,7 @@ export default function useAnimeAnalysis(animeId) {
     () => {
       return APIGetAnimeAnalysis(animeId, history);
     },
-    { keepPreviousData: true }
+    { keepPreviousData: true, staleTime: fiveMinutesMs }
   );
 
   return [data, isLoading, error, isFetching];
