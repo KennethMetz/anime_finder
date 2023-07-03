@@ -143,17 +143,11 @@ export default function NotificationDropMenu() {
         placement="bottom-end"
         modifiers={[
           {
-            name: "preventOverflow",
-            enabled: true,
-            options: { altBoundary: true },
-          },
-          {
             name: "offset",
             options: {
               offset: [250, 0],
             },
           },
-          { name: "arrow" },
         ]}
         transition
         style={{
