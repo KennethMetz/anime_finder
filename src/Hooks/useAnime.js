@@ -9,10 +9,9 @@ import { APIGetAnime } from "../Components/APICalls";
  *  used instead of calling the API.
  * @returns A list of `[anime, loading, error]`.
  */
-export default function useAnime(animeId, cachedAnime) {
+export default function useAnime(animeId, cachedAnime, ignoreCall) {
   const [fetchedAnime, setFetchedAnime] = useState();
   const [error, setError] = useState();
-
   useEffect(() => {
     // Don't load if we have the right data already.
     if (getMatchingAnime(animeId, [cachedAnime, fetchedAnime])) {
@@ -21,7 +20,7 @@ export default function useAnime(animeId, cachedAnime) {
     // Otherwise, fetch anime from API.
     setFetchedAnime(undefined);
     setError(undefined);
-    APIGetAnime(animeId)
+    APIGetAnime(animeId, ignoreCall)
       .then((data) => {
         if (getMatchingAnime(animeId, [data])) {
           setFetchedAnime(data);

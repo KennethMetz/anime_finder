@@ -36,7 +36,8 @@ export function useAPISearch(inputValue, itemsReturned) {
   });
 }
 
-export async function APIGetAnime(animeId) {
+export async function APIGetAnime(animeId, ignoreCall) {
+  if (ignoreCall) return;
   let response = await fetch(`${apiUrl}/anime/${animeId}`, { mode: "cors" });
   await handleErrors(response);
   return await response.json();
@@ -116,6 +117,7 @@ export function useProfile(userID) {
   return useQuery(
     [fullUrl],
     async () => {
+      if (!userID) return;
       let response = await fetch(fullUrl, { mode: "cors" });
       await handleErrors(response);
       let responseJson = await response.json();
