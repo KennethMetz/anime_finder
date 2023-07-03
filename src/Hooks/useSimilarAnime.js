@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
 import { APIGetSimilarAnime } from "../Components/APICalls";
+import { useQuery } from "@tanstack/react-query";
+
+const fiveMinutesMs = 1000 * 60 * 5;
 
 /**
  * A hook that provides similar anime data for the given `animeId`.
@@ -10,33 +12,11 @@ import { APIGetSimilarAnime } from "../Components/APICalls";
  * a list of Anime objects, or `undefined`.
  */
 export default function useSimilarAnime(animeId, amount) {
-  const [fetched, setFetched] = useState();
-  const [error, setError] = useState();
+  const result = useQuery(
+    ["anime", animeId, "similar", amount],
+    () => APIGetSimilarAnime(animeId, amount),
+    { staleTime: fiveMinutesMs }
+  );
 
-  const requestKey = `${animeId}/${amount}`;
-
-  const result = fetched?.requestKey === requestKey ? fetched.data : undefined;
-
-  useEffect(() => {
-    // Don't load if we have the right data already.
-    if (result) {
-      return;
-    }
-    // Otherwise, fetch similar anime from API.
-    setFetched(undefined);
-    setError(undefined);
-    APIGetSimilarAnime(animeId, amount)
-      .then((data) => {
-        if (data) {
-          setFetched({ requestKey, data });
-        } else {
-          throw new Error("Bad similar anime data returned by API.");
-        }
-      })
-      .catch((err) => setError(err));
-  }, [animeId, amount, result]);
-
-  const loading = !result && !error;
-
-  return [result, loading, error];
+  return [result.data, result.isLoading, result.error];
 }
