@@ -9,7 +9,7 @@ import { APIGetAnime } from "../Components/APICalls";
  *  used instead of calling the API.
  * @returns A list of `[anime, loading, error]`.
  */
-export default function useAnime(animeId, cachedAnime, ignoreCall) {
+export default function useAnime(animeId, cachedAnime) {
   const [fetchedAnime, setFetchedAnime] = useState();
   const [error, setError] = useState();
   useEffect(() => {
@@ -17,8 +17,8 @@ export default function useAnime(animeId, cachedAnime, ignoreCall) {
     if (getMatchingAnime(animeId, [cachedAnime, fetchedAnime])) {
       return;
     }
-    // Don't send API request if told to ignore it.
-    if (ignoreCall) return;
+    // Don't send API request if sent an empty animeId param.
+    if (!animeId) return;
     // Otherwise, fetch anime from API.
     setFetchedAnime(undefined);
     setError(undefined);
@@ -38,7 +38,7 @@ export default function useAnime(animeId, cachedAnime, ignoreCall) {
   let loading = !result && !error;
 
   // Override loading state if told to ignore API request.
-  if (ignoreCall) loading = false;
+  if (!animeId) loading = false;
 
   return [result, loading, error];
 }

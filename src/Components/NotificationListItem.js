@@ -33,17 +33,14 @@ export function NotificationListItem({ item, handleClose, index }) {
   if (item.docType === "reviews") notificationType = "emojiOnReview";
   if (item.docType === "list") notificationType = "emojiOnList";
 
-  let ignoreCall = notificationType !== "emojiOnReview";
+  const animeId =
+    notificationType === "emojiOnReview" ? item.docId.toString() : null;
 
   const { data: interactorData } = useProfile(item.interactorId);
   const { data: listOwnerData, loading: loadingListOwner } = useProfile(
     item.listOwnerId
   );
-  const [anime, animeLoading, animeError] = useAnime(
-    item.docId.toString(),
-    location.state,
-    ignoreCall
-  );
+  const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
   const verbed = getInteractionType(item.action);
   const contentName = getContentName(item.listId, listOwnerData?.lists);
 
