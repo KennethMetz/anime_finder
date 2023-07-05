@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import BreathingLogo from "./BreathingLogo";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -122,6 +123,7 @@ export default function Register() {
 
   return (
     <div className="register">
+      <HtmlPageTitle title={"Register"} />
       <Container maxWidth="lg">
         <div className="welcomeBanner">
           <Link to="/">

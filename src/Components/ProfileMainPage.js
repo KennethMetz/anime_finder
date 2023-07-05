@@ -1,14 +1,16 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useContext } from "react";
 import NoResultsImage from "./NoResultsImage";
 import WatchlistTile from "./WatchlistTile";
-import { useContext, useEffect, useMemo } from "react";
 import ProfilePageContext from "./ProfilePageContext";
 import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function ProfileMainPage() {
-  const { profile, animeObjects, isLoading } = useContext(ProfilePageContext);
+  const { profile, animeObjects, isOwnProfile, isLoading } =
+    useContext(ProfilePageContext);
 
   const subheadStyle = {
     marginTop: "26px",
@@ -23,6 +25,7 @@ export default function ProfileMainPage() {
 
   return (
     <Grid container>
+      <HtmlPageTitle title={getHtmlTitle(profile, isOwnProfile)} />
       <Grid item xs={12} md={4}>
         <ProfileSidebar />
       </Grid>
@@ -99,4 +102,14 @@ export default function ProfileMainPage() {
       </Grid>
     </Grid>
   );
+}
+
+function getHtmlTitle(profile, isOwnProfile) {
+  if (isOwnProfile) {
+    return "Your Profile";
+  } else if (profile?.handle) {
+    return `@${profile.handle}'s Profile`;
+  } else {
+    return "Profile";
+  }
 }

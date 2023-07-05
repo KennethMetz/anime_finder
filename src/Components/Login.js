@@ -15,6 +15,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import google from "../Styles/images/google.svg";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function Login() {
   const authActions = useAuthActions();
@@ -71,6 +72,7 @@ export default function Login() {
 
   return (
     <div className="login">
+      <HtmlPageTitle title={"Login"} />
       <Container maxWidth="lg">
         <div className="welcomeBanner">
           <Link to="/">

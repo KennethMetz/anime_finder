@@ -23,6 +23,7 @@ import SearchGhost from "./SearchGhost";
 import HandleDialog from "./HandleDialog";
 import SearchAvatars from "./SearchAvatars";
 import SearchResultsBanner from "./SearchResultsBanner";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function Search() {
   const location = useLocation();
@@ -72,6 +73,7 @@ export default function Search() {
 
   return (
     <div className="jsxWrapper">
+      <HtmlPageTitle title={"Search Results"} />
       {/* Below ensure the following: localUser has been loaded, user is not 
       on a guest account, and they do NOT have a handle.*/}
       {localUser.uid && !user.isAnonymous && !localUser.handle && (

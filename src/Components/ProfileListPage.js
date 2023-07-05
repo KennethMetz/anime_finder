@@ -31,6 +31,7 @@ import { GetListReactions } from "./Firestore";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -163,6 +164,7 @@ export default function ProfileListPage() {
 
   return (
     <Box>
+      <HtmlPageTitle title={name} />
       {/* Header */}
       <Grid
         container
