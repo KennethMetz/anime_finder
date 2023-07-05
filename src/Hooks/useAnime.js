@@ -17,10 +17,12 @@ export default function useAnime(animeId, cachedAnime, ignoreCall) {
     if (getMatchingAnime(animeId, [cachedAnime, fetchedAnime])) {
       return;
     }
+    // Don't send API request if told to ignore it.
+    if (ignoreCall) return;
     // Otherwise, fetch anime from API.
     setFetchedAnime(undefined);
     setError(undefined);
-    APIGetAnime(animeId, ignoreCall)
+    APIGetAnime(animeId)
       .then((data) => {
         if (getMatchingAnime(animeId, [data])) {
           setFetchedAnime(data);
@@ -33,7 +35,10 @@ export default function useAnime(animeId, cachedAnime, ignoreCall) {
 
   const result = getMatchingAnime(animeId, [cachedAnime, fetchedAnime]);
 
-  const loading = !result && !error;
+  let loading = !result && !error;
+
+  // Override loading state if told to ignore API request.
+  if (ignoreCall) loading = false;
 
   return [result, loading, error];
 }

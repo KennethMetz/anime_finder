@@ -33,7 +33,7 @@ export function NotificationListItem({ item, handleClose, index }) {
   if (item.docType === "reviews") notificationType = "emojiOnReview";
   if (item.docType === "list") notificationType = "emojiOnList";
 
-  let ignoreCall = notificationType === "emojiOnReview" ? false : true;
+  let ignoreCall = notificationType !== "emojiOnReview";
 
   const { data: interactorData } = useProfile(item.interactorId);
   const { data: listOwnerData, loading: loadingListOwner } = useProfile(
@@ -126,7 +126,7 @@ export function NotificationListItem({ item, handleClose, index }) {
         {notificationType === "emojiOnComment" && (
           <Fragment>
             <Typography component="div" sx={{ display: "inline" }}>
-              {`${verbed} your comment on @${listOwnerData.handle}'s list `}{" "}
+              {`${verbed} your comment on @${listOwnerData?.handle}'s list `}{" "}
             </Typography>
             <Typography sx={{ fontWeight: "800", display: "inline" }}>
               {contentName}
