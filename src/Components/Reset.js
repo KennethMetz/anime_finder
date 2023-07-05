@@ -18,6 +18,8 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import useTheme from "@mui/material/styles/useTheme";
+import HtmlPageTitle from "./HtmlPageTitle";
+import Typography from "@mui/material/Typography";
 
 export default function Reset() {
   const [email, setEmail] = useState("");
@@ -41,6 +43,8 @@ export default function Reset() {
 
   return (
     <div className="login">
+      <HtmlPageTitle title={"Password Reset"} />
+
       <Container maxWidth="lg">
         {/* //*************Pop-up that's displayed once reset email is sent********/}
         <Dialog
@@ -90,9 +94,9 @@ export default function Reset() {
             <EdwardMLLogo />
           </Link>
         </div>
-        <h4 className="H4" style={{ textAlign: "center" }}>
+        <Typography variant="h3" sx={{ textAlign: "center", mb: "18px" }}>
           Let's Reset Your Password!
-        </h4>
+        </Typography>
       </Container>
 
       <Container
