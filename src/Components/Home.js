@@ -23,6 +23,7 @@ import { LocalUserContext } from "./LocalUserContext";
 import HandleDialog from "./HandleDialog";
 import { PopulateFromFirestore } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState(null); //randomized
@@ -99,6 +100,7 @@ export default function Home() {
 
   return (
     <div>
+      <HtmlPageTitle title={"Home"} />
       {/* Below ensure the following: localUser has been loaded, user is not 
       on a guest account, and they do NOT have a handle.*/}
       {localUser.uid && !user.isAnonymous && !localUser.handle && (

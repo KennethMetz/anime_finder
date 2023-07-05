@@ -26,6 +26,7 @@ import SimilarContent from "./SimilarContent";
 import UrlButtons from "./UrlButtons";
 import ReviewContainer from "./ReviewContainer";
 import HandleDialog from "./HandleDialog";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ export default function DetailedView() {
 
   return (
     <Container maxWidth="lg" key={anime.id}>
+      <HtmlPageTitle title={anime?.display_name} />
       {/* Below ensure the following: localUser has been loaded, user is not 
       on a guest account, and they do NOT have a handle.*/}
       {localUser.uid && !user.isAnonymous && !localUser.handle && (

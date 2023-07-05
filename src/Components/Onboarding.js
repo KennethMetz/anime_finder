@@ -26,6 +26,7 @@ import Ponyo from "../Styles/images/onboarding/ponyo.jpg";
 import SailorMoon from "../Styles/images/onboarding/sailormoon.jpg";
 import SwordArtOnline from "../Styles/images/onboarding/swordartonline.jpg";
 import NoGameNoLife from "../Styles/images/onboarding/nogamenolife.jpg";
+import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -43,6 +44,7 @@ export default function Onboarding() {
 
   return (
     <div className="App">
+      <HtmlPageTitle title={"Getting Set Up"} />
       <OnboardingHeader />
       <Container maxWidth="lg">
         <Typography
