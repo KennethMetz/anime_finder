@@ -116,6 +116,7 @@ export function useProfile(userID) {
   return useQuery(
     [fullUrl],
     async () => {
+      if (!userID) return {};
       let response = await fetch(fullUrl, { mode: "cors" });
       await handleErrors(response);
       let responseJson = await response.json();

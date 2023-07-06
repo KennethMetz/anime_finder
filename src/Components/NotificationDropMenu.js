@@ -140,6 +140,15 @@ export default function NotificationDropMenu() {
       <Popper
         open={open}
         anchorEl={anchorRef.current}
+        placement="bottom-end"
+        modifiers={[
+          {
+            name: "offset",
+            options: {
+              offset: [250, 0],
+            },
+          },
+        ]}
         transition
         style={{
           zIndex: "4",

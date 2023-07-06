@@ -12,12 +12,13 @@ import { APIGetAnime } from "../Components/APICalls";
 export default function useAnime(animeId, cachedAnime) {
   const [fetchedAnime, setFetchedAnime] = useState();
   const [error, setError] = useState();
-
   useEffect(() => {
     // Don't load if we have the right data already.
     if (getMatchingAnime(animeId, [cachedAnime, fetchedAnime])) {
       return;
     }
+    // Don't send API request if sent an empty animeId param.
+    if (!animeId) return;
     // Otherwise, fetch anime from API.
     setFetchedAnime(undefined);
     setError(undefined);
@@ -34,7 +35,10 @@ export default function useAnime(animeId, cachedAnime) {
 
   const result = getMatchingAnime(animeId, [cachedAnime, fetchedAnime]);
 
-  const loading = !result && !error;
+  let loading = !result && !error;
+
+  // Override loading state if told to ignore API request.
+  if (!animeId) loading = false;
 
   return [result, loading, error];
 }

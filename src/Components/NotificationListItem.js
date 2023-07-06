@@ -2,6 +2,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
+import Skeleton from "@mui/material/Skeleton";
 import { Fragment, useContext, useEffect, useMemo, useState } from "react";
 import useTheme from "@mui/material/styles/useTheme";
 import { getAvatarSrc } from "./Avatars";
@@ -9,7 +10,7 @@ import { APIGetAnime, useProfile } from "../Components/APICalls";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { formatDistanceToNowStrict, fromUnixTime } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import { LocalUserContext } from "./LocalUserContext";
 import { Asterisk, AsteriskSimple, Circle } from "phosphor-react";
@@ -19,17 +20,11 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 // @param {Object} item - The notification object.
 
 export function NotificationListItem({ item, handleClose, index }) {
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
   const theme = useTheme();
+  const location = useLocation();
   const navigate = useNavigate();
   const isMobileWidth = useMediaQuery(theme.breakpoints.down("sm"));
-  const [showGhosts, setShowGhosts] = useState(false);
-
-  const { data: interactorData } = useProfile(item.interactorId);
-
-  const avatarSrc = useMemo(
-    () => getAvatarSrc(interactorData?.avatar),
-    [interactorData?.avatar]
-  );
 
   // Determine what type of notification this is, in order to select text output
   let notificationType;
@@ -38,7 +33,44 @@ export function NotificationListItem({ item, handleClose, index }) {
   if (item.docType === "reviews") notificationType = "emojiOnReview";
   if (item.docType === "list") notificationType = "emojiOnList";
 
+  const animeId =
+    notificationType === "emojiOnReview" ? item.docId.toString() : null;
+
+  const { data: interactorData } = useProfile(item.interactorId);
+  const { data: listOwnerData, loading: loadingListOwner } = useProfile(
+    item.listOwnerId
+  );
+  const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
+  const verbed = getInteractionType(item.action);
+  const contentName = getContentName(item.listId, listOwnerData?.lists);
+
+  const avatarSrc = useMemo(
+    () => getAvatarSrc(interactorData?.avatar),
+    [interactorData?.avatar]
+  );
+
+  const loading =
+    !interactorData || !avatarSrc || animeLoading || loadingListOwner;
+
   const time = getTimeElapsed(item.time, isMobileWidth);
+
+  if (loading)
+    return (
+      <Box sx={{ display: "flex", mb: 1, alignItems: "center" }}>
+        <Skeleton
+          variant="circular"
+          sx={{ height: 48, width: 48, ml: 2, flexShrink: 0 }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ width: "65%", minWidth: "150px", mx: 1, height: 40 }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ width: "10%", minWidth: "50px", ml: 4, mr: 1, height: 40 }}
+        />
+      </Box>
+    );
 
   return (
     <MenuItem
@@ -79,90 +111,50 @@ export function NotificationListItem({ item, handleClose, index }) {
           {`@${interactorData?.handle} `}
         </Typography>
         {notificationType === "listComment" && (
-          <ListCommentText item={item} interactorData={interactorData} />
+          <Fragment>
+            <Typography
+              sx={{ display: "inline" }}
+            >{`commented on your list `}</Typography>
+            <Typography sx={{ fontWeight: "800", display: "inline" }}>
+              {contentName}
+            </Typography>
+          </Fragment>
         )}
         {notificationType === "emojiOnComment" && (
-          <EmojiOnCommentText item={item} />
+          <Fragment>
+            <Typography component="div" sx={{ display: "inline" }}>
+              {`${verbed} your comment on @${listOwnerData?.handle}'s list `}{" "}
+            </Typography>
+            <Typography sx={{ fontWeight: "800", display: "inline" }}>
+              {contentName}
+            </Typography>
+          </Fragment>
         )}
         {notificationType === "emojiOnReview" && (
-          <EmojiOnReviewText item={item} />
+          <Fragment>
+            <Typography sx={{ display: "inline" }}>
+              {`${verbed} your review of `}
+            </Typography>
+            <Typography sx={{ fontWeight: "800", display: "inline" }}>
+              {anime?.display_name}
+            </Typography>
+          </Fragment>
         )}
-        {notificationType === "emojiOnList" && <EmojiOnListText item={item} />}
+        {notificationType === "emojiOnList" && (
+          <Fragment>
+            <Typography
+              sx={{ display: "inline" }}
+            >{`${verbed} your list `}</Typography>
+            <Typography sx={{ fontWeight: "800", display: "inline" }}>
+              {contentName}
+            </Typography>
+          </Fragment>
+        )}
       </Box>
       <Box sx={{ textAlign: "center", flexShrink: 0, ml: 2 }}>
         <Typography>{time}</Typography>
       </Box>
     </MenuItem>
-  );
-}
-
-// Components for each notification's text (separate components required due to
-// the hooks needed NOT being used in all the components)
-function ListCommentText({ item }) {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const contentName = getContentName(item.listId, localUser?.lists);
-
-  return (
-    <Fragment>
-      <Typography
-        sx={{ display: "inline" }}
-      >{`commented on your list `}</Typography>
-      <Typography sx={{ fontWeight: "800", display: "inline" }}>
-        {contentName}
-      </Typography>
-    </Fragment>
-  );
-}
-
-function EmojiOnCommentText({ item, setLoading }) {
-  const verbed = getInteractionType(item.action);
-  const { data: listOwnerData } = useProfile(item.listOwnerId);
-  const contentName = getContentName(item.listId, listOwnerData?.lists);
-
-  if (!listOwnerData) return;
-  return (
-    <Fragment>
-      <Typography component="div" sx={{ display: "inline" }}>
-        {`${verbed} your comment on @${listOwnerData.handle}'s list `}{" "}
-      </Typography>
-      <Typography sx={{ fontWeight: "800", display: "inline" }}>
-        {contentName}
-      </Typography>
-    </Fragment>
-  );
-}
-
-function EmojiOnReviewText({ item }) {
-  const verbed = getInteractionType(item.action);
-  const [anime, animeLoading, animeError] = useAnime(item.docId.toString());
-
-  if (!anime) return;
-  return (
-    <Fragment>
-      <Typography sx={{ display: "inline" }}>
-        {`${verbed} your review of `}
-      </Typography>
-      <Typography sx={{ fontWeight: "800", display: "inline" }}>
-        {anime?.display_name}
-      </Typography>
-    </Fragment>
-  );
-}
-
-function EmojiOnListText({ item }) {
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
-  const contentName = getContentName(item.listId, localUser?.lists);
-  const verbed = getInteractionType(item.action);
-
-  return (
-    <Fragment>
-      <Typography
-        sx={{ display: "inline" }}
-      >{`${verbed} your list `}</Typography>
-      <Typography sx={{ fontWeight: "800", display: "inline" }}>
-        {contentName}
-      </Typography>
-    </Fragment>
   );
 }
 
