@@ -58,38 +58,55 @@ export default function NotificationsProvider(props) {
       user?.uid,
       "usersNotifications"
     );
-    let q;
+    // Populates noti popper when first opened, with real time results
     if (!lastVisible) {
-      q = query(notisRef, orderBy("time", "desc"), limit(5));
-    } else {
-      q = query(
+      let temp = [...listeningDocs];
+      if (listeningDocs.length === 5) {
+        setShowMore(true);
+        temp.splice(temp.length - 1);
+        setLastVisible(lastVisibleListener);
+      } else {
+        setShowMore(false);
+        setLastVisible(null);
+      }
+      setNotifications(temp);
+      return;
+    }
+
+    // Concatenates additional notifications to the end of the real time results
+    else {
+      const q = query(
         notisRef,
         orderBy("time", "desc"),
         startAfter(lastVisible),
         limit(5)
       );
-    }
-    try {
-      const documentSnapshots = await getDocs(q);
-      const notis = [...notifications];
-      let docCount = 0;
-      documentSnapshots.forEach((doc) => {
-        docCount++;
-        notis.push({ ...doc.data(), firestoreDocId: doc.id });
-      });
-      if (docCount === 5) {
-        setShowMore(true);
-        notis.splice(notis.length - 1);
-        setLastVisible(
-          documentSnapshots.docs[documentSnapshots.docs.length - 2]
+
+      try {
+        const documentSnapshots = await getDocs(q);
+        const notis = [...notifications];
+        let docCount = 0;
+        documentSnapshots.forEach((doc) => {
+          docCount++;
+          notis.push({ ...doc.data(), firestoreDocId: doc.id });
+        });
+        if (docCount === 5) {
+          setShowMore(true);
+          notis.splice(notis.length - 1);
+          setLastVisible(
+            documentSnapshots.docs[documentSnapshots.docs.length - 2]
+          );
+        } else {
+          setShowMore(false);
+          setLastVisible(null);
+        }
+        setNotifications(notis);
+      } catch (error) {
+        console.error(
+          "Error getting more notifications from Firestore: ",
+          error
         );
-      } else {
-        setShowMore(false);
-        setLastVisible(null);
       }
-      setNotifications(notis);
-    } catch (error) {
-      console.error("Error getting more notifications from Firestore: ", error);
     }
   }
 
