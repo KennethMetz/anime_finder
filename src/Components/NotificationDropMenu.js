@@ -32,8 +32,8 @@ export default function NotificationDropMenu() {
     setNotifications,
     showMore,
     hideBadge,
-    moreNotiRequests,
-    setMoreNotiRequests,
+    GetNotis,
+    setLastVisible,
   ] = useContext(NotificationsContext);
 
   const isMobileWidth = useMediaQuery(
@@ -41,6 +41,7 @@ export default function NotificationDropMenu() {
   );
 
   const handleToggle = () => {
+    if (!open) GetNotis();
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -99,11 +100,7 @@ export default function NotificationDropMenu() {
     }
   }, [open]);
 
-  // Makes popper show default # of notifications when re-opened.
-  useEffect(() => {
-    if (notifications && open === false) setMoreNotiRequests(0);
-  }, [open]);
-
+  // Hides spinner once additional notis have been added to notifications array
   useEffect(() => {
     setLoadingMoreNotis(false);
   }, [notifications]);
@@ -141,14 +138,6 @@ export default function NotificationDropMenu() {
         open={open}
         anchorEl={anchorRef.current}
         placement="bottom-end"
-        modifiers={[
-          {
-            name: "offset",
-            options: {
-              offset: [250, 0],
-            },
-          },
-        ]}
         transition
         style={{
           zIndex: "4",
@@ -158,15 +147,19 @@ export default function NotificationDropMenu() {
         {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
+            onExited={() => {
+              setNotifications([]);
+              setLastVisible();
+            }}
             style={{
-              transformOrigin: isMobileWidth ? "right top" : "center top",
+              transformOrigin: "right top",
             }}
           >
             <Paper
               elevation={6}
               sx={{
                 overflow: "auto",
-                mr: 1,
+                ml: 1,
                 maxHeight: "92vh",
                 overflowY: "auto",
               }}
@@ -183,7 +176,7 @@ export default function NotificationDropMenu() {
                     return (
                       <NotificationListItem
                         item={item}
-                        key={`${item.time?.seconds} + ${index}`}
+                        key={`${item.time?.seconds}+${item.interactorId}`}
                         handleClose={handleClose}
                         index={index}
                       />
@@ -194,7 +187,7 @@ export default function NotificationDropMenu() {
                     <ListItemButton
                       sx={{ display: "flex", justifyContent: "center" }}
                       onClick={() => {
-                        setMoreNotiRequests(moreNotiRequests + 1);
+                        GetNotis();
                         setLoadingMoreNotis(true);
                       }}
                     >
