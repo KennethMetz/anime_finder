@@ -18,10 +18,12 @@ export default function NotificationsProvider(props) {
   const [notifications, setNotifications] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [hideBadge, setHideBadge] = useState(true);
-  const [listeningDoc, setListeningDoc] = useState([]);
+  const [listeningDocs, setListeningDocs] = useState([]);
   const [lastVisible, setLastVisible] = useState();
+  const [lastVisibleListener, setLastVisibleListener] = useState();
+  const [showNewNotiButton, setShowNewNotiButton] = useState(false);
 
-  // Creates realtime listener on most recent notification
+  // Creates realtime listener on most recent notifications
   // Used as trigger for query of unseen data
   useEffect(() => {
     if (!user) return;
@@ -38,7 +40,12 @@ export default function NotificationsProvider(props) {
       documentSnapshots.forEach((doc) => {
         latestNoti.push({ ...doc.data(), firestoreDocId: doc.id });
       });
-      setListeningDoc(latestNoti);
+      setListeningDocs(latestNoti);
+      if (latestNoti.length === 5)
+        setLastVisibleListener(
+          documentSnapshots.docs[documentSnapshots.docs.length - 2]
+        );
+      else setLastVisibleListener(null);
     });
     return unsub;
   }, [user]);
@@ -86,13 +93,25 @@ export default function NotificationsProvider(props) {
     }
   }
 
+  function displayLatestNotis() {
+    setShowNewNotiButton(false);
+    const notis = [...listeningDocs];
+    if (listeningDocs.length === 5) {
+      setShowMore(true);
+      notis.splice(notis.length - 1);
+    } else setShowMore(false);
+    setNotifications(notis);
+    setLastVisible(lastVisibleListener);
+  }
+
   // The count() firestore fn can't be used with real-time listeners...so this is my work-around.
   useEffect(() => {
     if (!user || !notifications) return;
     GetUnseenNotiCount().then((result) => {
       setHideBadge(result);
+      setShowNewNotiButton(!result);
     });
-  }, [listeningDoc]);
+  }, [listeningDocs]);
 
   async function GetUnseenNotiCount() {
     const notisRef = collection(
@@ -123,6 +142,8 @@ export default function NotificationsProvider(props) {
         hideBadge,
         GetNotis,
         setLastVisible,
+        showNewNotiButton,
+        displayLatestNotis,
       ]}
     >
       {props.children}

@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
@@ -11,8 +18,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import CircularProgress from "@mui/material/CircularProgress";
 import Badge from "@mui/material/Badge";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
-import { Bell, CaretDown } from "phosphor-react";
+import { Bell, CaretDown, CaretUp } from "phosphor-react";
 
 import NotificationsContext from "./NotificationsContext";
 import { NotificationListItem } from "./NotificationListItem";
@@ -34,6 +43,8 @@ export default function NotificationDropMenu() {
     hideBadge,
     GetNotis,
     setLastVisible,
+    showNewNotiButton,
+    displayLatestNotis,
   ] = useContext(NotificationsContext);
 
   const isMobileWidth = useMediaQuery(
@@ -165,41 +176,65 @@ export default function NotificationDropMenu() {
               }}
             >
               <ClickAwayListener onClickAway={handleClose}>
-                <MenuList
-                  autoFocusItem={open}
-                  variant="menu"
-                  id="composition-menu"
-                  aria-labelledby="composition-button"
-                  onKeyDown={handleListKeyDown}
-                >
-                  {notifications?.map((item, index) => {
-                    return (
-                      <NotificationListItem
-                        item={item}
-                        key={`${item.time?.seconds}+${item.interactorId}`}
-                        handleClose={handleClose}
-                        index={index}
-                      />
-                    );
-                  })}
-                  {/* Render SEE MORE button */}
-                  {showMore && (
-                    <ListItemButton
-                      sx={{ display: "flex", justifyContent: "center" }}
-                      onClick={() => {
-                        GetNotis();
-                        setLoadingMoreNotis(true);
-                      }}
-                    >
-                      {!loadingMoreNotis ? "See More" : ""}
-                      {!loadingMoreNotis ? (
-                        <CaretDown size={32} style={{ marginLeft: "10px" }} />
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </ListItemButton>
+                <Box>
+                  <MenuList
+                    autoFocusItem={open}
+                    variant="menu"
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    {notifications?.map((item, index) => {
+                      return (
+                        <NotificationListItem
+                          item={item}
+                          key={`${item.time?.seconds}+${item.interactorId}`}
+                          handleClose={handleClose}
+                          index={index}
+                        />
+                      );
+                    })}
+
+                    {/* Render SEE MORE button */}
+                    {showMore && (
+                      <ListItemButton
+                        sx={{ display: "flex", justifyContent: "center" }}
+                        onClick={() => {
+                          GetNotis();
+                          setLoadingMoreNotis(true);
+                        }}
+                      >
+                        {!loadingMoreNotis ? "See More" : ""}
+                        {!loadingMoreNotis ? (
+                          <CaretDown size={32} style={{ marginLeft: "10px" }} />
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </ListItemButton>
+                    )}
+                  </MenuList>
+                  {/* Render SEE LATEST button */}
+                  {showNewNotiButton && (
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Button
+                        onClick={() => {
+                          displayLatestNotis();
+                        }}
+                        sx={{
+                          position: "absolute",
+                          top: "10px",
+                          textAlign: "center",
+                          height: "25px",
+                        }}
+                        variant="contained"
+                        size="medium"
+                      >
+                        New Notifications
+                        <CaretUp size={28} style={{ marginLeft: "5px" }} />
+                      </Button>
+                    </Box>
                   )}
-                </MenuList>
+                </Box>
               </ClickAwayListener>
             </Paper>
           </Grow>
