@@ -4,7 +4,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useEffect, useState, useContext } from "react";
+import Box from "@mui/material/Box";
+import { useEffect, useState, useContext, useMemo } from "react";
 import AnimeGrid from "./AnimeGrid";
 import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
@@ -15,18 +16,24 @@ import {
   useAnimeMC,
   useAnimeMH,
   useAnimeMPTW,
+  useProfile,
   useRecommendations,
 } from "./APICalls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import HandleDialog from "./HandleDialog";
-import { PopulateFromFirestore } from "./Firestore";
+import { PopulateFromFirestore, getRandomCommunityList } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 import HtmlPageTitle from "./HtmlPageTitle";
+import useAnimeList from "../Hooks/useAnimeList";
+import { getAvatarSrc } from "./Avatars";
+import CommunityListShelf from "./CommunityListShelf";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState(null); //randomized
+  let [communityListData, setCommunityListData] = useState(undefined); //randomized
+  let [communityListData2, setCommunityListData2] = useState(undefined); //randomized
 
   const [user, loading, error] = useAuthState(auth);
 
@@ -36,6 +43,7 @@ export default function Home() {
   const genreQueryString = selectedGenre ? `&genre=${selectedGenre}` : "";
 
   let [refresh, setRefresh] = useState(false);
+  let [refreshCL, setRefreshCL] = useState(false);
 
   let randomPage = [];
   let randomItem = [];
@@ -79,6 +87,15 @@ export default function Home() {
   }, [refresh]);
 
   useEffect(() => {
+    getRandomCommunityList()
+      .then((result) => setCommunityListData(result))
+      .catch((error) => console.log(error));
+    getRandomCommunityList()
+      .then((result) => setCommunityListData2(result))
+      .catch((error) => console.log(error));
+  }, [refreshCL]);
+
+  useEffect(() => {
     PopulateFromFirestore(user, localUser, setLocalUser);
   }, [user]);
 
@@ -92,6 +109,8 @@ export default function Home() {
   const { data: animeMC } = useAnimeMC(genreQueryString);
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
+  let { data: communityList } = useAnimeList(communityListData?.anime);
+  const { data: communityList2 } = useAnimeList(communityListData2?.anime);
 
   const shelfTitleStyles = {
     marginTop: "1.6em",
@@ -136,7 +155,40 @@ export default function Home() {
           </>
         )}
         <div className="gap" />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h3">Community Lists</Typography>{" "}
+          <Button
+            color="inherit"
+            variant="outlined"
+            size="small"
+            startIcon={<RefreshIcon />}
+            onClick={() => {
+              setCommunityListData(undefined);
+              setCommunityListData2(undefined);
+              setRefreshCL(!refreshCL);
+            }}
+            sx={{ ml: 3 }}
+          >
+            Surprise Me!
+          </Button>
+        </Box>
+        <CommunityListShelf
+          data={communityListData}
+          anime={communityList}
+          refresh={refreshCL}
+          setRefresh={setRefreshCL}
+          titleStyle={shelfTitleStyles}
+        />
+        <CommunityListShelf
+          data={communityListData2}
+          anime={communityList2}
+          refresh={refreshCL}
+          setRefresh={setRefreshCL}
+          titleStyle={shelfTitleStyles}
+        />
       </Container>
+      <div className="gap" />
+
       <ShelfTitle
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}

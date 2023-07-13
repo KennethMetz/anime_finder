@@ -258,6 +258,22 @@ export async function ClaimHandle(handle, userId) {
   });
 }
 
+export async function CreateWatchlistDataEntry(userId, listId) {
+  const randomIndex = Math.floor(Math.random() * 9999999);
+  const listData = {
+    userId: userId,
+    listId: listId,
+    random: randomIndex,
+  };
+  const docName = userId + listId;
+  let docRef = doc(db, "watchlistData", docName);
+  try {
+    await setDoc(docRef, listData);
+  } catch (error) {
+    console.error("Error writing watchlistData entry to Firestore", error);
+  }
+}
+
 export async function SaveNotification(notification, IdToNotify) {
   let subcollectionRef = collection(
     db,
@@ -302,4 +318,66 @@ export async function MarkNotificationsSeenOrRead(notiArray, IdToNotify, verb) {
       console.error("Error updating notifications on Firestore: ", error);
     }
   }
+}
+
+export async function getRandomCommunityList() {
+  // Repeat call 5x or until a list with at least (1) anime title is found
+  for (let i = 1; i < 6; i++) {
+    try {
+      const randomNumber = Math.floor(Math.random() * 9999999);
+      const q = query(
+        collection(db, "watchlistData"),
+        where("random", ">=", randomNumber),
+        limit(1)
+      );
+      let querySnapshot = await getDocs(q);
+      let listInfo;
+      querySnapshot.forEach((doc) => {
+        listInfo = { ...doc.data() };
+      });
+      if (!listInfo) {
+        const wrapAroundQuery = query(
+          collection(db, "watchlistData"),
+          where("random", "<=", randomNumber),
+          limit(1)
+        );
+        querySnapshot = await getDocs(wrapAroundQuery);
+        querySnapshot.forEach((doc) => {
+          listInfo = { ...doc.data() };
+        });
+      }
+      // Populate anime info for list selected above
+      const docRef = doc(db, "users", listInfo.userId);
+      const data = await getDoc(docRef);
+      const lists = data.data()?.lists;
+      for (let item of lists) {
+        if (item.id === listInfo.listId && item.anime.length > 0) {
+          const data = {
+            userId: listInfo.userId,
+            listId: listInfo.listId,
+            anime: item.anime,
+          };
+          return data;
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Error fetching random community list from Firestore",
+        error
+      );
+    }
+  }
+}
+
+export async function deleteWatchlistDataEntry(userId, listId) {
+  const listDocRef = doc(db, "watchlistData", userId + listId);
+
+  return runTransaction(db, async (transaction) => {
+    // This code may get re-run multiple times if there are conflicts.
+    const listDoc = await transaction.get(listDocRef);
+
+    // The deletion will only succeed if the document read above has not changed since then.
+    // Otherwise, it will re-run this function.
+    transaction.delete(listDocRef);
+  });
 }
