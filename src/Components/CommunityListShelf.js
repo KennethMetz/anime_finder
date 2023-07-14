@@ -33,7 +33,6 @@ export default function CommunityListShelf({ data, anime, titleStyle }) {
   return (
     <Fragment>
       {/* Render list name */}
-
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography
           variant="h4"
@@ -66,8 +65,7 @@ export default function CommunityListShelf({ data, anime, titleStyle }) {
       <Box
         tabIndex="0"
         onKeyDown={(e) => {
-          if (e.key === "Enter")
-            navigate(`/profile/${profile.uid}/list/${data.listId}`);
+          if (e.key === "Enter") navigate(`/profile/${profile.uid}`);
         }}
         sx={{
           display: "inline-flex",

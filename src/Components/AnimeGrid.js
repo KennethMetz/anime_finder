@@ -14,7 +14,7 @@ export default function AnimeGrid({ items, large }) {
   let [seeMore, setSeeMore] = useState(0);
 
   const ghosts = new Array(10).fill(0);
-  const showGhosts = !items?.length;
+  const showGhosts = !items.length;
 
   const shownItems = howManyItems(seeMore);
   const showSeeMoreButton = seeMore !== 2 && shownItems.length !== items.length;
