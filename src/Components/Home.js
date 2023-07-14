@@ -27,13 +27,11 @@ import { PopulateFromFirestore, getRandomCommunityList } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 import HtmlPageTitle from "./HtmlPageTitle";
 import useAnimeList from "../Hooks/useAnimeList";
-import { getAvatarSrc } from "./Avatars";
 import CommunityListShelf from "./CommunityListShelf";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState(null); //randomized
   let [communityListData, setCommunityListData] = useState(undefined); //randomized
-  let [communityListData2, setCommunityListData2] = useState(undefined); //randomized
 
   const [user, loading, error] = useAuthState(auth);
 
@@ -90,9 +88,6 @@ export default function Home() {
     getRandomCommunityList()
       .then((result) => setCommunityListData(result))
       .catch((error) => console.log(error));
-    getRandomCommunityList()
-      .then((result) => setCommunityListData2(result))
-      .catch((error) => console.log(error));
   }, [refreshCL]);
 
   useEffect(() => {
@@ -110,7 +105,6 @@ export default function Home() {
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
   let { data: communityList } = useAnimeList(communityListData?.anime);
-  const { data: communityList2 } = useAnimeList(communityListData2?.anime);
 
   const shelfTitleStyles = {
     marginTop: "1.6em",
@@ -156,7 +150,7 @@ export default function Home() {
         )}
         <div className="gap" />
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h3">Community Lists</Typography>{" "}
+          <Typography variant="h3">Fan Lists</Typography>{" "}
           <Button
             color="inherit"
             variant="outlined"
@@ -164,7 +158,6 @@ export default function Home() {
             startIcon={<RefreshIcon />}
             onClick={() => {
               setCommunityListData(undefined);
-              setCommunityListData2(undefined);
               setRefreshCL(!refreshCL);
             }}
             sx={{ ml: 3 }}
@@ -175,13 +168,6 @@ export default function Home() {
         <CommunityListShelf
           data={communityListData}
           anime={communityList}
-          refresh={refreshCL}
-          setRefresh={setRefreshCL}
-          titleStyle={shelfTitleStyles}
-        />
-        <CommunityListShelf
-          data={communityListData2}
-          anime={communityList2}
           refresh={refreshCL}
           setRefresh={setRefreshCL}
           titleStyle={shelfTitleStyles}
@@ -204,9 +190,6 @@ export default function Home() {
           Most Popular {selectedGenre}
         </Typography>
         <AnimeShelf items={animeMC} />
-        {/* 
-      <h4>All time Best</h4>
-      <AnimeShelf items={animeMR} /> */}
 
         <Typography variant="h4" sx={shelfTitleStyles}>
           Most Buzzed About {selectedGenre}

@@ -321,7 +321,7 @@ export async function MarkNotificationsSeenOrRead(notiArray, IdToNotify, verb) {
 }
 
 export async function getRandomCommunityList() {
-  // Repeat call 5x or until a list with at least (1) anime title is found
+  // Repeat call to try and ensure a list with at least (1) anime title is found.
   for (let i = 1; i < 6; i++) {
     try {
       const randomNumber = Math.floor(Math.random() * 9999999);
@@ -355,7 +355,8 @@ export async function getRandomCommunityList() {
           const data = {
             userId: listInfo.userId,
             listId: listInfo.listId,
-            anime: item.anime,
+            // Only pull 24 shows from list, to prevent unnecessary firestore reads
+            anime: item.anime.slice(0, 24),
           };
           return data;
         }
@@ -380,4 +381,7 @@ export async function deleteWatchlistDataEntry(userId, listId) {
     // Otherwise, it will re-run this function.
     transaction.delete(listDocRef);
   });
+  // To-do: Write script to delete all sub-collections WITHOUT an ancestor.
+  // Run this script periodically from server as deleting collections
+  // from a web client is not recommended by firestore.
 }
