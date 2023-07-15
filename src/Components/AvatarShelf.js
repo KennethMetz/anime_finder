@@ -16,24 +16,62 @@ export default function AvatarShelf({ items }) {
   const [startIndex, setStartIndex] = useState(0);
   const theme = useTheme();
 
-  const sm = useMediaQuery(theme.breakpoints.up("sm"));
-  const sevenHundredFifty = useMediaQuery(
-    theme.breakpoints.up("sevenHundredFifty")
-  );
-  const fiveHundred = useMediaQuery(theme.breakpoints.up("fiveHundred"));
-  const fourHundred = useMediaQuery(theme.breakpoints.up("fourHundred"));
-
-  const md = useMediaQuery(theme.breakpoints.up("md"));
+  const threeSeventy = useMediaQuery("(min-width:370px)");
+  const fourSeventy = useMediaQuery("(min-width:470px)");
+  const fiveSixty = useMediaQuery("(min-width:560px)");
+  const sixSeventy = useMediaQuery("(min-width:670px)");
+  const sevenSeventy = useMediaQuery("(min-width:770px)");
+  const eightSeventy = useMediaQuery("(min-width:870px)");
+  const nineSixty = useMediaQuery("(min-width:960px)");
+  const tenSixty = useMediaQuery("(min-width:1060px)");
+  const elevenFifty = useMediaQuery("(min-width:1150px)");
   const lg = useMediaQuery(theme.breakpoints.up("lg"));
 
-  const itemsPerPage = md ? 8 : sm ? 5 : fiveHundred ? 4 : fourHundred ? 3 : 2;
+  const hasPrevious = startIndex > 0;
+
+  const itemsPerPage = lg
+    ? 11
+    : elevenFifty && !hasPrevious
+    ? 11
+    : elevenFifty && hasPrevious
+    ? 10
+    : tenSixty && !hasPrevious
+    ? 10
+    : tenSixty && hasPrevious
+    ? 9
+    : nineSixty && !hasPrevious
+    ? 9
+    : nineSixty && hasPrevious
+    ? 8
+    : eightSeventy && !hasPrevious
+    ? 8
+    : eightSeventy && hasPrevious
+    ? 7
+    : sevenSeventy && !hasPrevious
+    ? 7
+    : sevenSeventy && hasPrevious
+    ? 6
+    : sixSeventy && !hasPrevious
+    ? 6
+    : sixSeventy && hasPrevious
+    ? 5
+    : fiveSixty && !hasPrevious
+    ? 5
+    : fiveSixty && hasPrevious
+    ? 4
+    : fourSeventy && !hasPrevious
+    ? 4
+    : fourSeventy && hasPrevious
+    ? 3
+    : threeSeventy && !hasPrevious
+    ? 3
+    : 2;
 
   const columns = 12;
   const breakpoints = { xs: 12 / itemsPerPage };
 
   const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
 
-  const hasPrevious = startIndex > 0;
   const hasNext = startIndex < items.length - itemsPerPage;
 
   const onChangeSelected = (index, value) => {
