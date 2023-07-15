@@ -36,10 +36,10 @@ export default function NotificationsProvider(props) {
     );
     const q = query(notisRef, orderBy("time", "desc"), limit(5));
     const unsub = onSnapshot(q, (documentSnapshots) => {
-      const latestNoti = [];
-      documentSnapshots.forEach((doc) => {
-        latestNoti.push({ ...doc.data(), firestoreDocId: doc.id });
-      });
+      const latestNoti = documentSnapshots.docs.map((doc) => ({
+        ...doc.data(),
+        firestoreDocId: doc.id,
+      }));
       setListeningDocs(latestNoti);
       if (latestNoti.length === 5)
         setLastVisibleListener(
@@ -50,7 +50,7 @@ export default function NotificationsProvider(props) {
     return unsub;
   }, [user]);
 
-  async function GetNotis() {
+  async function getNotis() {
     if (!user) return;
     const notisRef = collection(
       db,
@@ -124,13 +124,13 @@ export default function NotificationsProvider(props) {
   // The count() firestore fn can't be used with real-time listeners...so this is my work-around.
   useEffect(() => {
     if (!user || !notifications) return;
-    GetUnseenNotiCount().then((result) => {
+    getUnseenNotiCount().then((result) => {
       setHideBadge(result);
       setShowNewNotiButton(!result);
     });
   }, [listeningDocs]);
 
-  async function GetUnseenNotiCount() {
+  async function getUnseenNotiCount() {
     const notisRef = collection(
       db,
       "notifications",
@@ -150,17 +150,21 @@ export default function NotificationsProvider(props) {
     }
   }
 
+  function resetPagination() {
+    setNotifications([]);
+    setLastVisible();
+  }
+
   return (
     <NotificationsContext.Provider
       value={[
         notifications,
-        setNotifications,
         showMore,
         hideBadge,
-        GetNotis,
-        setLastVisible,
+        getNotis,
         showNewNotiButton,
         displayLatestNotis,
+        resetPagination,
       ]}
     >
       {props.children}

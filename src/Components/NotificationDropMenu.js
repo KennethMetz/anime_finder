@@ -38,13 +38,12 @@ export default function NotificationDropMenu() {
 
   const [
     notifications,
-    setNotifications,
     showMore,
     hideBadge,
-    GetNotis,
-    setLastVisible,
+    getNotis,
     showNewNotiButton,
     displayLatestNotis,
+    resetPagination,
   ] = useContext(NotificationsContext);
 
   const isMobileWidth = useMediaQuery(
@@ -52,7 +51,7 @@ export default function NotificationDropMenu() {
   );
 
   const handleToggle = () => {
-    if (!open) GetNotis();
+    if (!open) getNotis();
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -158,10 +157,7 @@ export default function NotificationDropMenu() {
         {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
-            onExited={() => {
-              setNotifications([]);
-              setLastVisible();
-            }}
+            onExited={() => resetPagination()}
             style={{
               transformOrigin: "right top",
             }}
@@ -200,7 +196,7 @@ export default function NotificationDropMenu() {
                       <ListItemButton
                         sx={{ display: "flex", justifyContent: "center" }}
                         onClick={() => {
-                          GetNotis();
+                          getNotis();
                           setLoadingMoreNotis(true);
                         }}
                       >
