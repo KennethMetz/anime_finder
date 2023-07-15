@@ -19,6 +19,7 @@ import {
   addDoc,
   writeBatch,
   updateDoc,
+  deleteField,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -377,11 +378,15 @@ export async function deleteWatchlistDataEntry(userId, listId) {
     // This code may get re-run multiple times if there are conflicts.
     const listDoc = await transaction.get(listDocRef);
 
-    // The deletion will only succeed if the document read above has not changed since then.
+    // The update will only succeed if the document read above has not changed since then.
     // Otherwise, it will re-run this function.
-    transaction.delete(listDocRef);
+    transaction.update(listDocRef, {
+      random: deleteField(),
+      awaitingDeletion: true,
+    });
   });
-  // To-do: Write script to delete all sub-collections WITHOUT an ancestor.
+  // To-do: Write script to delete all sub-collections whose  ancestor doc
+  // has a true value for 'awaitingDeletion' field.
   // Run this script periodically from server as deleting collections
   // from a web client is not recommended by firestore.
 }
