@@ -134,7 +134,7 @@ export default function DropMenu() {
       <Popper
         open={open}
         anchorEl={anchorRef.current}
-        role={undefined}
+        placement="bottom-end"
         transition
         style={{ zIndex: "4", maxWidth: "320px" }}
       >
@@ -145,7 +145,7 @@ export default function DropMenu() {
               transformOrigin: "right top",
             }}
           >
-            <Paper elevation={6}>
+            <Paper elevation={6} sx={{ mr: 1, ml: -1 }}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
                   autoFocusItem={open}
