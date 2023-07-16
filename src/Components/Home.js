@@ -15,6 +15,7 @@ import {
   useAnimeMC,
   useAnimeMH,
   useAnimeMPTW,
+  useAnimeTN,
   useRecommendations,
 } from "./APICalls";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -88,6 +89,7 @@ export default function Home() {
     useRecommendations(viewHistory);
 
   //API calls for generic shelf content
+  const { data: animeTN } = useAnimeTN(genreQueryString);
   const { data: animeHR } = useAnimeHR(genreQueryString);
   const { data: animeMC } = useAnimeMC(genreQueryString);
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
@@ -143,6 +145,11 @@ export default function Home() {
         title={"Explore More"}
       />
       <Container maxWidth="lg">
+        <Typography variant="h4" sx={shelfTitleStyles}>
+          {selectedGenre} Trending Now
+        </Typography>
+        <AnimeShelf items={animeTN} />
+
         <Typography variant="h4" sx={shelfTitleStyles}>
           Highest Rated {selectedGenre}{" "}
         </Typography>

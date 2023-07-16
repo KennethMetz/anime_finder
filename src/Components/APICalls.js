@@ -98,6 +98,12 @@ export function useAnimeMH() {
   );
 }
 
+export function useAnimeTN(selectedGenre) {
+  return useGetTitles(
+    `${apiUrl}/anime?sort=most_popular_now&page_size=24${selectedGenre}`
+  );
+}
+
 export function useGetTitles(fullUrl) {
   return useQuery(
     [fullUrl],
