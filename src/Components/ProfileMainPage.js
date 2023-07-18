@@ -73,7 +73,7 @@ export default function ProfileMainPage() {
           ))}
           {!profile?.lists?.length && (
             <Grid item xs={12}>
-              <NoResultsImage />
+              <NoResultsImage tile={true} />
             </Grid>
           )}
           <Grid item xs={12}>
@@ -95,7 +95,7 @@ export default function ProfileMainPage() {
           ))}
           {!profile?.savedLists?.length && (
             <Grid item xs={12}>
-              <NoResultsImage />
+              <NoResultsImage tile="true" />
             </Grid>
           )}
         </Grid>

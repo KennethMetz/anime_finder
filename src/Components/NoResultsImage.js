@@ -1,14 +1,16 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+
 import Spike from "../Styles/images/distraughtSpike2.webp";
 
-export default function NoResultsImage({ noImage }) {
+export default function NoResultsImage({ noImage, tile }) {
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: !tile ? "center" : "flex-start",
       }}
     >
       <Typography
@@ -19,9 +21,7 @@ export default function NoResultsImage({ noImage }) {
       >
         Nothing to see here...
       </Typography>
-      {noImage ? (
-        ""
-      ) : (
+      {!noImage && !tile && (
         <Box
           component="img"
           src={Spike}
@@ -32,6 +32,23 @@ export default function NoResultsImage({ noImage }) {
             maxWidth: "355px",
           }}
         ></Box>
+      )}
+      {!noImage && tile && (
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <Box
+              alt=""
+              sx={{
+                background: `url(${Spike})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                borderRadius: "16px",
+                width: "100%",
+                height: "142.56px",
+              }}
+            ></Box>
+          </Grid>
+        </Grid>
       )}
     </div>
   );
