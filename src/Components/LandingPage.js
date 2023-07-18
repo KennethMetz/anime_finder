@@ -220,14 +220,14 @@ export default function LandingPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  margin: "24px 0px 27px",
+                  margin: "24px 0px 27px 27px",
                 }}
               >
                 <Icon
                   sx={{
                     width: "40px",
                     height: "40px",
-                    margin: "0px 20px 0px 10px",
+                    margin: "0px 20px 0px 0px",
                   }}
                 >
                   <MagnifyingGlass size={35} />
@@ -236,7 +236,7 @@ export default function LandingPage() {
                   variant="h6"
                   sx={{
                     fontSize: "1.5rem",
-                    marginRight: "15px",
+                    marginRight: "10px",
                     lineHeight: "1.25",
                   }}
                 >
@@ -245,7 +245,7 @@ export default function LandingPage() {
               </div>
               <Typography
                 sx={{
-                  margin: "0px 34px 20px 27px",
+                  margin: "0px 20px 20px 27px",
                 }}
               >
                 Search through EdwardML’s library to build your personal taste
@@ -289,14 +289,14 @@ export default function LandingPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  margin: "24px 0px 27px",
+                  margin: "24px 0px 27px 27px",
                 }}
               >
                 <Icon
                   sx={{
                     width: "40px",
                     height: "40px",
-                    margin: "0px 20px 0px 10px",
+                    margin: "0px 20px 0px 0px",
                   }}
                 >
                   <ShareNetwork size={35} />
@@ -305,7 +305,7 @@ export default function LandingPage() {
                   variant="h6"
                   sx={{
                     fontSize: "1.5rem",
-                    marginRight: "20px",
+                    marginRight: "10px",
                     lineHeight: "1.25",
                   }}
                 >
@@ -314,7 +314,7 @@ export default function LandingPage() {
               </div>
               <Typography
                 sx={{
-                  margin: "0px 34px 0px 27px",
+                  margin: "0px 20px 0px 27px",
                 }}
               >
                 Edward understands anime relationships and can help you discover
@@ -362,14 +362,14 @@ export default function LandingPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  margin: "24px 0px 27px",
+                  margin: "24px 0px 27px 27px",
                 }}
               >
                 <Icon
                   sx={{
                     width: "40px",
                     height: "40px",
-                    margin: "0px 20px 0px 10px",
+                    margin: "0px 20px 0px 0px",
                   }}
                 >
                   <User size={35} />
@@ -378,7 +378,7 @@ export default function LandingPage() {
                   variant="h6"
                   sx={{
                     fontSize: "1.5rem",
-                    marginRight: "15px",
+                    marginRight: "10px",
                     lineHeight: "1.25",
                   }}
                 >
@@ -387,7 +387,7 @@ export default function LandingPage() {
               </div>
               <Typography
                 sx={{
-                  margin: "0px 34px 20px 27px",
+                  margin: "0px 20px 20px 27px",
                 }}
               >
                 Edward learns your personal taste profile and can make new
