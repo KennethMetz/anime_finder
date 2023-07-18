@@ -154,7 +154,6 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
           onClick={(e) => {
             handleToggle();
             e.preventDefault();
-            e.stopPropagation();
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleToggle();
