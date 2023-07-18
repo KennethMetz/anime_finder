@@ -260,11 +260,10 @@ export async function ClaimHandle(handle, userId) {
 }
 
 export async function CreateWatchlistDataEntry(userId, listId) {
-  const randomIndex = Math.floor(Math.random() * 9999999);
   const listData = {
     userId: userId,
     listId: listId,
-    random: randomIndex,
+    random: generateRandomWatchlistInt(),
   };
   const docName = userId + listId;
   let docRef = doc(db, "watchlistData", docName);
@@ -321,11 +320,15 @@ export async function MarkNotificationsSeenOrRead(notiArray, IdToNotify, verb) {
   }
 }
 
+function generateRandomWatchlistInt() {
+  return Math.floor(Math.random() * 9999999);
+}
+
 export async function getRandomCommunityList() {
   // Repeat call to try and ensure a list with at least (1) anime title is found.
   for (let i = 1; i < 6; i++) {
     try {
-      const randomNumber = Math.floor(Math.random() * 9999999);
+      const randomNumber = generateRandomWatchlistInt();
       const q = query(
         collection(db, "watchlistData"),
         where("random", ">=", randomNumber),
