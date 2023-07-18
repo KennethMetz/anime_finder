@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 
 import { CaretLeft, CaretRight } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import AnimeCard from "./AnimeCard";
 
@@ -67,6 +67,11 @@ export default function AnimeShelfClassic({ items }) {
     onSwipedRight: (eventData) =>
       setStartIndex(Math.max(startIndex - itemsPerPage, 0)),
   });
+
+  // Resets pagination back to beggining whenever new anime is received
+  useEffect(() => {
+    setStartIndex(0);
+  }, [items]);
 
   return (
     <Box

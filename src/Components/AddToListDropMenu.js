@@ -19,7 +19,11 @@ import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import useTheme from "@mui/material/styles/useTheme";
-import { generateId, SaveToFirestore } from "./Firestore";
+import {
+  CreateWatchlistDataEntry,
+  generateId,
+  SaveToFirestore,
+} from "./Firestore";
 import AddButton from "./AddButton";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
@@ -110,6 +114,7 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
     ];
     setLocalUser(temp);
     SaveToFirestore(user, temp);
+    if (!privateList) CreateWatchlistDataEntry(user.uid, listId);
     setName("");
   };
 

@@ -75,7 +75,7 @@ export default function AnimeGrid({ items, large }) {
               />
             </Grid>
           ))}
-        {showSeeMoreButton && (
+        {showSeeMoreButton && !showGhosts && (
           <Grid
             item
             xs={columns}
@@ -90,6 +90,18 @@ export default function AnimeGrid({ items, large }) {
               See more
             </Button>
           </Grid>
+        )}
+        {showGhosts && (
+          <Box
+            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <Skeleton
+              variant="rounded"
+              width="120px"
+              height="40px"
+              sx={{ ml: "16px", mt: "16px", borderRadius: "20px" }}
+            />
+          </Box>
         )}
       </Grid>
     </Box>

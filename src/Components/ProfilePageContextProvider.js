@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useProfile } from "./APICalls";
 import { auth } from "./Firebase";
-import { SaveToFirestore } from "./Firestore";
+import { SaveToFirestore, deleteWatchlistDataEntry } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import ProfilePageContext from "./ProfilePageContext";
 import useProfileWithAnime from "../Hooks/useProfileWithAnime";
@@ -58,8 +58,9 @@ export default function ProfilePageContextProvider({ userId, children }) {
     deleteList: (index) => {
       throwIfNotOwner();
       const newLocalUser = { ...localUser };
-      newLocalUser.lists.splice(index, 1);
+      const deletedList = newLocalUser.lists.splice(index, 1);
       save(newLocalUser);
+      deleteWatchlistDataEntry(user.uid, deletedList[0].id);
     },
     updateTop8: (top8) => {
       throwIfNotOwner();
