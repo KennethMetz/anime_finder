@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
@@ -11,8 +18,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import CircularProgress from "@mui/material/CircularProgress";
 import Badge from "@mui/material/Badge";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
-import { Bell, CaretDown } from "phosphor-react";
+import { Bell, CaretDown, CaretUp } from "phosphor-react";
 
 import NotificationsContext from "./NotificationsContext";
 import { NotificationListItem } from "./NotificationListItem";
@@ -29,11 +38,12 @@ export default function NotificationDropMenu() {
 
   const [
     notifications,
-    setNotifications,
     showMore,
     hideBadge,
-    moreNotiRequests,
-    setMoreNotiRequests,
+    getNotis,
+    showNewNotiButton,
+    displayLatestNotis,
+    resetPagination,
   ] = useContext(NotificationsContext);
 
   const isMobileWidth = useMediaQuery(
@@ -41,6 +51,7 @@ export default function NotificationDropMenu() {
   );
 
   const handleToggle = () => {
+    if (!open) getNotis();
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -99,11 +110,7 @@ export default function NotificationDropMenu() {
     }
   }, [open]);
 
-  // Makes popper show default # of notifications when re-opened.
-  useEffect(() => {
-    if (notifications && open === false) setMoreNotiRequests(0);
-  }, [open]);
-
+  // Hides spinner once additional notis have been added to notifications array
   useEffect(() => {
     setLoadingMoreNotis(false);
   }, [notifications]);
@@ -141,14 +148,6 @@ export default function NotificationDropMenu() {
         open={open}
         anchorEl={anchorRef.current}
         placement="bottom-end"
-        modifiers={[
-          {
-            name: "offset",
-            options: {
-              offset: [250, 0],
-            },
-          },
-        ]}
         transition
         style={{
           zIndex: "4",
@@ -158,55 +157,80 @@ export default function NotificationDropMenu() {
         {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
+            onExited={() => resetPagination()}
             style={{
-              transformOrigin: isMobileWidth ? "right top" : "center top",
+              transformOrigin: "right top",
             }}
           >
             <Paper
               elevation={6}
               sx={{
                 overflow: "auto",
-                mr: 1,
+                ml: 1,
                 maxHeight: "92vh",
                 overflowY: "auto",
               }}
             >
               <ClickAwayListener onClickAway={handleClose}>
-                <MenuList
-                  autoFocusItem={open}
-                  variant="menu"
-                  id="composition-menu"
-                  aria-labelledby="composition-button"
-                  onKeyDown={handleListKeyDown}
-                >
-                  {notifications?.map((item, index) => {
-                    return (
-                      <NotificationListItem
-                        item={item}
-                        key={`${item.time?.seconds} + ${index}`}
-                        handleClose={handleClose}
-                        index={index}
-                      />
-                    );
-                  })}
-                  {/* Render SEE MORE button */}
-                  {showMore && (
-                    <ListItemButton
-                      sx={{ display: "flex", justifyContent: "center" }}
-                      onClick={() => {
-                        setMoreNotiRequests(moreNotiRequests + 1);
-                        setLoadingMoreNotis(true);
-                      }}
-                    >
-                      {!loadingMoreNotis ? "See More" : ""}
-                      {!loadingMoreNotis ? (
-                        <CaretDown size={32} style={{ marginLeft: "10px" }} />
-                      ) : (
-                        <CircularProgress />
-                      )}
-                    </ListItemButton>
+                <Box>
+                  <MenuList
+                    autoFocusItem={open}
+                    variant="menu"
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    {notifications?.map((item, index) => {
+                      return (
+                        <NotificationListItem
+                          item={item}
+                          key={`${item.time?.seconds}+${item.interactorId}`}
+                          handleClose={handleClose}
+                          index={index}
+                        />
+                      );
+                    })}
+
+                    {/* Render SEE MORE button */}
+                    {showMore && (
+                      <ListItemButton
+                        sx={{ display: "flex", justifyContent: "center" }}
+                        onClick={() => {
+                          getNotis();
+                          setLoadingMoreNotis(true);
+                        }}
+                      >
+                        {!loadingMoreNotis ? "See More" : ""}
+                        {!loadingMoreNotis ? (
+                          <CaretDown size={32} style={{ marginLeft: "10px" }} />
+                        ) : (
+                          <CircularProgress />
+                        )}
+                      </ListItemButton>
+                    )}
+                  </MenuList>
+                  {/* Render SEE LATEST button */}
+                  {showNewNotiButton && (
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Button
+                        onClick={() => {
+                          displayLatestNotis();
+                        }}
+                        sx={{
+                          position: "absolute",
+                          top: "10px",
+                          textAlign: "center",
+                          height: "25px",
+                        }}
+                        variant="contained"
+                        size="medium"
+                      >
+                        New Notifications
+                        <CaretUp size={28} style={{ marginLeft: "5px" }} />
+                      </Button>
+                    </Box>
                   )}
-                </MenuList>
+                </Box>
               </ClickAwayListener>
             </Paper>
           </Grow>

@@ -4,7 +4,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useEffect, useState, useContext } from "react";
+import Box from "@mui/material/Box";
+import { useEffect, useState, useContext, useMemo } from "react";
 import AnimeGrid from "./AnimeGrid";
 import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
@@ -16,18 +17,22 @@ import {
   useAnimeMH,
   useAnimeMPTW,
   useAnimeTN,
+  useProfile,
   useRecommendations,
 } from "./APICalls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import HandleDialog from "./HandleDialog";
-import { PopulateFromFirestore } from "./Firestore";
+import { PopulateFromFirestore, getRandomCommunityList } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 import HtmlPageTitle from "./HtmlPageTitle";
+import useAnimeList from "../Hooks/useAnimeList";
+import CommunityListShelf from "./CommunityListShelf";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState(null); //randomized
+  let [communityListData, setCommunityListData] = useState(undefined); //randomized
 
   const [user, loading, error] = useAuthState(auth);
 
@@ -37,6 +42,7 @@ export default function Home() {
   const genreQueryString = selectedGenre ? `&genre=${selectedGenre}` : "";
 
   let [refresh, setRefresh] = useState(false);
+  let [refreshCL, setRefreshCL] = useState(false);
 
   let randomPage = [];
   let randomItem = [];
@@ -80,6 +86,12 @@ export default function Home() {
   }, [refresh]);
 
   useEffect(() => {
+    getRandomCommunityList()
+      .then((result) => setCommunityListData(result))
+      .catch((error) => console.log(error));
+  }, [refreshCL]);
+
+  useEffect(() => {
     PopulateFromFirestore(user, localUser, setLocalUser);
   }, [user]);
 
@@ -94,6 +106,7 @@ export default function Home() {
   const { data: animeMC } = useAnimeMC(genreQueryString);
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
+  let { data: communityList } = useAnimeList(communityListData?.anime);
 
   const shelfTitleStyles = {
     marginTop: "1.6em",
@@ -138,7 +151,32 @@ export default function Home() {
           </>
         )}
         <div className="gap" />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h3">Fan Lists</Typography>{" "}
+          <Button
+            color="inherit"
+            variant="outlined"
+            size="small"
+            startIcon={<RefreshIcon />}
+            onClick={() => {
+              setCommunityListData(undefined);
+              setRefreshCL(!refreshCL);
+            }}
+            sx={{ ml: 3 }}
+          >
+            Surprise Me!
+          </Button>
+        </Box>
+        <CommunityListShelf
+          data={communityListData}
+          anime={communityList}
+          refresh={refreshCL}
+          setRefresh={setRefreshCL}
+          titleStyle={shelfTitleStyles}
+        />
       </Container>
+      <div className="gap" />
+
       <ShelfTitle
         selectedGenre={selectedGenre}
         setSelectedGenre={setSelectedGenre}
@@ -159,9 +197,6 @@ export default function Home() {
           Most Popular {selectedGenre}
         </Typography>
         <AnimeShelf items={animeMC} />
-        {/* 
-      <h4>All time Best</h4>
-      <AnimeShelf items={animeMR} /> */}
 
         <Typography variant="h4" sx={shelfTitleStyles}>
           Most Buzzed About {selectedGenre}

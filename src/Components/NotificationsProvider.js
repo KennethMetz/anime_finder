@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import NotificationsContext from "./NotificationsContext";
 import {
   collection,
-  doc,
-  getCountFromServer,
   getDocs,
   limit,
   onSnapshot,
   orderBy,
   query,
+  startAfter,
   where,
 } from "firebase/firestore";
 import { auth, db } from "./Firebase";
@@ -16,55 +15,122 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function NotificationsProvider(props) {
   const [user, loading, error] = useAuthState(auth);
-  const [notifications, setNotifications] = useState();
+  const [notifications, setNotifications] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [hideBadge, setHideBadge] = useState(true);
-  const [moreNotiRequests, setMoreNotiRequests] = useState(0);
+  const [listeningDocs, setListeningDocs] = useState([]);
+  const [lastVisible, setLastVisible] = useState();
+  const [lastVisibleListener, setLastVisibleListener] = useState();
+  const [showNewNotiButton, setShowNewNotiButton] = useState(false);
 
-  // Read initial state from Firestore, or else use blank array.
-  // It calls Firestore one time, after user has been authed.
+  // Creates realtime listener on most recent notifications
+  // Used as trigger for query of unseen data
   useEffect(() => {
     if (!user) return;
-    // Get notifications
+    // Set listener for changes
     const notisRef = collection(
       db,
       "notifications",
       user?.uid,
       "usersNotifications"
     );
-    const q = query(
-      notisRef,
-      orderBy("time", "desc"),
-      limit(5 + moreNotiRequests * 5)
-    );
-    const unsub = onSnapshot(q, (querySnapshot) => {
-      const notis = [];
-      querySnapshot.forEach((doc) => {
-        notis.push({ ...doc.data(), firestoreDocId: doc.id });
-      });
-      // Check if there are more notifications than being sent back.
-      if (notis.length === 5 + moreNotiRequests * 5) {
-        notis.splice(notis.length - 1);
-        setNotifications(notis);
-        setShowMore(true);
-      } else {
-        setNotifications(notis ?? []);
-        setShowMore(false);
-      }
+    const q = query(notisRef, orderBy("time", "desc"), limit(5));
+    const unsub = onSnapshot(q, (documentSnapshots) => {
+      const latestNoti = documentSnapshots.docs.map((doc) => ({
+        ...doc.data(),
+        firestoreDocId: doc.id,
+      }));
+      setListeningDocs(latestNoti);
+      if (latestNoti.length === 5)
+        setLastVisibleListener(
+          documentSnapshots.docs[documentSnapshots.docs.length - 2]
+        );
+      else setLastVisibleListener(null);
     });
-
     return unsub;
-  }, [user, moreNotiRequests]);
+  }, [user]);
+
+  async function getNotis() {
+    if (!user) return;
+    const notisRef = collection(
+      db,
+      "notifications",
+      user?.uid,
+      "usersNotifications"
+    );
+    // Populates noti popper when first opened, with real time results
+    if (!lastVisible) {
+      let temp = [...listeningDocs];
+      if (listeningDocs.length === 5) {
+        setShowMore(true);
+        temp.splice(temp.length - 1);
+        setLastVisible(lastVisibleListener);
+      } else {
+        setShowMore(false);
+        setLastVisible(null);
+      }
+      setNotifications(temp);
+      return;
+    }
+
+    // Concatenates additional notifications to the end of the real time results
+    else {
+      const q = query(
+        notisRef,
+        orderBy("time", "desc"),
+        startAfter(lastVisible),
+        limit(5)
+      );
+
+      try {
+        const documentSnapshots = await getDocs(q);
+        const notis = [...notifications];
+        let docCount = 0;
+        documentSnapshots.forEach((doc) => {
+          docCount++;
+          notis.push({ ...doc.data(), firestoreDocId: doc.id });
+        });
+        if (docCount === 5) {
+          setShowMore(true);
+          notis.splice(notis.length - 1);
+          setLastVisible(
+            documentSnapshots.docs[documentSnapshots.docs.length - 2]
+          );
+        } else {
+          setShowMore(false);
+          setLastVisible(null);
+        }
+        setNotifications(notis);
+      } catch (error) {
+        console.error(
+          "Error getting more notifications from Firestore: ",
+          error
+        );
+      }
+    }
+  }
+
+  function displayLatestNotis() {
+    setShowNewNotiButton(false);
+    const notis = [...listeningDocs];
+    if (listeningDocs.length === 5) {
+      setShowMore(true);
+      notis.splice(notis.length - 1);
+    } else setShowMore(false);
+    setNotifications(notis);
+    setLastVisible(lastVisibleListener);
+  }
 
   // The count() firestore fn can't be used with real-time listeners...so this is my work-around.
   useEffect(() => {
     if (!user || !notifications) return;
-    GetUnseenNotiCount().then((result) => {
+    getUnseenNotiCount().then((result) => {
       setHideBadge(result);
+      setShowNewNotiButton(!result);
     });
-  }, [notifications]);
+  }, [listeningDocs]);
 
-  async function GetUnseenNotiCount() {
+  async function getUnseenNotiCount() {
     const notisRef = collection(
       db,
       "notifications",
@@ -84,15 +150,21 @@ export default function NotificationsProvider(props) {
     }
   }
 
+  function resetPagination() {
+    setNotifications([]);
+    setLastVisible();
+  }
+
   return (
     <NotificationsContext.Provider
       value={[
         notifications,
-        setNotifications,
         showMore,
         hideBadge,
-        moreNotiRequests,
-        setMoreNotiRequests,
+        getNotis,
+        showNewNotiButton,
+        displayLatestNotis,
+        resetPagination,
       ]}
     >
       {props.children}
