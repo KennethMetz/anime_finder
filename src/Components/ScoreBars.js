@@ -7,6 +7,17 @@ import { useEffect, useState } from "react";
 export default function ScoreBars({ scores }) {
   const [multiplier, setMultiplier] = useState(0);
 
+  const smallerTopMargin = {
+    modifiers: [
+      {
+        name: "offset",
+        options: {
+          offset: [0, -10],
+        },
+      },
+    ],
+  };
+
   // LinearProgress components animate changes in value.  To get them to
   // animate the bars to their initial positions, a multiplier is applied to
   // each score, starting at 0 and set to 1 after a very short delay.
@@ -22,7 +33,11 @@ export default function ScoreBars({ scores }) {
     <>
       {scores.map((score) => (
         <Box key={score.name} sx={{ display: "flex", alignItems: "center" }}>
-          <Tooltip title={score.description}>
+          <Tooltip
+            title={score.description}
+            arrow={true}
+            PopperProps={{ ...smallerTopMargin }}
+          >
             <Typography
               sx={{
                 mb: "4px",
@@ -35,7 +50,9 @@ export default function ScoreBars({ scores }) {
             </Typography>
           </Tooltip>
           <Tooltip
+            arrow={true}
             title={Math.floor((score.value * 0.8 + 0.2) * 100 * multiplier)}
+            PopperProps={{ ...smallerTopMargin }}
           >
             <LinearProgress
               variant="determinate"
