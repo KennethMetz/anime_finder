@@ -34,7 +34,7 @@ export default function NoResultsImage({ noImage, tile }) {
         ></Box>
       )}
       {!noImage && tile && (
-        <Grid container>
+        <Grid container columnSpacing={2}>
           <Grid item xs={12} md={6}>
             <Box
               alt=""
