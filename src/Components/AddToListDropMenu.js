@@ -114,7 +114,9 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
     ];
     setLocalUser(temp);
     SaveToFirestore(user, temp);
-    if (!privateList) CreateWatchlistDataEntry(user.uid, listId);
+    // Only registered users have their watchlistData created and displayed on '/home'
+    if (!privateList && localUser.authProvider !== "anonymous")
+      CreateWatchlistDataEntry(user.uid, listId);
     setName("");
   };
 

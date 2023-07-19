@@ -13,6 +13,7 @@ import {
 import { useContext } from "react";
 import { LocalUserContext } from "../Components/LocalUserContext";
 import {
+  CreateWatchlistDataEntry,
   PopulateFromFirestore,
   SaveToFirestore,
 } from "../Components/Firestore";
@@ -81,6 +82,14 @@ export default function useAuthActions() {
     );
   }
 
+  async function writeAllWatchlistDataEntries() {
+    await Promise.all(
+      localUser?.lists.map((doc) =>
+        CreateWatchlistDataEntry(localUser.uid, doc.id)
+      )
+    );
+  }
+
   return {
     loginWithGoogle: async () => {
       const provider = new GoogleAuthProvider();
@@ -91,6 +100,7 @@ export default function useAuthActions() {
       const provider = new GoogleAuthProvider();
       const userCredential = await linkWithPopup(auth, provider);
       await onRegistrationSuccess(userCredential, "google");
+      await writeAllWatchlistDataEntries();
     },
     registerWithGoogle: async () => {
       const provider = new GoogleAuthProvider();
@@ -106,6 +116,7 @@ export default function useAuthActions() {
       const provider = new TwitterAuthProvider();
       const userCredential = await linkWithPopup(auth, provider);
       await onRegistrationSuccess(userCredential, "twitter");
+      await writeAllWatchlistDataEntries();
     },
     registerWithTwitter: async () => {
       const provider = new TwitterAuthProvider();
@@ -130,6 +141,7 @@ export default function useAuthActions() {
         userCredential,
         "email/password via firebase"
       );
+      await writeAllWatchlistDataEntries();
     },
     registerWithEmail: async (email, password) => {
       const userCredential = await createUserWithEmailAndPassword(
