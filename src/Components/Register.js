@@ -79,7 +79,7 @@ export default function Register() {
   useEffect(() => {
     if (loading) return;
     //Registering users without any likes causes /home rendering to error out --> this prevents that.
-    if (localUser["likes"]?.length === 0) navigate("/");
+    if (localUser["likes"]?.length === 0) navigate("/onboarding");
   }, [user, loading, forwardToken]);
 
   const handleRegister = async (provider) => {
