@@ -38,6 +38,7 @@ export default function Onboarding() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!user) return;
     // Let anonymous users register accounts and
     // redirect existing authorized users
     if (!user?.isAnonymous) return navigate("/home");
