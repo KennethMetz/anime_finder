@@ -13,6 +13,7 @@ import {
 import { useContext } from "react";
 import { LocalUserContext } from "../Components/LocalUserContext";
 import {
+  CreateWatchlistDataEntry,
   PopulateFromFirestore,
   SaveToFirestore,
 } from "../Components/Firestore";
@@ -55,7 +56,16 @@ export default function useAuthActions() {
       await SaveToFirestore(user, newLocalUser);
     }
 
-    // FInally, in all cases, load the user's LocalUser from /users.
+    // On a non-anonymous registration for users with watchlists, write watchlistData for all lists.
+    if (
+      isRegistration &&
+      authProvider !== "anonymous" &&
+      localUser.lists.length > 0
+    ) {
+      await writeAllWatchlistDataEntries();
+    }
+
+    // Finally, in all cases, load the user's LocalUser from /users.
     await PopulateFromFirestore(user, localUser, setLocalUser);
   }
 
@@ -78,6 +88,14 @@ export default function useAuthActions() {
       authProvider,
       displayNameOverride,
       /*isRegistration=*/ true
+    );
+  }
+
+  async function writeAllWatchlistDataEntries() {
+    await Promise.all(
+      localUser?.lists.map((doc) =>
+        CreateWatchlistDataEntry(localUser.uid, doc.id)
+      )
     );
   }
 
