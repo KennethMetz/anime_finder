@@ -301,7 +301,7 @@ export default function ProfileListPage() {
           </Droppable>
         </DragDropContext>
       )}
-      {items === [] && <NoResultsImage />}
+      {items?.length === 0 && <NoResultsImage />}
       {/*Suggestions*/}
       {showSuggestions && (
         <>

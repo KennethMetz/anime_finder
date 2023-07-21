@@ -180,7 +180,11 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         {({ TransitionProps, placement }) => (
           <Grow {...TransitionProps} style={{ transformOrigin: "center-top" }}>
             <Paper elevation={6} onClick={(e) => e.stopPropagation()}>
-              <ClickAwayListener onClickAway={handleClose}>
+              <ClickAwayListener
+                onClickAway={handleClose}
+                mouseEvent="onMouseDown"
+                touchEvent="onTouchStart"
+              >
                 <MenuList
                   autoFocusItem={open}
                   id="composition-menu"

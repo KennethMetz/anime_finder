@@ -53,15 +53,17 @@ export default function WatchlistTile({
           >
             {name}
           </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              marginLeft: "8px",
-              flexShrink: 0,
-            }}
-          >
-            {items?.length ?? "0"} {items?.length === 1 ? "item" : "items"}
-          </Typography>
+          {items && (
+            <Typography
+              variant="body2"
+              sx={{
+                marginLeft: "8px",
+                flexShrink: 0,
+              }}
+            >
+              {items.length ?? "0"} {items.length === 1 ? "item" : "items"}
+            </Typography>
+          )}
         </Box>
         <Grid container columnSpacing={1}>
           {items?.slice(0, 5).map((item, index) => (

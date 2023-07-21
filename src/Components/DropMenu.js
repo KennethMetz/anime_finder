@@ -184,7 +184,9 @@ export default function DropMenu() {
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                       }}
-                      secondary={`@${localUser?.handle}`}
+                      secondary={
+                        localUser?.handle ? `@${localUser?.handle}` : ""
+                      }
                       secondaryTypographyProps={{
                         variant: "body1",
                         color: theme.palette.text.main,
