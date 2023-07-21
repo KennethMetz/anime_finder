@@ -41,7 +41,7 @@ export default function Onboarding() {
     if (!user) return;
     // Let anonymous users register accounts and
     // redirect existing authorized users
-    if (!user?.isAnonymous) return navigate("/home");
+    if (!user.isAnonymous) navigate("/home");
   }, [user, localUser]);
 
   return (
