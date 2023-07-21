@@ -95,7 +95,7 @@ export default function ProfileMainPage() {
           ))}
           {!profile?.savedLists?.length && (
             <Grid item xs={12}>
-              <NoResultsImage tile="true" />
+              <NoResultsImage tile={true} />
             </Grid>
           )}
         </Grid>

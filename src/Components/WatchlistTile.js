@@ -61,7 +61,7 @@ export default function WatchlistTile({
                 flexShrink: 0,
               }}
             >
-              {items?.length ?? "0"} {items?.length === 1 ? "item" : "items"}
+              {items.length ?? "0"} {items.length === 1 ? "item" : "items"}
             </Typography>
           )}
         </Box>
