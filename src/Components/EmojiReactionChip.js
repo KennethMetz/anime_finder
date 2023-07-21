@@ -107,6 +107,7 @@ export default function EmojiReactionChip({
       variant={selected ? "filled" : "outlined"}
       icon={emoji}
       label={item.emojis[reaction].length}
+      disabled={!user?.handle}
       sx={{
         paddingLeft: 0.5,
         borderRadius: "20px",
