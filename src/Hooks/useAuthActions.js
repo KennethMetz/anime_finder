@@ -56,7 +56,16 @@ export default function useAuthActions() {
       await SaveToFirestore(user, newLocalUser);
     }
 
-    // FInally, in all cases, load the user's LocalUser from /users.
+    // On a non-anonymous registration for users with watchlists, write watchlistData for all lists.
+    if (
+      isRegistration &&
+      authProvider !== "anonymous" &&
+      localUser.lists.length > 0
+    ) {
+      await writeAllWatchlistDataEntries();
+    }
+
+    // Finally, in all cases, load the user's LocalUser from /users.
     await PopulateFromFirestore(user, localUser, setLocalUser);
   }
 
@@ -100,7 +109,6 @@ export default function useAuthActions() {
       const provider = new GoogleAuthProvider();
       const userCredential = await linkWithPopup(auth, provider);
       await onRegistrationSuccess(userCredential, "google");
-      await writeAllWatchlistDataEntries();
     },
     registerWithGoogle: async () => {
       const provider = new GoogleAuthProvider();
@@ -116,7 +124,6 @@ export default function useAuthActions() {
       const provider = new TwitterAuthProvider();
       const userCredential = await linkWithPopup(auth, provider);
       await onRegistrationSuccess(userCredential, "twitter");
-      await writeAllWatchlistDataEntries();
     },
     registerWithTwitter: async () => {
       const provider = new TwitterAuthProvider();
@@ -141,7 +148,6 @@ export default function useAuthActions() {
         userCredential,
         "email/password via firebase"
       );
-      await writeAllWatchlistDataEntries();
     },
     registerWithEmail: async (email, password) => {
       const userCredential = await createUserWithEmailAndPassword(
