@@ -101,13 +101,12 @@ export default function EmojiReactionChip({
         sx={{ paddingLeft: 0.5, borderRadius: "20px", mr: 2 }}
       />
     );
-
   return (
     <Chip
       variant={selected ? "filled" : "outlined"}
       icon={emoji}
       label={item.emojis[reaction].length}
-      disabled={!user?.handle}
+      disabled={user?.isAnonymous}
       sx={{
         paddingLeft: 0.5,
         borderRadius: "20px",
