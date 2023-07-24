@@ -184,7 +184,7 @@ export default function NotificationDropMenu() {
                       return (
                         <NotificationListItem
                           item={item}
-                          key={`${item.time?.seconds}+${item.interactorId}`}
+                          key={`${item.time?.seconds}+${item.interactorId}+${item?.action}`}
                           handleClose={handleClose}
                           index={index}
                         />
