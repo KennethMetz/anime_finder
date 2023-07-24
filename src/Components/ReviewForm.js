@@ -115,9 +115,9 @@ export default function ReviewForm({
         time: new Date(),
         edited: { edited },
         emojis: {
-          applause: [...emojis?.applause] ?? [],
-          heart: [...emojis?.heart] ?? [],
-          trash: [...emojis?.trash] ?? [],
+          applause: [...emojis?.applause],
+          heart: [...emojis?.heart],
+          trash: [...emojis?.trash],
         },
       };
       if (!localUser[type]) localUser[type] = [];
