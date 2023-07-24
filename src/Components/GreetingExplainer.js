@@ -4,11 +4,11 @@ import useTheme from "@mui/material/styles/useTheme";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import {
-  Atom,
   Binoculars,
   CaretRight,
   ChatsCircle,
-  Wrench,
+  FlyingSaucer,
+  PuzzlePiece,
   X,
 } from "phosphor-react";
 import { useState } from "react";
@@ -36,6 +36,12 @@ export default function GreetingExplainer() {
     display: "flex",
     justifyContent: "right",
     alignItems: "top",
+  };
+
+  const iconPhosphorStyling = {
+    size: 48,
+    weight: "duotone",
+    color: theme.palette.background.main,
   };
 
   const smallText = { fontSize: "0.875rem", marginTop: "6px" };
@@ -90,7 +96,7 @@ export default function GreetingExplainer() {
             sx={{ ...iconGridStyling }}
           >
             <Box sx={{ ...iconBoxStyling }}>
-              <Atom size={48} color={theme.palette.background.main} />
+              <FlyingSaucer {...iconPhosphorStyling} />
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
@@ -110,7 +116,7 @@ export default function GreetingExplainer() {
             sx={{ ...iconGridStyling }}
           >
             <Box sx={{ ...iconBoxStyling }}>
-              <Wrench size={48} color={theme.palette.background.main} />
+              <PuzzlePiece {...iconPhosphorStyling} />
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
@@ -131,7 +137,7 @@ export default function GreetingExplainer() {
             sx={{ ...iconGridStyling }}
           >
             <Box sx={{ ...iconBoxStyling }}>
-              <Binoculars size={48} color={theme.palette.background.main} />
+              <Binoculars {...iconPhosphorStyling} />
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
@@ -151,7 +157,7 @@ export default function GreetingExplainer() {
             sx={{ ...iconGridStyling }}
           >
             <Box sx={{ ...iconBoxStyling }}>
-              <ChatsCircle size={48} color={theme.palette.background.main} />
+              <ChatsCircle {...iconPhosphorStyling} />
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
@@ -189,7 +195,7 @@ export default function GreetingExplainer() {
             Register to save your profile!
             <Box
               sx={{
-                bgcolor: theme.palette.background.main,
+                bgcolor: "#fcfcfc",
                 width: 26,
                 height: 26,
                 borderRadius: "50%",
