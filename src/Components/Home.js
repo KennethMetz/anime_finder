@@ -124,7 +124,7 @@ export default function Home() {
       )}
       <Container maxWidth="lg">
         <div className="gap" />
-        {localUser.authProvider === "anonymous" && <GreetingExplainer />}
+        {user.isAnonymous && <GreetingExplainer />}
         {localUser.uid && localUser?.likes.length === 0 ? (
           <Typography
             variant="h2"
