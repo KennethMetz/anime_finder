@@ -9,16 +9,22 @@ import { auth } from "./Firebase";
 import { useContext } from "react";
 import { LocalUserContext } from "./LocalUserContext";
 import { Link } from "react-router-dom";
+import useAuthActions from "../Hooks/useAuthActions";
 
 export default function OnboardingButton({ disabled }) {
   const [user] = useAuthState(auth);
   const [localUser, setLocalUser] = useContext(LocalUserContext);
+  const authActions = useAuthActions();
 
   const theme = useTheme();
 
   let linkLocation;
 
-  disabled ? (linkLocation = null) : (linkLocation = "/register");
+  disabled ? (linkLocation = null) : (linkLocation = "/home");
+
+  async function registerNewUserAsGuest() {
+    await authActions.registerAnonymously();
+  }
 
   return (
     <Container maxWidth="lg">
@@ -32,12 +38,13 @@ export default function OnboardingButton({ disabled }) {
           },
         }}
       >
-        <Link to={linkLocation}>
+        <Link to={linkLocation} onClick={registerNewUserAsGuest()}>
           <Button
             color="primary"
-            variant="contained"
+            register
             disabled={disabled}
             size="large"
+            variant="contained"
             sx={{
               minWidth: "211px",
             }}
