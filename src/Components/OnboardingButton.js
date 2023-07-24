@@ -38,7 +38,12 @@ export default function OnboardingButton({ disabled }) {
           },
         }}
       >
-        <Link to={linkLocation} onClick={registerNewUserAsGuest()}>
+        <Link
+          to={linkLocation}
+          onClick={() => {
+            registerNewUserAsGuest();
+          }}
+        >
           <Button
             color="primary"
             variant="contained"
