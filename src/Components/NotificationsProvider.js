@@ -79,7 +79,7 @@ export default function NotificationsProvider(props) {
         notisRef,
         orderBy("time", "desc"),
         startAfter(lastVisible),
-        limit(5)
+        limit(9)
       );
 
       try {
@@ -90,7 +90,7 @@ export default function NotificationsProvider(props) {
           docCount++;
           notis.push({ ...doc.data(), firestoreDocId: doc.id });
         });
-        if (docCount === 5) {
+        if (docCount === 9) {
           setShowMore(true);
           notis.splice(notis.length - 1);
           setLastVisible(
