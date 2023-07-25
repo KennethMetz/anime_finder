@@ -89,7 +89,13 @@ export default function ReviewContainer({
             </Typography>
           )}
           {!showReviewForm ? (
-            <Tooltip title={`Add a ${typeSingular}`}>
+            <Tooltip
+              title={
+                user?.isAnonymous
+                  ? `Register to add a ${typeSingular}`
+                  : `Add a ${typeSingular}`
+              }
+            >
               <Box sx={{ ml: 1 }}>
                 <IconButton
                   variant="contained"
