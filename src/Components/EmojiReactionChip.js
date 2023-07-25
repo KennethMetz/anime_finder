@@ -1,4 +1,5 @@
 import Chip from "@mui/material/Chip";
+import Tooltip from "@mui/material/Tooltip";
 import useTheme from "@mui/material/styles/useTheme";
 
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ export default function EmojiReactionChip({
   index,
   setReviews,
   type,
+  tooltip,
 }) {
   const [user] = useAuthState(auth);
   let [selected, setSelected] = useState();
@@ -31,6 +33,8 @@ export default function EmojiReactionChip({
   const params = useParams();
   const ownerId = params.userId;
   const listId = params.listId;
+
+  tooltip = user?.isAnonymous ? "Register to react" : tooltip;
 
   useEffect(() => {
     if (item?.emojis[reaction]?.includes(user.uid)) setSelected(true);
@@ -102,25 +106,29 @@ export default function EmojiReactionChip({
       />
     );
   return (
-    <Chip
-      variant={selected ? "filled" : "outlined"}
-      icon={emoji}
-      label={item.emojis[reaction].length}
-      disabled={user?.isAnonymous}
-      sx={{
-        paddingLeft: 0.5,
-        borderRadius: "20px",
-        mr: 2,
-        "& .MuiChip-label": { fontSize: "1rem" },
-        "& .MuiChip-icon": {
-          ...(selected && { color: "inherit" }),
-        },
-      }}
-      onClick={(e) => {
-        if (type === "list") reactToList();
-        else reactToReview();
-        e?.stopPropagation();
-      }}
-    />
+    <Tooltip title={tooltip} followCursor>
+      <div>
+        <Chip
+          variant={selected ? "filled" : "outlined"}
+          icon={emoji}
+          label={item.emojis[reaction].length}
+          disabled={user?.isAnonymous}
+          sx={{
+            paddingLeft: 0.5,
+            borderRadius: "20px",
+            mr: 2,
+            "& .MuiChip-label": { fontSize: "1rem" },
+            "& .MuiChip-icon": {
+              ...(selected && { color: "inherit" }),
+            },
+          }}
+          onClick={(e) => {
+            if (type === "list") reactToList();
+            else reactToReview();
+            e?.stopPropagation();
+          }}
+        />
+      </div>
+    </Tooltip>
   );
 }

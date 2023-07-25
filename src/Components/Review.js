@@ -258,50 +258,41 @@ export default function Review({
             marginTop: "10px",
           }}
         >
-          <Tooltip title={`Applaude this ${typeSingular}`} followCursor>
-            <div>
-              <EmojiReactionChip
-                docId={docId}
-                emoji={<HandsClapping size={24} />}
-                reaction="applause"
-                item={item}
-                index={index}
-                reviews={reviews}
-                setReviews={setReviews}
-                type={type}
-              />
-            </div>
-          </Tooltip>
+          <EmojiReactionChip
+            docId={docId}
+            emoji={<HandsClapping size={24} />}
+            reaction="applause"
+            item={item}
+            index={index}
+            reviews={reviews}
+            setReviews={setReviews}
+            type={type}
+            tooltip={`Applaud this ${typeSingular}`}
+          />
 
-          <Tooltip title={`Love this ${typeSingular}`} followCursor>
-            <div>
-              <EmojiReactionChip
-                docId={docId}
-                emoji={<Heart size={24} />}
-                reaction="heart"
-                item={item}
-                index={index}
-                reviews={reviews}
-                setReviews={setReviews}
-                type={type}
-              />
-            </div>
-          </Tooltip>
+          <EmojiReactionChip
+            docId={docId}
+            emoji={<Heart size={24} />}
+            reaction="heart"
+            item={item}
+            index={index}
+            reviews={reviews}
+            setReviews={setReviews}
+            type={type}
+            tooltip={`Love this ${typeSingular}`}
+          />
 
-          <Tooltip title={`Disagree with this ${typeSingular}`} followCursor>
-            <div>
-              <EmojiReactionChip
-                docId={docId}
-                emoji={<Trash size={24} />}
-                reaction="trash"
-                item={item}
-                index={index}
-                reviews={reviews}
-                setReviews={setReviews}
-                type={type}
-              />
-            </div>
-          </Tooltip>
+          <EmojiReactionChip
+            docId={docId}
+            emoji={<Trash size={24} />}
+            reaction="trash"
+            item={item}
+            index={index}
+            reviews={reviews}
+            setReviews={setReviews}
+            type={type}
+            tooltip={`Disagree with this ${typeSingular}`}
+          />
         </div>
       </Grid>
     </Paper>
