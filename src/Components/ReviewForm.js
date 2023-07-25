@@ -43,6 +43,8 @@ export default function ReviewForm({
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
+  let [emojis, setEmojis] = useState({});
+
   let [existingReview, setExistingReview] = useState(false);
 
   let [edited, setEdited] = useState(false);
@@ -79,6 +81,7 @@ export default function ReviewForm({
           setReviewTitle(reviews[i].reviewTitle);
           setReview(reviews[i].review);
           setRating(reviews[i].rating);
+          setEmojis(reviews[i].emojis);
         }
       }
     }
@@ -111,7 +114,11 @@ export default function ReviewForm({
         uid: user.uid,
         time: new Date(),
         edited: { edited },
-        emojis: { applause: [], heart: [], trash: [] },
+        emojis: {
+          applause: [...emojis?.applause],
+          heart: [...emojis?.heart],
+          trash: [...emojis?.trash],
+        },
       };
       if (!localUser[type]) localUser[type] = [];
       if (!localUser[type].find((x) => x === docId)) {
