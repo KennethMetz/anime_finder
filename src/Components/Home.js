@@ -29,6 +29,7 @@ import useGenreFilter from "../Hooks/useGenreFilter";
 import HtmlPageTitle from "./HtmlPageTitle";
 import useAnimeList from "../Hooks/useAnimeList";
 import CommunityListShelf from "./CommunityListShelf";
+import GreetingExplainer from "./GreetingExplainer";
 
 export default function Home() {
   let [animeRandom, setAnimeRandom] = useState(null); //randomized
@@ -123,6 +124,7 @@ export default function Home() {
       )}
       <Container maxWidth="lg">
         <div className="gap" />
+        {user.isAnonymous && <GreetingExplainer />}
         {localUser.uid && localUser?.likes.length === 0 ? (
           <Typography
             variant="h2"
