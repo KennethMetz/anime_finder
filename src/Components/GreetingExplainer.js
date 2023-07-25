@@ -7,8 +7,8 @@ import {
   Binoculars,
   CaretRight,
   ChatsCircle,
-  FlyingSaucer,
-  PuzzlePiece,
+  ListPlus,
+  ThumbsUp,
   X,
 } from "phosphor-react";
 import { useState } from "react";
@@ -39,7 +39,7 @@ export default function GreetingExplainer() {
   };
 
   const iconPhosphorStyling = {
-    size: 48,
+    size: 38,
     weight: "duotone",
     color: theme.palette.background.main,
   };
@@ -62,8 +62,8 @@ export default function GreetingExplainer() {
         <IconButton
           sx={{
             position: "absolute",
-            top: { xs: 1, sm: 6 },
-            right: { xs: 1, sm: 6 },
+            top: { xs: 8, sm: 12 },
+            right: { xs: 8, sm: 12 },
           }}
           onClick={() => setShowExplainer(false)}
         >
@@ -82,8 +82,7 @@ export default function GreetingExplainer() {
             sx={{ mb: 1, mx: { xs: 1, sm: 6, sevenHundredFifty: 16 } }}
           >
             <Typography variant="h4" style={{ textAlign: "center" }}>
-              Use EdwardML's giant computer brain to help you decide which anime
-              to watch next.
+              Here's how it works:
             </Typography>
           </Grid>
 
@@ -96,39 +95,17 @@ export default function GreetingExplainer() {
             sx={{ ...iconGridStyling }}
           >
             <Box sx={{ ...iconBoxStyling }}>
-              <FlyingSaucer {...iconPhosphorStyling} />
+              <ThumbsUp {...iconPhosphorStyling} />
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
-            <Typography variant="h5">Discover</Typography>
+            <Typography variant="h5">1. Like Your Faves</Typography>
             <Typography style={{ ...smallText }}>
-              {" "}
-              Edward understands anime relationships and will help you discover
-              new content similar to your favorites.
+              Like or dislike shows you have already seen to create your
+              personal taste profile.
             </Typography>
           </Grid>
 
-          <Grid
-            item
-            xs={4}
-            fiveHundred={3}
-            sevenHundredFifty={2}
-            sx={{ ...iconGridStyling }}
-          >
-            <Box sx={{ ...iconBoxStyling }}>
-              <PuzzlePiece {...iconPhosphorStyling} />
-            </Box>
-          </Grid>
-          <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
-            <Typography variant="h5">Customize</Typography>
-            <Typography style={{ ...smallText }}>
-              Search through EdwardML’s library to build your personal taste
-              profile. Save your progress and return later to discover even more
-              content picked for you.
-            </Typography>
-          </Grid>
-
-          {/* Second row of icons/text */}
           <Grid
             item
             xs={4}
@@ -141,11 +118,30 @@ export default function GreetingExplainer() {
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
-            <Typography variant="h5">Explore</Typography>
+            <Typography variant="h5">2. Explore</Typography>
             <Typography style={{ ...smallText }}>
               {" "}
               Get insight into any anime. Edward will let you know how likely
               you are to enjoy any title based on your taste profile.{" "}
+            </Typography>
+          </Grid>
+
+          {/* Second row of icons/text */}
+          <Grid
+            item
+            xs={4}
+            fiveHundred={3}
+            sevenHundredFifty={2}
+            sx={{ ...iconGridStyling }}
+          >
+            <Box sx={{ ...iconBoxStyling }}>
+              <ListPlus {...iconPhosphorStyling} />
+            </Box>
+          </Grid>
+          <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
+            <Typography variant="h5">3. Create Watchlists</Typography>
+            <Typography style={{ ...smallText }}>
+              Create personal watchlists to keep track of shows you discover.
             </Typography>
           </Grid>
 
@@ -161,10 +157,11 @@ export default function GreetingExplainer() {
             </Box>
           </Grid>
           <Grid item xs={8} fiveHundred={9} sevenHundredFifty={4}>
-            <Typography variant="h5">Socialize </Typography>
+            <Typography variant="h5">4. Socialize </Typography>
             <Typography style={{ ...smallText }}>
               {" "}
-              Create watchlists and share them with your friends and family.
+              Review shows you love. Share watchlists with your friends and
+              family.
             </Typography>
           </Grid>
         </Grid>
