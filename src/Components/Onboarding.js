@@ -68,7 +68,6 @@ export default function Onboarding() {
         ) : (
           <OnboardingButton />
         )}
-        <div style={{ marginTop: "20px" }} />
       </Container>
     </div>
   );
