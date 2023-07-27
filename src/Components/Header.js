@@ -1,12 +1,12 @@
 import "../Styles/Header.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleAutocomplete from "./TitleAutocomplete";
 import { MagnifyingGlass, House, User, Bell } from "phosphor-react";
 import DropMenu from "./DropMenu";
@@ -15,10 +15,13 @@ import HeaderTab from "./HeaderTab";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import NotificationDropMenu from "./NotificationDropMenu";
+import { useConfirm } from "material-ui-confirm";
 
 function Header() {
   const [user] = useAuthState(auth);
   const theme = useTheme();
+  const confirm = useConfirm();
+  const navigate = useNavigate();
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -29,6 +32,26 @@ function Header() {
   const toggleSearch = (e) => {
     setShowSearch(true);
     e?.preventDefault();
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      pushRegistration();
+    }, 600000);
+  }, []);
+
+  const pushRegistration = () => {
+    confirm({
+      title: "Your account will be lost",
+      content: "Please register in order to save your profile.",
+      titleProps: { sx: { fontWeight: 800 } },
+      confirmationButtonProps: { variant: "contained" },
+      confirmationText: "Register Now",
+      cancellationButtonProps: { color: "inherit", variant: "contained" },
+      cancellationText: "Cancel",
+    }).then(() => {
+      navigate(`/register`);
+    });
   };
 
   return (
