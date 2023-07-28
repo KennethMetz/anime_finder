@@ -28,8 +28,8 @@ export default function LandingPageHeader() {
           paddingBottom: 0,
         }}
       >
-        <Grid item md={9} sm={9} xs={9}>
-          <Link to="/" style={{ display: "flex" }}>
+        <Grid item md={9} sm={9} xs={9} sx={{ display: "flex" }}>
+          <Link to="/" style={{ flexShrink: 1 }}>
             <EdwardMLLogo />
           </Link>
         </Grid>

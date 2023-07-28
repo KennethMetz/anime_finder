@@ -39,7 +39,7 @@ export default function OnboardingHeader() {
           textAlign="right"
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <Link to="/login">
+          <Link to="/login" tabIndex="-1">
             <Button
               variant="outlined"
               size="large"

@@ -53,8 +53,8 @@ function Header() {
             </Grid>
           ) : (
             <>
-              <Grid item md={2.5} sm={4} xs={2.5}>
-                <Link to="/home">
+              <Grid item md={2.5} sm={4} xs={2.5} sx={{ display: "flex" }}>
+                <Link to="/home" style={{ flexShrink: 1 }}>
                   <EdwardMLLogo />
                 </Link>
               </Grid>

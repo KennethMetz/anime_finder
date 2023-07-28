@@ -46,6 +46,9 @@ export default function OnboardingAnimeCard({ anime }) {
           justifyContent: liked ? "space-around" : "flex-end",
           alignItems: liked ? "center" : "unset",
           background: liked ? "rgba(0,0,0,0.8)" : "unset",
+          "&:hover": {
+            background: liked ? "rgba(0,0,0,0.8)" : "rgba(0,0,0,0.3)",
+          },
         }}
       >
         {liked ? (
