@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
+import { mapScoreValue } from "../Util/ScoreUtil";
 
 export default function ScoreBars({ scores }) {
   const [multiplier, setMultiplier] = useState(0);
@@ -32,13 +33,21 @@ export default function ScoreBars({ scores }) {
   return (
     <>
       {scores.map((score) => (
-        <Box key={score.name} sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          key={score.name}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            mb: score.name === "For You" ? 1.25 : 0,
+          }}
+        >
           <Tooltip
             title={score.description}
             arrow={true}
             PopperProps={{ ...smallerTopMargin }}
           >
             <Typography
+              variant={score.name === "For You" ? "h5" : "body1"}
               sx={{
                 mb: "4px",
                 width: "104px",
@@ -51,13 +60,12 @@ export default function ScoreBars({ scores }) {
           </Tooltip>
           <Tooltip
             arrow={true}
-            title={Math.floor((score.value * 0.8 + 0.2) * 100 * multiplier)}
+            title={mapScoreValue(score.value) * multiplier}
             PopperProps={{ ...smallerTopMargin }}
           >
             <LinearProgress
               variant="determinate"
-              // Map the [0, 1] scores to [0.2, 1] for positive vibes.
-              value={(score.value * 0.8 + 0.2) * 100 * multiplier}
+              value={mapScoreValue(score.value) * multiplier}
               sx={{ height: 8, borderRadius: 4, flexGrow: 1 }}
             />
           </Tooltip>

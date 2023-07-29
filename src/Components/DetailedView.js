@@ -27,6 +27,7 @@ import UrlButtons from "./UrlButtons";
 import ReviewContainer from "./ReviewContainer";
 import HandleDialog from "./HandleDialog";
 import HtmlPageTitle from "./HtmlPageTitle";
+import ScorePercentText from "./ScorePercentText";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -224,19 +225,19 @@ export default function DetailedView() {
             </Grid>
 
             {/* Data from Edward */}
-            <Grid
-              item
-              xs={12}
-              sx={{
-                padding: { xs: 2, md: 3 },
-                background: theme.palette.custom.gradientCardBg,
-                borderRadius: "16px",
-              }}
-            >
-              <Grid
-                container
-                columnSpacing={3}
-                sx={{ position: "relative", minHeight: "150px" }}
+            <Grid item xs={12} md={6} sx={{ pr: { xs: 0, md: 1 } }}>
+              <Typography variant="h3" style={subheadStyle}>
+                Data From Edward
+              </Typography>
+              <Box
+                sx={{
+                  padding: { xs: 2, md: 3 },
+                  mr: { xs: 0, md: 1.5 },
+                  background: theme.palette.custom.gradientCardBg,
+                  borderRadius: "16px",
+                  position: "relative",
+                  minHeight: "200px",
+                }}
               >
                 {analysisFetching && analysis?.animeId !== anime.id && (
                   <Box
@@ -262,30 +263,31 @@ export default function DetailedView() {
                     </Box>
                   </Box>
                 )}
-                <Grid item xs={12} md={6} sx={bodyStyle}>
-                  <Typography
-                    variant="h3"
-                    style={{ ...subheadStyle, margin: "0 0 12px 0" }}
-                  >
-                    Data From Edward
-                  </Typography>
-                  <ScoreBars scores={analysis?.scores ?? []} />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      marginTop: { xs: "24px", md: "7px" },
-                      marginBottom: "12px",
-                    }}
-                  >
-                    What Do People Say?
-                  </Typography>
-                  <Typography variant="body1" sx={bodyStyle}>
-                    {analysis?.review_summaries[0]}
-                  </Typography>
-                </Grid>
-              </Grid>
+                <ScorePercentText
+                  scores={analysis?.scores ?? []}
+                ></ScorePercentText>
+                <ScoreBars scores={analysis?.scores ?? []} />
+              </Box>
+            </Grid>
+
+            {/* What Do People Say? */}
+            <Grid item xs={12} md={6} sx={{ pl: { xs: 0, md: 1 } }}>
+              <Typography variant="h3" style={subheadStyle}>
+                What Do People Say?
+              </Typography>
+              <Box
+                sx={{
+                  padding: { xs: 2, md: 3 },
+                  background: theme.palette.custom.subtleCardBg,
+                  borderRadius: "16px",
+                  position: "relative",
+                  minHeight: "200px",
+                }}
+              >
+                <Typography variant="body1" sx={bodyStyle}>
+                  {analysis?.review_summaries[0]}
+                </Typography>
+              </Box>
             </Grid>
 
             {/* Summary */}
