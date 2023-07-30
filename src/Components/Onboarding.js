@@ -27,6 +27,7 @@ import SailorMoon from "../Styles/images/onboarding/sailormoon.jpg";
 import SwordArtOnline from "../Styles/images/onboarding/swordartonline.jpg";
 import NoGameNoLife from "../Styles/images/onboarding/nogamenolife.jpg";
 import HtmlPageTitle from "./HtmlPageTitle";
+import { useHeartbeat } from "./APICalls";
 
 export default function Onboarding() {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -43,6 +44,9 @@ export default function Onboarding() {
     // redirect existing authorized users
     if (!user.isAnonymous) navigate("/home");
   }, [user, localUser]);
+
+  // Pre-warm API by sending a request now.
+  useHeartbeat();
 
   return (
     <div className="App">

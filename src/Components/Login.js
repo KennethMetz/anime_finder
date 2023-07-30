@@ -16,6 +16,7 @@ import google from "../Styles/images/google.svg";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
+import { useHeartbeat } from "./APICalls";
 
 export default function Login() {
   const authActions = useAuthActions();
@@ -27,6 +28,9 @@ export default function Login() {
   const theme = useTheme();
 
   let [loginError, setLoginError] = useState(undefined);
+
+  // Pre-warm API by sending a request now.
+  useHeartbeat();
 
   let regButtonStyling = {
     color: theme.palette.text.primary,

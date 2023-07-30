@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+const fiveSecondsMs = 1000 * 5;
 const fiveMinutesMs = 1000 * 60 * 5;
 
 const apiUrl = `https://api-jet-lfoguxrv7q-uw.a.run.app`;
@@ -34,6 +35,12 @@ export function useAPISearch(inputValue, itemsReturned) {
     staleTime: fiveMinutesMs,
     placeholderData: [],
   });
+}
+
+export async function APIHeartbeat() {
+  let response = await fetch(`${apiUrl}/`, { mode: "cors" });
+  await handleErrors(response);
+  return await response.json();
 }
 
 export async function APIGetAnime(animeId) {
@@ -74,6 +81,12 @@ async function handleErrors(response) {
 }
 
 //***************TanStack Query Functions***************
+export function useHeartbeat() {
+  return useQuery(["heartbeat"], async () => APIHeartbeat(), {
+    staleTime: fiveSecondsMs,
+  });
+}
+
 export function useAnimeHR(selectedGenre) {
   return useGetTitles(
     `${apiUrl}/anime?sort=highest_rated&page_size=24${selectedGenre}`
