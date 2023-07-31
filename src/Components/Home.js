@@ -72,6 +72,18 @@ export default function Home() {
     return data;
   }
 
+  // API call for personalized recommendations.
+  const viewHistory = getViewHistory();
+  const { data: recommendation, isLoading: loadingRecs } =
+    useRecommendations(viewHistory);
+
+  //API calls for generic shelf content
+  const { data: animeTN } = useAnimeTN(genreQueryString);
+  const { data: animeHR } = useAnimeHR(genreQueryString);
+  const { data: animeMC } = useAnimeMC(genreQueryString);
+  const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
+  const { data: animeMH } = useAnimeMH(genreQueryString);
+
   function getRandomNumbers() {
     for (let i = 0; i < 6; i++) {
       randomPage[i] = Math.floor(Math.random() * 250 + 1);
@@ -96,17 +108,6 @@ export default function Home() {
     PopulateFromFirestore(user, localUser, setLocalUser);
   }, [user]);
 
-  // API call for personalized recommendations.
-  const viewHistory = getViewHistory();
-  const { data: recommendation, isLoading: loadingRecs } =
-    useRecommendations(viewHistory);
-
-  //API calls for generic shelf content
-  const { data: animeTN } = useAnimeTN(genreQueryString);
-  const { data: animeHR } = useAnimeHR(genreQueryString);
-  const { data: animeMC } = useAnimeMC(genreQueryString);
-  const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
-  const { data: animeMH } = useAnimeMH(genreQueryString);
   let { data: communityList } = useAnimeList(communityListData?.anime);
 
   const shelfTitleStyles = {
