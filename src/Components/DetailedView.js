@@ -28,6 +28,7 @@ import ReviewContainer from "./ReviewContainer";
 import HandleDialog from "./HandleDialog";
 import HtmlPageTitle from "./HtmlPageTitle";
 import ScorePercentText from "./ScorePercentText";
+import ExpandableTags from "./ExpandableTags";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -289,6 +290,18 @@ export default function DetailedView() {
                 </Typography>
               </Box>
             </Grid>
+
+            {/* Reviewers Often Say */}
+            {anime.review_qualities?.length > 0 && (
+              <Grid item xs={12}>
+                <Typography variant="h3" style={subheadStyle}>
+                  Reviewers Often Say
+                </Typography>
+                <ExpandableTags
+                  items={anime.review_qualities.map((q) => q.text)}
+                />
+              </Grid>
+            )}
 
             {/* Summary */}
             <Grid item xs={12}>
