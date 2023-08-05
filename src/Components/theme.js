@@ -15,21 +15,21 @@ export function createAppTheme(darkMode) {
       primary: { main: "#EF2727" },
       grey: { main: "#bdbdbd" },
       text: {
-        primary: darkMode ? "#fff" : "#171717",
-        main: darkMode ? "#fff" : "#171717",
+        primary: darkMode ? "#f8f8f8" : "#171717",
+        main: darkMode ? "#f8f8f8" : "#171717",
       },
       background: {
-        default: darkMode ? "#080808" : "#fcfcfc",
-        main: darkMode ? "#080808" : "#fcfcfc",
+        default: darkMode ? "#0c0c0c" : "#fcfcfc",
+        main: darkMode ? "#0c0c0c" : "#fcfcfc",
       },
       //Theses are new/custom theme keys.
       custom: {
-        subtleCardBg: darkMode ? "#171717" : "#F2F2F2",
+        subtleCardBg: darkMode ? "#222222" : "#F2F2F2",
         gradientCardBg: darkMode
-          ? "linear-gradient(180deg, #323232 0%, #262626 100%)"
+          ? "linear-gradient(#222222, #4a3636)"
           : "linear-gradient(180deg, #F5F5F5 0%, #F5EAEA 100%)",
         top8Bg: darkMode
-          ? "linear-gradient(#171717, #4a3636)"
+          ? "linear-gradient(#222222, #4a3636)"
           : "linear-gradient(#f5f5f5, #f5eaea)",
         missingAnimeCover: darkMode ? "#2c2c2c" : "#cccccc",
         greetingBg: darkMode ? "#4a3636" : "#f5eaea",
