@@ -19,6 +19,8 @@ import {
   SaveNotification,
   SaveReviewToFirestore,
   SaveToFirestore,
+  getReviewCount,
+  getReviewReactions,
   setLastVisible,
   setSeeMore,
 } from "./Firestore";
@@ -43,7 +45,7 @@ export default function ReviewForm({
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
-  let [emojis, setEmojis] = useState({});
+  let [emojis, setEmojis] = useState([0, 0, 0]);
 
   let [existingReview, setExistingReview] = useState(false);
 
@@ -75,8 +77,10 @@ export default function ReviewForm({
 
   function populateForm() {
     if (localUser[type].includes(docId)) {
+      console.log(localUser[type]);
       for (let i = 0; i < reviews.length; i++) {
         if (reviews[i].uid === user.uid) {
+          console.log(reviews[i]);
           setExistingReview(true);
           setReviewTitle(reviews[i].reviewTitle);
           setReview(reviews[i].review);
@@ -128,6 +132,7 @@ export default function ReviewForm({
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
+      console.log(emojis);
       await SaveReviewToFirestore(
         userID,
         userReview,
