@@ -9,7 +9,9 @@ import {
   DeleteNotification,
   SaveListReactionsToFirestore,
   SaveNotification,
+  SaveReactionsToFirestore,
   SaveReviewToFirestore,
+  getReviewReactions,
 } from "./Firestore";
 import Skeleton from "@mui/material/Skeleton";
 import { useParams } from "react-router-dom";
@@ -18,18 +20,19 @@ export default function EmojiReactionChip({
   docId,
   emoji,
   item,
-  setItem, // Note, only used for list reactions (and NOT reviews/comments)
-  reviews,
+  setItem,
   reaction,
   index,
-  setReviews,
   type,
   tooltip,
+  rxnCount,
+  IdToNotify,
 }) {
   const [user] = useAuthState(auth);
-  let [selected, setSelected] = useState();
+  const [selected, setSelected] = useState();
+  const [emojiCount, setEmojiCount] = useState(null);
   const theme = useTheme();
-
+  //TODO - HIDE EMOJI CHIPS FOR PRIVATE WATCHLISTS
   const params = useParams();
   const ownerId = params.userId;
   const listId = params.listId;
@@ -37,9 +40,14 @@ export default function EmojiReactionChip({
   tooltip = user?.isAnonymous ? "Register to react" : tooltip;
 
   useEffect(() => {
-    if (item?.emojis[reaction]?.includes(user.uid)) setSelected(true);
+    if (!user) return;
+    if (item?.[reaction]) setSelected(true);
     else setSelected(false);
-  }, [item]);
+  }, [user, item?.[reaction]]);
+
+  useEffect(() => {
+    setEmojiCount(rxnCount);
+  }, [rxnCount]);
 
   const notification = {
     interactorId: user.uid, // Person sending the emoji
@@ -56,47 +64,60 @@ export default function EmojiReactionChip({
 
   function reactToReview() {
     let docIdString = docId.toString();
-
+    // if (type === "comments") docIdString = docId.toString() + IdToNotify;
+    // else docIdString = docId.toString();
     if (!selected) {
-      let temp = [...reviews];
-      temp[index].emojis[reaction].push(user.uid);
-      setReviews(temp);
-      setSelected(true);
-      let newUserReview = { ...temp[index] };
-      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
-      if (reaction !== "trash") SaveNotification(notification, item.uid); // Good vibes only on EdwardML!
+      let temp = { ...item };
+      temp[reaction] = !temp[reaction];
+      setItem(temp);
+      setEmojiCount(emojiCount + 1);
+      SaveReactionsToFirestore(
+        user.uid,
+        docIdString,
+        temp,
+        type,
+        reaction,
+        IdToNotify
+      );
+      if (reaction !== "trash")
+        SaveNotification(notification, IdToNotify ?? item.uid); // Good vibes only on EdwardML!
     } else if (selected) {
-      let temp = [...reviews];
-      let indexInArray = temp[index].emojis[reaction].indexOf(user.uid);
-      temp[index].emojis[reaction].splice(indexInArray, 1);
-      setReviews(temp);
-      setSelected(false);
-      let newUserReview = { ...temp[index] };
-      SaveReviewToFirestore(temp[index].uid, newUserReview, docIdString, type);
-      if (reaction !== "trash") DeleteNotification(notification, item.uid);
+      let temp = { ...item };
+      temp[reaction] = !temp[reaction];
+      setItem(temp);
+      setEmojiCount(emojiCount - 1);
+      SaveReactionsToFirestore(
+        user.uid,
+        docIdString,
+        temp,
+        type,
+        reaction,
+        IdToNotify
+      );
+      if (reaction !== "trash")
+        DeleteNotification(notification, IdToNotify ?? item.uid);
     }
   }
 
   function reactToList() {
     if (!selected) {
       let temp = { ...item };
-      temp.emojis[reaction].push(user.uid);
+      temp[reaction] = !temp[reaction];
       setItem(temp);
-      setSelected(true);
-      SaveListReactionsToFirestore(docId, temp);
+      setEmojiCount(emojiCount + 1);
+      SaveReactionsToFirestore(user.uid, docId, temp, "list", reaction);
       if (reaction !== "trash") SaveNotification(notification, ownerId);
     } else if (selected) {
       let temp = { ...item };
-      let indexInArray = temp.emojis[reaction].indexOf(user.uid);
-      temp.emojis[reaction].splice(indexInArray, 1);
+      temp[reaction] = !temp[reaction];
       setItem(temp);
-      setSelected(false);
-      SaveListReactionsToFirestore(docId, temp);
+      setEmojiCount(emojiCount - 1);
+      SaveReactionsToFirestore(user.uid, docId, temp, "list", reaction);
       if (reaction !== "trash") DeleteNotification(notification, ownerId);
     }
   }
 
-  if (!item?.emojis)
+  if (!item)
     return (
       <Skeleton
         variant="rounded"
@@ -111,7 +132,7 @@ export default function EmojiReactionChip({
         <Chip
           variant={selected ? "filled" : "outlined"}
           icon={emoji}
-          label={item.emojis[reaction].length}
+          label={emojiCount}
           disabled={user?.isAnonymous}
           sx={{
             paddingLeft: 0.5,

@@ -69,9 +69,14 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
   let privateList = false;
+  const [rxnCount, setRxnCount] = useState([]);
+
+  function updateEmojiCount(animeObjects) {
+    // applauseCount = ;
+  }
 
   useEffect(() => {
-    GetListReactions(`${userId}${listId}`, setListRxns);
+    GetListReactions(user.uid, `${userId}${listId}`, setListRxns, setRxnCount);
   }, [listId]);
 
   const sevenHundredFifty = useMediaQuery(
@@ -87,6 +92,7 @@ export default function ProfileListPage() {
     itemsIds = profile.likes;
     name = "Likes";
     typeName = "Watch History";
+    updateEmojiCount();
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
     items = animeObjects?.dislikes;
@@ -220,6 +226,7 @@ export default function ProfileListPage() {
             reaction="applause"
             type="list"
             ownerId={userId}
+            rxnCount={rxnCount[0]}
           ></EmojiReactionChip>
           <EmojiReactionChip
             docId={`${userId}${listId}`}
@@ -229,6 +236,7 @@ export default function ProfileListPage() {
             reaction="heart"
             type="list"
             ownerId={userId}
+            rxnCount={rxnCount[1]}
           ></EmojiReactionChip>
           <EmojiReactionChip
             docId={`${userId}${listId}`}
@@ -238,6 +246,7 @@ export default function ProfileListPage() {
             reaction="trash"
             type="list"
             ownerId={userId}
+            rxnCount={rxnCount[2]}
           ></EmojiReactionChip>
         </Grid>
         <Grid

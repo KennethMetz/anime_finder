@@ -20,6 +20,7 @@ import {
   writeBatch,
   updateDoc,
   deleteField,
+  increment,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -211,30 +212,95 @@ export function generateId() {
   return doc(collection(db, "test")).id;
 }
 
-// Handle "watchlistData / reactions" on firestore
-
-export async function GetListReactions(docId, setListRxns) {
+export async function getReviewReactions(uid, docId, setReviewRxns, type) {
+  console.log(uid);
   try {
-    let animeRef = doc(db, "watchlistData", docId, "reactions", "emojis");
-    let querySnapshot = await getDoc(animeRef);
+    let reactionsRef = doc(db, "users", uid, "reactions", docId);
+    let reactionSnap = await getDoc(reactionsRef);
     // Use default value if the document doesn't exist yet.
-    if (!querySnapshot.data()) {
-      setListRxns({
-        emojis: { applause: [], heart: [], trash: [] },
+    if (!reactionSnap.data()) {
+      setReviewRxns({
+        uniqueEntityId: docId,
+        applause: false,
+        heart: false,
+        trash: false,
       });
-      return;
+    } else {
+      let temp = reactionSnap.data();
+      setReviewRxns(temp);
     }
-    let temp = querySnapshot.data();
-    setListRxns(temp);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
   }
 }
 
-export async function SaveListReactionsToFirestore(docId, updatedRxns) {
-  let Ref = doc(db, "watchlistData", docId, "reactions", "emojis");
+// Handle "watchlistData / reactions" on firestore
+
+export async function GetListReactions(uid, docId, setListRxns, setRxnCount) {
   try {
-    await setDoc(Ref, updatedRxns, { merge: true });
+    let reactionsRef = doc(db, "users", uid, "reactions", docId);
+    let rxnCountRef = doc(db, "watchlistData", docId);
+    let [reactionSnap, rxnCountSnap] = await Promise.all([
+      getDoc(reactionsRef),
+      getDoc(rxnCountRef),
+    ]);
+    if (!reactionSnap.data()) {
+      // Use default value if the document doesn't exist yet.
+      setListRxns({
+        uniqueEntityId: docId,
+        applause: false,
+        heart: false,
+        trash: false,
+      });
+    } else {
+      let temp = reactionSnap.data();
+      setListRxns(temp);
+    }
+    let temp = rxnCountSnap.data();
+    setRxnCount([temp.applauseCount, temp.heartCount, temp.trashCount]);
+  } catch (error) {
+    console.error("Error loading data from Firebase Database", error);
+  }
+}
+
+export async function SaveReactionsToFirestore(
+  uid,
+  docId,
+  updatedRxns,
+  reactionTo,
+  reaction,
+  commentOwnerId
+) {
+  console.log(updatedRxns, reaction);
+  const value = updatedRxns[reaction] ? 1 : -1;
+  let key;
+  if (reaction === "trash") key = "trashCount";
+  else if (reaction === "heart") key = "heartCount";
+  else if (reaction === "applause") key = "applauseCount";
+
+  let rxnRef, rxnCountRef;
+
+  if (reactionTo === "list") {
+    rxnRef = doc(db, "users", uid, "reactions", docId);
+    rxnCountRef = doc(db, "watchlistData", docId);
+  } else if (reactionTo === "reviews") {
+    rxnRef = doc(db, "users", uid, "reactions", docId);
+    rxnCountRef = doc(db, "animeData", docId, "reviews", uid);
+  } else if (reactionTo === "comments") {
+    rxnRef = doc(db, "users", uid, "reactions", docId + commentOwnerId);
+    rxnCountRef = doc(db, "watchlistData", docId, "reviews", uid);
+  }
+  try {
+    await Promise.all(
+      [
+        setDoc(
+          rxnRef,
+          { [reaction]: updatedRxns[reaction], uniqueEntityId: docId },
+          { merge: true }
+        ),
+      ],
+      updateDoc(rxnCountRef, { [key]: increment(value) })
+    );
   } catch (error) {
     console.error("Error writing review data to Firestore", error);
   }

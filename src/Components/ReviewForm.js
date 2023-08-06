@@ -81,7 +81,11 @@ export default function ReviewForm({
           setReviewTitle(reviews[i].reviewTitle);
           setReview(reviews[i].review);
           setRating(reviews[i].rating);
-          setEmojis(reviews[i].emojis);
+          setEmojis([
+            reviews[i].applauseCount,
+            reviews[i].heartCount,
+            reviews[i].trashCount,
+          ]);
         }
       }
     }
@@ -113,12 +117,10 @@ export default function ReviewForm({
         reviewTitle: reviewTitle,
         uid: user.uid,
         time: new Date(),
-        edited: { edited },
-        emojis: {
-          applause: [...emojis?.applause],
-          heart: [...emojis?.heart],
-          trash: [...emojis?.trash],
-        },
+        edited: edited,
+        applauseCount: emojis[0],
+        heartCount: emojis[1],
+        trashCount: emojis[2],
       };
       if (!localUser[type]) localUser[type] = [];
       if (!localUser[type].find((x) => x === docId)) {

@@ -110,6 +110,9 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         privateList: privateList,
         desc: desc,
         id: listId,
+        applauseCount: 0,
+        heartCount: 0,
+        trashCount: 0,
       },
     ];
     setLocalUser(temp);
