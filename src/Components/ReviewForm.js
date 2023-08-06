@@ -37,6 +37,7 @@ export default function ReviewForm({
   reviewCount,
   listOwnerId,
   listId,
+  setDropSelection,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -152,6 +153,7 @@ export default function ReviewForm({
         setSeeMore,
         type
       );
+      setDropSelection("newestFirst");
       setShowReviewForm(false);
     }
   };

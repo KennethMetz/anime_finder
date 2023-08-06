@@ -37,6 +37,8 @@ export default function ReviewContainer({
   ]);
   const [reviewCount, setReviewCount] = useState(undefined);
 
+  const [selected, setSelected] = useState("mostApplauded"); // <ReviewFilterDropMenu> selection
+
   const typeSingular = type === "comments" ? "comment" : "review";
 
   const subheadStyle = {
@@ -135,6 +137,8 @@ export default function ReviewContainer({
             <ReviewFilterDropMenu
               setLastVisible={setLastVisible}
               setSortOption={setSortOption}
+              selected={selected}
+              setSelected={setSelected}
             />
           </div>
         )}
@@ -152,6 +156,7 @@ export default function ReviewContainer({
           reviewCount={reviewCount}
           listOwnerId={listOwnerId}
           listId={listId}
+          setDropSelection={setSelected}
         />
       )}
 

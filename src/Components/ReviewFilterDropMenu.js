@@ -14,12 +14,12 @@ import useTheme from "@mui/material/styles/useTheme";
 export default function ReviewFilterDropMenu({
   setLastVisible,
   setSortOption,
+  selected,
+  setSelected,
 }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
-
-  const [selected, setSelected] = useState("mostApplauded");
 
   const smallDevice = useMediaQuery(theme.breakpoints.down("fiveHundred"));
 

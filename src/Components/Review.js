@@ -70,6 +70,9 @@ export default function Review({
       cancellationButtonProps: { color: "inherit" },
       cancellationText: "Cancel",
     }).then(() => {
+      // TODO -
+      //
+      //        Delete ALL selections of emojis for that review/comment
       let temp = [...reviews];
       temp.splice(index, 1);
       setReviews(temp);
@@ -92,6 +95,9 @@ export default function Review({
         };
         DeleteNotification(notiInfo, listOwnerId);
       }
+
+      // TODO - Create collection group to delete all reaction information users who reacted to this comment/review has
+      //        This info lives under "users"/:uid/"reactions"/:animeId or :docId or :docId + commentOwnerId
     });
   }
 
@@ -222,7 +228,7 @@ export default function Review({
                       right: "-10px",
                     }}
                     onClick={(e) => {
-                      deleteReview(review, index);
+                      deleteReview(index);
                       e.stopPropagation();
                     }}
                   >
