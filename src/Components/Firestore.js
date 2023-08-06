@@ -270,7 +270,6 @@ export async function SaveReactionsToFirestore(
   reaction,
   commentOwnerId
 ) {
-  console.log(updatedRxns, reaction);
   const value = updatedRxns[reaction] ? 1 : -1;
   let key;
   if (reaction === "trash") key = "trashCount";
@@ -287,7 +286,7 @@ export async function SaveReactionsToFirestore(
     rxnCountRef = doc(db, "animeData", docId, "reviews", uid);
   } else if (reactionTo === "comments") {
     rxnRef = doc(db, "users", uid, "reactions", docId + commentOwnerId);
-    rxnCountRef = doc(db, "watchlistData", docId, "reviews", uid);
+    rxnCountRef = doc(db, "watchlistData", docId, "reviews", commentOwnerId);
   }
   try {
     await Promise.all(

@@ -19,7 +19,7 @@ export default function ReviewFilterDropMenu({
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
-  const [selected, setSelected] = useState("newestFirst");
+  const [selected, setSelected] = useState("mostApplauded");
 
   const smallDevice = useMediaQuery(theme.breakpoints.down("fiveHundred"));
 
@@ -103,6 +103,41 @@ export default function ReviewFilterDropMenu({
                   onKeyDown={handleListKeyDown}
                   sx={{ padding: 0 }}
                 >
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, [
+                        "applauseCount",
+                        "desc",
+                        "mostApplauded",
+                      ]);
+                    }}
+                    selected={selected === "mostApplauded" ? true : false}
+                  >
+                    Popularity: Most Applauded First
+                  </MenuItem>
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, ["heartCount", "desc", "mostloved"]);
+                    }}
+                    selected={selected === "mostloved" ? true : false}
+                  >
+                    Popularity: Most Loved First
+                  </MenuItem>
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, [
+                        "trashCount",
+                        "desc",
+                        "mostDisliked",
+                      ]);
+                    }}
+                    selected={selected === "mostDisliked" ? true : false}
+                  >
+                    Popularity: Most Disliked First
+                  </MenuItem>
                   <MenuItem
                     divider
                     onClick={(e) => {

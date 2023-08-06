@@ -77,10 +77,8 @@ export default function ReviewForm({
 
   function populateForm() {
     if (localUser[type].includes(docId)) {
-      console.log(localUser[type]);
       for (let i = 0; i < reviews.length; i++) {
         if (reviews[i].uid === user.uid) {
-          console.log(reviews[i]);
           setExistingReview(true);
           setReviewTitle(reviews[i].reviewTitle);
           setReview(reviews[i].review);
@@ -132,7 +130,6 @@ export default function ReviewForm({
         SaveToFirestore(user, localUser);
       }
       const userID = user.uid.toString();
-      console.log(emojis);
       await SaveReviewToFirestore(
         userID,
         userReview,

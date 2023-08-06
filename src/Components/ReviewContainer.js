@@ -30,7 +30,11 @@ export default function ReviewContainer({
 
   const [lastVisible, setLastVisible] = useState(null);
   const [seeMore, setSeeMore] = useState(true);
-  const [sortOption, setSortOption] = useState(["time", "desc"]);
+  const [sortOption, setSortOption] = useState([
+    "applauseCount",
+    "desc",
+    "mostLoved",
+  ]);
   const [reviewCount, setReviewCount] = useState(undefined);
 
   const typeSingular = type === "comments" ? "comment" : "review";

@@ -209,7 +209,7 @@ export default function Review({
                 <Typography component="span" sx={{ fontWeight: 900, mr: 2 }}>
                   {review.reviewTitle}
                 </Typography>{" "}
-                <ConvertDate item={review} />
+                <ConvertDate review={review} />
               </Grid>
             </Tooltip>
             {user.uid === review.uid ? (
