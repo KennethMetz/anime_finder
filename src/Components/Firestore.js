@@ -193,7 +193,7 @@ export async function GetPaginatedReviewsFromFirestore(
   }
 }
 
-export async function GetReviewCount(docId, type, setReviewCount) {
+export async function getReviewCount(docId, type, setReviewCount) {
   if (!docId || !type) return;
   let collectionName = type === "reviews" ? "animeData" : "watchlistData";
   let docIdString = docId.toString();
@@ -212,7 +212,7 @@ export function generateId() {
   return doc(collection(db, "test")).id;
 }
 
-export async function getReviewReactions(uid, docId, setReviewRxns, type) {
+export async function getReviewReactions(uid, docId, setReviewRxns) {
   try {
     let reactionsRef = doc(db, "users", uid, "reactions", docId);
     let reactionSnap = await getDoc(reactionsRef);

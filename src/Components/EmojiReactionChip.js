@@ -7,31 +7,26 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import {
   DeleteNotification,
-  SaveListReactionsToFirestore,
   SaveNotification,
   SaveReactionsToFirestore,
-  SaveReviewToFirestore,
-  getReviewReactions,
 } from "./Firestore";
 import Skeleton from "@mui/material/Skeleton";
 import { useParams } from "react-router-dom";
 
 export default function EmojiReactionChip({
-  docId,
-  emoji,
-  item,
+  docId, // "userId + listId" or "animeId"
+  emoji, // Phosphor emoji component to display
+  item, // Object containing booleans whether user has reacted
   setItem,
-  reaction,
-  index,
-  type,
+  reaction, // "applause" "heart" or "trash"
+  type, // content being reacted to: "list" "comments" or "reviews"
   tooltip,
-  rxnCount,
+  rxnCount, // Number of reactions to display for this emoji
   IdToNotify,
 }) {
   const [user] = useAuthState(auth);
   const [selected, setSelected] = useState();
   const [emojiCount, setEmojiCount] = useState(null);
-  const theme = useTheme();
 
   const params = useParams();
   const ownerId = params.userId;
@@ -64,8 +59,6 @@ export default function EmojiReactionChip({
 
   function reactToReview() {
     let docIdString = docId.toString();
-    // if (type === "comments") docIdString = docId.toString() + IdToNotify;
-    // else docIdString = docId.toString();
     if (!selected) {
       let temp = { ...item };
       temp[reaction] = !temp[reaction];

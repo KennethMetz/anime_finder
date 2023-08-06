@@ -23,11 +23,7 @@ import { auth } from "./Firebase";
 import {
   DeleteNotification,
   DeleteReviewFromFirestore,
-  GetListReactions,
-  PopulateReviewsFromFirestore,
-  SaveReviewToFirestore,
   SaveToFirestore,
-  getReviewReactionCount,
   getReviewReactions,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
@@ -275,7 +271,6 @@ export default function Review({
             reaction="applause"
             item={item}
             setItem={setItem}
-            index={index}
             type={type}
             tooltip={`Applaud this ${typeSingular}`}
             rxnCount={reviews[index].applauseCount}
@@ -288,7 +283,6 @@ export default function Review({
             reaction="heart"
             item={item}
             setItem={setItem}
-            index={index}
             type={type}
             tooltip={`Love this ${typeSingular}`}
             rxnCount={reviews[index].heartCount}
@@ -301,7 +295,6 @@ export default function Review({
             reaction="trash"
             item={item}
             setItem={setItem}
-            index={index}
             type={type}
             tooltip={`Disagree with this ${typeSingular}`}
             rxnCount={reviews[index].trashCount}

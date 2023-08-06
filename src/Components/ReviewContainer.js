@@ -6,11 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 
 import { CaretDown, Minus, Plus } from "phosphor-react";
-import {
-  GetPaginatedReviewsFromFirestore,
-  GetReviewCount,
-  getReviewReactions,
-} from "./Firestore";
+import { GetPaginatedReviewsFromFirestore, getReviewCount } from "./Firestore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReviewFilterDropMenu from "./ReviewFilterDropMenu";
@@ -59,7 +55,7 @@ export default function ReviewContainer({
   }, [location.pathname, docId, sortOption]);
 
   useEffect(() => {
-    GetReviewCount(docId, type, setReviewCount);
+    getReviewCount(docId, type, setReviewCount);
   }, [localUser.reviews, localUser.comments]);
 
   return (
