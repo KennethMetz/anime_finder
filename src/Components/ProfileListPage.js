@@ -13,7 +13,7 @@ import {
   X,
 } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
@@ -35,6 +35,7 @@ import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const confirm = useConfirm();
   const theme = useTheme();
   const [user, loading, error] = useAuthState(auth);
@@ -71,13 +72,9 @@ export default function ProfileListPage() {
   let privateList = false;
   const [rxnCount, setRxnCount] = useState([]);
 
-  function updateEmojiCount(animeObjects) {
-    // applauseCount = ;
-  }
-
   useEffect(() => {
     GetListReactions(user.uid, `${userId}${listId}`, setListRxns, setRxnCount);
-  }, [listId]);
+  }, [listId, location.key]);
 
   const sevenHundredFifty = useMediaQuery(
     theme.breakpoints.up("sevenHundredFifty")
@@ -92,7 +89,6 @@ export default function ProfileListPage() {
     itemsIds = profile.likes;
     name = "Likes";
     typeName = "Watch History";
-    updateEmojiCount();
     updateFn = (newItems) => updateLikes(newItems);
   } else if (listId.toLowerCase() === "dislikes") {
     items = animeObjects?.dislikes;
@@ -203,6 +199,7 @@ export default function ProfileListPage() {
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
         </Grid>
+
         <Grid
           item
           elevenHundred={3.25}
@@ -218,37 +215,42 @@ export default function ProfileListPage() {
             },
           }}
         >
-          <EmojiReactionChip
-            docId={`${userId}${listId}`}
-            item={listRxns}
-            setItem={setListRxns}
-            emoji={<HandsClapping size={24} />}
-            reaction="applause"
-            type="list"
-            ownerId={userId}
-            rxnCount={rxnCount[0]}
-          ></EmojiReactionChip>
-          <EmojiReactionChip
-            docId={`${userId}${listId}`}
-            item={listRxns}
-            setItem={setListRxns}
-            emoji={<Heart size={24} />}
-            reaction="heart"
-            type="list"
-            ownerId={userId}
-            rxnCount={rxnCount[1]}
-          ></EmojiReactionChip>
-          <EmojiReactionChip
-            docId={`${userId}${listId}`}
-            item={listRxns}
-            setItem={setListRxns}
-            emoji={<Trash size={24} />}
-            reaction="trash"
-            type="list"
-            ownerId={userId}
-            rxnCount={rxnCount[2]}
-          ></EmojiReactionChip>
+          {!privateList && (
+            <>
+              <EmojiReactionChip
+                docId={`${userId}${listId}`}
+                item={listRxns}
+                setItem={setListRxns}
+                emoji={<HandsClapping size={24} />}
+                reaction="applause"
+                type="list"
+                ownerId={userId}
+                rxnCount={rxnCount[0]}
+              ></EmojiReactionChip>
+              <EmojiReactionChip
+                docId={`${userId}${listId}`}
+                item={listRxns}
+                setItem={setListRxns}
+                emoji={<Heart size={24} />}
+                reaction="heart"
+                type="list"
+                ownerId={userId}
+                rxnCount={rxnCount[1]}
+              ></EmojiReactionChip>
+              <EmojiReactionChip
+                docId={`${userId}${listId}`}
+                item={listRxns}
+                setItem={setListRxns}
+                emoji={<Trash size={24} />}
+                reaction="trash"
+                type="list"
+                ownerId={userId}
+                rxnCount={rxnCount[2]}
+              ></EmojiReactionChip>
+            </>
+          )}
         </Grid>
+
         <Grid
           item
           xs={2}

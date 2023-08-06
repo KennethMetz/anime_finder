@@ -213,7 +213,6 @@ export function generateId() {
 }
 
 export async function getReviewReactions(uid, docId, setReviewRxns, type) {
-  console.log(uid);
   try {
     let reactionsRef = doc(db, "users", uid, "reactions", docId);
     let reactionSnap = await getDoc(reactionsRef);
