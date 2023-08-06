@@ -32,7 +32,7 @@ export default function EmojiReactionChip({
   const [selected, setSelected] = useState();
   const [emojiCount, setEmojiCount] = useState(null);
   const theme = useTheme();
-  //TODO - HIDE EMOJI CHIPS FOR PRIVATE WATCHLISTS
+
   const params = useParams();
   const ownerId = params.userId;
   const listId = params.listId;

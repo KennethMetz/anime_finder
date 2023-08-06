@@ -324,13 +324,15 @@ export default function ProfileListPage() {
       )}
 
       {/* Comments */}
-      <ReviewContainer
-        user={user}
-        docId={`${userId}${listId}`}
-        type={"comments"}
-        listOwnerId={userId}
-        listId={listId}
-      />
+      {!privateList && (
+        <ReviewContainer
+          user={user}
+          docId={`${userId}${listId}`}
+          type={"comments"}
+          listOwnerId={userId}
+          listId={listId}
+        />
+      )}
     </Box>
   );
 }
