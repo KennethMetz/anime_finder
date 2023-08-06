@@ -196,6 +196,16 @@ export default function DetailedView() {
               />
             ))}
           </Box>
+
+          {/* Desktop-only Watch Links */}
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <Typography variant="h5" style={subheadStyle}>
+              Watch
+            </Typography>
+            <Box sx={{ display: "block" }}>
+              <UrlButtons anime={anime} />
+            </Box>
+          </Box>
         </Grid>
         <Grid item xs={12} md={9}>
           <Grid container sx={{ paddingLeft: { xs: 0, md: "46px" } }}>
@@ -314,8 +324,8 @@ export default function DetailedView() {
               />
             </Grid>
 
-            {/* Watch Links */}
-            <Grid item xs={12}>
+            {/* Mobile-only Watch Links */}
+            <Grid item xs={12} sx={{ display: { xs: "block", md: "none" } }}>
               <Typography variant="h3" style={subheadStyle}>
                 Watch
               </Typography>
