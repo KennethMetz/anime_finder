@@ -21,6 +21,7 @@ import {
   updateDoc,
   deleteField,
   increment,
+  collectionGroup,
 } from "firebase/firestore";
 import { db } from "./Firebase";
 
@@ -276,16 +277,16 @@ export async function SaveReactionsToFirestore(
   else if (reaction === "heart") key = "heartCount";
   else if (reaction === "applause") key = "applauseCount";
 
-  let rxnRef, rxnCountRef;
+  const uniqueEntityId =
+    reactionTo === "comments" ? docId + commentOwnerId : docId;
+  const rxnRef = doc(db, "users", uid, "reactions", uniqueEntityId);
+  let rxnCountRef;
 
   if (reactionTo === "list") {
-    rxnRef = doc(db, "users", uid, "reactions", docId);
     rxnCountRef = doc(db, "watchlistData", docId);
   } else if (reactionTo === "reviews") {
-    rxnRef = doc(db, "users", uid, "reactions", docId);
     rxnCountRef = doc(db, "animeData", docId, "reviews", uid);
   } else if (reactionTo === "comments") {
-    rxnRef = doc(db, "users", uid, "reactions", docId + commentOwnerId);
     rxnCountRef = doc(db, "watchlistData", docId, "reviews", commentOwnerId);
   }
   try {
@@ -293,7 +294,7 @@ export async function SaveReactionsToFirestore(
       [
         setDoc(
           rxnRef,
-          { [reaction]: updatedRxns[reaction], uniqueEntityId: docId },
+          { [reaction]: updatedRxns[reaction], uniqueEntityId },
           { merge: true }
         ),
       ],
@@ -301,6 +302,22 @@ export async function SaveReactionsToFirestore(
     );
   } catch (error) {
     console.error("Error writing review data to Firestore", error);
+  }
+}
+
+// Clears all stored emoji selections for users who reacted to this review/comment
+export async function deleteAllReactions(uniqueEntityId) {
+  const allRxns = query(
+    collectionGroup(db, "reactions"),
+    where("uniqueEntityId", "==", uniqueEntityId)
+  );
+  try {
+    const querySnapshot = await getDocs(allRxns);
+    querySnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+  } catch (error) {
+    console.error("Error deleting emoji reactions from Firestore", error);
   }
 }
 

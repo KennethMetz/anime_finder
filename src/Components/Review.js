@@ -24,6 +24,8 @@ import {
   DeleteNotification,
   DeleteReviewFromFirestore,
   SaveToFirestore,
+  deleteAllReactions,
+  deleteReactions,
   getReviewReactions,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
@@ -96,8 +98,8 @@ export default function Review({
         DeleteNotification(notiInfo, listOwnerId);
       }
 
-      // TODO - Create collection group to delete all reaction information users who reacted to this comment/review has
-      //        This info lives under "users"/:uid/"reactions"/:animeId or :docId or :docId + commentOwnerId
+      // Delete stored reactions to the review/comment that's been deleted.
+      deleteAllReactions(uniqueEntityId);
     });
   }
 
