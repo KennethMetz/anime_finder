@@ -15,14 +15,9 @@ import { useForm } from "react-hook-form";
 import { Star } from "phosphor-react";
 import {
   GetPaginatedReviewsFromFirestore,
-  PopulateReviewsFromFirestore,
   SaveNotification,
   SaveReviewToFirestore,
   SaveToFirestore,
-  getReviewCount,
-  getReviewReactions,
-  setLastVisible,
-  setSeeMore,
 } from "./Firestore";
 import { getAvatarSrc } from "./Avatars";
 

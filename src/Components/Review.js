@@ -10,13 +10,11 @@ import useTheme from "@mui/material/styles/useTheme";
 import { useConfirm } from "material-ui-confirm";
 import format from "date-fns/format";
 import fromUnixTime from "date-fns/fromUnixTime";
-import toDate from "date-fns/toDate";
 import { HandsClapping, Star, Trash, X, Heart } from "phosphor-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useLocation } from "react-router-dom";
 import { useProfile } from "./APICalls";
-import AvatarIcon from "./AvatarIcon";
 import EmojiReactionChip from "./EmojiReactionChip";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
@@ -25,7 +23,6 @@ import {
   DeleteReviewFromFirestore,
   SaveToFirestore,
   deleteAllReactions,
-  deleteReactions,
   getReviewReactions,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
@@ -72,9 +69,6 @@ export default function Review({
       cancellationButtonProps: { color: "inherit" },
       cancellationText: "Cancel",
     }).then(() => {
-      // TODO -
-      //
-      //        Delete ALL selections of emojis for that review/comment
       let temp = [...reviews];
       temp.splice(index, 1);
       setReviews(temp);

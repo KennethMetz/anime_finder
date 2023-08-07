@@ -9,15 +9,10 @@ import {
   orderBy,
   limit,
   startAfter,
-  limitToLast,
-  endBefore,
   where,
   runTransaction,
   getCountFromServer,
-  arrayUnion,
-  onSnapshot,
   addDoc,
-  writeBatch,
   updateDoc,
   deleteField,
   increment,
@@ -213,14 +208,14 @@ export function generateId() {
   return doc(collection(db, "test")).id;
 }
 
-export async function getReviewReactions(uid, docId, setReviewRxns) {
+export async function getReviewReactions(uid, uniqueEntityId, setReviewRxns) {
   try {
-    let reactionsRef = doc(db, "users", uid, "reactions", docId);
+    let reactionsRef = doc(db, "users", uid, "reactions", uniqueEntityId);
     let reactionSnap = await getDoc(reactionsRef);
     // Use default value if the document doesn't exist yet.
     if (!reactionSnap.data()) {
       setReviewRxns({
-        uniqueEntityId: docId,
+        uniqueEntityId: uniqueEntityId,
         applause: false,
         heart: false,
         trash: false,
@@ -236,7 +231,7 @@ export async function getReviewReactions(uid, docId, setReviewRxns) {
 
 // Handle "watchlistData / reactions" on firestore
 
-export async function GetListReactions(uid, docId, setListRxns, setRxnCount) {
+export async function getListReactions(uid, docId, setListRxns, setRxnCount) {
   try {
     let reactionsRef = doc(db, "users", uid, "reactions", docId);
     let rxnCountRef = doc(db, "watchlistData", docId);
@@ -279,6 +274,7 @@ export async function SaveReactionsToFirestore(
 
   const uniqueEntityId =
     reactionTo === "comments" ? docId + commentOwnerId : docId;
+
   const rxnRef = doc(db, "users", uid, "reactions", uniqueEntityId);
   let rxnCountRef;
 

@@ -1,6 +1,5 @@
 import Chip from "@mui/material/Chip";
 import Tooltip from "@mui/material/Tooltip";
-import useTheme from "@mui/material/styles/useTheme";
 
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";

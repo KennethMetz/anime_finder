@@ -14,7 +14,6 @@ import {
 } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { slugifyListName } from "../Util/ListUtil";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
 import ProfileListPageGhost from "./ProfileListPageGhost";
@@ -27,7 +26,7 @@ import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EmojiReactionChip from "./EmojiReactionChip";
-import { GetListReactions } from "./Firestore";
+import { getListReactions } from "./Firestore";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
@@ -73,7 +72,7 @@ export default function ProfileListPage() {
   const [rxnCount, setRxnCount] = useState([]);
 
   useEffect(() => {
-    GetListReactions(user.uid, `${userId}${listId}`, setListRxns, setRxnCount);
+    getListReactions(user.uid, `${userId}${listId}`, setListRxns, setRxnCount);
   }, [listId, location.key]);
 
   const sevenHundredFifty = useMediaQuery(
@@ -199,7 +198,6 @@ export default function ProfileListPage() {
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
         </Grid>
-
         <Grid
           item
           elevenHundred={3.25}
@@ -250,7 +248,6 @@ export default function ProfileListPage() {
             </>
           )}
         </Grid>
-
         <Grid
           item
           xs={2}
