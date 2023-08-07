@@ -31,7 +31,7 @@ export default function EmojiReactionChip({
   const params = useParams();
   const ownerId = params.userId;
   const listId = params.listId;
-
+  console.log(rxnCount);
   tooltip = user?.isAnonymous ? "Register to react" : tooltip;
 
   useEffect(() => {

@@ -345,6 +345,9 @@ export async function CreateWatchlistDataEntry(userId, listId) {
     userId: userId,
     listId: listId,
     random: generateRandomWatchlistInt(),
+    applauseCount: 0,
+    heartCount: 0,
+    trashCount: 0,
   };
   const docName = userId + listId;
   let docRef = doc(db, "watchlistData", docName);
