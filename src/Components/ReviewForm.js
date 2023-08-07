@@ -140,7 +140,8 @@ export default function ReviewForm({
       );
 
       // Only provide notification when a comment is created NOT when edited
-      if (!edited) SaveNotification(notification, listOwnerId);
+      if (!edited && type !== "reviews")
+        SaveNotification(notification, listOwnerId);
 
       await GetPaginatedReviewsFromFirestore(
         docId,
