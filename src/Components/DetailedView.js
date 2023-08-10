@@ -48,6 +48,12 @@ export default function DetailedView() {
   const [analysis, analysisLoading, analysisError, analysisFetching] =
     useAnimeAnalysis(animeId);
 
+  const analysisIsLoading =
+    analysisLoading ||
+    analysisFetching ||
+    analysis?.animeId !== anime.id ||
+    (!user.isAnonymous && localUser.handle === ""); //Prevents flashing the anonymous user's score for registered users
+
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
@@ -250,7 +256,7 @@ export default function DetailedView() {
                   minHeight: "200px",
                 }}
               >
-                {analysisFetching && analysis?.animeId !== anime.id && (
+                {analysisIsLoading ? (
                   <Box
                     sx={{
                       position: "absolute",
@@ -273,11 +279,14 @@ export default function DetailedView() {
                       <BreathingLogo />
                     </Box>
                   </Box>
+                ) : (
+                  <>
+                    <ScorePercentText
+                      scores={analysis?.scores ?? []}
+                    ></ScorePercentText>
+                    <ScoreBars scores={analysis?.scores ?? []} />
+                  </>
                 )}
-                <ScorePercentText
-                  scores={analysis?.scores ?? []}
-                ></ScorePercentText>
-                <ScoreBars scores={analysis?.scores ?? []} />
               </Box>
             </Grid>
 
