@@ -52,7 +52,10 @@ export function NotificationListItem({ item, handleClose, index }) {
   const loading =
     !interactorData || !avatarSrc || animeLoading || loadingListOwner;
 
-  const time = getTimeElapsed(item.time, isMobileWidth);
+  const time = useMemo(
+    () => getTimeElapsed(item.time, isMobileWidth),
+    [item.time, isMobileWidth]
+  );
 
   if (loading)
     return (
