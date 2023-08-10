@@ -16,6 +16,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export default function NotificationsProvider(props) {
   const [user, loading, error] = useAuthState(auth);
   const [notifications, setNotifications] = useState([]);
+  const [open, setOpen] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [hideBadge, setHideBadge] = useState(true);
   const [listeningDocs, setListeningDocs] = useState([]);
@@ -126,7 +127,7 @@ export default function NotificationsProvider(props) {
     if (!user || !notifications) return;
     getUnseenNotiCount().then((result) => {
       setHideBadge(result);
-      setShowNewNotiButton(!result);
+      if (open) setShowNewNotiButton(!result);
     });
   }, [listeningDocs]);
 
@@ -158,6 +159,8 @@ export default function NotificationsProvider(props) {
   return (
     <NotificationsContext.Provider
       value={[
+        open,
+        setOpen,
         notifications,
         showMore,
         hideBadge,
