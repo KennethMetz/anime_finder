@@ -126,32 +126,44 @@ export default function Home() {
       <Container maxWidth="lg">
         <div className="gap" />
         {user.isAnonymous && <GreetingExplainer />}
+        <Typography
+          variant="h2"
+          style={{
+            marginBlockStart: 0,
+            marginBlockEnd: "0.5rem",
+          }}
+        >
+          For You
+        </Typography>
         {localUser.uid && localUser?.likes.length === 0 ? (
-          <Typography
-            variant="h2"
-            style={{
-              fontSize: "2.0rem",
-              marginBlockStart: 0,
-              marginBlockEnd: "0.5rem",
-            }}
-          >
-            Like a show to receive{" "}
-            <span className="rainbow_text_animated">personalized</span>{" "}
-            recommendations!
-          </Typography>
-        ) : (
-          <>
-            <Typography
-              variant="h2"
+          <div style={{ position: "relative", textAlign: "center" }}>
+            <AnimeShelf />
+            <div
               style={{
-                marginBlockStart: 0,
-                marginBlockEnd: "0.5rem",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
               }}
             >
-              For You
-            </Typography>
-            <AnimeGrid items={recommendation} large />
-          </>
+              <Typography
+                variant="h2"
+                sx={{
+                  position: "relative",
+                  top: "40%",
+                  fontSize: { xs: "1.6rem", fourHundred: "2.0rem" },
+                  marginBlockStart: 0,
+                  marginBlockEnd: "0.5rem",
+                }}
+              >
+                Like a show to receive{" "}
+                <span className="rainbow_text_animated">personalized</span>{" "}
+                recommendations!
+              </Typography>
+            </div>
+          </div>
+        ) : (
+          <AnimeGrid items={recommendation} large />
         )}
         <div className="gap" />
         <Box sx={{ display: "flex", alignItems: "center" }}>

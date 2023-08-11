@@ -30,7 +30,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let docRef = doc(db, "users", user.uid);
     let querySnapshot = await getDoc(docRef);
     let data = querySnapshot.data();
-    if (!data.likes) {
+    if (!data?.likes) {
       data = {
         ...data,
         likes: [],

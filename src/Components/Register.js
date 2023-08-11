@@ -78,8 +78,6 @@ export default function Register() {
 
   useEffect(() => {
     if (loading) return;
-    //Registering users without any likes causes /home rendering to error out --> this prevents that.
-    if (localUser["likes"]?.length === 0) navigate("/onboarding");
   }, [user, loading, forwardToken]);
 
   const handleRegister = async (provider) => {
@@ -226,51 +224,6 @@ export default function Register() {
             }
           >
             Register with Twitter
-          </Button>
-          {/* *******************Guest Button************************** */}
-          <Button
-            variant="outlined"
-            className="register__btn"
-            sx={{
-              ...regButtonStyling,
-              marginBottom: "0px",
-              fontSize: {
-                xs: "0.9rem",
-                fourHundred: "1rem",
-              },
-              width: {
-                sm: "350px",
-                fourHundred: "280px",
-                xs: "250px",
-              },
-              "&:hover": {
-                border: "3px #EF2727 solid",
-              },
-            }}
-            onClick={() => handleRegister("anonymous")}
-            startIcon={
-              regLoadingGuest ? (
-                ""
-              ) : (
-                <User
-                  size={44}
-                  style={{
-                    paddingRight: "20px",
-                    width: {
-                      fourHundred: "42px",
-                      xs: "31px",
-                    },
-                    height: { fourHundred: "42px", xs: "31px" },
-                  }}
-                />
-              )
-            }
-          >
-            {regLoadingGuest ? (
-              <BreathingLogo type={"largeButton"} />
-            ) : (
-              "Visit as a Guest"
-            )}
           </Button>
           <Divider
             sx={{
