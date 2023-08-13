@@ -208,54 +208,44 @@ export function generateId() {
   return doc(collection(db, "test")).id;
 }
 
-export async function getReviewReactions(uid, uniqueEntityId, setReviewRxns) {
-  try {
-    let reactionsRef = doc(db, "users", uid, "reactions", uniqueEntityId);
-    let reactionSnap = await getDoc(reactionsRef);
-    // Use default value if the document doesn't exist yet.
-    if (!reactionSnap.data()) {
-      setReviewRxns({
-        uniqueEntityId: uniqueEntityId,
-        applause: false,
-        heart: false,
-        trash: false,
-      });
-    } else {
-      let temp = reactionSnap.data();
-      setReviewRxns(temp);
-    }
-  } catch (error) {
-    console.error("Error loading data from Firebase Database", error);
+export async function getReviewReactions(uid, uniqueEntityId) {
+  let reactionsRef = doc(db, "users", uid, "reactions", uniqueEntityId);
+  let reactionSnap = await getDoc(reactionsRef);
+  // Use default value if the document doesn't exist yet.
+  if (!reactionSnap.data()) {
+    return {
+      uniqueEntityId: uniqueEntityId,
+      applause: false,
+      heart: false,
+      trash: false,
+    };
+  } else {
+    return reactionSnap.data();
   }
 }
 
 // Handle "watchlistData / reactions" on firestore
 
-export async function getListReactions(uid, docId, setListRxns, setRxnCount) {
-  try {
-    let reactionsRef = doc(db, "users", uid, "reactions", docId);
-    let rxnCountRef = doc(db, "watchlistData", docId);
-    let [reactionSnap, rxnCountSnap] = await Promise.all([
-      getDoc(reactionsRef),
-      getDoc(rxnCountRef),
-    ]);
-    if (!reactionSnap.data()) {
-      // Use default value if the document doesn't exist yet.
-      setListRxns({
-        uniqueEntityId: docId,
-        applause: false,
-        heart: false,
-        trash: false,
-      });
-    } else {
-      let temp = reactionSnap.data();
-      setListRxns(temp);
-    }
-    let temp = rxnCountSnap.data();
-    setRxnCount([temp.applauseCount, temp.heartCount, temp.trashCount]);
-  } catch (error) {
-    console.error("Error loading data from Firebase Database", error);
+export async function getUserReactions(uid, docId) {
+  let reactionsRef = doc(db, "users", uid, "reactions", docId);
+  let reactionSnap = await getDoc(reactionsRef);
+  if (!reactionSnap.data()) {
+    // Use default value if the document doesn't exist yet.
+    return {
+      uniqueEntityId: docId,
+      applause: false,
+      heart: false,
+      trash: false,
+    };
+  } else {
+    return reactionSnap.data();
   }
+}
+
+export async function getReactionCount(uid, docId) {
+  let rxnCountRef = doc(db, "watchlistData", docId);
+  let rxnCountSnap = await getDoc(rxnCountRef);
+  return rxnCountSnap.data();
 }
 
 export async function SaveReactionsToFirestore(

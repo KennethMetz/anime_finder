@@ -43,7 +43,7 @@ export default function Review({
   const theme = useTheme();
   const confirm = useConfirm();
 
-  const [item, setItem] = useState({});
+  const [userRxns, setUserRxns] = useState({});
   const { data: reviewerInfo } = useProfile(review.uid);
 
   const typeSingular = type === "comments" ? "comment" : "review";
@@ -57,8 +57,13 @@ export default function Review({
     type === "reviews" ? docId.toString() : docId.toString() + review?.uid;
 
   useEffect(() => {
-    getReviewReactions(user.uid, uniqueEntityId, setItem);
-  }, [docId]);
+    getReviewReactions(user.uid, uniqueEntityId)
+      .then((value) => setUserRxns(value))
+      .catch(
+        () => console.error("Error loading review reactions from Firestore")
+        // Todo: show error UI
+      );
+  }, [user.uid, uniqueEntityId]);
 
   function deleteReview(index) {
     confirm({
@@ -271,8 +276,8 @@ export default function Review({
             docId={docId}
             emoji={<HandsClapping size={24} />}
             reaction="applause"
-            item={item}
-            setItem={setItem}
+            userRxns={userRxns}
+            setUserRxns={setUserRxns}
             type={type}
             tooltip={`Applaud this ${typeSingular}`}
             rxnCount={reviews[index].applauseCount}
@@ -283,8 +288,8 @@ export default function Review({
             docId={docId}
             emoji={<Heart size={24} />}
             reaction="heart"
-            item={item}
-            setItem={setItem}
+            userRxns={userRxns}
+            setUserRxns={setUserRxns}
             type={type}
             tooltip={`Love this ${typeSingular}`}
             rxnCount={reviews[index].heartCount}
@@ -295,8 +300,8 @@ export default function Review({
             docId={docId}
             emoji={<Trash size={24} />}
             reaction="trash"
-            item={item}
-            setItem={setItem}
+            userRxns={userRxns}
+            setUserRxns={setUserRxns}
             type={type}
             tooltip={`Disagree with this ${typeSingular}`}
             rxnCount={reviews[index].trashCount}

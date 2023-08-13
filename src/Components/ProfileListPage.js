@@ -10,7 +10,6 @@ import {
   Heart,
   LockSimple,
   Trash,
-  X,
 } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -26,19 +25,16 @@ import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EmojiReactionChip from "./EmojiReactionChip";
-import { getListReactions } from "./Firestore";
+import { getReactionCount, getUserReactions } from "./Firestore";
 import Grid from "@mui/material/Grid";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import useTheme from "@mui/material/styles/useTheme";
 import HtmlPageTitle from "./HtmlPageTitle";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const confirm = useConfirm();
-  const theme = useTheme();
   const [user, loading, error] = useAuthState(auth);
-  const [listRxns, setListRxns] = useState(undefined);
+  const [userRxns, setUserRxns] = useState(undefined);
 
   const {
     profile,
@@ -72,13 +68,21 @@ export default function ProfileListPage() {
   const [rxnCount, setRxnCount] = useState([]);
 
   useEffect(() => {
-    getListReactions(user.uid, `${userId}${listId}`, setListRxns, setRxnCount);
-  }, [listId, location.key]);
-
-  const sevenHundredFifty = useMediaQuery(
-    theme.breakpoints.up("sevenHundredFifty")
-  );
-  const elevenHundred = useMediaQuery(theme.breakpoints.up("elevenHundred"));
+    Promise.all([
+      getUserReactions(user.uid, `${userId}${listId}`)
+        .then((value) => setUserRxns(value))
+        .catch(() =>
+          console.error("Error loading user reactions from Firestore")
+        ),
+      getReactionCount(user.uid, `${userId}${listId}`)
+        .then((value) =>
+          setRxnCount([value.applauseCount, value.heartCount, value.trashCount])
+        )
+        .catch(() =>
+          console.error("Error loading reaction tally from Firestore")
+        ),
+    ]);
+  }, [user.uid, userId, listId, location.key]);
 
   if (isLoading) {
     return <ProfileListPageGhost />;
@@ -217,34 +221,34 @@ export default function ProfileListPage() {
             <>
               <EmojiReactionChip
                 docId={`${userId}${listId}`}
-                item={listRxns}
-                setItem={setListRxns}
+                userRxns={userRxns}
+                setUserRxns={setUserRxns}
                 emoji={<HandsClapping size={24} />}
                 reaction="applause"
                 type="list"
                 ownerId={userId}
                 rxnCount={rxnCount[0]}
-              ></EmojiReactionChip>
+              />
               <EmojiReactionChip
                 docId={`${userId}${listId}`}
-                item={listRxns}
-                setItem={setListRxns}
+                userRxns={userRxns}
+                setUserRxns={setUserRxns}
                 emoji={<Heart size={24} />}
                 reaction="heart"
                 type="list"
                 ownerId={userId}
                 rxnCount={rxnCount[1]}
-              ></EmojiReactionChip>
+              />
               <EmojiReactionChip
                 docId={`${userId}${listId}`}
-                item={listRxns}
-                setItem={setListRxns}
+                userRxns={userRxns}
+                setUserRxns={setUserRxns}
                 emoji={<Trash size={24} />}
                 reaction="trash"
                 type="list"
                 ownerId={userId}
                 rxnCount={rxnCount[2]}
-              ></EmojiReactionChip>
+              />
             </>
           )}
         </Grid>

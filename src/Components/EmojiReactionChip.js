@@ -15,8 +15,8 @@ import { useParams } from "react-router-dom";
 export default function EmojiReactionChip({
   docId, // "userId + listId" or "animeId"
   emoji, // Phosphor emoji component to display
-  item, // Object containing booleans whether user has reacted
-  setItem,
+  userRxns, // Object containing booleans whether user has reacted
+  setUserRxns,
   reaction, // "applause" "heart" or "trash"
   type, // content being reacted to: "list" "comments" or "reviews"
   tooltip,
@@ -35,9 +35,9 @@ export default function EmojiReactionChip({
 
   useEffect(() => {
     if (!user) return;
-    if (item?.[reaction]) setSelected(true);
+    if (userRxns?.[reaction]) setSelected(true);
     else setSelected(false);
-  }, [user, item?.[reaction]]);
+  }, [user, userRxns?.[reaction]]);
 
   useEffect(() => {
     setEmojiCount(rxnCount);
@@ -53,15 +53,15 @@ export default function EmojiReactionChip({
     read: false, // Remains false until popper is closed (so it can be specially styled)
     listId: listId ?? null,
     listOwnerId: ownerId ?? null,
-    commentOwnerId: item?.uid ?? null,
+    commentOwnerId: userRxns?.uid ?? null,
   };
 
   function reactToReview() {
     let docIdString = docId.toString();
     if (!selected) {
-      let temp = { ...item };
+      let temp = { ...userRxns };
       temp[reaction] = !temp[reaction];
-      setItem(temp);
+      setUserRxns(temp);
       setEmojiCount(emojiCount + 1);
       SaveReactionsToFirestore(
         user.uid,
@@ -72,11 +72,11 @@ export default function EmojiReactionChip({
         IdToNotify
       );
       if (reaction !== "trash")
-        SaveNotification(notification, IdToNotify ?? item.uid); // Good vibes only on EdwardML!
+        SaveNotification(notification, IdToNotify ?? userRxns.uid); // Good vibes only on EdwardML!
     } else if (selected) {
-      let temp = { ...item };
+      let temp = { ...userRxns };
       temp[reaction] = !temp[reaction];
-      setItem(temp);
+      setUserRxns(temp);
       setEmojiCount(emojiCount - 1);
       SaveReactionsToFirestore(
         user.uid,
@@ -87,29 +87,29 @@ export default function EmojiReactionChip({
         IdToNotify
       );
       if (reaction !== "trash")
-        DeleteNotification(notification, IdToNotify ?? item.uid);
+        DeleteNotification(notification, IdToNotify ?? userRxns.uid);
     }
   }
 
   function reactToList() {
     if (!selected) {
-      let temp = { ...item };
+      let temp = { ...userRxns };
       temp[reaction] = !temp[reaction];
-      setItem(temp);
+      setUserRxns(temp);
       setEmojiCount(emojiCount + 1);
       SaveReactionsToFirestore(user.uid, docId, temp, "list", reaction);
       if (reaction !== "trash") SaveNotification(notification, ownerId);
     } else if (selected) {
-      let temp = { ...item };
+      let temp = { ...userRxns };
       temp[reaction] = !temp[reaction];
-      setItem(temp);
+      setUserRxns(temp);
       setEmojiCount(emojiCount - 1);
       SaveReactionsToFirestore(user.uid, docId, temp, "list", reaction);
       if (reaction !== "trash") DeleteNotification(notification, ownerId);
     }
   }
 
-  if (!item)
+  if (!userRxns)
     return (
       <Skeleton
         variant="rounded"
