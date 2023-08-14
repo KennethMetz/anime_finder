@@ -22,8 +22,7 @@ import {
   DeleteNotification,
   DeleteReviewFromFirestore,
   SaveToFirestore,
-  deleteAllReactions,
-  getReviewReactions,
+  getUserReactions,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { getAvatarSrc } from "./Avatars";
@@ -57,7 +56,7 @@ export default function Review({
     type === "reviews" ? docId.toString() : docId.toString() + review?.uid;
 
   useEffect(() => {
-    getReviewReactions(user.uid, uniqueEntityId)
+    getUserReactions(user.uid, uniqueEntityId)
       .then((value) => setUserRxns(value))
       .catch(
         () => console.error("Error loading review reactions from Firestore")
@@ -96,9 +95,6 @@ export default function Review({
         };
         DeleteNotification(notiInfo, listOwnerId);
       }
-
-      // Delete stored reactions to the review/comment that's been deleted.
-      deleteAllReactions(uniqueEntityId);
     });
   }
 

@@ -25,7 +25,7 @@ import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EmojiReactionChip from "./EmojiReactionChip";
-import { getReactionCount, getUserReactions } from "./Firestore";
+import { getWatchlistReactionCount, getUserReactions } from "./Firestore";
 import Grid from "@mui/material/Grid";
 import HtmlPageTitle from "./HtmlPageTitle";
 
@@ -74,7 +74,7 @@ export default function ProfileListPage() {
         .catch(() =>
           console.error("Error loading user reactions from Firestore")
         ),
-      getReactionCount(user.uid, `${userId}${listId}`)
+      getWatchlistReactionCount(`${userId}${listId}`)
         .then((value) =>
           setRxnCount([value.applauseCount, value.heartCount, value.trashCount])
         )

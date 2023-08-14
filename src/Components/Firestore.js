@@ -208,11 +208,13 @@ export function generateId() {
   return doc(collection(db, "test")).id;
 }
 
-export async function getReviewReactions(uid, uniqueEntityId) {
+// Handle "watchlistData / reactions" on firestore
+
+export async function getUserReactions(uid, uniqueEntityId) {
   let reactionsRef = doc(db, "users", uid, "reactions", uniqueEntityId);
   let reactionSnap = await getDoc(reactionsRef);
-  // Use default value if the document doesn't exist yet.
   if (!reactionSnap.data()) {
+    // Use default value if the document doesn't exist yet.
     return {
       uniqueEntityId: uniqueEntityId,
       applause: false,
@@ -224,25 +226,7 @@ export async function getReviewReactions(uid, uniqueEntityId) {
   }
 }
 
-// Handle "watchlistData / reactions" on firestore
-
-export async function getUserReactions(uid, docId) {
-  let reactionsRef = doc(db, "users", uid, "reactions", docId);
-  let reactionSnap = await getDoc(reactionsRef);
-  if (!reactionSnap.data()) {
-    // Use default value if the document doesn't exist yet.
-    return {
-      uniqueEntityId: docId,
-      applause: false,
-      heart: false,
-      trash: false,
-    };
-  } else {
-    return reactionSnap.data();
-  }
-}
-
-export async function getReactionCount(uid, docId) {
+export async function getWatchlistReactionCount(docId) {
   let rxnCountRef = doc(db, "watchlistData", docId);
   let rxnCountSnap = await getDoc(rxnCountRef);
   return rxnCountSnap.data();
@@ -261,6 +245,7 @@ export async function SaveReactionsToFirestore(
   if (reaction === "trash") key = "trashCount";
   else if (reaction === "heart") key = "heartCount";
   else if (reaction === "applause") key = "applauseCount";
+  else throw new Error(`Unknown reaction: ${reaction}`);
 
   const uniqueEntityId =
     reactionTo === "comments" ? docId + commentOwnerId : docId;
@@ -274,7 +259,7 @@ export async function SaveReactionsToFirestore(
     rxnCountRef = doc(db, "animeData", docId, "reviews", uid);
   } else if (reactionTo === "comments") {
     rxnCountRef = doc(db, "watchlistData", docId, "reviews", commentOwnerId);
-  }
+  } else throw new Error(`Unknown item reacted to: ${reactionTo}`);
   try {
     await Promise.all(
       [
@@ -288,22 +273,6 @@ export async function SaveReactionsToFirestore(
     );
   } catch (error) {
     console.error("Error writing review data to Firestore", error);
-  }
-}
-
-// Clears all stored emoji selections for users who reacted to this review/comment
-export async function deleteAllReactions(uniqueEntityId) {
-  const allRxns = query(
-    collectionGroup(db, "reactions"),
-    where("uniqueEntityId", "==", uniqueEntityId)
-  );
-  try {
-    const querySnapshot = await getDocs(allRxns);
-    querySnapshot.forEach((doc) => {
-      deleteDoc(doc.ref);
-    });
-  } catch (error) {
-    console.error("Error deleting emoji reactions from Firestore", error);
   }
 }
 
