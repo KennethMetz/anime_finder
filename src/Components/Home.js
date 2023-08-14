@@ -11,13 +11,12 @@ import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
 import AnimeShelf from "./AnimeShelf";
 import {
-  getRandomAnimeListing,
   useAnimeHR,
   useAnimeMC,
   useAnimeMH,
   useAnimeMPTW,
+  useAnimeRND,
   useAnimeTN,
-  useProfile,
   useRecommendations,
 } from "./APICalls";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -32,7 +31,6 @@ import CommunityListShelf from "./CommunityListShelf";
 import GreetingExplainer from "./GreetingExplainer";
 
 export default function Home() {
-  let [animeRandom, setAnimeRandom] = useState(null); //randomized
   let [communityListData, setCommunityListData] = useState(undefined); //randomized
 
   const [user, loading, error] = useAuthState(auth);
@@ -44,9 +42,6 @@ export default function Home() {
 
   let [refresh, setRefresh] = useState(false);
   let [refreshCL, setRefreshCL] = useState(false);
-
-  let randomPage = [];
-  let randomItem = [];
 
   function getViewHistory() {
     let data = {
@@ -83,20 +78,11 @@ export default function Home() {
   const { data: animeMC } = useAnimeMC(genreQueryString);
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
-
-  function getRandomNumbers() {
-    for (let i = 0; i < 6; i++) {
-      randomPage[i] = Math.floor(Math.random() * 250 + 1);
-      randomItem[i] = Math.floor(Math.random() * 10);
-    }
-  }
-
-  useEffect(() => {
-    getRandomNumbers();
-    getRandomAnimeListing(randomPage, randomItem)
-      .then((result) => setAnimeRandom(result))
-      .catch((error) => console.log(error));
-  }, [refresh]);
+  const {
+    data: animeRND,
+    refetch: refetchRND,
+    remove: removeRND,
+  } = useAnimeRND();
 
   useEffect(() => {
     getRandomCommunityList()
@@ -221,15 +207,15 @@ export default function Home() {
             size="small"
             startIcon={<RefreshIcon />}
             onClick={() => {
-              setAnimeRandom(null);
-              refresh ? setRefresh(false) : setRefresh(true);
+              removeRND();
+              refetchRND();
             }}
           >
             Surprise Me!
           </Button>
         </Stack>
 
-        <AnimeShelf items={animeRandom} />
+        <AnimeShelf items={animeRND} />
 
         <div className="gap" />
       </Container>
