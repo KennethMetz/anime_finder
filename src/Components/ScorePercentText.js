@@ -29,8 +29,11 @@ export default function ScorePercentText({ scores }) {
   if (!score) return;
 
   return (
-    <Typography variant="h2" sx={{ textAlign: "center", mb: 2 }}>
-      <animated.div>{props.percent.to((x) => x.toFixed(0))}</animated.div>
+    <Typography
+      variant="h2"
+      sx={{ justifyContent: "center", mb: 2, display: "flex" }}
+    >
+      <animated.div>{props.percent.to((x) => x.toFixed(0))}</animated.div>%
     </Typography>
   );
 }
