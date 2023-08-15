@@ -250,7 +250,7 @@ export default function DetailedView() {
                   minHeight: "200px",
                 }}
               >
-                {analysisFetching && analysis?.animeId !== anime.id && (
+                {analysisLoading || analysisFetching ? (
                   <Box
                     sx={{
                       position: "absolute",
@@ -273,11 +273,14 @@ export default function DetailedView() {
                       <BreathingLogo />
                     </Box>
                   </Box>
+                ) : (
+                  <>
+                    <ScorePercentText
+                      scores={analysis?.scores ?? []}
+                    ></ScorePercentText>
+                    <ScoreBars scores={analysis?.scores ?? []} />
+                  </>
                 )}
-                <ScorePercentText
-                  scores={analysis?.scores ?? []}
-                ></ScorePercentText>
-                <ScoreBars scores={analysis?.scores ?? []} />
               </Box>
             </Grid>
 
