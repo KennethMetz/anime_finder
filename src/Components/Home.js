@@ -83,20 +83,6 @@ export default function Home() {
     remove: removeCLData,
   } = useCommunityList();
 
-  function getRandomNumbers() {
-    for (let i = 0; i < 6; i++) {
-      randomPage[i] = Math.floor(Math.random() * 250 + 1);
-      randomItem[i] = Math.floor(Math.random() * 10);
-    }
-  }
-
-  useEffect(() => {
-    getRandomNumbers();
-    getRandomAnimeListing(randomPage, randomItem)
-      .then((result) => setAnimeRandom(result))
-      .catch((error) => console.log(error));
-  }, [refresh]);
-
   const {
     data: animeRND,
     refetch: refetchRND,
