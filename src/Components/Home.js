@@ -23,7 +23,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import HandleDialog from "./HandleDialog";
-import { PopulateFromFirestore, getRandomCommunityList } from "./Firestore";
+import { PopulateFromFirestore, useCommunityList } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 import HtmlPageTitle from "./HtmlPageTitle";
 import useAnimeList from "../Hooks/useAnimeList";
@@ -31,8 +31,6 @@ import CommunityListShelf from "./CommunityListShelf";
 import GreetingExplainer from "./GreetingExplainer";
 
 export default function Home() {
-  let [communityListData, setCommunityListData] = useState(undefined); //randomized
-
   const [user, loading, error] = useAuthState(auth);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -78,17 +76,32 @@ export default function Home() {
   const { data: animeMC } = useAnimeMC(genreQueryString);
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
+
+  const {
+    data: communityListData,
+    refetch: refetchCLData,
+    remove: removeCLData,
+  } = useCommunityList();
+
+  function getRandomNumbers() {
+    for (let i = 0; i < 6; i++) {
+      randomPage[i] = Math.floor(Math.random() * 250 + 1);
+      randomItem[i] = Math.floor(Math.random() * 10);
+    }
+  }
+
+  useEffect(() => {
+    getRandomNumbers();
+    getRandomAnimeListing(randomPage, randomItem)
+      .then((result) => setAnimeRandom(result))
+      .catch((error) => console.log(error));
+  }, [refresh]);
+
   const {
     data: animeRND,
     refetch: refetchRND,
     remove: removeRND,
   } = useAnimeRND();
-
-  useEffect(() => {
-    getRandomCommunityList()
-      .then((result) => setCommunityListData(result))
-      .catch((error) => console.log(error));
-  }, [refreshCL]);
 
   useEffect(() => {
     PopulateFromFirestore(user, localUser, setLocalUser);
@@ -160,8 +173,8 @@ export default function Home() {
             size="small"
             startIcon={<RefreshIcon />}
             onClick={() => {
-              setCommunityListData(undefined);
-              setRefreshCL(!refreshCL);
+              removeCLData();
+              refetchCLData();
             }}
             sx={{ ml: 3 }}
           >
