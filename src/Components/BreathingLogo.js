@@ -1,10 +1,8 @@
 import { ReactComponent as SVG } from "../Styles/images/BreathingEdwardLogo.svg";
-import { useChain, useSpring, useSpringRef, animated } from "@react-spring/web";
+import { useSpring, animated } from "@react-spring/web";
 
 export default function BreathingLogo({ type }) {
-  const springApi = useSpringRef();
   const { size, ...rest } = useSpring({
-    ref: springApi,
     config: {
       duration: 800,
     },
@@ -19,7 +17,6 @@ export default function BreathingLogo({ type }) {
   });
 
   let height, width;
-  useChain([springApi]);
 
   if (type === "handleButton") {
     height = "100px";
@@ -40,7 +37,7 @@ export default function BreathingLogo({ type }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        margin: type === "fullPage" ? "22vh 0px" : "0",
+        margin: type === "fullPage" ? "25vh 0px" : "0",
       }}
     >
       <animated.div
