@@ -23,7 +23,7 @@ import HandleDialog from "./HandleDialog";
 import SearchAvatars from "./SearchAvatars";
 import SearchResultsBanner from "./SearchResultsBanner";
 import HtmlPageTitle from "./HtmlPageTitle";
-import BreathingLogoNew from "./BreathingLogoNew";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Search() {
   const location = useLocation();
@@ -68,7 +68,7 @@ export default function Search() {
   }, [user, loading]);
 
   if (loading) {
-    return <BreathingLogoNew type={"fullPage"} />;
+    return <BreathingLogo type={"fullPage"} />;
   }
 
   return (

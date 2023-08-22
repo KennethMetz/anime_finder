@@ -17,7 +17,7 @@ import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
 import { useHeartbeat } from "./APICalls";
-import BreathingLogoNew from "./BreathingLogoNew";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Login() {
   const authActions = useAuthActions();
@@ -153,7 +153,7 @@ export default function Login() {
             }
           >
             {loadingGoogle ? (
-              <BreathingLogoNew type="smallButton" />
+              <BreathingLogo type="smallButton" />
             ) : (
               "Login with Google"
             )}
@@ -196,7 +196,7 @@ export default function Login() {
             }
           >
             {loadingTwitter ? (
-              <BreathingLogoNew type="smallButton" />
+              <BreathingLogo type="smallButton" />
             ) : (
               "Login with Twitter"
             )}
@@ -296,7 +296,7 @@ export default function Login() {
             }}
             onClick={() => login("email")}
           >
-            {loadingEmail ? <BreathingLogoNew type={"smallButton"} /> : "Login"}
+            {loadingEmail ? <BreathingLogo type={"smallButton"} /> : "Login"}
           </Button>
 
           <Divider

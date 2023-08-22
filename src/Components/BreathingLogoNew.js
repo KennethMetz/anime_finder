@@ -1,7 +1,7 @@
 import { ReactComponent as SVG } from "../Styles/images/BreathingEdwardLogo.svg";
 import { useChain, useSpring, useSpringRef, animated } from "@react-spring/web";
 
-export default function BreathingLogoNew({ type }) {
+export default function BreathingLogo({ type }) {
   const springApi = useSpringRef();
   const { size, ...rest } = useSpring({
     ref: springApi,

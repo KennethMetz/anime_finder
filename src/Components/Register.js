@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
-import BreathingLogoNew from "./BreathingLogoNew";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -196,7 +196,7 @@ export default function Register() {
             }
           >
             {regLoadingGoogle ? (
-              <BreathingLogoNew type="smallButton" />
+              <BreathingLogo type="smallButton" />
             ) : (
               "Register with Google"
             )}{" "}
@@ -238,7 +238,7 @@ export default function Register() {
             }
           >
             {regLoadingTwitter ? (
-              <BreathingLogoNew type="smallButton" />
+              <BreathingLogo type="smallButton" />
             ) : (
               "Register with Twitter"
             )}{" "}
@@ -319,7 +319,7 @@ export default function Register() {
             onClick={handleSubmit(() => handleRegister("email"))}
           >
             {regLoadingEmail ? (
-              <BreathingLogoNew type={"smallButton"} />
+              <BreathingLogo type={"smallButton"} />
             ) : (
               "Let's Go!"
             )}

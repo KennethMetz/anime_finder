@@ -28,7 +28,7 @@ import HandleDialog from "./HandleDialog";
 import HtmlPageTitle from "./HtmlPageTitle";
 import ScorePercentText from "./ScorePercentText";
 import ExpandableTags from "./ExpandableTags";
-import BreathingLogoNew from "./BreathingLogoNew";
+import BreathingLogo from "./BreathingLogo";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -271,7 +271,7 @@ export default function DetailedView() {
                       padding: 8,
                     }}
                   >
-                    <BreathingLogoNew type="dataFromEdward" />
+                    <BreathingLogo type="dataFromEdward" />
                   </Box>
                 ) : (
                   <>
