@@ -17,6 +17,7 @@ import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
 import { useHeartbeat } from "./APICalls";
+import BreathingLogoNew from "./BreathingLogoNew";
 
 export default function Login() {
   const authActions = useAuthActions();
@@ -28,6 +29,10 @@ export default function Login() {
   const theme = useTheme();
 
   let [loginError, setLoginError] = useState(undefined);
+
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
+  const [loadingTwitter, setLoadingTwitter] = useState(false);
+  const [loadingEmail, setLoadingEmail] = useState(false);
 
   // Pre-warm API by sending a request now.
   useHeartbeat();
@@ -46,10 +51,13 @@ export default function Login() {
     try {
       setLoginError(null);
       if (provider === "google") {
+        setLoadingGoogle(true);
         await authActions.loginWithGoogle();
       } else if (provider === "twitter") {
+        setLoadingTwitter(true);
         await authActions.loginWithTwitter();
       } else if (provider === "email") {
+        setLoadingEmail(true);
         await authActions.loginWithEmail(email, password);
       } else {
         throw new Error("Unknown login provider");
@@ -71,6 +79,10 @@ export default function Login() {
           "Ooops - there was an error logging in. Please try again!"
         );
       }
+    } finally {
+      setLoadingGoogle(false);
+      setLoadingTwitter(false);
+      setLoadingEmail(false);
     }
   };
 
@@ -123,22 +135,28 @@ export default function Login() {
             }}
             onClick={() => login("google")}
             startIcon={
-              <Box
-                component="img"
-                src={google}
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                }}
-                alt=""
-              />
+              loadingGoogle ? null : (
+                <Box
+                  component="img"
+                  src={google}
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                  }}
+                  alt=""
+                />
+              )
             }
           >
-            Login with Google
+            {loadingGoogle ? (
+              <BreathingLogoNew type="smallButton" />
+            ) : (
+              "Login with Google"
+            )}
           </Button>
           {/* *******************Twitter Button************************** */}
           <Button
@@ -162,20 +180,26 @@ export default function Login() {
             }}
             onClick={() => login("twitter")}
             startIcon={
-              <TwitterIcon
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                  color: "#1D9BF0",
-                }}
-              />
+              loadingTwitter ? null : (
+                <TwitterIcon
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                    color: "#1D9BF0",
+                  }}
+                />
+              )
             }
           >
-            Login with Twitter
+            {loadingTwitter ? (
+              <BreathingLogoNew type="smallButton" />
+            ) : (
+              "Login with Twitter"
+            )}
           </Button>
           <Divider
             sx={{
@@ -268,10 +292,11 @@ export default function Login() {
             size="large"
             sx={{
               width: "211px",
+              padding: "0px",
             }}
             onClick={() => login("email")}
           >
-            Login
+            {loadingEmail ? <BreathingLogoNew type={"smallButton"} /> : "Login"}
           </Button>
 
           <Divider

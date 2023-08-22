@@ -14,7 +14,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
 import useYoutubeModal from "../Hooks/useYoutubeModal";
-import BreathingLogo from "./BreathingLogo";
 import DetailedViewGhost from "./DetailedViewGhost";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
@@ -29,6 +28,7 @@ import HandleDialog from "./HandleDialog";
 import HtmlPageTitle from "./HtmlPageTitle";
 import ScorePercentText from "./ScorePercentText";
 import ExpandableTags from "./ExpandableTags";
+import BreathingLogoNew from "./BreathingLogoNew";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -268,16 +268,10 @@ export default function DetailedView() {
                       alignItems: "center",
                       justifyContent: "center",
                       zIndex: 1,
+                      padding: 8,
                     }}
                   >
-                    <Box
-                      sx={{
-                        width: "60px",
-                        height: "60px",
-                      }}
-                    >
-                      <BreathingLogo />
-                    </Box>
+                    <BreathingLogoNew type="dataFromEdward" />
                   </Box>
                 ) : (
                   <>

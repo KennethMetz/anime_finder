@@ -20,7 +20,7 @@ import {
   ClaimHandle,
 } from "./Firestore";
 import useTheme from "@mui/material/styles/useTheme";
-import BreathingLogo from "./BreathingLogo";
+import BreathingLogoNew from "./BreathingLogoNew";
 
 export default function HandleDialog({ user }) {
   const theme = useTheme();
@@ -212,14 +212,14 @@ export default function HandleDialog({ user }) {
         </Button>
         <Button
           size="large"
-          sx={{ width: "100px", height: "48px" }}
+          sx={{ width: "100px", height: "48px", padding: "0px" }}
           onClick={handleSubmit(() => {
             setLoadingState(true);
             handleFormSubmission();
           })}
           variant="contained"
         >
-          {loadingState ? <BreathingLogo type="handleButton" /> : "Submit"}
+          {!loadingState ? <BreathingLogoNew type="smallButton" /> : "Submit"}
         </Button>
       </DialogActions>
     </Dialog>

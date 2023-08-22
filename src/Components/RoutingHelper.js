@@ -3,8 +3,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import { auth } from "./Firebase";
-import BreathingLogo from "./BreathingLogo";
 import useAuthActions from "../Hooks/useAuthActions";
+import BreathingLogoNew from "./BreathingLogoNew";
 
 export const RoutingHelper = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -52,7 +52,7 @@ export const RoutingHelper = () => {
   }, [loading, user, headerMatch]);
 
   if (loading && !user) {
-    return <BreathingLogo type={"fullPage"} />;
+    return <BreathingLogoNew type={"fullPage"} />;
   } else if (user && headerMatch) {
     return (
       <>
@@ -63,7 +63,7 @@ export const RoutingHelper = () => {
   } else if (noHeaderMatch) {
     return <Outlet />;
   } else if (!user && headerMatch) {
-    return <BreathingLogo type={"fullPage"} />;
+    return <BreathingLogoNew type={"fullPage"} />;
   } else {
     return <Outlet />;
   }

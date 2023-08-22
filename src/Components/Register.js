@@ -19,10 +19,10 @@ import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import BreathingLogo from "./BreathingLogo";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
+import BreathingLogoNew from "./BreathingLogoNew";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -35,6 +35,8 @@ export default function Register() {
   const [registerError, setRegisterError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
+  const [regLoadingGoogle, setRegLoadingGoogle] = useState(false);
+  const [regLoadingTwitter, setRegLoadingTwitter] = useState(false);
   const [regLoadingEmail, setRegLoadingEmail] = useState(false);
   const [regLoadingGuest, setRegLoadingGuest] = useState(false);
 
@@ -84,10 +86,12 @@ export default function Register() {
     try {
       setRegisterError(null);
       if (provider === "google") {
+        setRegLoadingGoogle(true);
         !user
           ? await authActions.registerWithGoogle()
           : await authActions.linkWithGoogle();
       } else if (provider === "twitter") {
+        setRegLoadingTwitter(true);
         !user
           ? await authActions.registerWithTwitter()
           : await authActions.linkWithTwitter();
@@ -114,6 +118,8 @@ export default function Register() {
         );
       }
     } finally {
+      setRegLoadingGoogle(false);
+      setRegLoadingTwitter(false);
       setRegLoadingEmail(false);
       setRegLoadingGuest(false);
     }
@@ -172,22 +178,28 @@ export default function Register() {
             }}
             onClick={() => handleRegister("google")}
             startIcon={
-              <Box
-                component="img"
-                src={google}
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                }}
-                alt=""
-              />
+              regLoadingGoogle ? null : (
+                <Box
+                  component="img"
+                  src={google}
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                  }}
+                  alt=""
+                />
+              )
             }
           >
-            Register with Google
+            {regLoadingGoogle ? (
+              <BreathingLogoNew type="smallButton" />
+            ) : (
+              "Register with Google"
+            )}{" "}
           </Button>
           {/* *******************Twitter Button************************** */}
           <Button
@@ -210,20 +222,26 @@ export default function Register() {
             }}
             onClick={() => handleRegister("twitter")}
             startIcon={
-              <TwitterIcon
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                  color: "#1D9BF0",
-                }}
-              />
+              regLoadingTwitter ? null : (
+                <TwitterIcon
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                    color: "#1D9BF0",
+                  }}
+                />
+              )
             }
           >
-            Register with Twitter
+            {regLoadingTwitter ? (
+              <BreathingLogoNew type="smallButton" />
+            ) : (
+              "Register with Twitter"
+            )}{" "}
           </Button>
           <Divider
             sx={{
@@ -296,11 +314,12 @@ export default function Register() {
             size="large"
             sx={{
               width: "211px",
+              padding: "0px",
             }}
             onClick={handleSubmit(() => handleRegister("email"))}
           >
             {regLoadingEmail ? (
-              <BreathingLogo type={"smallButton"} />
+              <BreathingLogoNew type={"smallButton"} />
             ) : (
               "Let's Go!"
             )}

@@ -18,12 +18,12 @@ import { PopulateFromFirestore } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import EdAndEinGif from "../Styles/images/ein-ed-compressed.gif";
 import { useAPISearch } from "./APICalls";
-import BreathingLogo from "./BreathingLogo";
 import SearchGhost from "./SearchGhost";
 import HandleDialog from "./HandleDialog";
 import SearchAvatars from "./SearchAvatars";
 import SearchResultsBanner from "./SearchResultsBanner";
 import HtmlPageTitle from "./HtmlPageTitle";
+import BreathingLogoNew from "./BreathingLogoNew";
 
 export default function Search() {
   const location = useLocation();
@@ -68,7 +68,7 @@ export default function Search() {
   }, [user, loading]);
 
   if (loading) {
-    return <BreathingLogo type={"fullPage"} />;
+    return <BreathingLogoNew type={"fullPage"} />;
   }
 
   return (
