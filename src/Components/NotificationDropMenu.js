@@ -153,6 +153,7 @@ export default function NotificationDropMenu() {
         style={{
           zIndex: "4",
           maxWidth: isMobileWidth ? "95vw" : "530px",
+          maxHeight: open ? "92vh" : "0",
         }}
       >
         {({ TransitionProps }) => (
