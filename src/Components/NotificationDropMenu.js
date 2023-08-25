@@ -158,6 +158,7 @@ export default function NotificationDropMenu() {
         {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
+            unmountOnExit
             onExited={() => resetPagination()}
             style={{
               transformOrigin: "right top",
