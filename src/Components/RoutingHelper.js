@@ -3,8 +3,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import { auth } from "./Firebase";
-import BreathingLogo from "./BreathingLogo";
 import useAuthActions from "../Hooks/useAuthActions";
+import BreathingLogo from "./BreathingLogo";
 
 export const RoutingHelper = () => {
   const [user, loading, error] = useAuthState(auth);
