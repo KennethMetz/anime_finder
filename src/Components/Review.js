@@ -287,42 +287,6 @@ export default function Review({
               rxnTarget={rxnTarget}
               countDoc={reviews[index]}
             />
-            {/*
-            <EmojiReactionChip
-              docId={docId}
-              emoji={<HandsClapping size={24} />}
-              reaction="applause"
-              userRxns={userRxns}
-              setUserRxns={setUserRxns}
-              type={type}
-              tooltip={`Applaud this ${typeSingular}`}
-              rxnCount={reviews[index].applauseCount}
-              IdToNotify={review.uid}
-            />
-
-            <EmojiReactionChip
-              docId={docId}
-              emoji={<Heart size={24} />}
-              reaction="heart"
-              userRxns={userRxns}
-              setUserRxns={setUserRxns}
-              type={type}
-              tooltip={`Love this ${typeSingular}`}
-              rxnCount={reviews[index].heartCount}
-              IdToNotify={review.uid}
-            />
-
-            <EmojiReactionChip
-              docId={docId}
-              emoji={<Trash size={24} />}
-              reaction="trash"
-              userRxns={userRxns}
-              setUserRxns={setUserRxns}
-              type={type}
-              tooltip={`Disagree with this ${typeSingular}`}
-              rxnCount={reviews[index].trashCount}
-              IdToNotify={review.uid}
-          />*/}
           </div>
         }
       </Grid>
