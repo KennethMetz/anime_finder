@@ -71,7 +71,7 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
   let privateList = false;
-  const [countDoc, setCountDoc] = useState([]);
+  const [countDoc, setCountDoc] = useState();
 
   const rxnTarget = useMemo(
     () => getRxnTargetForWatchlist(listId, userId),
