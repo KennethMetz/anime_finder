@@ -11,7 +11,7 @@ import {
   LockSimple,
   Trash,
 } from "phosphor-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
@@ -25,9 +25,15 @@ import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EmojiReactionChip from "./EmojiReactionChip";
-import { getWatchlistReactionCount, getUserReactions } from "./Firestore";
+import {
+  getWatchlistReactionCount,
+  getUserReactions,
+  GetCountDocFromFirestore,
+} from "./Firestore";
 import Grid from "@mui/material/Grid";
 import HtmlPageTitle from "./HtmlPageTitle";
+import EmojiReactionChips from "./EmojiReactionChips";
+import { getRxnTargetForWatchlist } from "../Util/ReactionUtil";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -65,7 +71,16 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
   let privateList = false;
-  const [rxnCount, setRxnCount] = useState([]);
+  const [countDoc, setCountDoc] = useState([]);
+
+  const rxnTarget = useMemo(
+    () => getRxnTargetForWatchlist(listId, userId),
+    [listId, userId]
+  );
+
+  useEffect(() => {
+    GetCountDocFromFirestore(rxnTarget).then((doc) => setCountDoc(doc));
+  }, [rxnTarget]);
 
   useEffect(() => {
     Promise.all([
@@ -73,13 +88,6 @@ export default function ProfileListPage() {
         .then((value) => setUserRxns(value))
         .catch(() =>
           console.error("Error loading user reactions from Firestore")
-        ),
-      getWatchlistReactionCount(`${userId}${listId}`)
-        .then((value) =>
-          setRxnCount([value.applauseCount, value.heartCount, value.trashCount])
-        )
-        .catch(() =>
-          console.error("Error loading reaction tally from Firestore")
         ),
     ]);
   }, [user.uid, userId, listId, location.key]);
@@ -218,38 +226,7 @@ export default function ProfileListPage() {
           }}
         >
           {!privateList && (
-            <>
-              <EmojiReactionChip
-                docId={`${userId}${listId}`}
-                userRxns={userRxns}
-                setUserRxns={setUserRxns}
-                emoji={<HandsClapping size={24} />}
-                reaction="applause"
-                type="list"
-                ownerId={userId}
-                rxnCount={rxnCount[0]}
-              />
-              <EmojiReactionChip
-                docId={`${userId}${listId}`}
-                userRxns={userRxns}
-                setUserRxns={setUserRxns}
-                emoji={<Heart size={24} />}
-                reaction="heart"
-                type="list"
-                ownerId={userId}
-                rxnCount={rxnCount[1]}
-              />
-              <EmojiReactionChip
-                docId={`${userId}${listId}`}
-                userRxns={userRxns}
-                setUserRxns={setUserRxns}
-                emoji={<Trash size={24} />}
-                reaction="trash"
-                type="list"
-                ownerId={userId}
-                rxnCount={rxnCount[2]}
-              />
-            </>
+            <EmojiReactionChips rxnTarget={rxnTarget} countDoc={countDoc} />
           )}
         </Grid>
         <Grid

@@ -26,6 +26,11 @@ import {
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { getAvatarSrc } from "./Avatars";
+import EmojiReactionChips from "./EmojiReactionChips";
+import {
+  getRxnTargetForAnimeReview,
+  getRxnTargetForWatchlistComment,
+} from "../Util/ReactionUtil";
 
 export default function Review({
   review,
@@ -43,6 +48,15 @@ export default function Review({
   const confirm = useConfirm();
 
   const [userRxns, setUserRxns] = useState({});
+  const rxnTarget = useMemo(() => {
+    if (type === "comments") {
+      return getRxnTargetForWatchlistComment(docId, listOwnerId, review.uid);
+    } else if (type === "reviews") {
+      return getRxnTargetForAnimeReview(/*animeId=*/ docId, review.uid);
+    } else {
+      throw new Error(`Unknown review type ${type}`);
+    }
+  }, [type, docId, listOwnerId, review.uid]);
   const { data: reviewerInfo } = useProfile(review.uid);
 
   const typeSingular = type === "comments" ? "comment" : "review";
@@ -261,49 +275,56 @@ export default function Review({
             </div>
           </Tooltip>
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: "10px",
-          }}
-        >
-          <EmojiReactionChip
-            docId={docId}
-            emoji={<HandsClapping size={24} />}
-            reaction="applause"
-            userRxns={userRxns}
-            setUserRxns={setUserRxns}
-            type={type}
-            tooltip={`Applaud this ${typeSingular}`}
-            rxnCount={reviews[index].applauseCount}
-            IdToNotify={review.uid}
-          />
+        {
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+            }}
+          >
+            <EmojiReactionChips
+              rxnTarget={rxnTarget}
+              countDoc={reviews[index]}
+            />
+            {/*
+            <EmojiReactionChip
+              docId={docId}
+              emoji={<HandsClapping size={24} />}
+              reaction="applause"
+              userRxns={userRxns}
+              setUserRxns={setUserRxns}
+              type={type}
+              tooltip={`Applaud this ${typeSingular}`}
+              rxnCount={reviews[index].applauseCount}
+              IdToNotify={review.uid}
+            />
 
-          <EmojiReactionChip
-            docId={docId}
-            emoji={<Heart size={24} />}
-            reaction="heart"
-            userRxns={userRxns}
-            setUserRxns={setUserRxns}
-            type={type}
-            tooltip={`Love this ${typeSingular}`}
-            rxnCount={reviews[index].heartCount}
-            IdToNotify={review.uid}
-          />
+            <EmojiReactionChip
+              docId={docId}
+              emoji={<Heart size={24} />}
+              reaction="heart"
+              userRxns={userRxns}
+              setUserRxns={setUserRxns}
+              type={type}
+              tooltip={`Love this ${typeSingular}`}
+              rxnCount={reviews[index].heartCount}
+              IdToNotify={review.uid}
+            />
 
-          <EmojiReactionChip
-            docId={docId}
-            emoji={<Trash size={24} />}
-            reaction="trash"
-            userRxns={userRxns}
-            setUserRxns={setUserRxns}
-            type={type}
-            tooltip={`Disagree with this ${typeSingular}`}
-            rxnCount={reviews[index].trashCount}
-            IdToNotify={review.uid}
-          />
-        </div>
+            <EmojiReactionChip
+              docId={docId}
+              emoji={<Trash size={24} />}
+              reaction="trash"
+              userRxns={userRxns}
+              setUserRxns={setUserRxns}
+              type={type}
+              tooltip={`Disagree with this ${typeSingular}`}
+              rxnCount={reviews[index].trashCount}
+              IdToNotify={review.uid}
+          />*/}
+          </div>
+        }
       </Grid>
     </Paper>
   );

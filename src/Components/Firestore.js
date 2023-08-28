@@ -17,8 +17,10 @@ import {
   deleteField,
   increment,
   collectionGroup,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "./Firebase";
+import { getDefaultCountDoc, getDefaultUserRxns } from "../Util/ReactionUtil";
 
 // Handle "users" collection on firestore
 
@@ -431,4 +433,45 @@ export async function deleteWatchlistDataEntry(userId, listId) {
   // has a true value for 'awaitingDeletion' field.
   // Run this script periodically from server as deleting collections
   // from a web client is not recommended by firestore.
+}
+
+export async function GetUserRxStateFromFirestore(userId, rxnTarget) {
+  const docRef = doc(db, "users", userId, "reactions", rxnTarget.entityId);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) {
+    return getDefaultUserRxns(rxnTarget);
+  }
+  return docSnap.data();
+}
+
+export async function SaveUserRxStateToFirestore(
+  userId,
+  rxnTarget,
+  rxnType,
+  userRxns,
+  incrementBy
+) {
+  const docRef = doc(db, "users", userId, "reactions", rxnTarget.entityId);
+  const countDocRef = doc(db, rxnTarget.countDocPath);
+  const countFieldPath = `reactionCounts.${rxnType.key}`;
+
+  // Performed batched write to update user state, reaction count.
+  // TODO Increment counts using firestore server events.
+  const batch = writeBatch(db);
+  batch.set(docRef, userRxns);
+  batch.update(countDocRef, {
+    [countFieldPath]: increment(incrementBy),
+  });
+  // TODO Write notifications.
+  // TODO Write notifications using firestore server events.
+  await batch.commit();
+}
+
+export async function GetCountDocFromFirestore(rxnTarget) {
+  const countDocRef = doc(db, rxnTarget.countDocPath);
+  const docSnap = await getDoc(countDocRef);
+  if (!docSnap.exists()) {
+    return getDefaultCountDoc();
+  }
+  return docSnap.data();
 }
