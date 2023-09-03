@@ -90,9 +90,9 @@ export function getRxnTargetForWatchlistComment(
 
 /**
  * @typedef {Object} RxnType
- * @property {"love"|"applaud"|"trash"} type A unique string identifying this reaction type.
+ * @property {"love"|"applaud"|"trash"} type The type of reaction.
  * @property {string} key The key for this type's value and count in firestore.
- * @property {string} verb The capitalized verb representing this action.
+ * @property {string} verb A verb representing this action to use in UI text.
  * @property {JSX.Element} emoji The icon component to be shown on buttons.
  */
 
