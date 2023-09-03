@@ -160,8 +160,8 @@ export function NotificationListItem({ item, handleClose, index }) {
 
 // Support functions
 function getInteractionType(input) {
-  if (input === "applause") return "applauded";
-  if (input === "heart") return "loved";
+  if (input === "applause" || input === "applaud") return "applauded";
+  if (input === "heart" || input === "love") return "loved";
 }
 
 function getContentName(listId, listOwnersLists) {

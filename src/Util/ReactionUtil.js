@@ -28,6 +28,17 @@ import { HandsClapping, Heart, Trash } from "phosphor-react";
  * @property {string} entityId A globally unique ID for this reaction target.
  * @property {string} countDocPath A path to the document with reaction counts.
  * @property {string} ownerId The owner of this target.  They may be notified.
+ * @property {RxnTargetNotifData} notifData Partial notification data that will
+ *  be merged into Notifications sent about interactions with this target.
+ */
+
+/**
+ * @typedef {Object} RxnTargetNotifData
+ * @property {string} docId A unique id for the item acted on.
+ * @property {"comments"|"list"|"reviews"} docType The type of item acted on.
+ * @property {string|null} listId The id of the relevant list.
+ * @property {string|null} listOwnerId The id of the relevant list owner.
+ * @property {string|null} commentOwnerId The id of the relevant comment owner.
  */
 
 /**
@@ -43,6 +54,14 @@ export function getRxnTargetForAnimeReview(animeId, reviewAuthorId) {
     entityId: `review-${animeId}-${reviewAuthorId}`,
     countDocPath: ["animeData", animeId, "reviews", reviewAuthorId].join("/"),
     ownerId: reviewAuthorId,
+    notifData: {
+      // docId needs to be just id because of a use in NotificationListItem.
+      docId: animeId,
+      docType: "reviews",
+      listId: null,
+      listOwnerId: null,
+      commentOwnerId: null,
+    },
   };
 }
 
@@ -59,6 +78,13 @@ export function getRxnTargetForWatchlist(listId, listOwnerId) {
     entityId: `list-${listOwnerId}${listId}`,
     countDocPath: ["watchlistData", listOwnerId + listId].join("/"),
     ownerId: listOwnerId,
+    notifData: {
+      docId: `list-${listOwnerId}${listId}`,
+      docType: "list",
+      listId,
+      listOwnerId,
+      commentOwnerId: null,
+    },
   };
 }
 
@@ -85,6 +111,13 @@ export function getRxnTargetForWatchlistComment(
       commentAuthorId,
     ].join("/"),
     ownerId: commentAuthorId,
+    notifData: {
+      docId: `listComment-${listOwnerId}${listId}-${commentAuthorId}`,
+      docType: "comments",
+      listId,
+      listOwnerId,
+      commentOwnerId: commentAuthorId,
+    },
   };
 }
 
@@ -94,6 +127,7 @@ export function getRxnTargetForWatchlistComment(
  * @property {string} key The key for this type's value and count in firestore.
  * @property {string} verb A verb representing this action to use in UI text.
  * @property {JSX.Element} emoji The icon component to be shown on buttons.
+ * @property {boolean} notifies Whether notifications should be sent.
  */
 
 /** @type {RxnType[]} */
@@ -103,18 +137,21 @@ export const RxnTypes = Object.freeze([
     key: "applaud",
     verb: "Applaud",
     emoji: <HandsClapping />,
+    notifies: true,
   },
   {
     type: "love",
     key: "love",
     verb: "Love",
     emoji: <Heart />,
+    notifies: true,
   },
   {
     type: "trash",
     key: "trash",
     verb: "Disagree with",
     emoji: <Trash />,
+    notifies: false,
   },
 ]);
 

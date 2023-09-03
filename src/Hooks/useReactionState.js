@@ -2,7 +2,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../Components/Firebase";
 import { useCallback, useEffect, useState } from "react";
 import {
+  DeleteNotification,
   GetUserRxStateFromFirestore,
+  SaveNotification,
   SaveUserRxStateToFirestore,
 } from "../Components/Firestore";
 import { getDefaultUserRxns } from "../Util/ReactionUtil";
@@ -53,9 +55,42 @@ export default function useReactionState(rxnTarget) {
         newUserRxns,
         increment
       );
+      // Update notifications, if this type notifies.
+      if (rxnType.notifies) {
+        const notification = getNotification(user, rxnTarget, rxnType);
+        if (newValue) {
+          SaveNotification(notification, rxnTarget.ownerId);
+        } else {
+          DeleteNotification(notification, rxnTarget.ownerId);
+        }
+      }
     },
     [user?.uid, userRxns, rxnTarget]
   );
 
   return [userRxns, updateUserRxns];
+}
+
+/**
+ * Builds a notification for `user` reacting to `rxnTarget` w/ type `rxnType`.
+ * @param {import("firebase/auth").User} user
+ * @param {import("../Util/ReactionUtil").RxnTarget} rxnTarget
+ * @param {import("../Util/ReactionUtil").RxnType} rxnType
+ * @returns {import("../Util/NotificationUtil").Notification} A notification
+ *  object that can be saved to storage.
+ */
+function getNotification(user, rxnTarget, rxnType) {
+  // TODO Extract basic notification template logic to shared lib.
+  return {
+    interactorId: user.uid, // Person sending the emoji
+    action: rxnType.type,
+    docId: rxnTarget.notifData.docId,
+    docType: rxnTarget.notifData.docType,
+    time: new Date(),
+    seen: false, // Remains false until noti popper is opened.
+    read: false, // Remains false until popper is closed (so it can be specially styled)
+    listId: rxnTarget.notifData.listId,
+    listOwnerId: rxnTarget.notifData.listOwnerId,
+    commentOwnerId: rxnTarget.notifData.commentOwnerId,
+  };
 }
