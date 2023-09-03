@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Top8List from "./Top8List";
 import ProfilePageContext from "./ProfilePageContext";
 import ClickAndEdit from "./ClickAndEdit";
+import ProfileImportDialog from "./ProfileImportDialog";
 
 export default function ProfileSidebar({ hideDetails }) {
   const navigate = useNavigate();
@@ -35,6 +36,9 @@ export default function ProfileSidebar({ hideDetails }) {
                 Register to save your profile! <ArrowRight size={22} />
               </Button>
             </div>
+          )}
+          {isOwnProfile && profile?.authProvider !== "anonymous" && (
+            <ProfileImportDialog />
           )}
           <Typography
             variant="h3"

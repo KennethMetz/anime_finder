@@ -17,3 +17,5 @@ export function slugifyListName(name) {
 
   return result;
 }
+
+// TODO Centralize some code to create a list?
