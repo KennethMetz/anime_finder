@@ -40,6 +40,7 @@ export default function Review({
   setReviews,
   setShowReviewForm,
   type,
+  listId,
   listOwnerId,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -50,7 +51,7 @@ export default function Review({
   const [userRxns, setUserRxns] = useState({});
   const rxnTarget = useMemo(() => {
     if (type === "comments") {
-      return getRxnTargetForWatchlistComment(docId, listOwnerId, review.uid);
+      return getRxnTargetForWatchlistComment(listId, listOwnerId, review.uid);
     } else if (type === "reviews") {
       return getRxnTargetForAnimeReview(/*animeId=*/ docId, review.uid);
     } else {

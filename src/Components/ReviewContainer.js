@@ -171,6 +171,7 @@ export default function ReviewContainer({
             setReviews={setReviews}
             setShowReviewForm={setShowReviewForm}
             type={type}
+            listId={listId}
             listOwnerId={listOwnerId}
           />
         );
