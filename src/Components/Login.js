@@ -86,6 +86,11 @@ export default function Login() {
     }
   };
 
+  const handleEmailSubmit = (e) => {
+    e.preventDefault();
+    login("email");
+  };
+
   return (
     <div className="login">
       <HtmlPageTitle title={"Login"} />
@@ -213,91 +218,93 @@ export default function Login() {
             or
           </Divider>
           {/* *******************EdwardML - Email Field************************** */}
-          <TextField
-            type="text"
-            className="register__textBox"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            label="Email"
-            required
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                marginBottom: "88.5px",
-              },
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
-          {/* *******************EdwardML - Password Field************************** */}
-          <TextField
-            type="password"
-            className="register__textBox"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            label="Password"
-            helperText="Forgot Password?"
-            required
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            FormHelperTextProps={{
-              style: {
-                color: theme.palette.text.primary,
-                textAlign: "right",
-                fontWeight: "600",
-                cursor: "pointer",
-              },
-              onClick: () => navigate("/reset"),
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
-          {loginError && (
-            <Typography
+          <form className="emailForm" onSubmit={handleEmailSubmit}>
+            <TextField
+              type="email"
+              className="register__textBox"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              label="Email"
+              required
+              inputProps={{
+                style: {
+                  paddingTop: "12.5px",
+                  paddingBottom: "12.5px",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  marginBottom: "88.5px",
+                },
+              }}
               sx={{
-                color: "error.main",
-                fontWeight: 600,
-                marginY: "10px",
+                width: {
+                  xs: "250px",
+                  fourHundred: "280px",
+                  sm: "350px",
+                },
+                borderRadius: "9px",
+                marginBottom: "20px",
+              }}
+            />
+            {/* *******************EdwardML - Password Field************************** */}
+            <TextField
+              type="password"
+              className="register__textBox"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              label="Password"
+              helperText="Forgot Password?"
+              required
+              inputProps={{
+                style: {
+                  paddingTop: "12.5px",
+                  paddingBottom: "12.5px",
+                },
+              }}
+              FormHelperTextProps={{
+                style: {
+                  color: theme.palette.text.primary,
+                  textAlign: "right",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                },
+                onClick: () => navigate("/reset"),
+              }}
+              sx={{
+                width: {
+                  xs: "250px",
+                  fourHundred: "280px",
+                  sm: "350px",
+                },
+                borderRadius: "9px",
+                marginBottom: "20px",
+              }}
+            />
+            {loginError && (
+              <Typography
+                sx={{
+                  color: "error.main",
+                  fontWeight: 600,
+                  marginY: "10px",
+                }}
+              >
+                {loginError}
+              </Typography>
+            )}
+            {/* *******************EdwardML - 'Login' Button************************** */}
+            <Button
+              variant="contained"
+              size="large"
+              type="submit"
+              sx={{
+                width: "211px",
+                padding: "0px",
               }}
             >
-              {loginError}
-            </Typography>
-          )}
-          {/* *******************EdwardML - 'Login' Button************************** */}
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              width: "211px",
-              padding: "0px",
-            }}
-            onClick={() => login("email")}
-          >
-            {loadingEmail ? <BreathingLogo type={"smallButton"} /> : "Login"}
-          </Button>
+              {loadingEmail ? <BreathingLogo type={"smallButton"} /> : "Login"}
+            </Button>
+          </form>
 
           <Divider
             sx={{
