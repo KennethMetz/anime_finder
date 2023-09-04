@@ -31,7 +31,7 @@ export default function ReviewContainer({
   const [lastVisible, setLastVisible] = useState(null);
   const [seeMore, setSeeMore] = useState(true);
   const [sortOption, setSortOption] = useState([
-    "applauseCount",
+    "reactionCounts.applaud",
     "desc",
     "mostLoved",
   ]);
