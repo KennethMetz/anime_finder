@@ -20,6 +20,7 @@ import {
   SaveToFirestore,
 } from "./Firestore";
 import { getAvatarSrc } from "./Avatars";
+import { getDefaultCountDoc } from "../Util/ReactionUtil";
 
 export default function ReviewForm({
   docId,
@@ -41,7 +42,9 @@ export default function ReviewForm({
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
-  let [emojis, setEmojis] = useState([0, 0, 0]);
+  let [reactionCounts, setReactionCounts] = useState(
+    getDefaultCountDoc().reactionCounts
+  );
 
   let [existingReview, setExistingReview] = useState(false);
 
@@ -79,11 +82,7 @@ export default function ReviewForm({
           setReviewTitle(reviews[i].reviewTitle);
           setReview(reviews[i].review);
           setRating(reviews[i].rating);
-          setEmojis([
-            reviews[i].applauseCount,
-            reviews[i].heartCount,
-            reviews[i].trashCount,
-          ]);
+          setReactionCounts(reviews[i].reactionCounts);
         }
       }
     }
@@ -116,9 +115,7 @@ export default function ReviewForm({
         uid: user.uid,
         time: new Date(),
         edited: edited,
-        applauseCount: emojis[0],
-        heartCount: emojis[1],
-        trashCount: emojis[2],
+        reactionCounts: reactionCounts,
       };
       if (!localUser[type]) localUser[type] = [];
       if (!localUser[type].find((x) => x === docId)) {

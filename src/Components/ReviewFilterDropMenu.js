@@ -107,7 +107,7 @@ export default function ReviewFilterDropMenu({
                     divider
                     onClick={(e) => {
                       handleSelection(e, [
-                        "applauseCount",
+                        "reactionCounts.applaud",
                         "desc",
                         "mostApplauded",
                       ]);
@@ -119,7 +119,11 @@ export default function ReviewFilterDropMenu({
                   <MenuItem
                     divider
                     onClick={(e) => {
-                      handleSelection(e, ["heartCount", "desc", "mostloved"]);
+                      handleSelection(e, [
+                        "reactionCounts.love",
+                        "desc",
+                        "mostloved",
+                      ]);
                     }}
                     selected={selected === "mostloved" ? true : false}
                   >
@@ -129,7 +133,7 @@ export default function ReviewFilterDropMenu({
                     divider
                     onClick={(e) => {
                       handleSelection(e, [
-                        "trashCount",
+                        "reactionCounts.trash",
                         "desc",
                         "mostDisliked",
                       ]);
