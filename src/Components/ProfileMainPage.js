@@ -7,6 +7,7 @@ import ProfilePageContext from "./ProfilePageContext";
 import ProfileMainPageGhost from "./ProfileMainPageGhost";
 import ProfileSidebar from "./ProfileSidebar";
 import HtmlPageTitle from "./HtmlPageTitle";
+import ProfileImportDialog from "./ProfileImportDialog";
 
 export default function ProfileMainPage() {
   const { profile, animeObjects, isOwnProfile, isLoading } =
@@ -56,10 +57,21 @@ export default function ProfileMainPage() {
               items={animeObjects?.dislikes}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Typography variant="h3" sx={subheadStyle}>
               My Watchlists
             </Typography>
+            {isOwnProfile && profile?.authProvider !== "anonymous" && (
+              <ProfileImportDialog subheadStyle={subheadStyle} />
+            )}
           </Grid>
           {animeObjects?.lists.map((list, index) => (
             <Grid item xs={12} md={6} key={index}>

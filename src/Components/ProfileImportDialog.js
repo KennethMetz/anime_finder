@@ -15,7 +15,7 @@ import { LocalUserContext } from "./LocalUserContext";
 import { ArrowsClockwise } from "phosphor-react";
 import { generateId } from "./Firestore";
 
-export default function ProfileImportDialog() {
+export default function ProfileImportDialog({ subheadStyle }) {
   const [open, setOpen] = useState(false);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -64,8 +64,10 @@ export default function ProfileImportDialog() {
     <div>
       <Button
         variant="outlined"
+        size="small"
+        color="inherit"
         onClick={handleOpen}
-        sx={{ mt: 2 }}
+        sx={{ ...subheadStyle }}
         startIcon={<ArrowsClockwise />}
       >
         Sync from MAL
