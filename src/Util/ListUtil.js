@@ -1,9 +1,5 @@
 import slug from "slug";
-import {
-  CreateWatchlistDataEntry,
-  SaveToFirestore,
-  generateId,
-} from "../Components/Firestore";
+import { CreateWatchlistDataEntry, generateId } from "../Components/Firestore";
 
 const reservedSlugs = ["likes", "dislikes"];
 
@@ -29,6 +25,9 @@ export function slugifyListName(name) {
  * @param {array} anime An array of animeIds.
  * @param {boolean} privateList Is this a private list.
  * @param {string} desc The users' description of the list.
+ * @param {object} user The user auth object.
+ * @param {object} localUser The localUser object.
+ * @param {string} malList MAL list name or NULL if a custom watchlist.
  */
 export function createNewWatchlist(
   name,
@@ -42,6 +41,7 @@ export function createNewWatchlist(
   let listId = generateId();
   let temp = { ...localUser };
 
+  // Build list object for a CUSTOM watchlist
   if (!malList) {
     temp.lists = [
       ...(temp.lists ?? []),
@@ -53,7 +53,9 @@ export function createNewWatchlist(
         id: listId,
       },
     ];
-  } else {
+  }
+  // Build list object for an imported MAL watchlist
+  else {
     const syncDate = new Date();
     temp.lists = [
       ...(temp.lists ?? []),

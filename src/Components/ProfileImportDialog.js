@@ -51,7 +51,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
       // NOTE: the 'fake' argument, which will call the API but tell it to return
       // fake data instead of calling the mal API, which will reduce calls to MAL
       // while in development.
-      APIGetMalLists(/*username=*/ accountName, /*fake=*/ true)
+      APIGetMalLists(/*username=*/ accountName, /*fake=*/ false)
         .then(async (response) => {
           console.log(response);
 
