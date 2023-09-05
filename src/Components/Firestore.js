@@ -23,6 +23,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./Firebase";
 import { useQuery } from "@tanstack/react-query";
+import { getDefaultLocalUser } from "./LocalUserContext";
 
 const fiveMinutesMs = 1000 * 60 * 5;
 
@@ -35,17 +36,8 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let data = querySnapshot.data();
     if (!data?.likes) {
       data = {
+        ...getDefaultLocalUser(),
         ...data,
-        likes: [],
-        dislikes: [],
-        lists: [],
-        savedLists: [],
-        avatar: "",
-        bio: "",
-        top8: [],
-        reviews: [],
-        comments: [],
-        handle: "",
       };
     }
     if (!data.savedLists) data.savedLists = [];
