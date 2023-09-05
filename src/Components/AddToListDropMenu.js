@@ -33,6 +33,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { PrivacySwitch } from "./PrivacySwitch";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Typography } from "@mui/material";
+import { createNewWatchlist } from "../Util/ListUtil";
 
 export default function AddToListDropMenu({ anime, variant, selected }) {
   const navigate = useNavigate();
@@ -100,23 +101,18 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
 
   //Creates new EMPTY watchlist
   const createNewList = () => {
-    let listId = generateId();
-    let temp = { ...localUser };
-    temp.lists = [
-      ...(temp.lists ?? []),
-      {
-        name: name,
-        anime: [],
-        privateList: privateList,
-        desc: desc,
-        id: listId,
-      },
-    ];
+    let temp = createNewWatchlist(
+      name,
+      /*anime=*/ null,
+      privateList,
+      desc,
+      user,
+      localUser
+    );
+
     setLocalUser(temp);
     SaveToFirestore(user, temp);
-    // Only registered users have their watchlistData created and displayed on '/home'
-    if (!privateList && localUser.authProvider !== "anonymous")
-      CreateWatchlistDataEntry(user.uid, listId);
+
     setName("");
   };
 
@@ -177,7 +173,11 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
         anchorEl={anchorRef.current}
         role={undefined}
         transition
-        sx={{ zIndex: "4", maxWidth: smallScreen ? "98vw" : "600px" }}
+        sx={{
+          zIndex: "4",
+          maxWidth: smallScreen ? "98vw" : "600px",
+          minWidth: "330px",
+        }}
       >
         {({ TransitionProps, placement }) => (
           <Grow {...TransitionProps} style={{ transformOrigin: "center-top" }}>

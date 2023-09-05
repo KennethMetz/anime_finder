@@ -7,19 +7,23 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { APIGetMalLists } from "./APICalls";
 import BreathingLogo from "./BreathingLogo";
 import { useSnackbar } from "notistack";
 import { LocalUserContext } from "./LocalUserContext";
 import { ArrowsClockwise } from "phosphor-react";
-import { generateId } from "./Firestore";
+import { SaveToFirestore, generateId } from "./Firestore";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { createNewWatchlist } from "../Util/ListUtil";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./Firebase";
 
 export default function ProfileImportDialog({ subheadStyle }) {
   const [open, setOpen] = useState(false);
+  const [user] = useAuthState(auth);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
 
@@ -37,28 +41,21 @@ export default function ProfileImportDialog({ subheadStyle }) {
     clearErrors();
   };
 
-  useEffect(() => {
-    console.log(accountName);
-  }, [accountName]);
-
   function handleFormSubmission() {
     clearErrors("accountName");
-    console.log(errors);
     if (!errors.accountName) {
       if (loading) {
         throw new Error("Cannot import, already loading.");
       }
-      console.log("IT DID NOT GET STOPPED");
-      // setLoading(true);
-      // TODO Use form data in API call.
+      setLoading(true);
       // NOTE: the 'fake' argument, which will call the API but tell it to return
       // fake data instead of calling the mal API, which will reduce calls to MAL
       // while in development.
-      APIGetMalLists(/*username=*/ "rasengan-rascal", /*fake=*/ true)
+      APIGetMalLists(/*username=*/ accountName, /*fake=*/ true)
         .then(async (response) => {
           console.log(response);
 
-          syncWatchlists(localUser, response);
+          syncWatchlists(response, localUser, setLocalUser, user);
 
           enqueueSnackbar({
             message: "Watchlists updated",
@@ -68,12 +65,16 @@ export default function ProfileImportDialog({ subheadStyle }) {
               horizontal: "center",
             },
           });
-          setOpen(false);
+          handleClose();
         })
         .catch((e) => {
           enqueueSnackbar({
             message: "Unable to import from MAL",
             variant: "error",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "center",
+            },
           });
           createFormError();
         })
@@ -105,9 +106,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
     clearErrors,
     formState: { errors },
   } = useForm({
-    mode: "onSubmit",
-    criteriaMode: "all",
-    reValidateMode: "onChange",
+    mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
 
@@ -124,6 +123,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
         Sync from MAL
       </Button>
       <Dialog
+        disableRestoreFocus
         open={open}
         onClose={handleClose}
         PaperProps={{
@@ -142,7 +142,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
             Import your animelists from MAL as watchlists. If you have already
-            imported watchlists, this will sync the existing lists.
+            imported watchlists, this will overwrite those existing lists.
           </DialogContentText>
           <DialogContentText sx={{ mb: 2 }}>
             Note: Your lists on MAL must be public to be imported.
@@ -154,7 +154,10 @@ export default function ProfileImportDialog({ subheadStyle }) {
             id="accountName"
             {...register("accountName")}
             value={accountName}
-            onChange={(e) => setAccountName(e.target.value)}
+            onChange={(e) => {
+              clearErrors(["accountName"]);
+              setAccountName(e.target.value);
+            }}
             margin="dense"
             required
             error={Boolean(errors.accountName || errors.unknownImportError)}
@@ -195,45 +198,70 @@ export default function ProfileImportDialog({ subheadStyle }) {
   );
 }
 
-function syncWatchlists(localUser, response) {
-  // TODO Implement sync with existing lists.  Add new watchlists if
-  // needed.  New watchlists will have to also have watchlistData/
-  // created for them, etc, so this will be a fun challenge.  There is
-  // already code to create lists in `AddToListDropMenu`, maybe there
-  // is a way to centralize this in ListUtil.js or something.
+function syncWatchlists(response, localUser, setLocalUser, user) {
+  if (!response) return;
 
-  // Also, synced lists should have some data embedded in them to
-  // indicate they are synced from MAL, and what list they are synced
-  // from.
+  let malListsExist = {
+    completed: false,
+    dropped: false,
+    on_hold: false,
+    plan_to_watch: false,
+    watching: false,
+  };
 
-  // Maybe something like:
+  let temp = { ...localUser };
 
-  const syncDate = new Date();
+  // Find any imported MAL lists in localUser and update its anime and syncDate fields.
+  localUser.lists.forEach((list, index) => {
+    if (list?.syncData?.source === "mal/completed") {
+      malListsExist.completed = true;
+      temp.lists[index].anime = response["completed"];
+      temp.lists[index].syncData.syncDate = new Date();
+    } else if (list?.syncData?.source === "mal/dropped") {
+      malListsExist.dropped = true;
+      temp.lists[index].anime = response["dropped"];
+      temp.lists[index].syncData.syncDate = new Date();
+    } else if (list?.syncData?.source === "mal/onHold") {
+      malListsExist.on_hold = true;
+      temp.lists[index].anime = response["on_hold"];
+      temp.lists[index].syncData.syncDate = new Date();
+    } else if (list?.syncData?.source === "mal/planToWatch") {
+      malListsExist.plan_to_watch = true;
+      temp.lists[index].anime = response["plan_to_watch"];
+      temp.lists[index].syncData.syncDate = new Date();
+    } else if (list?.syncData?.source === "mal/watching") {
+      malListsExist.watching = true;
+      temp.lists[index].anime = response["watching"];
+      temp.lists[index].syncData.syncDate = new Date();
+    }
+  });
 
-  for (const status in response) {
-    const anime = response[status];
-
-    // Find existing list, and update.
-
-    // If not, need to create and add one.
-    const newList = {
-      id: generateId(),
-      name: "Completed on MAL",
-      anime: anime,
-      privateList: false,
-      desc: "My 'Completed' anime on MAL.",
-      syncData: {
-        source: "mal/completed",
-        syncDate,
-      },
-    };
-
-    // Add list to localUser, prepare to create watchlistData, etc.
+  if (
+    malListsExist?.completed ||
+    malListsExist?.dropped ||
+    malListsExist?.on_hold ||
+    malListsExist?.plan_to_watch ||
+    malListsExist?.watching
+  ) {
+    setLocalUser(temp);
+    SaveToFirestore(user, temp);
   }
 
-  // Do the writes:
+  // Create new watchlists for any MAL lists missing from localUser
+  for (const listName in malListsExist) {
+    if (!malListsExist[listName]) {
+      temp = createNewWatchlist(
+        /*name=*/ null,
+        /*anime=*/ response[listName],
+        /*privateList=*/ false, // Assuming we want to display MAL lists on /home
+        /*desc=*/ null,
+        user,
+        temp,
+        /*malList=*/ listName
+      );
+    }
+  }
 
-  // setLocalUser(newLocalUser);
-  // SaveToFirestore(newLocalUser);
-  // etc, etc.s
+  setLocalUser(temp);
+  SaveToFirestore(user, temp);
 }
