@@ -40,6 +40,7 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
         ...data,
       };
     }
+    // Append fields to localUsers created BEFORE these features were added.
     if (!data.savedLists) data.savedLists = [];
     if (!data.top8) data.top8 = [];
     if (!data.reviews) data.reviews = [];
