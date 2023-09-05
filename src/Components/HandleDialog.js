@@ -219,7 +219,7 @@ export default function HandleDialog({ user }) {
           })}
           variant="contained"
         >
-          {!loadingState ? <BreathingLogo type="smallButton" /> : "Submit"}
+          {loadingState ? <BreathingLogo type="smallButton" /> : "Submit"}
         </Button>
       </DialogActions>
     </Dialog>
