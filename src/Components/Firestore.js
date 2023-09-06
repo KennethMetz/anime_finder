@@ -34,17 +34,10 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let docRef = doc(db, "users", user.uid);
     let querySnapshot = await getDoc(docRef);
     let data = querySnapshot.data();
-    if (!data?.likes) {
-      data = {
-        ...getDefaultLocalUser(),
-        ...data,
-      };
-    }
-    // Append fields to localUsers created BEFORE these features were added.
-    if (!data.savedLists) data.savedLists = [];
-    if (!data.top8) data.top8 = [];
-    if (!data.reviews) data.reviews = [];
-    if (!data.comments) data.comments = [];
+    data = {
+      ...getDefaultLocalUser(),
+      ...data,
+    };
     setLocalUser(data);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
