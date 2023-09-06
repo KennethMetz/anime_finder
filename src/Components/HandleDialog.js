@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "./Firebase";
-import { LocalUserContext } from "./LocalUserContext";
+import { LocalUserContext, getDefaultLocalUser } from "./LocalUserContext";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -40,19 +40,7 @@ export default function HandleDialog({ user }) {
 
   async function handleCancel() {
     await logout();
-    setLocalUser({
-      name: [],
-      likes: [],
-      dislikes: [],
-      lists: [],
-      savedLists: [],
-      avatar: null,
-      bio: null,
-      top8: [],
-      reviews: [],
-      comments: [],
-      null: null,
-    });
+    setLocalUser(getDefaultLocalUser());
     navigate("/");
   }
 

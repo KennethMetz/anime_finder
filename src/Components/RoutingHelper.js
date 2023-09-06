@@ -1,16 +1,20 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { matchPath, Outlet, useLocation } from "react-router-dom";
+import { matchPath, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { auth } from "./Firebase";
 import useAuthActions from "../Hooks/useAuthActions";
 import BreathingLogo from "./BreathingLogo";
+import { LocalUserContext, getDefaultLocalUser } from "./LocalUserContext";
 
 export const RoutingHelper = () => {
   const [user, loading, error] = useAuthState(auth);
   const authActions = useAuthActions();
 
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const [localUser, setLocalUser] = useContext(LocalUserContext);
 
   // Scroll to top if path changes.
   useLayoutEffect(() => {
@@ -47,7 +51,14 @@ export const RoutingHelper = () => {
 
   useEffect(() => {
     if (!loading && !user && headerMatch) {
-      authActions.registerAnonymously();
+      // If we were logged in and lost auth, take us to login.
+      if (localUser.uid) {
+        setLocalUser(getDefaultLocalUser());
+        navigate("/login");
+      } else {
+        // Otherwise, start new users with an anonymous account.
+        authActions.registerAnonymously();
+      }
     }
   }, [loading, user, headerMatch]);
 

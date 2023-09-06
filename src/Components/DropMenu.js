@@ -15,7 +15,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import { Moon, SignOut, Sun, User, UserCirclePlus } from "phosphor-react";
 import { useNavigate } from "react-router-dom";
 import { auth, logout } from "./Firebase";
-import { LocalUserContext } from "./LocalUserContext";
+import { LocalUserContext, getDefaultLocalUser } from "./LocalUserContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import AppSettingsContext from "./AppSettingsContext";
@@ -88,19 +88,7 @@ export default function DropMenu() {
   async function sendToLogout(e) {
     navigate("/logout");
     await logout();
-    setLocalUser({
-      name: [],
-      likes: [],
-      dislikes: [],
-      lists: [],
-      savedLists: [],
-      avatar: null,
-      bio: null,
-      top8: [],
-      reviews: [],
-      comments: [],
-      handle: null,
-    });
+    setLocalUser(getDefaultLocalUser());
     handleClose(e);
   }
 

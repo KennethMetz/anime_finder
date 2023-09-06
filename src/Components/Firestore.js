@@ -23,6 +23,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./Firebase";
 import { useQuery } from "@tanstack/react-query";
+import { getDefaultLocalUser } from "./LocalUserContext";
 
 const fiveMinutesMs = 1000 * 60 * 5;
 
@@ -33,25 +34,10 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let docRef = doc(db, "users", user.uid);
     let querySnapshot = await getDoc(docRef);
     let data = querySnapshot.data();
-    if (!data?.likes) {
-      data = {
-        ...data,
-        likes: [],
-        dislikes: [],
-        lists: [],
-        savedLists: [],
-        avatar: "",
-        bio: "",
-        top8: [],
-        reviews: [],
-        comments: [],
-        handle: "",
-      };
-    }
-    if (!data.savedLists) data.savedLists = [];
-    if (!data.top8) data.top8 = [];
-    if (!data.reviews) data.reviews = [];
-    if (!data.comments) data.comments = [];
+    data = {
+      ...getDefaultLocalUser(),
+      ...data,
+    };
     setLocalUser(data);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
