@@ -27,55 +27,68 @@ export function slugifyListName(name) {
  * @param {string} desc The users' description of the list.
  * @param {object} user The user auth object.
  * @param {object} localUser The localUser object.
- * @param {string} malList MAL list name or NULL if a custom watchlist.
  */
-export function createNewWatchlist(
+export async function createNewWatchlist(
   name,
   anime,
   privateList,
   desc,
   user,
-  localUser,
-  malList
+  localUser
 ) {
   let listId = generateId();
   let temp = { ...localUser };
 
   // Build list object for a CUSTOM watchlist
-  if (!malList) {
-    temp.lists = [
-      ...(temp.lists ?? []),
-      {
-        name: name,
-        anime: anime ?? [],
-        privateList: privateList,
-        desc: desc,
-        id: listId,
-      },
-    ];
-  }
-  // Build list object for an imported MAL watchlist
-  else {
-    const syncDate = new Date();
-    temp.lists = [
-      ...(temp.lists ?? []),
-      {
-        name: getMalListName(malList),
-        anime: anime ?? [],
-        privateList: privateList,
-        desc: getMalListDesc(malList),
-        id: listId,
-        syncData: {
-          source: getMalListSource(malList),
-          syncDate,
-        },
-      },
-    ];
-  }
+
+  temp.lists = [
+    ...(temp.lists ?? []),
+    {
+      name: name,
+      anime: anime ?? [],
+      privateList: privateList,
+      desc: desc,
+      id: listId,
+    },
+  ];
 
   // Only registered users have their watchlistData created and displayed on '/home'
   if (!privateList && !user.isAnonymous)
-    CreateWatchlistDataEntry(user.uid, listId);
+    await CreateWatchlistDataEntry(user.uid, listId);
+
+  return temp;
+}
+
+/**
+ * Creates a new watchlist for MAL lists.
+ * @param {string} malList MAL list name or NULL if a custom watchlist.
+ * @param {object} user The user auth object.
+ * @param {object} localUser The localUser object.
+ */
+export async function createNewWatchlistForMalList(malList, user, localUser) {
+  let listId = generateId();
+  let temp = { ...localUser };
+
+  // Build list object for an imported MAL watchlist
+
+  const syncDate = new Date();
+  temp.lists = [
+    ...(temp.lists ?? []),
+    {
+      name: getMalListName(malList),
+      anime: [],
+      privateList: false,
+      desc: getMalListDesc(malList),
+      id: listId,
+      syncData: {
+        source: getMalListSource(malList),
+        syncDate,
+      },
+    },
+  ];
+
+  // Only registered users have their watchlistData created and displayed on '/home'
+  if (!user.isAnonymous) await CreateWatchlistDataEntry(user.uid, listId);
 
   return temp;
 }

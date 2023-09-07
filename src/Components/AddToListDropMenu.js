@@ -101,19 +101,18 @@ export default function AddToListDropMenu({ anime, variant, selected }) {
 
   //Creates new EMPTY watchlist
   const createNewList = () => {
-    let temp = createNewWatchlist(
+    createNewWatchlist(
       name,
       /*anime=*/ null,
       privateList,
       desc,
       user,
       localUser
-    );
-
-    setLocalUser(temp);
-    SaveToFirestore(user, temp);
-
-    setName("");
+    ).then((result) => {
+      setLocalUser(result);
+      SaveToFirestore(user, result);
+      setName("");
+    });
   };
 
   // return focus to the button when we transitioned from !open -> open

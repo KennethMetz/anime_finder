@@ -13,11 +13,11 @@ import BreathingLogo from "./BreathingLogo";
 import { useSnackbar } from "notistack";
 import { LocalUserContext } from "./LocalUserContext";
 import { ArrowsClockwise } from "phosphor-react";
-import { SaveToFirestore, generateId } from "./Firestore";
+import { SaveToFirestore } from "./Firestore";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createNewWatchlist } from "../Util/ListUtil";
+import { createNewWatchlistForMalList } from "../Util/ListUtil";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 
@@ -42,46 +42,41 @@ export default function ProfileImportDialog({ subheadStyle }) {
   };
 
   function handleFormSubmission() {
-    clearErrors("accountName");
-    if (!errors.accountName) {
-      if (loading) {
-        throw new Error("Cannot import, already loading.");
-      }
-      setLoading(true);
-      // NOTE: the 'fake' argument, which will call the API but tell it to return
-      // fake data instead of calling the mal API, which will reduce calls to MAL
-      // while in development.
-      APIGetMalLists(/*username=*/ accountName, /*fake=*/ false)
-        .then(async (response) => {
-          console.log(response);
-
-          syncWatchlists(response, localUser, setLocalUser, user);
-
-          enqueueSnackbar({
-            message: "Watchlists updated",
-            variant: "success",
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "center",
-            },
-          });
-          handleClose();
-        })
-        .catch((e) => {
-          enqueueSnackbar({
-            message: "Unable to import from MAL",
-            variant: "error",
-            anchorOrigin: {
-              vertical: "top",
-              horizontal: "center",
-            },
-          });
-          createFormError();
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    if (loading) {
+      throw new Error("Cannot import, already loading.");
     }
+    setLoading(true);
+    // NOTE: the 'fake' argument, which will call the API but tell it to return
+    // fake data instead of calling the mal API, which will reduce calls to MAL
+    // while in development.
+    APIGetMalLists(/*username=*/ accountName, /*fake=*/ false)
+      .then(async (response) => {
+        syncWatchlists(response, localUser, setLocalUser, user);
+
+        enqueueSnackbar({
+          message: "Watchlists updated",
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "center",
+          },
+        });
+        handleClose();
+      })
+      .catch((e) => {
+        enqueueSnackbar({
+          message: "Unable to import from MAL",
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "center",
+          },
+        });
+        createFormError();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function createFormError() {
@@ -93,9 +88,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
 
   // Define Yup schema
   const validationSchema = Yup.object().shape({
-    accountName: Yup.string()
-      .required("*An account name is required")
-      .min(1, "*An account name is required"),
+    accountName: Yup.string().required("*An account name is required"),
   });
 
   //Use ReactHookForm hooks to validate Yup schema
@@ -198,7 +191,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
   );
 }
 
-function syncWatchlists(response, localUser, setLocalUser, user) {
+async function syncWatchlists(response, localUser, setLocalUser, user) {
   if (!response) return;
 
   let malListsExist = {
@@ -236,28 +229,13 @@ function syncWatchlists(response, localUser, setLocalUser, user) {
     }
   });
 
-  if (
-    malListsExist?.completed ||
-    malListsExist?.dropped ||
-    malListsExist?.on_hold ||
-    malListsExist?.plan_to_watch ||
-    malListsExist?.watching
-  ) {
-    setLocalUser(temp);
-    SaveToFirestore(user, temp);
-  }
-
   // Create new watchlists for any MAL lists missing from localUser
   for (const listName in malListsExist) {
     if (!malListsExist[listName]) {
-      temp = createNewWatchlist(
-        /*name=*/ null,
-        /*anime=*/ response[listName],
-        /*privateList=*/ false, // Assuming we want to display MAL lists on /home
-        /*desc=*/ null,
-        user,
-        temp,
-        /*malList=*/ listName
+      temp = await createNewWatchlistForMalList(
+        /*malList=*/ listName,
+        /*user=*/ user,
+        /*localUser=*/ temp
       );
     }
   }

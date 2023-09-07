@@ -37,9 +37,6 @@ export default function ProfileSidebar({ hideDetails }) {
               </Button>
             </div>
           )}
-          {/* {isOwnProfile && profile?.authProvider !== "anonymous" && (
-            <ProfileImportDialog />
-          )} */}
           <Typography
             variant="h3"
             sx={{
