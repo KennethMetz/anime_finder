@@ -219,7 +219,7 @@ export default function ProfileListPage() {
                 }}
                 tabIndex={0}
               >
-                {`${importInfo.accountName} `}
+                {`${importInfo.accountName} on MAL `}
               </Typography>
               <Typography>{`(${importInfo.time} ago)`}</Typography>
             </Box>
