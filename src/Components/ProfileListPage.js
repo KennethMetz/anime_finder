@@ -201,8 +201,10 @@ export default function ProfileListPage() {
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
           {importInfo.time && (
-            <Box sx={{ display: "flex" }}>
-              <Typography variant="body1">{"Synced from "}</Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                {"Synced from "}
+              </Typography>
               <Typography
                 color="inherit"
                 component="a"
@@ -217,7 +219,7 @@ export default function ProfileListPage() {
                 }}
                 tabIndex={0}
               >
-                {` ${importInfo.accountName} on MAL `}
+                {`${importInfo.accountName} `}
               </Typography>
               <Typography>{`(${importInfo.time} ago)`}</Typography>
             </Box>
