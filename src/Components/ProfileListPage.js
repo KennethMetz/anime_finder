@@ -27,11 +27,12 @@ import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import EmojiReactionChip from "./EmojiReactionChip";
-import { GetListReactions } from "./Firestore";
+import { GetListReactions, getTimestamp } from "./Firestore";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 import HtmlPageTitle from "./HtmlPageTitle";
+import { formatDistanceToNowStrict, fromUnixTime } from "date-fns";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -63,8 +64,7 @@ export default function ProfileListPage() {
   let desc = "";
   let index = null;
   let typeName = "";
-  let updateFn;
-  let deleteFn;
+  let updateFn, deleteFn, importInfo;
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
@@ -109,8 +109,9 @@ export default function ProfileListPage() {
     deleteFn = () => deleteList(index);
     deletableList = true;
     showSuggestions = true;
+    if (profile.lists[index]?.syncData?.source)
+      importInfo = getImportInfo(profile.lists[index]);
   }
-
   // Extracts index from <ClickAndEdit/>.
   const onDescSave = (newDesc) => updateListDesc(newDesc, index);
   const onListTitleSave = (newTitle) => updateListTitle(newTitle, index);
@@ -196,6 +197,11 @@ export default function ProfileListPage() {
             </Typography>
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
+          {importInfo ?? (
+            <Typography variant="body1" sx={subtitleStyle}>
+              {importInfo}
+            </Typography>
+          )}
         </Grid>
         <Grid
           item
@@ -322,6 +328,20 @@ export default function ProfileListPage() {
       />
     </Box>
   );
+}
+
+function getImportInfo(list) {
+  if (!list?.syncData?.syncDate) return;
+  const syncDate = list.syncData.syncDate;
+  let seconds;
+  // If syncDate has been saved to Firestore, it is a firestore timestamp object
+  if (syncDate?.seconds) seconds = syncDate.seconds;
+  // If syncDate hasn't been saved to server yet, it is a javascript date() object
+  else seconds = Math.floor(syncDate.valueOf() / 1000);
+
+  const inputDate = fromUnixTime(seconds);
+  const time = formatDistanceToNowStrict(inputDate);
+  return `Synced from ${list.syncData.accountName} on MAL - ${time} ago`;
 }
 
 function findListWithId(lists, id) {

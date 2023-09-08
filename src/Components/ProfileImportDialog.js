@@ -51,7 +51,7 @@ export default function ProfileImportDialog({ subheadStyle }) {
     // while in development.
     APIGetMalLists(/*username=*/ accountName, /*fake=*/ false)
       .then(async (response) => {
-        syncWatchlists(response, localUser, setLocalUser, user);
+        syncWatchlists(response, accountName, localUser, setLocalUser, user);
 
         enqueueSnackbar({
           message: "Watchlists updated",
@@ -191,7 +191,13 @@ export default function ProfileImportDialog({ subheadStyle }) {
   );
 }
 
-async function syncWatchlists(response, localUser, setLocalUser, user) {
+async function syncWatchlists(
+  response,
+  accountName,
+  localUser,
+  setLocalUser,
+  user
+) {
   if (!response) return;
 
   let malListsExist = {
@@ -210,22 +216,27 @@ async function syncWatchlists(response, localUser, setLocalUser, user) {
       malListsExist.completed = true;
       temp.lists[index].anime = response["completed"];
       temp.lists[index].syncData.syncDate = new Date();
+      temp.lists[index].syncData.accountName = accountName;
     } else if (list?.syncData?.source === "mal/dropped") {
       malListsExist.dropped = true;
       temp.lists[index].anime = response["dropped"];
       temp.lists[index].syncData.syncDate = new Date();
+      temp.lists[index].syncData.accountName = accountName;
     } else if (list?.syncData?.source === "mal/onHold") {
       malListsExist.on_hold = true;
       temp.lists[index].anime = response["on_hold"];
       temp.lists[index].syncData.syncDate = new Date();
+      temp.lists[index].syncData.accountName = accountName;
     } else if (list?.syncData?.source === "mal/planToWatch") {
       malListsExist.plan_to_watch = true;
       temp.lists[index].anime = response["plan_to_watch"];
       temp.lists[index].syncData.syncDate = new Date();
+      temp.lists[index].syncData.accountName = accountName;
     } else if (list?.syncData?.source === "mal/watching") {
       malListsExist.watching = true;
       temp.lists[index].anime = response["watching"];
       temp.lists[index].syncData.syncDate = new Date();
+      temp.lists[index].syncData.accountName = accountName;
     }
   });
 
@@ -234,6 +245,7 @@ async function syncWatchlists(response, localUser, setLocalUser, user) {
     if (!malListsExist[listName]) {
       temp = await createNewWatchlistForMalList(
         /*malList=*/ listName,
+        /*accountName=*/ accountName,
         /*user=*/ user,
         /*localUser=*/ temp
       );

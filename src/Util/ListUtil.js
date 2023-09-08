@@ -65,7 +65,12 @@ export async function createNewWatchlist(
  * @param {object} user The user auth object.
  * @param {object} localUser The localUser object.
  */
-export async function createNewWatchlistForMalList(malList, user, localUser) {
+export async function createNewWatchlistForMalList(
+  malList,
+  accountName,
+  user,
+  localUser
+) {
   let listId = generateId();
   let temp = { ...localUser };
 
@@ -83,6 +88,7 @@ export async function createNewWatchlistForMalList(malList, user, localUser) {
       syncData: {
         source: getMalListSource(malList),
         syncDate,
+        accountName,
       },
     },
   ];
