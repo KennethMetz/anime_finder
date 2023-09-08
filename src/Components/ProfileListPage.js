@@ -64,7 +64,8 @@ export default function ProfileListPage() {
   let desc = "";
   let index = null;
   let typeName = "";
-  let updateFn, deleteFn, importInfo;
+  let updateFn, deleteFn;
+  let importInfo = { string: null, accountName: null };
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
@@ -109,8 +110,10 @@ export default function ProfileListPage() {
     deleteFn = () => deleteList(index);
     deletableList = true;
     showSuggestions = true;
-    if (profile.lists[index]?.syncData?.source)
-      importInfo = getImportInfo(profile.lists[index]);
+    if (profile.lists[index]?.syncData?.source) {
+      importInfo.time = getImportTime(profile.lists[index]);
+      importInfo.accountName = profile.lists[index].syncData.accountName;
+    }
   }
   // Extracts index from <ClickAndEdit/>.
   const onDescSave = (newDesc) => updateListDesc(newDesc, index);
@@ -197,10 +200,29 @@ export default function ProfileListPage() {
             </Typography>
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
-          {importInfo ?? (
-            <Typography variant="body1" sx={subtitleStyle}>
-              {importInfo}
-            </Typography>
+          {importInfo.time ? (
+            <Box sx={{ display: "flex" }}>
+              <Typography variant="body1">{"Synced from "}</Typography>
+              <Typography
+                color="inherit"
+                component="a"
+                href={`https://myanimelist.net/profile/${importInfo.accountName}`}
+                target="_blank"
+                rel="noopener"
+                sx={{
+                  ...subtitleStyle,
+                  cursor: "pointer",
+                  whiteSpace: "pre-wrap",
+                  "&:hover": { color: theme.palette.primary.main },
+                }}
+                tabIndex={0}
+              >
+                {` ${importInfo.accountName} on MAL `}
+              </Typography>
+              <Typography>{`- ${importInfo.time} ago`}</Typography>
+            </Box>
+          ) : (
+            ""
           )}
         </Grid>
         <Grid
@@ -330,7 +352,7 @@ export default function ProfileListPage() {
   );
 }
 
-function getImportInfo(list) {
+function getImportTime(list) {
   if (!list?.syncData?.syncDate) return;
   const syncDate = list.syncData.syncDate;
   let seconds;
@@ -341,7 +363,7 @@ function getImportInfo(list) {
 
   const inputDate = fromUnixTime(seconds);
   const time = formatDistanceToNowStrict(inputDate);
-  return `Synced from ${list.syncData.accountName} on MAL - ${time} ago`;
+  return time;
 }
 
 function findListWithId(lists, id) {
