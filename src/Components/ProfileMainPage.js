@@ -80,6 +80,7 @@ export default function ProfileMainPage() {
                 listId={list.id}
                 name={list.name}
                 items={list.anime}
+                syncData={list?.syncData}
               />
             </Grid>
           ))}
@@ -102,6 +103,7 @@ export default function ProfileMainPage() {
                 items={list.anime}
                 creator={list.creatorName}
                 creatorAvatar={list.creatorAvatar}
+                syncData={list?.syncData}
               />
             </Grid>
           ))}
