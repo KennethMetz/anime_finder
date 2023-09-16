@@ -33,6 +33,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 import HtmlPageTitle from "./HtmlPageTitle";
 import { formatDistanceToNowStrict, fromUnixTime } from "date-fns";
+import { Timestamp } from "firebase/firestore";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ export default function ProfileListPage() {
   let index = null;
   let typeName = "";
   let updateFn, deleteFn;
-  let importInfo = { string: null, accountName: null };
+  let importInfo = { time: null, accountName: null };
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
@@ -355,15 +356,20 @@ export default function ProfileListPage() {
 function getImportTime(list) {
   if (!list?.syncData?.syncDate) return;
   const syncDate = list.syncData.syncDate;
-  let seconds;
-  // If syncDate has been saved to Firestore, it is a firestore timestamp object
-  if (syncDate?.seconds) seconds = syncDate.seconds;
-  // If syncDate hasn't been saved to server yet, it is a javascript date() object
-  else seconds = Math.floor(syncDate.valueOf() / 1000);
 
-  const inputDate = fromUnixTime(seconds);
-  const time = formatDistanceToNowStrict(inputDate);
-  return time;
+  let date;
+  if (typeof syncDate === "object" && syncDate instanceof Date) {
+    date = syncDate;
+  } else if (typeof syncDate === "object" && syncDate instanceof Timestamp) {
+    date = fromUnixTime(syncDate.seconds);
+  } else if (typeof syncDate === "string") {
+    date = new Date(syncDate);
+  } else {
+    console.error(`Unknown syncDate type encountered: ${syncDate}`);
+    return "";
+  }
+
+  return formatDistanceToNowStrict(date);
 }
 
 function findListWithId(lists, id) {
