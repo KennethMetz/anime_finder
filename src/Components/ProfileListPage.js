@@ -202,7 +202,7 @@ export default function ProfileListPage() {
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
           {importInfo.time && (
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", mb: 1.5 }}>
               <Typography sx={{ whiteSpace: "pre-wrap" }}>
                 {"Synced from "}
               </Typography>
