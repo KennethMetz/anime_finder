@@ -204,7 +204,11 @@ export function useRecommendations(viewHistory) {
       responseJson.items.map((item, index) => temp.push(item.anime));
       return temp;
     },
-    { staleTime: fiveMinutesMs, keepPreviousData: true }
+    {
+      staleTime: fiveMinutesMs,
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
   );
 }
 
