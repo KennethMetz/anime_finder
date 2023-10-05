@@ -24,12 +24,7 @@ import ProfileListDropMenu from "./ProfileListDropMenu";
 import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import EmojiReactionChip from "./EmojiReactionChip";
-import {
-  getWatchlistReactionCount,
-  getUserReactions,
-  GetCountDocFromFirestore,
-} from "./Firestore";
+import { GetCountDocFromFirestore } from "./Firestore";
 import Grid from "@mui/material/Grid";
 import HtmlPageTitle from "./HtmlPageTitle";
 import EmojiReactionChips from "./EmojiReactionChips";
@@ -40,7 +35,6 @@ export default function ProfileListPage() {
   const location = useLocation();
   const confirm = useConfirm();
   const [user, loading, error] = useAuthState(auth);
-  const [userRxns, setUserRxns] = useState(undefined);
 
   const {
     profile,
@@ -81,16 +75,6 @@ export default function ProfileListPage() {
   useEffect(() => {
     GetCountDocFromFirestore(rxnTarget).then((doc) => setCountDoc(doc));
   }, [rxnTarget]);
-
-  useEffect(() => {
-    Promise.all([
-      getUserReactions(user.uid, `${userId}${listId}`)
-        .then((value) => setUserRxns(value))
-        .catch(() =>
-          console.error("Error loading user reactions from Firestore")
-        ),
-    ]);
-  }, [user.uid, userId, listId, location.key]);
 
   if (isLoading) {
     return <ProfileListPageGhost />;

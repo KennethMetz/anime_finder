@@ -15,14 +15,12 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useLocation } from "react-router-dom";
 import { useProfile } from "./APICalls";
-import EmojiReactionChip from "./EmojiReactionChip";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
 import {
   DeleteNotification,
   DeleteReviewFromFirestore,
   SaveToFirestore,
-  getUserReactions,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { getAvatarSrc } from "./Avatars";
@@ -48,7 +46,6 @@ export default function Review({
   const theme = useTheme();
   const confirm = useConfirm();
 
-  const [userRxns, setUserRxns] = useState({});
   const rxnTarget = useMemo(() => {
     if (type === "comments") {
       return getRxnTargetForWatchlistComment(listId, listOwnerId, review.uid);
@@ -66,18 +63,6 @@ export default function Review({
     () => getAvatarSrc(reviewerInfo?.avatar),
     [reviewerInfo?.avatar]
   );
-
-  let uniqueEntityId =
-    type === "reviews" ? docId.toString() : docId.toString() + review?.uid;
-
-  useEffect(() => {
-    getUserReactions(user.uid, uniqueEntityId)
-      .then((value) => setUserRxns(value))
-      .catch(
-        () => console.error("Error loading review reactions from Firestore")
-        // Todo: show error UI
-      );
-  }, [user.uid, uniqueEntityId]);
 
   function deleteReview(index) {
     confirm({
