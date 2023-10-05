@@ -227,3 +227,16 @@ export async function APIGetAnimeList(ids) {
   let responseJson = await response.json();
   return responseJson;
 }
+
+export async function APIGetMalLists(username, fake) {
+  let url = `${apiUrl}/malLists/${username}`;
+  if (fake) {
+    url += "?fake=1";
+  }
+  let response = await fetch(url, {
+    mode: "cors",
+  });
+  await handleErrors(response);
+  const responseJson = await response.json();
+  return responseJson;
+}

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Top8List from "./Top8List";
 import ProfilePageContext from "./ProfilePageContext";
 import ClickAndEdit from "./ClickAndEdit";
+import ProfileImportDialog from "./ProfileImportDialog";
 
 export default function ProfileSidebar({ hideDetails }) {
   const navigate = useNavigate();

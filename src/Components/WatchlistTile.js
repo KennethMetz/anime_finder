@@ -12,6 +12,8 @@ import { getAvatarSrc } from "./Avatars";
 import { Fragment, useMemo } from "react";
 import { Divider } from "@mui/material";
 
+import malIcon from "../Styles/images/malIcon-256.png";
+
 export default function WatchlistTile({
   userId,
   listId,
@@ -19,6 +21,7 @@ export default function WatchlistTile({
   items,
   creator,
   creatorAvatar,
+  syncData,
 }) {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -31,6 +34,7 @@ export default function WatchlistTile({
     <Link to={`/profile/${userId}/list/${listId}`}>
       <Box
         sx={{
+          position: "relative",
           padding: creator ? "18px 18px 4px 18px" : "18px 18px 18px 18px",
           background: bgColor,
           borderRadius: "16px",
@@ -131,6 +135,22 @@ export default function WatchlistTile({
               </Box>
             </Grid>
           </Fragment>
+        )}
+        {syncData && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: "0",
+              right: "0",
+              width: "20px",
+              aspectRatio: "1.0",
+              background: `url(${malIcon})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              borderRadius: " 0px 16px 0px 8px",
+              overflow: "clip",
+            }}
+          />
         )}
       </Box>
     </Link>
