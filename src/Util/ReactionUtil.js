@@ -26,6 +26,7 @@ import { HandsClapping, Heart, Trash } from "phosphor-react";
  * @property {"review"|"list"|"listComment"} type The type of target.
  * @property {string} noun A noun to use in UI text.
  * @property {string} entityId A globally unique ID for this reaction target.
+ * @property {string} rxnCollectionPath A path to the collection with userRxns.
  * @property {string} countDocPath A path to the document with reaction counts.
  * @property {string} ownerId The owner of this target.  They may be notified.
  * @property {RxnTargetNotifData} notifData Partial notification data that will
@@ -52,6 +53,13 @@ export function getRxnTargetForAnimeReview(animeId, reviewAuthorId) {
     type: "review",
     noun: "review",
     entityId: `review-${animeId}-${reviewAuthorId}`,
+    rxnCollectionPath: [
+      "animeData",
+      animeId,
+      "reviews",
+      reviewAuthorId,
+      "reactions",
+    ].join("/"),
     countDocPath: ["animeData", animeId, "reviews", reviewAuthorId].join("/"),
     ownerId: reviewAuthorId,
     notifData: {
@@ -76,6 +84,11 @@ export function getRxnTargetForWatchlist(listId, listOwnerId) {
     type: "list",
     noun: "list",
     entityId: `list-${listOwnerId}${listId}`,
+    rxnCollectionPath: [
+      "watchlistData",
+      listOwnerId + listId,
+      "reactions",
+    ].join("/"),
     countDocPath: ["watchlistData", listOwnerId + listId].join("/"),
     ownerId: listOwnerId,
     notifData: {
@@ -104,6 +117,13 @@ export function getRxnTargetForWatchlistComment(
     type: "listComment",
     noun: "comment",
     entityId: `listComment-${listOwnerId}${listId}-${commentAuthorId}`,
+    rxnCollectionPath: [
+      "watchlistData",
+      listOwnerId + listId,
+      "reviews",
+      commentAuthorId,
+      "reactions",
+    ].join("/"),
     countDocPath: [
       "watchlistData",
       listOwnerId + listId,

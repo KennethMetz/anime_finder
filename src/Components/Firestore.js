@@ -366,7 +366,7 @@ export async function deleteWatchlistDataEntry(userId, listId) {
 }
 
 export async function GetUserRxStateFromFirestore(userId, rxnTarget) {
-  const docRef = doc(db, "users", userId, "reactions", rxnTarget.entityId);
+  const docRef = doc(db, rxnTarget.rxnCollectionPath, userId);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) {
     return getDefaultUserRxns(rxnTarget);
@@ -381,7 +381,7 @@ export async function SaveUserRxStateToFirestore(
   userRxns,
   incrementBy
 ) {
-  const docRef = doc(db, "users", userId, "reactions", rxnTarget.entityId);
+  const docRef = doc(db, rxnTarget.rxnCollectionPath, userId);
   const countDocRef = doc(db, rxnTarget.countDocPath);
   const countFieldPath = `reactionCounts.${rxnType.key}`;
 
@@ -392,8 +392,6 @@ export async function SaveUserRxStateToFirestore(
   batch.update(countDocRef, {
     [countFieldPath]: increment(incrementBy),
   });
-  // TODO Write notifications.
-  // TODO Write notifications using firestore server events.
   await batch.commit();
 }
 
