@@ -21,6 +21,10 @@ import {
 } from "firebase/firestore";
 import { db } from "./Firebase";
 import { getDefaultCountDoc, getDefaultUserRxns } from "../Util/ReactionUtil";
+import { useQuery } from "@tanstack/react-query";
+import { getDefaultLocalUser } from "./LocalUserContext";
+
+const fiveMinutesMs = 1000 * 60 * 5;
 
 // Handle "users" collection on firestore
 
@@ -29,25 +33,10 @@ export async function PopulateFromFirestore(user, localUser, setLocalUser) {
     let docRef = doc(db, "users", user.uid);
     let querySnapshot = await getDoc(docRef);
     let data = querySnapshot.data();
-    if (!data.likes) {
-      data = {
-        ...data,
-        likes: [],
-        dislikes: [],
-        lists: [],
-        savedLists: [],
-        avatar: "",
-        bio: "",
-        top8: [],
-        reviews: [],
-        comments: [],
-        handle: "",
-      };
-    }
-    if (!data.savedLists) data.savedLists = [];
-    if (!data.top8) data.top8 = [];
-    if (!data.reviews) data.reviews = [];
-    if (!data.comments) data.comments = [];
+    data = {
+      ...getDefaultLocalUser(),
+      ...data,
+    };
     setLocalUser(data);
   } catch (error) {
     console.error("Error loading data from Firebase Database", error);
@@ -295,54 +284,61 @@ function generateRandomWatchlistInt() {
   return Math.floor(Math.random() * 9999999);
 }
 
-export async function getRandomCommunityList() {
-  // Repeat call to try and ensure a list with at least (1) anime title is found.
-  for (let i = 1; i < 6; i++) {
-    try {
-      const randomNumber = generateRandomWatchlistInt();
-      const q = query(
-        collection(db, "watchlistData"),
-        where("random", ">=", randomNumber),
-        limit(1)
-      );
-      let querySnapshot = await getDocs(q);
-      let listInfo;
-      querySnapshot.forEach((doc) => {
-        listInfo = { ...doc.data() };
-      });
-      if (!listInfo) {
-        const wrapAroundQuery = query(
+export function useCommunityList() {
+  const key = "communityListRequest";
+  return useQuery(
+    [key],
+    async () => {
+      // Repeat call to try and ensure a list with at least (1) anime title is found.
+      for (let i = 0; i < 6; i++) {
+        const randomNumber = generateRandomWatchlistInt();
+        const q = query(
           collection(db, "watchlistData"),
-          where("random", "<=", randomNumber),
+          where("random", ">=", randomNumber),
           limit(1)
         );
-        querySnapshot = await getDocs(wrapAroundQuery);
+        let querySnapshot = await getDocs(q);
+        let listInfo;
         querySnapshot.forEach((doc) => {
           listInfo = { ...doc.data() };
         });
-      }
-      // Populate anime info for list selected above
-      const docRef = doc(db, "users", listInfo.userId);
-      const data = await getDoc(docRef);
-      const lists = data.data()?.lists;
-      for (let item of lists) {
-        if (item.id === listInfo.listId && item.anime.length > 0) {
-          const data = {
-            userId: listInfo.userId,
-            listId: listInfo.listId,
-            // Only pull 24 shows from list, to prevent unnecessary firestore reads
-            anime: item.anime.slice(0, 24),
-          };
-          return data;
+        if (!listInfo) {
+          const wrapAroundQuery = query(
+            collection(db, "watchlistData"),
+            where("random", "<=", randomNumber),
+            limit(1)
+          );
+          querySnapshot = await getDocs(wrapAroundQuery);
+          querySnapshot.forEach((doc) => {
+            listInfo = { ...doc.data() };
+          });
+        }
+        // Populate anime info for list selected above
+        const docRef = doc(db, "users", listInfo.userId);
+        const data = await getDoc(docRef);
+        const lists = data.data()?.lists;
+        for (let item of lists) {
+          if (
+            item.id === listInfo.listId &&
+            (item.anime.length > 0 || i === 5) // On 5th try return list, regardless of length
+          ) {
+            const data = {
+              userId: listInfo.userId,
+              listId: listInfo.listId,
+              // Only pull 24 shows from list, to prevent unnecessary firestore reads
+              anime: item.anime.slice(0, 24),
+            };
+            return data;
+          }
         }
       }
-    } catch (error) {
-      console.error(
-        "Error fetching random community list from Firestore",
-        error
-      );
+    },
+    {
+      staleTime: fiveMinutesMs,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     }
-  }
+  );
 }
 
 export async function deleteWatchlistDataEntry(userId, listId) {

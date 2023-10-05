@@ -14,7 +14,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAnime from "../Hooks/useAnime";
 import useAnimeAnalysis from "../Hooks/useAnimeAnalysis";
 import useYoutubeModal from "../Hooks/useYoutubeModal";
-import BreathingLogo from "./BreathingLogo";
 import DetailedViewGhost from "./DetailedViewGhost";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
@@ -28,6 +27,8 @@ import ReviewContainer from "./ReviewContainer";
 import HandleDialog from "./HandleDialog";
 import HtmlPageTitle from "./HtmlPageTitle";
 import ScorePercentText from "./ScorePercentText";
+import ExpandableTags from "./ExpandableTags";
+import BreathingLogo from "./BreathingLogo";
 
 export default function DetailedView() {
   const navigate = useNavigate();
@@ -46,6 +47,12 @@ export default function DetailedView() {
 
   const [analysis, analysisLoading, analysisError, analysisFetching] =
     useAnimeAnalysis(animeId);
+
+  const analysisIsLoading =
+    analysisLoading ||
+    analysisFetching ||
+    analysis?.animeId !== anime.id ||
+    (!user.isAnonymous && localUser.handle === ""); //Prevents flashing the anonymous user's score for registered users
 
   useEffect(() => {
     if (loading) return;
@@ -195,6 +202,16 @@ export default function DetailedView() {
               />
             ))}
           </Box>
+
+          {/* Desktop-only Watch Links */}
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <Typography variant="h5" style={subheadStyle}>
+              Watch
+            </Typography>
+            <Box sx={{ display: "block" }}>
+              <UrlButtons anime={anime} />
+            </Box>
+          </Box>
         </Grid>
         <Grid item xs={12} md={9}>
           <Grid container sx={{ paddingLeft: { xs: 0, md: "46px" } }}>
@@ -239,7 +256,7 @@ export default function DetailedView() {
                   minHeight: "200px",
                 }}
               >
-                {analysisFetching && analysis?.animeId !== anime.id && (
+                {analysisIsLoading ? (
                   <Box
                     sx={{
                       position: "absolute",
@@ -251,22 +268,19 @@ export default function DetailedView() {
                       alignItems: "center",
                       justifyContent: "center",
                       zIndex: 1,
+                      padding: 8,
                     }}
                   >
-                    <Box
-                      sx={{
-                        width: "60px",
-                        height: "60px",
-                      }}
-                    >
-                      <BreathingLogo />
-                    </Box>
+                    <BreathingLogo type="dataFromEdward" />
                   </Box>
+                ) : (
+                  <>
+                    <ScorePercentText
+                      scores={analysis?.scores ?? []}
+                    ></ScorePercentText>
+                    <ScoreBars scores={analysis?.scores ?? []} />
+                  </>
                 )}
-                <ScorePercentText
-                  scores={analysis?.scores ?? []}
-                ></ScorePercentText>
-                <ScoreBars scores={analysis?.scores ?? []} />
               </Box>
             </Grid>
 
@@ -290,6 +304,18 @@ export default function DetailedView() {
               </Box>
             </Grid>
 
+            {/* Reviewers Often Say */}
+            {anime.review_qualities?.length > 0 && (
+              <Grid item xs={12}>
+                <Typography variant="h3" style={subheadStyle}>
+                  Reviewers Often Say
+                </Typography>
+                <ExpandableTags
+                  items={anime.review_qualities.map((q) => q.text)}
+                />
+              </Grid>
+            )}
+
             {/* Summary */}
             <Grid item xs={12}>
               <Typography variant="h3" style={subheadStyle}>
@@ -301,8 +327,8 @@ export default function DetailedView() {
               />
             </Grid>
 
-            {/* Watch Links */}
-            <Grid item xs={12}>
+            {/* Mobile-only Watch Links */}
+            <Grid item xs={12} sx={{ display: { xs: "block", md: "none" } }}>
               <Typography variant="h3" style={subheadStyle}>
                 Watch
               </Typography>

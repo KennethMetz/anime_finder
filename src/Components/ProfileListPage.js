@@ -29,6 +29,8 @@ import Grid from "@mui/material/Grid";
 import HtmlPageTitle from "./HtmlPageTitle";
 import EmojiReactionChips from "./EmojiReactionChips";
 import { getRxnTargetForWatchlist } from "../Util/ReactionUtil";
+import { formatDistanceToNowStrict, fromUnixTime } from "date-fns";
+import { Timestamp } from "firebase/firestore";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
@@ -59,8 +61,8 @@ export default function ProfileListPage() {
   let desc = "";
   let index = null;
   let typeName = "";
-  let updateFn;
-  let deleteFn;
+  let updateFn, deleteFn;
+  let importInfo = { time: null, accountName: null };
   let deletableList = false;
   let listHasDesc = false;
   let showSuggestions = false;
@@ -106,8 +108,11 @@ export default function ProfileListPage() {
     deleteFn = () => deleteList(index);
     deletableList = true;
     showSuggestions = true;
+    if (profile.lists[index]?.syncData?.source) {
+      importInfo.time = getImportTime(profile.lists[index]);
+      importInfo.accountName = profile.lists[index].syncData.accountName;
+    }
   }
-
   // Extracts index from <ClickAndEdit/>.
   const onDescSave = (newDesc) => updateListDesc(newDesc, index);
   const onListTitleSave = (newTitle) => updateListTitle(newTitle, index);
@@ -193,6 +198,30 @@ export default function ProfileListPage() {
             </Typography>
             {isOwnProfile && <PrivacySymbol privateList={privateList} />}
           </div>
+          {importInfo.time && (
+            <Box sx={{ display: "flex", flexWrap: "wrap", mb: 1.5 }}>
+              <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                {"Synced from "}
+              </Typography>
+              <Typography
+                color="inherit"
+                component="a"
+                href={`https://myanimelist.net/profile/${importInfo.accountName}`}
+                target="_blank"
+                rel="noopener"
+                sx={{
+                  ...subtitleStyle,
+                  cursor: "pointer",
+                  whiteSpace: "pre-wrap",
+                  "&:hover": { color: theme.palette.primary.main },
+                }}
+                tabIndex={0}
+              >
+                {`${importInfo.accountName} on MAL `}
+              </Typography>
+              <Typography>{`(${importInfo.time} ago)`}</Typography>
+            </Box>
+          )}
         </Grid>
         <Grid
           item
@@ -297,6 +326,25 @@ export default function ProfileListPage() {
       )}
     </Box>
   );
+}
+
+function getImportTime(list) {
+  if (!list?.syncData?.syncDate) return;
+  const syncDate = list.syncData.syncDate;
+
+  let date;
+  if (typeof syncDate === "object" && syncDate instanceof Date) {
+    date = syncDate;
+  } else if (typeof syncDate === "object" && syncDate instanceof Timestamp) {
+    date = fromUnixTime(syncDate.seconds);
+  } else if (typeof syncDate === "string") {
+    date = new Date(syncDate);
+  } else {
+    console.error(`Unknown syncDate type encountered: ${syncDate}`);
+    return "";
+  }
+
+  return formatDistanceToNowStrict(date);
 }
 
 function findListWithId(lists, id) {

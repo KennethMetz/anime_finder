@@ -19,10 +19,10 @@ import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import BreathingLogo from "./BreathingLogo";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -35,6 +35,8 @@ export default function Register() {
   const [registerError, setRegisterError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
   let [forwardToken, setForwardToken] = useState(false);
+  const [regLoadingGoogle, setRegLoadingGoogle] = useState(false);
+  const [regLoadingTwitter, setRegLoadingTwitter] = useState(false);
   const [regLoadingEmail, setRegLoadingEmail] = useState(false);
   const [regLoadingGuest, setRegLoadingGuest] = useState(false);
 
@@ -78,18 +80,18 @@ export default function Register() {
 
   useEffect(() => {
     if (loading) return;
-    //Registering users without any likes causes /home rendering to error out --> this prevents that.
-    if (localUser["likes"]?.length === 0) navigate("/onboarding");
   }, [user, loading, forwardToken]);
 
   const handleRegister = async (provider) => {
     try {
       setRegisterError(null);
       if (provider === "google") {
+        setRegLoadingGoogle(true);
         !user
           ? await authActions.registerWithGoogle()
           : await authActions.linkWithGoogle();
       } else if (provider === "twitter") {
+        setRegLoadingTwitter(true);
         !user
           ? await authActions.registerWithTwitter()
           : await authActions.linkWithTwitter();
@@ -116,6 +118,8 @@ export default function Register() {
         );
       }
     } finally {
+      setRegLoadingGoogle(false);
+      setRegLoadingTwitter(false);
       setRegLoadingEmail(false);
       setRegLoadingGuest(false);
     }
@@ -174,22 +178,28 @@ export default function Register() {
             }}
             onClick={() => handleRegister("google")}
             startIcon={
-              <Box
-                component="img"
-                src={google}
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                }}
-                alt=""
-              />
+              regLoadingGoogle ? null : (
+                <Box
+                  component="img"
+                  src={google}
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                  }}
+                  alt=""
+                />
+              )
             }
           >
-            Register with Google
+            {regLoadingGoogle ? (
+              <BreathingLogo type="smallButton" />
+            ) : (
+              "Register with Google"
+            )}{" "}
           </Button>
           {/* *******************Twitter Button************************** */}
           <Button
@@ -212,65 +222,26 @@ export default function Register() {
             }}
             onClick={() => handleRegister("twitter")}
             startIcon={
-              <TwitterIcon
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                  color: "#1D9BF0",
-                }}
-              />
-            }
-          >
-            Register with Twitter
-          </Button>
-          {/* *******************Guest Button************************** */}
-          <Button
-            variant="outlined"
-            className="register__btn"
-            sx={{
-              ...regButtonStyling,
-              marginBottom: "0px",
-              fontSize: {
-                xs: "0.9rem",
-                fourHundred: "1rem",
-              },
-              width: {
-                sm: "350px",
-                fourHundred: "280px",
-                xs: "250px",
-              },
-              "&:hover": {
-                border: "3px #EF2727 solid",
-              },
-            }}
-            onClick={() => handleRegister("anonymous")}
-            startIcon={
-              regLoadingGuest ? (
-                ""
-              ) : (
-                <User
-                  size={44}
-                  style={{
-                    paddingRight: "20px",
-                    width: {
-                      fourHundred: "42px",
-                      xs: "31px",
+              regLoadingTwitter ? null : (
+                <TwitterIcon
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
                     },
-                    height: { fourHundred: "42px", xs: "31px" },
+                    color: "#1D9BF0",
                   }}
                 />
               )
             }
           >
-            {regLoadingGuest ? (
-              <BreathingLogo type={"largeButton"} />
+            {regLoadingTwitter ? (
+              <BreathingLogo type="smallButton" />
             ) : (
-              "Visit as a Guest"
-            )}
+              "Register with Twitter"
+            )}{" "}
           </Button>
           <Divider
             sx={{
@@ -343,6 +314,7 @@ export default function Register() {
             size="large"
             sx={{
               width: "211px",
+              padding: "0px",
             }}
             onClick={handleSubmit(() => handleRegister("email"))}
           >

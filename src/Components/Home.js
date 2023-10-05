@@ -11,20 +11,19 @@ import ShelfTitle from "./ShelfTitle";
 import Stack from "@mui/material/Stack";
 import AnimeShelf from "./AnimeShelf";
 import {
-  getRandomAnimeListing,
   useAnimeHR,
   useAnimeMC,
   useAnimeMH,
   useAnimeMPTW,
+  useAnimeRND,
   useAnimeTN,
-  useProfile,
   useRecommendations,
 } from "./APICalls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./Firebase";
 import { LocalUserContext } from "./LocalUserContext";
 import HandleDialog from "./HandleDialog";
-import { PopulateFromFirestore, getRandomCommunityList } from "./Firestore";
+import { PopulateFromFirestore, useCommunityList } from "./Firestore";
 import useGenreFilter from "../Hooks/useGenreFilter";
 import HtmlPageTitle from "./HtmlPageTitle";
 import useAnimeList from "../Hooks/useAnimeList";
@@ -32,9 +31,6 @@ import CommunityListShelf from "./CommunityListShelf";
 import GreetingExplainer from "./GreetingExplainer";
 
 export default function Home() {
-  let [animeRandom, setAnimeRandom] = useState(null); //randomized
-  let [communityListData, setCommunityListData] = useState(undefined); //randomized
-
   const [user, loading, error] = useAuthState(auth);
 
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -44,9 +40,6 @@ export default function Home() {
 
   let [refresh, setRefresh] = useState(false);
   let [refreshCL, setRefreshCL] = useState(false);
-
-  let randomPage = [];
-  let randomItem = [];
 
   function getViewHistory() {
     let data = {
@@ -84,25 +77,17 @@ export default function Home() {
   const { data: animeMPTW } = useAnimeMPTW(genreQueryString);
   const { data: animeMH } = useAnimeMH(genreQueryString);
 
-  function getRandomNumbers() {
-    for (let i = 0; i < 6; i++) {
-      randomPage[i] = Math.floor(Math.random() * 250 + 1);
-      randomItem[i] = Math.floor(Math.random() * 10);
-    }
-  }
+  const {
+    data: communityListData,
+    refetch: refetchCLData,
+    remove: removeCLData,
+  } = useCommunityList();
 
-  useEffect(() => {
-    getRandomNumbers();
-    getRandomAnimeListing(randomPage, randomItem)
-      .then((result) => setAnimeRandom(result))
-      .catch((error) => console.log(error));
-  }, [refresh]);
-
-  useEffect(() => {
-    getRandomCommunityList()
-      .then((result) => setCommunityListData(result))
-      .catch((error) => console.log(error));
-  }, [refreshCL]);
+  const {
+    data: animeRND,
+    refetch: refetchRND,
+    remove: removeRND,
+  } = useAnimeRND();
 
   useEffect(() => {
     PopulateFromFirestore(user, localUser, setLocalUser);
@@ -126,32 +111,44 @@ export default function Home() {
       <Container maxWidth="lg">
         <div className="gap" />
         {user.isAnonymous && <GreetingExplainer />}
+        <Typography
+          variant="h2"
+          style={{
+            marginBlockStart: 0,
+            marginBlockEnd: "0.5rem",
+          }}
+        >
+          For You
+        </Typography>
         {localUser.uid && localUser?.likes.length === 0 ? (
-          <Typography
-            variant="h2"
-            style={{
-              fontSize: "2.0rem",
-              marginBlockStart: 0,
-              marginBlockEnd: "0.5rem",
-            }}
-          >
-            Like a show to receive{" "}
-            <span className="rainbow_text_animated">personalized</span>{" "}
-            recommendations!
-          </Typography>
-        ) : (
-          <>
-            <Typography
-              variant="h2"
+          <div style={{ position: "relative", textAlign: "center" }}>
+            <AnimeShelf />
+            <div
               style={{
-                marginBlockStart: 0,
-                marginBlockEnd: "0.5rem",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
               }}
             >
-              For You
-            </Typography>
-            <AnimeGrid items={recommendation} large />
-          </>
+              <Typography
+                variant="h2"
+                sx={{
+                  position: "relative",
+                  top: "40%",
+                  fontSize: { xs: "1.6rem", fourHundred: "2.0rem" },
+                  marginBlockStart: 0,
+                  marginBlockEnd: "0.5rem",
+                }}
+              >
+                Like a show to receive{" "}
+                <span className="rainbow_text_animated">personalized</span>{" "}
+                recommendations!
+              </Typography>
+            </div>
+          </div>
+        ) : (
+          <AnimeGrid items={recommendation} large />
         )}
         <div className="gap" />
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -162,8 +159,8 @@ export default function Home() {
             size="small"
             startIcon={<RefreshIcon />}
             onClick={() => {
-              setCommunityListData(undefined);
-              setRefreshCL(!refreshCL);
+              removeCLData();
+              refetchCLData();
             }}
             sx={{ ml: 3 }}
           >
@@ -221,15 +218,15 @@ export default function Home() {
             size="small"
             startIcon={<RefreshIcon />}
             onClick={() => {
-              setAnimeRandom(null);
-              refresh ? setRefresh(false) : setRefresh(true);
+              removeRND();
+              refetchRND();
             }}
           >
             Surprise Me!
           </Button>
         </Stack>
 
-        <AnimeShelf items={animeRandom} />
+        <AnimeShelf items={animeRND} />
 
         <div className="gap" />
       </Container>

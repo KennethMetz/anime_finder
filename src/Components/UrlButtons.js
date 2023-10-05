@@ -76,7 +76,7 @@ function UrlButton({ title, link, image }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: "0 8px 8px 8px",
+        margin: "0 12px 8px 0",
       }}
     >
       <IconButton
@@ -86,7 +86,7 @@ function UrlButton({ title, link, image }) {
         target="_blank"
         rel="noopener"
       >
-        <Box component="img" src={image} alt={title} sx={{ height: 48 }} />
+        <Box component="img" src={image} alt={title} sx={{ height: 40 }} />
       </IconButton>
       <Typography>{title}</Typography>
     </Box>

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import AppSettingsContext from "./AppSettingsContext";
 
 const defaultState = {
-  darkMode: false,
+  darkMode: true,
 };
 
 export default function AppSettingsProvider(props) {

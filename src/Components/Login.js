@@ -17,6 +17,7 @@ import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
 import { useHeartbeat } from "./APICalls";
+import BreathingLogo from "./BreathingLogo";
 
 export default function Login() {
   const authActions = useAuthActions();
@@ -28,6 +29,10 @@ export default function Login() {
   const theme = useTheme();
 
   let [loginError, setLoginError] = useState(undefined);
+
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
+  const [loadingTwitter, setLoadingTwitter] = useState(false);
+  const [loadingEmail, setLoadingEmail] = useState(false);
 
   // Pre-warm API by sending a request now.
   useHeartbeat();
@@ -46,10 +51,13 @@ export default function Login() {
     try {
       setLoginError(null);
       if (provider === "google") {
+        setLoadingGoogle(true);
         await authActions.loginWithGoogle();
       } else if (provider === "twitter") {
+        setLoadingTwitter(true);
         await authActions.loginWithTwitter();
       } else if (provider === "email") {
+        setLoadingEmail(true);
         await authActions.loginWithEmail(email, password);
       } else {
         throw new Error("Unknown login provider");
@@ -71,7 +79,16 @@ export default function Login() {
           "Ooops - there was an error logging in. Please try again!"
         );
       }
+    } finally {
+      setLoadingGoogle(false);
+      setLoadingTwitter(false);
+      setLoadingEmail(false);
     }
+  };
+
+  const handleEmailSubmit = (e) => {
+    e.preventDefault();
+    login("email");
   };
 
   return (
@@ -123,22 +140,28 @@ export default function Login() {
             }}
             onClick={() => login("google")}
             startIcon={
-              <Box
-                component="img"
-                src={google}
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                }}
-                alt=""
-              />
+              loadingGoogle ? null : (
+                <Box
+                  component="img"
+                  src={google}
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                  }}
+                  alt=""
+                />
+              )
             }
           >
-            Login with Google
+            {loadingGoogle ? (
+              <BreathingLogo type="smallButton" />
+            ) : (
+              "Login with Google"
+            )}
           </Button>
           {/* *******************Twitter Button************************** */}
           <Button
@@ -162,20 +185,26 @@ export default function Login() {
             }}
             onClick={() => login("twitter")}
             startIcon={
-              <TwitterIcon
-                sx={{
-                  width: "42px",
-                  height: "42px",
-                  paddingRight: {
-                    xs: "10px",
-                    fourHundred: "20px",
-                  },
-                  color: "#1D9BF0",
-                }}
-              />
+              loadingTwitter ? null : (
+                <TwitterIcon
+                  sx={{
+                    width: "42px",
+                    height: "42px",
+                    paddingRight: {
+                      xs: "10px",
+                      fourHundred: "20px",
+                    },
+                    color: "#1D9BF0",
+                  }}
+                />
+              )
             }
           >
-            Login with Twitter
+            {loadingTwitter ? (
+              <BreathingLogo type="smallButton" />
+            ) : (
+              "Login with Twitter"
+            )}
           </Button>
           <Divider
             sx={{
@@ -189,90 +218,93 @@ export default function Login() {
             or
           </Divider>
           {/* *******************EdwardML - Email Field************************** */}
-          <TextField
-            type="text"
-            className="register__textBox"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            label="Email"
-            required
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            InputLabelProps={{
-              style: {
-                marginBottom: "88.5px",
-              },
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
-          {/* *******************EdwardML - Password Field************************** */}
-          <TextField
-            type="password"
-            className="register__textBox"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            label="Password"
-            helperText="Forgot Password?"
-            required
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            FormHelperTextProps={{
-              style: {
-                color: theme.palette.text.primary,
-                textAlign: "right",
-                fontWeight: "600",
-                cursor: "pointer",
-              },
-              onClick: () => navigate("/reset"),
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
-          {loginError && (
-            <Typography
+          <form className="emailForm" onSubmit={handleEmailSubmit}>
+            <TextField
+              type="email"
+              className="register__textBox"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              label="Email"
+              required
+              inputProps={{
+                style: {
+                  paddingTop: "12.5px",
+                  paddingBottom: "12.5px",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  marginBottom: "88.5px",
+                },
+              }}
               sx={{
-                color: "error.main",
-                fontWeight: 600,
-                marginY: "10px",
+                width: {
+                  xs: "250px",
+                  fourHundred: "280px",
+                  sm: "350px",
+                },
+                borderRadius: "9px",
+                marginBottom: "20px",
+              }}
+            />
+            {/* *******************EdwardML - Password Field************************** */}
+            <TextField
+              type="password"
+              className="register__textBox"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              label="Password"
+              helperText="Forgot Password?"
+              required
+              inputProps={{
+                style: {
+                  paddingTop: "12.5px",
+                  paddingBottom: "12.5px",
+                },
+              }}
+              FormHelperTextProps={{
+                style: {
+                  color: theme.palette.text.primary,
+                  textAlign: "right",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                },
+                onClick: () => navigate("/reset"),
+              }}
+              sx={{
+                width: {
+                  xs: "250px",
+                  fourHundred: "280px",
+                  sm: "350px",
+                },
+                borderRadius: "9px",
+                marginBottom: "20px",
+              }}
+            />
+            {loginError && (
+              <Typography
+                sx={{
+                  color: "error.main",
+                  fontWeight: 600,
+                  marginY: "10px",
+                }}
+              >
+                {loginError}
+              </Typography>
+            )}
+            {/* *******************EdwardML - 'Login' Button************************** */}
+            <Button
+              variant="contained"
+              size="large"
+              type="submit"
+              sx={{
+                width: "211px",
+                padding: "0px",
               }}
             >
-              {loginError}
-            </Typography>
-          )}
-          {/* *******************EdwardML - 'Login' Button************************** */}
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              width: "211px",
-            }}
-            onClick={() => login("email")}
-          >
-            Login
-          </Button>
+              {loadingEmail ? <BreathingLogo type={"smallButton"} /> : "Login"}
+            </Button>
+          </form>
 
           <Divider
             sx={{

@@ -117,6 +117,24 @@ export function useAnimeTN(selectedGenre) {
   );
 }
 
+export function useAnimeRND() {
+  const url = `${apiUrl}/anime?sort=random&page_size=6`;
+  return useQuery(
+    [url],
+    async () => {
+      let response = await fetch(url, { mode: "cors" });
+      await handleErrors(response);
+      let responseJson = await response.json();
+      return responseJson.items;
+    },
+    {
+      staleTime: fiveMinutesMs,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    }
+  );
+}
+
 export function useGetTitles(fullUrl) {
   return useQuery(
     [fullUrl],
@@ -186,22 +204,12 @@ export function useRecommendations(viewHistory) {
       responseJson.items.map((item, index) => temp.push(item.anime));
       return temp;
     },
-    { staleTime: fiveMinutesMs, keepPreviousData: true }
+    {
+      staleTime: fiveMinutesMs,
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
   );
-}
-
-export async function getRandomAnimeListing(randomPage, randomItem) {
-  let tempItem = [];
-  for (let k = 0; k < 6; k++) {
-    let response = await fetch(`${apiUrl}/anime?page=${randomPage[k]}`, {
-      mode: "cors",
-    });
-    await handleErrors(response);
-    let responseJson = await response.json();
-    console.assert(responseJson.items.length === 10, "LIST IS LESS THAN 10");
-    tempItem = [...tempItem, responseJson.items[randomItem[k]]];
-  }
-  return tempItem;
 }
 
 export async function APIGetAnimeList(ids) {
@@ -217,5 +225,18 @@ export async function APIGetAnimeList(ids) {
   });
   await handleErrors(response);
   let responseJson = await response.json();
+  return responseJson;
+}
+
+export async function APIGetMalLists(username, fake) {
+  let url = `${apiUrl}/malLists/${username}`;
+  if (fake) {
+    url += "?fake=1";
+  }
+  let response = await fetch(url, {
+    mode: "cors",
+  });
+  await handleErrors(response);
+  const responseJson = await response.json();
   return responseJson;
 }

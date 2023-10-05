@@ -31,12 +31,13 @@ import { auth } from "./Firebase";
 
 export default function NotificationDropMenu() {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [user, loading, error] = useAuthState(auth);
   const [loadingMoreNotis, setLoadingMoreNotis] = useState(false);
 
   const [
+    open,
+    setOpen,
     notifications,
     showMore,
     hideBadge,
@@ -157,6 +158,7 @@ export default function NotificationDropMenu() {
         {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
+            unmountOnExit
             onExited={() => resetPagination()}
             style={{
               transformOrigin: "right top",
