@@ -26,6 +26,7 @@ import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { GetCountDocFromFirestore } from "./Firestore";
 import Grid from "@mui/material/Grid";
+import useTheme from "@mui/material/styles/useTheme";
 import HtmlPageTitle from "./HtmlPageTitle";
 import EmojiReactionChips from "./EmojiReactionChips";
 import { getRxnTargetForWatchlist } from "../Util/ReactionUtil";
@@ -36,6 +37,7 @@ export default function ProfileListPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const confirm = useConfirm();
+  const theme = useTheme();
   const [user, loading, error] = useAuthState(auth);
 
   const {
