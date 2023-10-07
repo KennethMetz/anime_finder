@@ -6,7 +6,7 @@ const { onDocumentDeleted } = require("firebase-functions/v2/firestore");
 initializeApp();
 
 exports.onAnimeReviewDeleted = onDocumentDeleted(
-  "/anime/{animeId}/reviews/{documentId}",
+  "/animeData/{animeId}/reviews/{documentId}",
   (event) => {
     const db = getFirestore();
 
