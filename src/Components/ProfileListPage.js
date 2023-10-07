@@ -10,11 +10,9 @@ import {
   Heart,
   LockSimple,
   Trash,
-  X,
 } from "phosphor-react";
-import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { slugifyListName } from "../Util/ListUtil";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
 import ProfileListItem from "./ProfileListItem";
 import ProfileListPageGhost from "./ProfileListPageGhost";
@@ -26,21 +24,21 @@ import ProfileListDropMenu from "./ProfileListDropMenu";
 import ReviewContainer from "./ReviewContainer";
 import { auth } from "./Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import EmojiReactionChip from "./EmojiReactionChip";
-import { GetListReactions, getTimestamp } from "./Firestore";
+import { GetCountDocFromFirestore } from "./Firestore";
 import Grid from "@mui/material/Grid";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 import HtmlPageTitle from "./HtmlPageTitle";
+import EmojiReactionChips from "./EmojiReactionChips";
+import { getRxnTargetForWatchlist } from "../Util/ReactionUtil";
 import { formatDistanceToNowStrict, fromUnixTime } from "date-fns";
 import { Timestamp } from "firebase/firestore";
 
 export default function ProfileListPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const confirm = useConfirm();
   const theme = useTheme();
   const [user, loading, error] = useAuthState(auth);
-  const [listRxns, setListRxns] = useState(undefined);
 
   const {
     profile,
@@ -71,15 +69,16 @@ export default function ProfileListPage() {
   let listHasDesc = false;
   let showSuggestions = false;
   let privateList = false;
+  const [countDoc, setCountDoc] = useState();
+
+  const rxnTarget = useMemo(
+    () => getRxnTargetForWatchlist(listId, userId),
+    [listId, userId]
+  );
 
   useEffect(() => {
-    GetListReactions(`${userId}${listId}`, setListRxns);
-  }, [listId]);
-
-  const sevenHundredFifty = useMediaQuery(
-    theme.breakpoints.up("sevenHundredFifty")
-  );
-  const elevenHundred = useMediaQuery(theme.breakpoints.up("elevenHundred"));
+    GetCountDocFromFirestore(rxnTarget).then((doc) => setCountDoc(doc));
+  }, [rxnTarget]);
 
   if (isLoading) {
     return <ProfileListPageGhost />;
@@ -241,33 +240,9 @@ export default function ProfileListPage() {
             },
           }}
         >
-          <EmojiReactionChip
-            docId={`${userId}${listId}`}
-            item={listRxns}
-            setItem={setListRxns}
-            emoji={<HandsClapping size={24} />}
-            reaction="applause"
-            type="list"
-            ownerId={userId}
-          ></EmojiReactionChip>
-          <EmojiReactionChip
-            docId={`${userId}${listId}`}
-            item={listRxns}
-            setItem={setListRxns}
-            emoji={<Heart size={24} />}
-            reaction="heart"
-            type="list"
-            ownerId={userId}
-          ></EmojiReactionChip>
-          <EmojiReactionChip
-            docId={`${userId}${listId}`}
-            item={listRxns}
-            setItem={setListRxns}
-            emoji={<Trash size={24} />}
-            reaction="trash"
-            type="list"
-            ownerId={userId}
-          ></EmojiReactionChip>
+          {!privateList && (
+            <EmojiReactionChips rxnTarget={rxnTarget} countDoc={countDoc} />
+          )}
         </Grid>
         <Grid
           item
@@ -342,13 +317,15 @@ export default function ProfileListPage() {
       )}
 
       {/* Comments */}
-      <ReviewContainer
-        user={user}
-        docId={`${userId}${listId}`}
-        type={"comments"}
-        listOwnerId={userId}
-        listId={listId}
-      />
+      {!privateList && (
+        <ReviewContainer
+          user={user}
+          docId={`${userId}${listId}`}
+          type={"comments"}
+          listOwnerId={userId}
+          listId={listId}
+        />
+      )}
     </Box>
   );
 }

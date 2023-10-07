@@ -14,12 +14,12 @@ import useTheme from "@mui/material/styles/useTheme";
 export default function ReviewFilterDropMenu({
   setLastVisible,
   setSortOption,
+  selected,
+  setSelected,
 }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
-
-  const [selected, setSelected] = useState("newestFirst");
 
   const smallDevice = useMediaQuery(theme.breakpoints.down("fiveHundred"));
 
@@ -103,6 +103,45 @@ export default function ReviewFilterDropMenu({
                   onKeyDown={handleListKeyDown}
                   sx={{ padding: 0 }}
                 >
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, [
+                        "reactionCounts.applaud",
+                        "desc",
+                        "mostApplauded",
+                      ]);
+                    }}
+                    selected={selected === "mostApplauded" ? true : false}
+                  >
+                    Popularity: Most Applauded First
+                  </MenuItem>
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, [
+                        "reactionCounts.love",
+                        "desc",
+                        "mostloved",
+                      ]);
+                    }}
+                    selected={selected === "mostloved" ? true : false}
+                  >
+                    Popularity: Most Loved First
+                  </MenuItem>
+                  <MenuItem
+                    divider
+                    onClick={(e) => {
+                      handleSelection(e, [
+                        "reactionCounts.trash",
+                        "desc",
+                        "mostDisliked",
+                      ]);
+                    }}
+                    selected={selected === "mostDisliked" ? true : false}
+                  >
+                    Popularity: Most Disliked First
+                  </MenuItem>
                   <MenuItem
                     divider
                     onClick={(e) => {

@@ -9,19 +9,18 @@ import {
   orderBy,
   limit,
   startAfter,
-  limitToLast,
-  endBefore,
   where,
   runTransaction,
   getCountFromServer,
-  arrayUnion,
-  onSnapshot,
   addDoc,
-  writeBatch,
   updateDoc,
   deleteField,
+  increment,
+  collectionGroup,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "./Firebase";
+import { getDefaultCountDoc, getDefaultUserRxns } from "../Util/ReactionUtil";
 import { useQuery } from "@tanstack/react-query";
 import { getDefaultLocalUser } from "./LocalUserContext";
 
@@ -181,7 +180,7 @@ export async function GetPaginatedReviewsFromFirestore(
   }
 }
 
-export async function GetReviewCount(docId, type, setReviewCount) {
+export async function getReviewCount(docId, type, setReviewCount) {
   if (!docId || !type) return;
   let collectionName = type === "reviews" ? "animeData" : "watchlistData";
   let docIdString = docId.toString();
@@ -198,35 +197,6 @@ export async function GetReviewCount(docId, type, setReviewCount) {
 
 export function generateId() {
   return doc(collection(db, "test")).id;
-}
-
-// Handle "watchlistData / reactions" on firestore
-
-export async function GetListReactions(docId, setListRxns) {
-  try {
-    let animeRef = doc(db, "watchlistData", docId, "reactions", "emojis");
-    let querySnapshot = await getDoc(animeRef);
-    // Use default value if the document doesn't exist yet.
-    if (!querySnapshot.data()) {
-      setListRxns({
-        emojis: { applause: [], heart: [], trash: [] },
-      });
-      return;
-    }
-    let temp = querySnapshot.data();
-    setListRxns(temp);
-  } catch (error) {
-    console.error("Error loading data from Firebase Database", error);
-  }
-}
-
-export async function SaveListReactionsToFirestore(docId, updatedRxns) {
-  let Ref = doc(db, "watchlistData", docId, "reactions", "emojis");
-  try {
-    await setDoc(Ref, updatedRxns, { merge: true });
-  } catch (error) {
-    console.error("Error writing review data to Firestore", error);
-  }
 }
 
 export async function ClaimHandle(handle, userId) {
@@ -250,6 +220,7 @@ export async function ClaimHandle(handle, userId) {
 
 export async function CreateWatchlistDataEntry(userId, listId) {
   const listData = {
+    ...getDefaultCountDoc(),
     userId: userId,
     listId: listId,
     random: generateRandomWatchlistInt(),
@@ -388,4 +359,43 @@ export async function deleteWatchlistDataEntry(userId, listId) {
   // has a true value for 'awaitingDeletion' field.
   // Run this script periodically from server as deleting collections
   // from a web client is not recommended by firestore.
+}
+
+export async function GetUserRxStateFromFirestore(userId, rxnTarget) {
+  const docRef = doc(db, rxnTarget.rxnCollectionPath, userId);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) {
+    return getDefaultUserRxns(rxnTarget);
+  }
+  return docSnap.data();
+}
+
+export async function SaveUserRxStateToFirestore(
+  userId,
+  rxnTarget,
+  rxnType,
+  userRxns,
+  incrementBy
+) {
+  const docRef = doc(db, rxnTarget.rxnCollectionPath, userId);
+  const countDocRef = doc(db, rxnTarget.countDocPath);
+  const countFieldPath = `reactionCounts.${rxnType.key}`;
+
+  // Performed batched write to update user state, reaction count.
+  // TODO Increment counts using firestore server events.
+  const batch = writeBatch(db);
+  batch.set(docRef, userRxns);
+  batch.update(countDocRef, {
+    [countFieldPath]: increment(incrementBy),
+  });
+  await batch.commit();
+}
+
+export async function GetCountDocFromFirestore(rxnTarget) {
+  const countDocRef = doc(db, rxnTarget.countDocPath);
+  const docSnap = await getDoc(countDocRef);
+  if (!docSnap.exists()) {
+    return getDefaultCountDoc();
+  }
+  return docSnap.data();
 }

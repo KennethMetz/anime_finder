@@ -10,34 +10,35 @@ import useTheme from "@mui/material/styles/useTheme";
 import { useConfirm } from "material-ui-confirm";
 import format from "date-fns/format";
 import fromUnixTime from "date-fns/fromUnixTime";
-import toDate from "date-fns/toDate";
 import { HandsClapping, Star, Trash, X, Heart } from "phosphor-react";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useLocation } from "react-router-dom";
 import { useProfile } from "./APICalls";
-import AvatarIcon from "./AvatarIcon";
-import EmojiReactionChip from "./EmojiReactionChip";
 import ExpandableText from "./ExpandableText";
 import { auth } from "./Firebase";
 import {
   DeleteNotification,
   DeleteReviewFromFirestore,
-  PopulateReviewsFromFirestore,
-  SaveReviewToFirestore,
   SaveToFirestore,
 } from "./Firestore";
 import { LocalUserContext } from "./LocalUserContext";
 import { getAvatarSrc } from "./Avatars";
+import EmojiReactionChips from "./EmojiReactionChips";
+import {
+  getRxnTargetForAnimeReview,
+  getRxnTargetForWatchlistComment,
+} from "../Util/ReactionUtil";
 
 export default function Review({
-  item,
+  review,
   index,
   docId,
   reviews,
   setReviews,
   setShowReviewForm,
   type,
+  listId,
   listOwnerId,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
@@ -45,7 +46,16 @@ export default function Review({
   const theme = useTheme();
   const confirm = useConfirm();
 
-  const { data: reviewerInfo } = useProfile(item.uid);
+  const rxnTarget = useMemo(() => {
+    if (type === "comments") {
+      return getRxnTargetForWatchlistComment(listId, listOwnerId, review.uid);
+    } else if (type === "reviews") {
+      return getRxnTargetForAnimeReview(/*animeId=*/ docId, review.uid);
+    } else {
+      throw new Error(`Unknown review type ${type}`);
+    }
+  }, [type, docId, listOwnerId, review.uid]);
+  const { data: reviewerInfo } = useProfile(review.uid);
 
   const typeSingular = type === "comments" ? "comment" : "review";
 
@@ -54,7 +64,7 @@ export default function Review({
     [reviewerInfo?.avatar]
   );
 
-  function deleteReview(item, index) {
+  function deleteReview(index) {
     confirm({
       title: `Delete ${typeSingular}`,
       content: `Deleting a ${typeSingular} is permanent. There is no undo.`,
@@ -95,7 +105,7 @@ export default function Review({
   return (
     <Paper
       elevation={0}
-      tabIndex={user.uid === item.uid ? 0 : -1}
+      tabIndex={user.uid === review.uid ? 0 : -1}
       aria-label={`Edit ${typeSingular}`}
       sx={{
         backgroundColor: "custom.subtleCardBg",
@@ -112,10 +122,10 @@ export default function Review({
         mb: 3,
       }}
       onClick={(e) => {
-        if (user.uid === item.uid) openEditor();
+        if (user.uid === review.uid) openEditor();
       }}
     >
-      <Link to={`/profile/${item.uid}`}>
+      <Link to={`/profile/${review.uid}`}>
         <Grid
           item
           component="div"
@@ -180,14 +190,14 @@ export default function Review({
           style={{
             display: "flex",
             flexDirection: "column",
-            ...(user.uid === item.uid && { cursor: "pointer" }),
+            ...(user.uid === review.uid && { cursor: "pointer" }),
           }}
         >
           <Grid container>
             <Tooltip
-              key={item.uid}
+              key={review.uid}
               followCursor
-              title={user.uid === item.uid ? `Edit ${typeSingular}` : ""}
+              title={user.uid === review.uid ? `Edit ${typeSingular}` : ""}
             >
               <Grid
                 item
@@ -200,12 +210,12 @@ export default function Review({
                 }}
               >
                 <Typography component="span" sx={{ fontWeight: 900, mr: 2 }}>
-                  {item.reviewTitle}
+                  {review.reviewTitle}
                 </Typography>{" "}
-                <ConvertDate item={item} />
+                <ConvertDate review={review} />
               </Grid>
             </Tooltip>
-            {user.uid === item.uid ? (
+            {user.uid === review.uid ? (
               <Grid item xs={2} sx={{ position: "relative" }}>
                 <Tooltip followCursor title={`Delete ${typeSingular}`}>
                   <IconButton
@@ -215,7 +225,7 @@ export default function Review({
                       right: "-10px",
                     }}
                     onClick={(e) => {
-                      deleteReview(item, index);
+                      deleteReview(index);
                       e.stopPropagation();
                     }}
                   >
@@ -229,12 +239,12 @@ export default function Review({
           </Grid>
           <Tooltip
             followCursor
-            title={user.uid === item.uid ? `Edit ${typeSingular}` : ""}
+            title={user.uid === review.uid ? `Edit ${typeSingular}` : ""}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Rating
                 readOnly
-                value={item.rating}
+                value={review.rating}
                 color="primary"
                 emptyIcon={<Star color={theme.palette.text.primary} />}
                 icon={<Star color={theme.palette.text.primary} weight="fill" />}
@@ -242,7 +252,7 @@ export default function Review({
               ></Rating>
 
               <ExpandableText
-                text={item.review}
+                text={review.review}
                 sx={{
                   lineHeight: "21px",
                   whiteSpace: "pre-line",
@@ -251,59 +261,31 @@ export default function Review({
             </div>
           </Tooltip>
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: "10px",
-          }}
-        >
-          <EmojiReactionChip
-            docId={docId}
-            emoji={<HandsClapping size={24} />}
-            reaction="applause"
-            item={item}
-            index={index}
-            reviews={reviews}
-            setReviews={setReviews}
-            type={type}
-            tooltip={`Applaud this ${typeSingular}`}
-          />
-
-          <EmojiReactionChip
-            docId={docId}
-            emoji={<Heart size={24} />}
-            reaction="heart"
-            item={item}
-            index={index}
-            reviews={reviews}
-            setReviews={setReviews}
-            type={type}
-            tooltip={`Love this ${typeSingular}`}
-          />
-
-          <EmojiReactionChip
-            docId={docId}
-            emoji={<Trash size={24} />}
-            reaction="trash"
-            item={item}
-            index={index}
-            reviews={reviews}
-            setReviews={setReviews}
-            type={type}
-            tooltip={`Disagree with this ${typeSingular}`}
-          />
-        </div>
+        {
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+            }}
+          >
+            <EmojiReactionChips
+              rxnTarget={rxnTarget}
+              countDoc={reviews[index]}
+            />
+          </div>
+        }
       </Grid>
     </Paper>
   );
 }
 
-function ConvertDate({ item }) {
-  const time = format(fromUnixTime(item.time.seconds), "MMMM dd, yyyy");
+function ConvertDate({ review }) {
+  if (!review) return;
+  const time = format(fromUnixTime(review.time.seconds), "MMMM dd, yyyy");
   return (
     <Typography sx={{ color: "grey", fontSize: "0.9rem" }}>
-      {item.edited.edited ? "Edited on" : ""} {time.toString()}
+      {review.edited ? "Edited on" : ""} {time.toString()}
     </Typography>
   );
 }

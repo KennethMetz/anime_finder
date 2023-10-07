@@ -15,14 +15,12 @@ import { useForm } from "react-hook-form";
 import { Star } from "phosphor-react";
 import {
   GetPaginatedReviewsFromFirestore,
-  PopulateReviewsFromFirestore,
   SaveNotification,
   SaveReviewToFirestore,
   SaveToFirestore,
-  setLastVisible,
-  setSeeMore,
 } from "./Firestore";
 import { getAvatarSrc } from "./Avatars";
+import { getDefaultCountDoc } from "../Util/ReactionUtil";
 
 export default function ReviewForm({
   docId,
@@ -35,6 +33,7 @@ export default function ReviewForm({
   reviewCount,
   listOwnerId,
   listId,
+  setDropSelection,
 }) {
   const [localUser, setLocalUser] = useContext(LocalUserContext);
   const [user] = useAuthState(auth);
@@ -43,7 +42,9 @@ export default function ReviewForm({
   let [reviewTitle, setReviewTitle] = useState("");
   let [review, setReview] = useState("");
   let [rating, setRating] = useState(null);
-  let [emojis, setEmojis] = useState({});
+  let [reactionCounts, setReactionCounts] = useState(
+    getDefaultCountDoc().reactionCounts
+  );
 
   let [existingReview, setExistingReview] = useState(false);
 
@@ -81,7 +82,7 @@ export default function ReviewForm({
           setReviewTitle(reviews[i].reviewTitle);
           setReview(reviews[i].review);
           setRating(reviews[i].rating);
-          setEmojis(reviews[i].emojis);
+          setReactionCounts(reviews[i].reactionCounts);
         }
       }
     }
@@ -113,12 +114,8 @@ export default function ReviewForm({
         reviewTitle: reviewTitle,
         uid: user.uid,
         time: new Date(),
-        edited: { edited },
-        emojis: {
-          applause: [...emojis?.applause],
-          heart: [...emojis?.heart],
-          trash: [...emojis?.trash],
-        },
+        edited: edited,
+        reactionCounts: reactionCounts,
       };
       if (!localUser[type]) localUser[type] = [];
       if (!localUser[type].find((x) => x === docId)) {
@@ -135,7 +132,8 @@ export default function ReviewForm({
       );
 
       // Only provide notification when a comment is created NOT when edited
-      if (!edited) SaveNotification(notification, listOwnerId);
+      if (!edited && type !== "reviews")
+        SaveNotification(notification, listOwnerId);
 
       await GetPaginatedReviewsFromFirestore(
         docId,
@@ -148,6 +146,7 @@ export default function ReviewForm({
         setSeeMore,
         type
       );
+      setDropSelection("newestFirst");
       setShowReviewForm(false);
     }
   };

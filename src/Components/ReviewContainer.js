@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 
 import { CaretDown, Minus, Plus } from "phosphor-react";
-import { GetPaginatedReviewsFromFirestore, GetReviewCount } from "./Firestore";
+import { GetPaginatedReviewsFromFirestore, getReviewCount } from "./Firestore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReviewFilterDropMenu from "./ReviewFilterDropMenu";
@@ -30,8 +30,14 @@ export default function ReviewContainer({
 
   const [lastVisible, setLastVisible] = useState(null);
   const [seeMore, setSeeMore] = useState(true);
-  const [sortOption, setSortOption] = useState(["time", "desc"]);
+  const [sortOption, setSortOption] = useState([
+    "reactionCounts.applaud",
+    "desc",
+    "mostLoved",
+  ]);
   const [reviewCount, setReviewCount] = useState(undefined);
+
+  const [selected, setSelected] = useState("mostApplauded"); // <ReviewFilterDropMenu> selection
 
   const typeSingular = type === "comments" ? "comment" : "review";
 
@@ -55,7 +61,7 @@ export default function ReviewContainer({
   }, [location.pathname, docId, sortOption]);
 
   useEffect(() => {
-    GetReviewCount(docId, type, setReviewCount);
+    getReviewCount(docId, type, setReviewCount);
   }, [localUser.reviews, localUser.comments]);
 
   return (
@@ -131,6 +137,8 @@ export default function ReviewContainer({
             <ReviewFilterDropMenu
               setLastVisible={setLastVisible}
               setSortOption={setSortOption}
+              selected={selected}
+              setSelected={setSelected}
             />
           </div>
         )}
@@ -148,6 +156,7 @@ export default function ReviewContainer({
           reviewCount={reviewCount}
           listOwnerId={listOwnerId}
           listId={listId}
+          setDropSelection={setSelected}
         />
       )}
 
@@ -155,13 +164,14 @@ export default function ReviewContainer({
         return (
           <Review
             key={`${item.uid}+${item.time.seconds}`}
-            item={item}
+            review={item}
             index={index}
             docId={docId}
             reviews={reviews}
             setReviews={setReviews}
             setShowReviewForm={setShowReviewForm}
             type={type}
+            listId={listId}
             listOwnerId={listOwnerId}
           />
         );
