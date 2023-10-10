@@ -1,10 +1,9 @@
 import "../Styles/Register.css";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "./Firebase";
-import { LocalUserContext } from "./LocalUserContext";
 
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
@@ -13,24 +12,20 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { User } from "phosphor-react";
 import Box from "@mui/material/Box";
 import google from "../Styles/images/google.svg";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import EdwardMLLogo from "./EdwardMLLogo";
 import useAuthActions from "../Hooks/useAuthActions";
 import HtmlPageTitle from "./HtmlPageTitle";
 import BreathingLogo from "./BreathingLogo";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const authActions = useAuthActions();
   const navigate = useNavigate();
-  const [localUser, setLocalUser] = useContext(LocalUserContext);
   const theme = useTheme();
   const [registerError, setRegisterError] = useState(null);
   //Keeps user on page until registration method is selected. Prevents automatic forwarding of guest users registering permanent accounts
@@ -67,14 +62,19 @@ export default function Register() {
     // .matches(/[A-Z]+/, "Must include one uppercase character"),
   });
 
+  const defaultValues = {
+    email: "",
+    password: "",
+  };
+
   //Use ReactHookForm hooks to validate Yup schema
   const {
-    register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm({
-    mode: "all",
-    criteriaMode: "all",
+    mode: "onTouched",
+    defaultValues,
     resolver: yupResolver(validationSchema),
   });
 
@@ -82,7 +82,7 @@ export default function Register() {
     if (loading) return;
   }, [user, loading, forwardToken]);
 
-  const handleRegister = async (provider) => {
+  const handleRegister = async (provider, data) => {
     try {
       setRegisterError(null);
       if (provider === "google") {
@@ -98,8 +98,8 @@ export default function Register() {
       } else if (provider === "email") {
         setRegLoadingEmail(true);
         !user
-          ? await authActions.registerWithEmail(email, password)
-          : await authActions.linkWithEmail(email, password);
+          ? await authActions.registerWithEmail(data.email, data.password)
+          : await authActions.linkWithEmail(data.email, data.password);
       } else if (provider === "anonymous") {
         setRegLoadingGuest(true);
         await authActions.registerAnonymously();
@@ -255,75 +255,91 @@ export default function Register() {
             or
           </Divider>
           {/* *******************EdwardML - Email Field************************** */}
-          <TextField
-            type="text"
-            {...register("email")}
-            className="register__textBox"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            label="Email"
-            required
-            error={errors.email ? true : false}
-            helperText={errors.email?.message}
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
-          {/* *******************EdwardML - Password Field************************** */}
-          <TextField
-            type="password"
-            {...register("password")}
-            className="register__textBox"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            label="Password"
-            required
-            error={errors.password ? true : false}
-            helperText={errors.password?.message}
-            inputProps={{
-              style: {
-                paddingTop: "12.5px",
-                paddingBottom: "12.5px",
-              },
-            }}
-            sx={{
-              width: {
-                xs: "250px",
-                fourHundred: "280px",
-                sm: "350px",
-              },
-              borderRadius: "9px",
-              marginBottom: "20px",
-            }}
-          />
-          {/* *******************EdwardML - 'Let's Go!' Button************************** */}
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              width: "211px",
-              padding: "0px",
-            }}
-            onClick={handleSubmit(() => handleRegister("email"))}
+          <form
+            className="emailForm"
+            onSubmit={handleSubmit((data) => handleRegister("email", data))}
           >
-            {regLoadingEmail ? (
-              <BreathingLogo type={"smallButton"} />
-            ) : (
-              "Let's Go!"
-            )}
-          </Button>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  type="text"
+                  label="Email"
+                  required
+                  error={errors.email ? true : false}
+                  helperText={errors.email?.message}
+                  inputProps={{
+                    style: {
+                      paddingTop: "12.5px",
+                      paddingBottom: "12.5px",
+                    },
+                  }}
+                  sx={{
+                    width: {
+                      xs: "250px",
+                      fourHundred: "280px",
+                      sm: "350px",
+                    },
+                    borderRadius: "9px",
+                    marginBottom: "20px",
+                  }}
+                />
+              )}
+            />
+            {/* *******************EdwardML - Password Field************************** */}
+            <Controller
+              name="password"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  type="password"
+                  label="Password"
+                  required
+                  error={errors.password ? true : false}
+                  helperText={errors.password?.message}
+                  inputProps={{
+                    style: {
+                      paddingTop: "12.5px",
+                      paddingBottom: "12.5px",
+                    },
+                  }}
+                  sx={{
+                    width: {
+                      xs: "250px",
+                      fourHundred: "280px",
+                      sm: "350px",
+                    },
+                    borderRadius: "9px",
+                    marginBottom: "20px",
+                  }}
+                />
+              )}
+            />
+            {/* *******************EdwardML - 'Let's Go!' Button************************** */}
+            <Button
+              variant="contained"
+              size="large"
+              type="submit"
+              sx={{
+                width: "211px",
+                padding: "0px",
+              }}
+              onClick={handleSubmit((data) => handleRegister("email", data))}
+            >
+              {regLoadingEmail ? (
+                <BreathingLogo type={"smallButton"} />
+              ) : (
+                "Let's Go!"
+              )}
+            </Button>
+          </form>
           {(errors.username || errors.email || errors.password) && (
             <Typography
               sx={{
