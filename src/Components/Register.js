@@ -267,7 +267,7 @@ export default function Register() {
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value}
-                  type="text"
+                  type="email"
                   label="Email"
                   required
                   error={errors.email ? true : false}
