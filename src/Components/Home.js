@@ -29,7 +29,6 @@ import HtmlPageTitle from "./HtmlPageTitle";
 import useAnimeList from "../Hooks/useAnimeList";
 import CommunityListShelf from "./CommunityListShelf";
 import GreetingExplainer from "./GreetingExplainer";
-import { LinearProgress } from "@mui/material";
 import DelayedLinearProgress from "./DelayedLinearProgress";
 
 export default function Home() {
