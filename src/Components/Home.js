@@ -29,6 +29,7 @@ import HtmlPageTitle from "./HtmlPageTitle";
 import useAnimeList from "../Hooks/useAnimeList";
 import CommunityListShelf from "./CommunityListShelf";
 import GreetingExplainer from "./GreetingExplainer";
+import DelayedLinearProgress from "./DelayedLinearProgress";
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
@@ -67,7 +68,7 @@ export default function Home() {
 
   // API call for personalized recommendations.
   const viewHistory = getViewHistory();
-  const { data: recommendation, isLoading: loadingRecs } =
+  const { data: recommendation, isRefetching: isRefetchingRecs } =
     useRecommendations(viewHistory);
 
   //API calls for generic shelf content
@@ -120,6 +121,7 @@ export default function Home() {
         >
           For You
         </Typography>
+        <DelayedLinearProgress isRefetching={isRefetchingRecs} />
         {localUser.uid && localUser?.likes.length === 0 ? (
           <div style={{ position: "relative", textAlign: "center" }}>
             <AnimeShelf />
