@@ -46,13 +46,10 @@ export default function DetailedView() {
   const [anime, animeLoading, animeError] = useAnime(animeId, location.state);
 
   const [analysis, analysisLoading, analysisError, analysisFetching] =
-    useAnimeAnalysis(animeId);
+    useAnimeAnalysis(animeId, localUser);
 
   const analysisIsLoading =
-    analysisLoading ||
-    analysisFetching ||
-    analysis?.animeId !== anime.id ||
-    (!user.isAnonymous && localUser.handle === ""); //Prevents flashing the anonymous user's score for registered users
+    analysisLoading || analysisFetching || analysis?.animeId !== anime?.id;
 
   useEffect(() => {
     if (loading) return;
