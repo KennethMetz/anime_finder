@@ -33,7 +33,8 @@ export default function ProfileMainPage() {
       <Grid item xs={12} md={8}>
         <Grid
           container
-          columnSpacing={2}
+          columnSpacing={6}
+          rowSpacing={2}
           sx={{ paddingLeft: { xs: 0, md: "45px" } }}
         >
           <Grid item xs={12}>
