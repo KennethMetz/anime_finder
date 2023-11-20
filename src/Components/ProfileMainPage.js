@@ -33,7 +33,8 @@ export default function ProfileMainPage() {
       <Grid item xs={12} md={8}>
         <Grid
           container
-          columnSpacing={2}
+          columnSpacing={6}
+          rowSpacing={2}
           sx={{ paddingLeft: { xs: 0, md: "45px" } }}
         >
           <Grid item xs={12}>
@@ -41,7 +42,7 @@ export default function ProfileMainPage() {
               History
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <WatchlistTile
               userId={profile?.uid}
               listId="likes"
@@ -49,7 +50,7 @@ export default function ProfileMainPage() {
               items={animeObjects?.likes}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <WatchlistTile
               userId={profile?.uid}
               listId="dislikes"
@@ -74,7 +75,7 @@ export default function ProfileMainPage() {
             )}
           </Grid>
           {animeObjects?.lists.map((list, index) => (
-            <Grid item xs={12} md={6} key={index}>
+            <Grid item xs={12} key={index}>
               <WatchlistTile
                 userId={profile?.uid}
                 listId={list.id}
@@ -95,7 +96,7 @@ export default function ProfileMainPage() {
             </Typography>
           </Grid>
           {animeObjects?.savedLists?.map((list, index) => (
-            <Grid item xs={12} md={6} key={index}>
+            <Grid item xs={12} key={index}>
               <WatchlistTile
                 userId={list.userId}
                 listId={list.listId}
