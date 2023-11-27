@@ -32,136 +32,151 @@ export default function WatchlistTile({
 
   return (
     <>
-      <Link to={`/profile/${userId}/list/${listId}`}>
-        <Box
-          sx={{
-            position: "relative",
-            display: "inline-flex",
-            pr: "25px",
-            transition: "border 0.1s linear",
-            border: `3px solid ${theme.palette.background.main}`,
-            borderRadius: "5px",
-            overflow: "clip",
-            ":hover": {
-              border: `3px solid ${theme.palette.primary.main}`,
-            },
-          }}
-        >
-          {items?.slice(0, 6).map((item, index) => (
-            <Box
-              sx={{
-                height: "111px",
-                aspectRatio: "0.7",
-                background: `url(${item?.image_large})`,
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                borderRadius: "3px",
-                overflow: "clip",
-                backgroundColor: theme.palette.custom.missingAnimeCover,
-                mr: "-26px",
-                zIndex: -1 * index,
-                border: `1px solid ${theme.palette.grey.main}`,
-                boxShadow: "2px 0 7px black",
-              }}
-            />
-          ))}
-          {items?.length === 0 && (
-            <Box
-              sx={{
-                p: 1,
-                width: "100%",
-                aspectRatio: "4",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <NoResultsImage noImage />
-            </Box>
-          )}
-          {syncData && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: "0",
-                right: "0",
-                width: "30px",
-                aspectRatio: "1.0",
-                background: `url(${malIcon})`,
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                borderRadius: " 0px 3px 0px 0px",
-              }}
-            />
-          )}
-        </Box>
-      </Link>
-
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          margin: "0px 3px 3px 3px",
-          width: "100%",
+          position: "relative",
+          padding: creator ? "8px 8px 10px 8px" : "8px 8px 10px 8px",
+          background: bgColor,
+          borderRadius: "12px",
+          cursor: "pointer",
+          marginBottom: "16px",
+          ":hover": {
+            background: alpha(theme.palette.action.hover, 0.07),
+          },
         }}
       >
         <Link to={`/profile/${userId}/list/${listId}`}>
-          <Typography
-            variant="h5"
+          <Box
             sx={{
-              fontWeight: 600,
-              flexGrow: 1,
-              transition: "color 0.1s linear",
-              "&:hover": { color: "primary.main" },
+              position: "relative",
+              display: "inline-flex",
+              pr: "30px",
+              mb: 1,
+              transition: "border 0.1s linear",
+              border: `3px solid ${bgColor}`,
+              borderRadius: "5px",
+              overflow: "clip",
+              ":hover": {
+                border: `3px solid ${theme.palette.primary.main}`,
+              },
             }}
           >
-            {name}
-          </Typography>
+            {items?.slice(0, 6).map((item, index) => (
+              <Box
+                sx={{
+                  height: "111px",
+                  aspectRatio: "0.7",
+                  background: `url(${item?.image_large})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  borderRadius: "3px",
+                  overflow: "clip",
+                  backgroundColor: theme.palette.custom.missingAnimeCover,
+                  mr: "-30px",
+                  zIndex: 10 - index,
+                  border: `1px solid ${theme.palette.grey.main}`,
+                  boxShadow: "2px 0 7px black",
+                }}
+              />
+            ))}
+            {items?.length === 0 && (
+              <Box
+                sx={{
+                  p: 1,
+                  width: "100%",
+                  aspectRatio: "4",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <NoResultsImage noImage />
+              </Box>
+            )}
+            {syncData && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "0",
+                  right: "0",
+                  width: "30px",
+                  aspectRatio: "1.0",
+                  background: `url(${malIcon})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  borderRadius: " 0px 3px 0px 0px",
+                }}
+              />
+            )}
+          </Box>
         </Link>
 
-        {items && (
-          <Typography
-            variant="body2"
-            sx={{
-              marginRight: "3px",
-              flexShrink: 0,
-            }}
-          >
-            {items.length ?? "0"} {items.length === 1 ? "item" : "items"}
-          </Typography>
-        )}
-      </Box>
-      {creator && (
-        <Fragment>
-          <Link to={`/profile/${userId}`}>
-            <Box
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            margin: "0px 3px 3px 3px",
+            width: "100%",
+          }}
+        >
+          <Link to={`/profile/${userId}/list/${listId}`}>
+            <Typography
+              variant="h5"
               sx={{
-                display: "inline-flex",
-                ml: "3px",
-                flexShrink: 1,
-                alignItems: "center",
+                fontWeight: 600,
+                flexGrow: 1,
                 transition: "color 0.1s linear",
-                cursor: "pointer",
                 "&:hover": { color: "primary.main" },
               }}
             >
-              <Avatar
-                sx={{ width: "25px", height: "25px", mr: 2 }}
-                alt={creator}
-                src={avatarSrc}
-              />
-              <ListItemText
-                primary={creator}
-                primaryTypographyProps={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              />
-            </Box>
+              {name}
+            </Typography>
           </Link>
-        </Fragment>
-      )}
+
+          {items && (
+            <Typography
+              variant="body2"
+              sx={{
+                marginRight: "7px",
+                flexShrink: 0,
+              }}
+            >
+              {items.length ?? "0"} {items.length === 1 ? "item" : "items"}
+            </Typography>
+          )}
+        </Box>
+        {creator && (
+          <Fragment>
+            <Link to={`/profile/${userId}`}>
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  ml: "3px",
+                  flexShrink: 1,
+                  alignItems: "center",
+                  transition: "color 0.1s linear",
+                  cursor: "pointer",
+                  "&:hover": { color: "primary.main" },
+                }}
+              >
+                <Avatar
+                  sx={{ width: "25px", height: "25px", mr: 2 }}
+                  alt={creator}
+                  src={avatarSrc}
+                />
+                <Typography
+                  variant="body2"
+                  sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                >
+                  {" "}
+                  {creator}
+                </Typography>
+              </Box>
+            </Link>
+          </Fragment>
+        )}
+      </Box>
     </>
   );
 }
