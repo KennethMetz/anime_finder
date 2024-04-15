@@ -184,7 +184,12 @@ export default function ProfileListPage() {
           elevenHundred={8}
           sevenHundredFifty={6}
           xs={10}
-          sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            overflow: "hidden",
+          }}
         >
           <ClickAndEdit
             data={name}

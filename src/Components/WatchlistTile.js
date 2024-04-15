@@ -1,14 +1,12 @@
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { alpha } from "@mui/system/colorManipulator";
+import Paper from "@mui/material/Paper";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import Divider from "@mui/material/Divider";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NoResultsImage from "./NoResultsImage";
 import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
 import { getAvatarSrc } from "./Avatars";
 import { Fragment, useMemo } from "react";
 
@@ -23,17 +21,28 @@ export default function WatchlistTile({
   creatorAvatar,
   syncData,
 }) {
-  const navigate = useNavigate();
   const theme = useTheme();
-  const bgColor = theme.palette.custom.subtleCardBg;
-  const gradient = `linear-gradient(270deg, ${bgColor} 0%, rgba(245, 245, 245, 0) 67.39%)`;
 
   const avatarSrc = useMemo(() => getAvatarSrc(creatorAvatar), [creatorAvatar]);
+
+  const canHover = useMediaQuery("(hover: hover)");
+
+  const isAtLeastSmall = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const maxItemsToShow = isAtLeastSmall ? 8 : 6;
+
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+          // Move the title info above the tiles on mobile.
+          flexDirection: isAtLeastSmall ? "row" : "column-reverse",
+        }}
+      >
         <Link to={`/profile/${userId}/list/${listId}`}>
-          <Box
+          <Paper
+            elevation={0}
             sx={{
               position: "relative",
               display: "inline-flex",
@@ -41,39 +50,51 @@ export default function WatchlistTile({
               pr: "25px",
               transition: "border 0.1s linear",
               border: `3px solid ${theme.palette.background.main}`,
-              borderRadius: "5px",
+              borderRadius: "16px",
               overflow: "clip",
-              ":hover": {
-                border: `3px solid ${theme.palette.primary.main}`,
-              },
+              background: "unset",
+              boxSizing: "border-box",
+              background:
+                items?.length === 0
+                  ? theme.palette.custom.subtleCardBg
+                  : "unset",
+              ":hover": canHover
+                ? {
+                    border: `3px solid ${theme.palette.primary.main}`,
+                  }
+                : {},
             }}
           >
-            {items?.slice(0, 8).map((item, index) => (
-              <>
-                <Box
-                  sx={{
-                    height: "111px",
-                    aspectRatio: "0.7",
-                    background: `url(${item?.image_large})`,
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                    borderRadius: "3px",
-                    overflow: "clip",
-                    backgroundColor: theme.palette.custom.missingAnimeCover,
-                    mr: "-26px",
-                    zIndex: -1 * index,
-                    border: `1px solid ${theme.palette.grey.main}`,
-                    boxShadow: "2px 0 7px black",
-                  }}
-                />
-              </>
+            {items?.slice(0, maxItemsToShow).map((item, index) => (
+              <Box
+                key={index}
+                sx={{
+                  height: isAtLeastSmall
+                    ? "121px"
+                    : // Ensure that 6 items will fit perfectly across screen.
+                      // It depends on the gutters being 48px, the overlap
+                      // between items being 26px, and the aspect ratio being
+                      // 0.7.
+                      "calc(((100vw + 188px - (48px * 2))/6)/0.7)",
+                  aspectRatio: "0.7",
+                  background: `url(${item?.image_large})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  borderRadius: "8px",
+                  overflow: "clip",
+                  backgroundColor: theme.palette.custom.missingAnimeCover,
+                  mr: "-26px",
+                  zIndex: 1 - index,
+                  boxShadow: "2px 0 7px #000000cc",
+                }}
+              />
             ))}
             {items?.length === 0 && (
               <Box
                 sx={{
-                  p: 1,
+                  p: 2,
                   width: "100%",
-                  aspectRatio: "4",
+                  height: "121px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -94,31 +115,41 @@ export default function WatchlistTile({
                   backgroundPosition: "center",
                   backgroundSize: "cover",
                   borderRadius: " 0px 3px 0px 0px",
+                  boxShadow: "2px 0 8px #000000cc",
                 }}
               />
             )}
-          </Box>
+          </Paper>
         </Link>
 
         <Box
           sx={{
-            margin: "3px 3px 3px 30px",
+            m: "3px",
+            ml: { xs: "8px", sm: "24px" },
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
           }}
         >
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              // Layout title info horizontally on mobile.
+              flexDirection: isAtLeastSmall ? "column" : "row",
+            }}
+          >
             <Link
               to={`/profile/${userId}/list/${listId}`}
-              style={{ display: "flex" }}
+              style={{ display: "flex", flexGrow: 1 }}
             >
               <Typography
-                variant="h4"
+                variant="h5"
                 sx={{
+                  display: "inline-block",
                   flexGrow: 1,
                   flexShrink: 1,
                   overflowWrap: "break-word",
+                  wordBreak: "break-word",
                   transition: "color 0.1s linear",
                   "&:hover": { color: "primary.main" },
                 }}
@@ -145,6 +176,7 @@ export default function WatchlistTile({
                 <Box
                   sx={{
                     display: "inline-flex",
+                    mt: "8px",
                     ml: "3px",
                     flexShrink: 1,
                     alignItems: "center",
@@ -165,7 +197,6 @@ export default function WatchlistTile({
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {" "}
                     {creator}
                   </Typography>
                 </Box>
@@ -174,14 +205,6 @@ export default function WatchlistTile({
           )}
         </Box>
       </Box>
-      <Divider
-        sx={{
-          display: "block",
-
-          mt: 2,
-          borderColor: theme.palette.grey,
-        }}
-      />
     </>
   );
 }

@@ -16,7 +16,7 @@ export default function NoResultsImage({ noImage, tile }) {
       <Typography
         sx={{
           color: "text.secondary",
-          marginBottom: "14px",
+          marginBottom: noImage ? "0" : "14px",
         }}
       >
         Nothing to see here...

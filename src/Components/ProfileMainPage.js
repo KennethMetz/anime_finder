@@ -15,7 +15,6 @@ export default function ProfileMainPage() {
 
   const subheadStyle = {
     marginTop: "26px",
-    marginBottom: "12px",
   };
 
   // To-do: Error screen on error.
@@ -27,10 +26,10 @@ export default function ProfileMainPage() {
   return (
     <Grid container>
       <HtmlPageTitle title={getHtmlTitle(profile, isOwnProfile)} />
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3.5}>
         <ProfileSidebar />
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={8.5}>
         <Grid
           container
           columnSpacing={6}
