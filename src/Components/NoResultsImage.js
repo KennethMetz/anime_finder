@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 
 import Spike from "../Styles/images/distraughtSpike2.webp";
 
-export default function NoResultsImage({ noImage, tile }) {
+export default function NoResultsImage({ noImage, tile, message }) {
   return (
     <div
       style={{
@@ -19,7 +19,7 @@ export default function NoResultsImage({ noImage, tile }) {
           marginBottom: noImage ? "0" : "14px",
         }}
       >
-        Nothing to see here...
+        {message ? message : "Nothing to see here..."}
       </Typography>
       {!noImage && !tile && (
         <Box

@@ -58,7 +58,14 @@ export default function Top8List() {
         >
           Top 8
         </Typography>
-        {profile?.top8?.length === 0 ? <NoResultsImage noImage /> : ""}
+        {profile?.top8?.length === 0 && (
+          <Box sx={{ p: 2 }}>
+            <NoResultsImage
+              noImage
+              message={'No "Top 8" anime selected yet...'}
+            />
+          </Box>
+        )}
         <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="top8titles">
             {(provided) => (
