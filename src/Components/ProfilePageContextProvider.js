@@ -18,12 +18,25 @@ export default function ProfilePageContextProvider({ userId, children }) {
   const [animeObjects, isLoadingAnime, errorAnime] =
     useProfileWithAnime(profileToUse);
 
+  // useProfileWithAnime will return null for animeObjects if profileToUse is
+  // null.  It also uses a useQuery with `keepPreviousDat: true`, so it will
+  // keep returning null during loading once asked to load actual profile data.
+  // If there are real ids, and animeObjbects is null, we should still be in a
+  // loading state.
+  const isLoadingFirstRealAnime =
+    Boolean(profileToUse?.likes) && animeObjects === null;
+
   const value = {
     profile: profileToUse,
     animeObjects: animeObjects,
     profileUserId: userId,
     isOwnProfile: userOwnsProfile,
-    isLoading: loading || profileLoading || !localUser?.uid || isLoadingAnime,
+    isLoading:
+      loading ||
+      profileLoading ||
+      !localUser?.uid ||
+      isLoadingAnime ||
+      isLoadingFirstRealAnime,
     updateDisplayName: (name) => {
       throwIfNotOwner();
       const newLocalUser = { ...localUser, name };

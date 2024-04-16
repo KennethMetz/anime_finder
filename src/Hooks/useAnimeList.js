@@ -14,6 +14,11 @@ export default function useAnimeList(ids) {
       const response = await APIGetAnimeList(ids);
       return response.items;
     },
-    { staleTime: fiveMinutesMs, keepPreviousData: true }
+    {
+      staleTime: fiveMinutesMs,
+      // keepPreviousData is used to handle cases when a user changes the
+      // contents of a watchlist on a list page.
+      keepPreviousData: true,
+    }
   );
 }
