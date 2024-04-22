@@ -116,6 +116,7 @@ export default function WatchlistTile({
                   backgroundSize: "cover",
                   borderRadius: " 0px 3px 0px 0px",
                   boxShadow: "2px 0 8px #000000cc",
+                  zIndex: 2,
                 }}
               />
             )}
